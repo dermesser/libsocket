@@ -1,4 +1,4 @@
-#Documentation for libsocket
+#Documentation for libinetsocket
 
 ##`create_socket()`
 
@@ -13,6 +13,10 @@
 
 The return value is either a valid file descriptor on which you can execute `write()` or `read()` (from `unistd.h`). If there's an error when creating
 that socket, it returns -1.
+
+Important for UDP sockets: The returned socket file descriptor may be used with `read()` and `write()` as well as TCP sockets. If you want to use `sendto()` and
+`recvfrom()`, don't use this library. But generally, it is not necessary to use sendto and recvfrom: When you use connected datagram sockets,
+each `read()` call will create a new datagram.
 
 ##`shutdown_socket()` 
 
@@ -29,3 +33,32 @@ and the other peer gets an EOF signal (`read()` returns 0).
 	int destroy_socket(int sfd)
 
 `destroy_socket()` shuts the socket down for READ and WRITE operations and `close()`s it.
+
+#Documentation for libunixsocket
+
+##`create_socket()`
+
+	int create_usocket(const char* path, int socktype);
+
+Creates and connects a new UNIX domain socket file descriptor for a socket located at `path`, type `socktype`.
+`socktype` is either `STREAM` or `DGRAM`. 
+
+Important for DGRAM sockets: Please think twice if you want to use DGRAM sockets in UNIX domain. They do not have any advantages
+over STREAM sockets!
+
+##`shutdown_socket()` 
+
+	int shutdown_socket(int sfd, int method)
+
+`shutdown_socket()` shuts a socket down. This means that (READ) you cannot read data anymore respectively (WRITE) you cannot write data anymore
+and the other peer gets an EOF signal (`read()` returns 0).
+
+* `sfd` is the Socket File Descriptor
+* `method` is either READ, WRITE or READ|WRITE (ORed).
+
+##`destroy_socket()`
+	
+	int destroy_socket(int sfd)
+
+`destroy_socket()` shuts the socket down for READ and WRITE operations and `close()`s it.
+

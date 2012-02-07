@@ -90,6 +90,8 @@ int create_usocket(const char* path, int socktype)
 //		   Socket file descriptor
 int destroy_usocket(int sfd)
 {
+	if ( -1 == check_error(shutdown(sfd,SHUT_RDWR)))
+		return -1;
 	if ( -1 == check_error(close(sfd)))
 		return -1;
 	return 0;
