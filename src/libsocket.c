@@ -6,6 +6,7 @@
 # include <stdint.h>
 # include <netdb.h> // getaddrinfo()
 # include <string.h>
+# include <errno.h>
 
 /*
 
@@ -32,6 +33,8 @@
 
 // Macro definitions
 
+# define VERBATIM // Write errors on stderr?
+
 # define TCP 1
 # define UDP 2
 
@@ -40,6 +43,24 @@
 
 # define BOTH 5 // what fits best (TCP/UDP or IPv4/6)
 
+# define SHUT_READ  1
+# define SHUT_WRITE 2
+
+static inline signed int check_error(int return_value)
+{
+	const char* errbuf;
+
+	if ( return_value < 0 )
+	{
+# ifdef VERBATIM
+		errbuf = strerror(errno);
+		write(2,errbuf,strlen(errbuf));
+#endif
+		return -1;
+	}
+
+	return 0;
+}
 // Creates socket, connects it and gives it back
 //                Hostname          Port/Service         Transport protocol (TCP or UDP)  Network Protocol (IPv4 or IPv6)
 int create_socket(const char* host, const char* service, char proto_osi4,                 char proto_osi3)
@@ -82,8 +103,10 @@ int create_socket(const char* host, const char* service, char proto_osi4,       
 	if ( return_value != 0 )
 	{
 		errstring = gai_strerror(return_value);
+#ifdef VERBATIM
 		write(2,errstring,strlen(errstring));
-		exit(EXIT_FAILURE);
+#endif
+		return -1;
 	}
 
 	// As described in "The Linux Programming Interface", Michael Kerrisk 2010, chapter 59.11 (p. 1220ff)
@@ -107,8 +130,10 @@ int create_socket(const char* host, const char* service, char proto_osi4,       
 
 	if ( result_check == NULL )
 	{
+#ifdef VERBATIM
 		write(2,"Could not connect to any address!\n",34);
-		exit(EXIT_FAILURE);
+#endif
+		return -1;
 	}
 
 	freeaddrinfo(result);
@@ -121,16 +146,42 @@ int create_socket(const char* host, const char* service, char proto_osi4,       
 int destroy_socket(int sfd)
 {
 	int return_value;
-	const char* errbuf;
 
-	return_value = shutdown(sfd,SHUTD_RDWR);
+	return_value = shutdown(sfd,SHUT_RDWR);
+	
+	if ( -1 == check_error(return_value))
+		return -1;
 
-	if ( return_value != 0 )
+	return_value = close(sfd);
+	
+	if ( -1 == check_error(return_value))
+		return -1;
+
+	return 0;
+}
+
+int socket_shutdown(int sfd, int method)
+{
+	int return_value;
+
+	if ( (method & 1) == 1 ) // READ is set (0001 && 0001 => 0001)
 	{
-		errbuf = strerror(errno);
-		write(2,errbuf,strlen(errbuf));
-		exit(EXIT_FAILURE);
+		return_value = shutdown(sfd,SHUT_RD);
+		if ( -1 == check_error(return_value))
+			return -1;
+
+	} else if ( (method & 2) == 2 ) // WRITE is set (0010 && 0010 => 0010)
+	{
+		return_value = shutdown(sfd,SHUT_WR);
+		if ( -1 == check_error(return_value))
+			return -1;
+
+	} else if ( (method & 3) == 3 ) // READ | WRITE is set (0011 && 0011 => 0011)
+	{
+		return_value = shutdown(sfd,SHUT_RDWR);
+		if ( -1 == check_error(return_value))
+			return -1;
 	}
 
-	close(sfd);
+	return 0;
 }
