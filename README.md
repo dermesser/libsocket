@@ -39,6 +39,8 @@ The libsocket library supports following things and protocols:
 One of the main advantages of libsocket is that you don't have to write the often complex and error-prone
 procedures for connecting a socket, check it on errors etc. yourself.
 
+Support for server sockets will be added soon.
+
 ##PLATFORMS
 
 I'm happy to get test reports and experiences. I already tested the library under the following conditions:

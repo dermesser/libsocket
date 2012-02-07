@@ -2,8 +2,8 @@
 # include <sys/socket.h> 
 # include <sys/types.h>
 # include <unistd.h> // read()/write()
+# include <sys/un.h> // UNIX domain sockets
 # include <stdint.h>
-# include <netdb.h> // getaddrinfo()
 # include <string.h>
 # include <errno.h>
 
@@ -30,20 +30,13 @@
 
 */
 
+# define VERBATIM
+
 // Macro definitions
 
-# define VERBATIM // Write errors on stderr?
+# define STREAM 1
+# define DGRAM  2
 
-# define TCP 1
-# define UDP 2
-
-# define IPv4 3
-# define IPv6 4
-
-# define BOTH 5 // what fits best (TCP/UDP or IPv4/6)
-
-# define READ  1
-# define WRITE 2
 
 static inline signed int check_error(int return_value)
 {
@@ -60,103 +53,47 @@ static inline signed int check_error(int return_value)
 
 	return 0;
 }
-// Creates socket, connects it and gives it back
-//                Hostname          Port/Service         Transport protocol (TCP or UDP)  Network Protocol (IPv4 or IPv6)
-int create_socket(const char* host, const char* service, char proto_osi4,                 char proto_osi3)
+
+// Create new unix socket
+int create_usocket(const char* path, int socktype)
 {
-	int sfd, return_value;
-	struct addrinfo hint, *result, *result_check;
-        const char* errstring;
+	struct sockaddr_un saddr;
+	int sfd;
 
-	memset(&hint,0,sizeof hint);
-
-	// set address family
-	switch ( proto_osi3 )
+	switch ( socktype )
 	{
-		case IPv4:
-			hint.ai_family = AF_INET;
+		case STREAM:
+			sfd = socket(AF_UNIX,SOCK_STREAM,0);
 			break;
-		case IPv6:
-			hint.ai_family = AF_INET6;
-			break;
-		case BOTH:
-			hint.ai_family = AF_UNSPEC;
+		case DGRAM:
+			sfd = socket(AF_UNIX,SOCK_DGRAM,0);
 	}
 
-	// set transport protocol
-	switch ( proto_osi4 )
-	{
-		case TCP:
-			hint.ai_socktype = SOCK_STREAM;
-			break;
-		case UDP:
-			hint.ai_socktype = SOCK_DGRAM;
-			break;
-		case BOTH:
-			// memset set struct to 0 - we don't have to set it again to 0
-			break;		
-	}
-
-
-	if ( 0 != (return_value = getaddrinfo(host,service,&hint,&result)))
-	{
-		errstring = gai_strerror(return_value);
-#ifdef VERBATIM
-		write(2,errstring,strlen(errstring));
-#endif
+	if ( -1 == check_error(sfd) )
 		return -1;
-	}
 
-	// As described in "The Linux Programming Interface", Michael Kerrisk 2010, chapter 59.11 (p. 1220ff)
+	memset(&saddr,0,sizeof(struct sockaddr_un));
+
+	saddr.sun_family = AF_UNIX;
+	strncpy(saddr.sun_path,path,sizeof(saddr.sun_path-1));
 	
-	for ( result_check = result; result_check != NULL; result_check = result_check->ai_next ) // go through the linked list of struct addrinfo elements
-	{
-		sfd = socket(result_check->ai_family, result_check->ai_socktype, result_check->ai_protocol);
-
-		if ( sfd < 0 ) // Error!!!
-			continue;
-
-		if ( -1 != connect(sfd,result_check->ai_addr,result_check->ai_addrlen)) // connected without error
-			break;
-
-		close(sfd);
-	}
 	
-	// We do now have a valid socket connection to our target
-
-	if ( result_check == NULL )
-	{
-#ifdef VERBATIM
-		write(2,"Could not connect to any address!\n",34);
-#endif
+	if ( -1 == check_error(connect(sfd,(struct sockaddr*)&saddr,sizeof saddr)))
 		return -1;
-	}
 
-	freeaddrinfo(result);
-	
 	return sfd;
 }
 
 // Destroy a socket
 //		   Socket file descriptor
-int destroy_socket(int sfd)
+int destroy_usocket(int sfd)
 {
-	int return_value;
-
-	return_value = shutdown(sfd,SHUT_RDWR);
-	
-	if ( -1 == check_error(return_value))
+	if ( -1 == check_error(close(sfd)))
 		return -1;
-
-	return_value = close(sfd);
-	
-	if ( -1 == check_error(return_value))
-		return -1;
-
 	return 0;
 }
 
-int shutdown_socket(int sfd, int method)
+int shutdown_usocket(int sfd, int method)
 {
 	if ( (method & 1) == 1 ) // READ is set (0001 && 0001 => 0001)
 	{
@@ -173,6 +110,5 @@ int shutdown_socket(int sfd, int method)
 		if ( -1 == check_error(shutdown(sfd,SHUT_RDWR)))
 			return -1;
 	}
-
 	return 0;
 }
