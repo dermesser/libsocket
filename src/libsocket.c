@@ -160,7 +160,7 @@ int destroy_socket(int sfd)
 	return 0;
 }
 
-int socket_shutdown(int sfd, int method)
+int shutdown_socket(int sfd, int method)
 {
 	int return_value;
 
