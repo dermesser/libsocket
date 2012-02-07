@@ -3,8 +3,10 @@
 ##USE
 
 It's recommended to compile libsocket statically into your program (by placing the .c and .h files in your source tree).
-You don't have to mind legal issues because libsocket is licensed by a 3-clause BSD license. It's friendly to mention 
-libsocket in your product's Readme or ads anyway, of course :)
+You don't have to mind legal issues because libsocket is licensed by a slightly modified BSD license which permits
+any use, as long as you include the license text in your product (so it's clear that libsocket is licensed by this License)
+and the notice that *we* wrote libsocket (as described in the license)
+It's friendly to mention libsocket in your product's Readme or ads anyway, of course :)
 libsocket is built for little programs whose author(s) are too lazy to build own algorithms and functions for socket (UNIX (coming soon)
 and Internet Domain (TCP/UDP)) communication.
 
