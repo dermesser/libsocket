@@ -37,6 +37,8 @@
 # define STREAM 1
 # define DGRAM  2
 
+# define READ  1
+# define WRITE 2
 
 static inline signed int check_error(int return_value)
 {
@@ -95,17 +97,17 @@ int destroy_usocket(int sfd)
 
 int shutdown_usocket(int sfd, int method)
 {
-	if ( (method & 1) == 1 ) // READ is set (0001 && 0001 => 0001)
+	if ( (method & READ) == READ ) // READ is set (0001 && 0001 => 0001)
 	{
 		if ( -1 == check_error(shutdown(sfd,SHUT_RD)))
 			return -1;
 
-	} else if ( (method & 2) == 2 ) // WRITE is set (0010 && 0010 => 0010)
+	} else if ( (method & WRITE) == WRITE ) // WRITE is set (0010 && 0010 => 0010)
 	{
 		if ( -1 == check_error(shutdown(sfd,SHUT_WR)))
 			return -1;
 
-	} else if ( (method & 3) == 3 ) // READ | WRITE is set (0011 && 0011 => 0011)
+	} else if ( (method & (READ|WRITE)) == (READ|WRITE) ) // READ | WRITE is set (0011 && 0011 => 0011)
 	{
 		if ( -1 == check_error(shutdown(sfd,SHUT_RDWR)))
 			return -1;

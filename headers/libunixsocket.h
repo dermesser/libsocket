@@ -1,6 +1,7 @@
-# ifndef LIBINETSOCKET_HEAD
-# define LIBINETSOCKET_HEAD
+# ifndef LIBUNIXSOCKET_HEAD
+# define LIBUNIXSOCKET_HEAD
 /*
+
 	The committers of the libsocket project, all rights reserved
 	(c) 2012, dermesser <lbo@spheniscida.de>
 
@@ -19,30 +20,20 @@
 	PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
 	OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 	POSSIBILITY OF SUCH DAMAGE.
+
 */
+
+# define VERBATIM
 
 // Macro definitions
 
-# define TCP 1
-# define UDP 2
+# define STREAM 1
+# define DGRAM  2
 
-# define IPv4 3
-# define IPv6 4
-
-# define BOTH 5 // what fits best (TCP/UDP or IPv4/6)
-
-# define READ 1
+# define READ  1
 # define WRITE 2
 
-// Creates socket, connects it and gives it back
-//                Hostname          Port/Service         Transport protocol (TCP or UDP)  Network Protocol (IPv4 or IPv6)
-extern int create_socket(const char* host, const char* service, char proto_osi4,                 char proto_osi3)
-
-// Destroy a socket
-//		   Socket file descriptor
-extern int destroy_socket(int);
-
-// Shut a socket down
-// 			       FD       READ, WRITE, READ | WRITE
-extern int shutdown_socket(int sfd, int method);
+extern int create_usocket(const char* path, int socktype);
+extern int destroy_usocket(int sfd);
+extern int shutdown_usocket(int sfd, int method);
 # endif
