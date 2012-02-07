@@ -15,11 +15,11 @@ Simply add the line into the source files where the library is used:
 
 and call the compiler (eventually in a makefile) with the name of the C file:
 
-	`$ gcc libsocket.c ownfile1.c ownfile2.c
+	$ gcc libsocket.c ownfile1.c ownfile2.c
 	# or
 	$ gcc -c libsocket.c
 	$ gcc ownfile1.c ownfile2.c libsocket.o
-	# etc. pp.`
+	# etc. pp.
 
 ##FEATURES AND ADVANTAGES
 
