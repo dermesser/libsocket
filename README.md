@@ -13,11 +13,11 @@ and Internet Domain (TCP/UDP)) communication.
 As you should know as experienced C programmer, it's quite easy to use this library.
 Simply add the line into the source files where the library is used:
 
-	# include "path/to/libsocket.h"
+	# include "path/to/lib{inet,unix}socket.h"
 
 and call the compiler (eventually in a makefile) with the name of the C file:
 
-	$ gcc libsocket.c ownfile1.c ownfile2.c
+	$ gcc lib{inet,unix}socket.c ownfile1.c ownfile2.c
 	# or
 	$ gcc -c libsocket.c
 	$ gcc ownfile1.c ownfile2.c libsocket.o
@@ -27,11 +27,11 @@ and call the compiler (eventually in a makefile) with the name of the C file:
 
 The libsocket library supports following things and protocols:
 
-* IPv4
-* IPv6 (if your machine supports it)
-* TCP
-* UDP
-* UNIX Domain Sockets (support comes soon)
+* IPv4 (client)
+* IPv6 (client, if your machine supports it)
+* TCP (client)
+* UDP (client)
+* UNIX Domain Sockets (by now only as client)
 * Intelligent algorithms to get the best connection and no errors
 * Easy use (one function call to get a socket up and running, one another to close it)
 * Proper error processing (using errno, gai\_strerror() etc).
@@ -43,9 +43,9 @@ Support for server sockets will be added soon.
 
 ##PLATFORMS
 
-I'm happy to get test reports and experiences. I already tested the library under the following conditions:
+I'd like to get test reports and experiences from you. I already tested the library under the following conditions:
 
 * Linux 3.1, gcc-4.6, TCP IPv4 sockets
 * Linux 3.1, gcc-4.7, TCP IPv4 sockets
 
-It is planned to test and get libsocket working on OpenBSD 5.0.
+It is planned to test and get libsocket working on OpenBSD 5.0. If you want, you may port it anywhere.
