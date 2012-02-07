@@ -141,16 +141,10 @@ int create_socket(const char* host, const char* service, char proto_osi4,       
 //		   Socket file descriptor
 int destroy_socket(int sfd)
 {
-	int return_value;
-
-	return_value = shutdown(sfd,SHUT_RDWR);
-	
-	if ( -1 == check_error(return_value))
+	if ( -1 == check_error(shutdown(sfd,SHUT_RDWR)))
 		return -1;
 
-	return_value = close(sfd);
-	
-	if ( -1 == check_error(return_value))
+	if ( -1 == check_error(close(sfd)))
 		return -1;
 
 	return 0;
