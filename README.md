@@ -41,7 +41,7 @@ procedures for connecting a socket, check it on errors etc. yourself.
 
 I'm happy to get test reports and experiences. I already tested the library under the following conditions:
 
-	* Linux 3.1, gcc-4.6, TCP IPv4 sockets
-	* Linux 3.1, gcc-4.7, TCP IPv4 sockets
+* Linux 3.1, gcc-4.6, TCP IPv4 sockets
+* Linux 3.1, gcc-4.7, TCP IPv4 sockets
 
 It is planned to test and get libsocket working on OpenBSD 5.0.
