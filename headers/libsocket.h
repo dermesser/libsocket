@@ -31,12 +31,18 @@
 
 # define BOTH 5 // what fits best (TCP/UDP or IPv4/6)
 
+# define READ 1
+# define WRITE 2
+
 // Creates socket, connects it and gives it back
 //                Hostname          Port/Service         Transport protocol (TCP or UDP)  Network Protocol (IPv4 or IPv6)
-int create_socket(const char* host, const char* service, char proto_osi4,                 char proto_osi3)
+extern int create_socket(const char* host, const char* service, char proto_osi4,                 char proto_osi3)
 
 // Destroy a socket
 //		   Socket file descriptor
 extern int destroy_socket(int);
 
+// Shut a socket down
+// 			       FD       READ, WRITE, READ | WRITE
+extern int shutdown_socket(int sfd, int method);
 # endif

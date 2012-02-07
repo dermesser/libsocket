@@ -14,6 +14,16 @@
 The return value is either a valid file descriptor on which you can execute `write()` or `read()` (from `unistd.h`). If there's an error when creating
 that socket, it returns -1.
 
+##`shutdown_socket()` 
+
+	int shutdown_socket(int sfd, int method)
+
+`shutdown_socket()` shuts a socket down. This means that (READ) you cannot read data anymore respectively (WRITE) you cannot write data anymore
+and the other peer gets an EOF signal (`read()` returns 0).
+
+* `sfd` is the Socket File Descriptor
+* `method` is either READ, WRITE or READ|WRITE (ORed).
+
 ##`destroy_socket()`
 	
 	int destroy_socket(int sfd)

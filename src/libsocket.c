@@ -43,8 +43,8 @@
 
 # define BOTH 5 // what fits best (TCP/UDP or IPv4/6)
 
-# define SHUT_READ  1
-# define SHUT_WRITE 2
+# define READ  1
+# define WRITE 2
 
 static inline signed int check_error(int return_value)
 {
