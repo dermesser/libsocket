@@ -1,6 +1,7 @@
 #Documentation for libinetsocket
 
-##`create_isocket()`
+##Clients
+###`create_isocket()`
 
 	int create_isocket(const char* host, const char* service, char proto_osi4, char proto_osi3)
 	
@@ -18,7 +19,7 @@ Important for UDP sockets: The returned socket file descriptor may be used with 
 `recvfrom()`, don't use this library. But generally, it is not necessary to use sendto and recvfrom: When you use connected datagram sockets,
 each `read()` call will create a new datagram.
 
-##`shutdown_isocket()` 
+###`shutdown_isocket()` 
 
 	int shutdown_isocket(int sfd, int method)
 
@@ -28,7 +29,7 @@ and the other peer gets an EOF signal (`read()` returns 0).
 * `sfd` is the Socket File Descriptor
 * `method` is either READ, WRITE or READ|WRITE (ORed).
 
-##`destroy_isocket()`
+###`destroy_isocket()`
 	
 	int destroy_isocket(int sfd)
 
@@ -36,7 +37,9 @@ and the other peer gets an EOF signal (`read()` returns 0).
 
 #Documentation for libunixsocket
 
-##`create_socket()`
+##Client
+
+###`create_socket()`
 
 	int create_usocket(const char* path, int socktype);
 
@@ -46,7 +49,7 @@ Creates and connects a new UNIX domain socket file descriptor for a socket locat
 Important for DGRAM sockets: Please think twice if you want to use DGRAM sockets in UNIX domain. They do not have any advantages
 over STREAM sockets!
 
-##`shutdown_socket()` 
+###`shutdown_socket()` 
 
 	int shutdown_socket(int sfd, int method)
 
@@ -56,7 +59,7 @@ and the other peer gets an EOF signal (`read()` returns 0).
 * `sfd` is the Socket File Descriptor
 * `method` is either READ, WRITE or READ|WRITE (ORed).
 
-##`destroy_socket()`
+###`destroy_socket()`
 	
 	int destroy_socket(int sfd)
 

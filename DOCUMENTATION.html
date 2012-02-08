@@ -1,0 +1,84 @@
+<h1>Documentation for libinetsocket</h1>
+
+<h2>Clients</h2>
+
+<h3><code>create_isocket()</code></h3>
+
+<pre><code>int create_isocket(const char* host, const char* service, char proto_osi4, char proto_osi3)
+</code></pre>
+
+<p><code>create_isocket()</code> creates and connects a new socket. The parameters have to be filled like this:</p>
+
+<ul>
+<li><code>host</code> is a string (0-terminated) containing the hostname or IP address of the target host</li>
+<li><code>service</code> is a string (0-terminated) containing the portname or service (e.g. <code>http</code>)</li>
+<li><code>proto_osi4</code> is a value representing the protocol on OSI layer 4 which we want to use (defined as macros): <code>TCP</code>, <code>UDP</code> or <code>BOTH</code> when libsocket should choose</li>
+<li><code>proto_osi3</code> is a value representing the protocol on OSI layer 3 which we want to use (defined as macros): <code>IPv6</code>, <code>IPv4</code> or <code>BOTH</code> when libsocket should choose</li>
+</ul>
+
+<p>The return value is either a valid file descriptor on which you can execute <code>write()</code> or <code>read()</code> (from <code>unistd.h</code>). If there's an error when creating
+that socket, it returns -1.</p>
+
+<p>Important for UDP sockets: The returned socket file descriptor may be used with <code>read()</code> and <code>write()</code> as well as TCP sockets. If you want to use <code>sendto()</code> and
+<code>recvfrom()</code>, don't use this library. But generally, it is not necessary to use sendto and recvfrom: When you use connected datagram sockets,
+each <code>read()</code> call will create a new datagram.</p>
+
+<h3><code>shutdown_isocket()</code></h3>
+
+<pre><code>int shutdown_isocket(int sfd, int method)
+</code></pre>
+
+<p><code>shutdown_isocket()</code> shuts a socket down. This means that (READ) you cannot read data anymore respectively (WRITE) you cannot write data anymore
+and the other peer gets an EOF signal (<code>read()</code> returns 0).</p>
+
+<ul>
+<li><code>sfd</code> is the Socket File Descriptor</li>
+<li><code>method</code> is either READ, WRITE or READ|WRITE (ORed).</li>
+</ul>
+
+<h3><code>destroy_isocket()</code></h3>
+
+<pre><code>int destroy_isocket(int sfd)
+</code></pre>
+
+<p><code>destroy_isocket()</code> shuts the socket down for READ and WRITE operations and <code>close()</code>s it.</p>
+
+<h1>Documentation for libunixsocket</h1>
+
+<h2>Client</h2>
+
+<h3><code>create_socket()</code></h3>
+
+<pre><code>int create_usocket(const char* path, int socktype);
+</code></pre>
+
+<p>Creates and connects a new UNIX domain socket file descriptor for a socket located at <code>path</code>, type <code>socktype</code>.
+<code>socktype</code> is either <code>STREAM</code> or <code>DGRAM</code>. </p>
+
+<p>Important for DGRAM sockets: Please think twice if you want to use DGRAM sockets in UNIX domain. They do not have any advantages
+over STREAM sockets!</p>
+
+<h3><code>shutdown_socket()</code></h3>
+
+<pre><code>int shutdown_socket(int sfd, int method)
+</code></pre>
+
+<p><code>shutdown_socket()</code> shuts a socket down. This means that (READ) you cannot read data anymore respectively (WRITE) you cannot write data anymore
+and the other peer gets an EOF signal (<code>read()</code> returns 0).</p>
+
+<ul>
+<li><code>sfd</code> is the Socket File Descriptor</li>
+<li><code>method</code> is either READ, WRITE or READ|WRITE (ORed).</li>
+</ul>
+
+<h3><code>destroy_socket()</code></h3>
+
+<pre><code>int destroy_socket(int sfd)
+</code></pre>
+
+<p><code>destroy_socket()</code> shuts the socket down for READ and WRITE operations and <code>close()</code>s it.</p>
+
+<h1>Compile options</h1>
+
+<p>If you specify the flag <code>-DVERBOSE</code> at compile time, libsocket uses STDERR to print information about occurred errors.
+VERBOSE is not activated by default so libsocket is 'quiet'.</p>
