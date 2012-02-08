@@ -36,13 +36,13 @@
 
 // Creates socket, connects it and gives it back
 //                Hostname          Port/Service         Transport protocol (TCP or UDP)  Network Protocol (IPv4 or IPv6)
-extern int create_socket(const char* host, const char* service, char proto_osi4,                 char proto_osi3)
+extern int create_isocket(const char* host, const char* service, char proto_osi4,                 char proto_osi3)
 
 // Destroy a socket
 //		   Socket file descriptor
-extern int destroy_socket(int);
+extern int destroy_isocket(int);
 
 // Shut a socket down
 // 			       FD       READ, WRITE, READ | WRITE
-extern int shutdown_socket(int sfd, int method);
+extern int shutdown_isocket(int sfd, int method);
 # endif

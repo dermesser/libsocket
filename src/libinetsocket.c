@@ -62,7 +62,7 @@ static inline signed int check_error(int return_value)
 }
 // Creates socket, connects it and gives it back
 //                Hostname          Port/Service         Transport protocol (TCP or UDP)  Network Protocol (IPv4 or IPv6)
-int create_socket(const char* host, const char* service, char proto_osi4,                 char proto_osi3)
+int create_isocket(const char* host, const char* service, char proto_osi4,                 char proto_osi3)
 {
 	int sfd, return_value;
 	struct addrinfo hint, *result, *result_check;
@@ -139,7 +139,7 @@ int create_socket(const char* host, const char* service, char proto_osi4,       
 
 // Destroy a socket
 //		   Socket file descriptor
-int destroy_socket(int sfd)
+int destroy_isocket(int sfd)
 {
 	if ( -1 == check_error(shutdown(sfd,SHUT_RDWR)))
 		return -1;
@@ -150,7 +150,7 @@ int destroy_socket(int sfd)
 	return 0;
 }
 
-int shutdown_socket(int sfd, int method)
+int shutdown_isocket(int sfd, int method)
 {
 	if ( (method & READ) == READ ) // READ is set (0001 && 0001 => 0001)
 	{
