@@ -35,6 +35,7 @@
 # define VERBOSE // Write errors on stderr?
 
 # define BACKLOG 128 // Linux accepts a backlog value at listen() up to 128
+# define CLIENT_NAME_BUF 1024 // How long is the buffer for the client's name?
 
 // Symbolic macros
 
@@ -48,6 +49,8 @@
 
 # define READ  1
 # define WRITE 2
+
+# define NUMERIC 1
 
 static inline signed int check_error(int return_value)
 {
@@ -70,8 +73,6 @@ static inline signed int check_error(int return_value)
  *
 */
 
-// Creates socket, connects it and gives it back
-//                Hostname          Port/Service         Transport protocol (TCP or UDP)  Network Protocol (IPv4 or IPv6)
 int create_isocket(const char* host, const char* service, char proto_osi4,                 char proto_osi3)
 {
 	int sfd, return_value;
@@ -152,8 +153,6 @@ int create_isocket(const char* host, const char* service, char proto_osi4,      
 	return sfd;
 }
 
-// Destroy a socket
-//		   Socket file descriptor
 int destroy_isocket(int sfd)
 {
 	if ( -1 == check_error(shutdown(sfd,SHUT_RDWR)))
@@ -265,4 +264,37 @@ int create_issocket(const char* bind_addr, const char* bind_port, char proto_osi
 	// We do now have a working socket connection to our target on which we may call accept()
 
 	return sfd;
+}
+
+int socket_isaccept(int sfd, char* src_host, size_t src_host_len, char* src_service, size_t src_service_len, int flags)
+{
+	struct sockaddr_storage client_info;
+	int retval, client_sfd;
+	const char* errstr;
+	socklen_t addrlen = sizeof(struct sockaddr_storage);
+
+	if ( -1 == check_error((client_sfd = accept(sfd,(struct sockaddr*)&client_info,&addrlen)))) // blocks
+		return -1;
+
+	if ( src_host_len > 0 || src_service_len > 0 ) // If one of the things is wanted. If you give a null pointer with a positive _len parameter, you'll get what you deserve... SIGSEGV
+	{
+		if ( flags == 1 )
+		{
+			flags = NI_NUMERICHOST | NI_NUMERICSERV;
+		} else
+		{
+			flags = 0; // To prevent errors
+		}
+
+		if ( -1 == (retval = getnameinfo((struct sockaddr*)&client_info,sizeof(struct sockaddr_storage),src_host,src_host_len,src_service,src_service_len,flags)) ) // Write information to the provided memory
+		{
+# ifdef VERBOSE
+			errstr = gai_strerror(retval);
+			write(2,errstr,strlen(errstr));
+# endif
+			return -1;
+		}
+	}
+
+	return client_sfd;
 }
