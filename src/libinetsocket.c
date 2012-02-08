@@ -81,6 +81,9 @@ int create_isocket(const char* host, const char* service, char proto_osi4,      
 			break;
 		case BOTH:
 			hint.ai_family = AF_UNSPEC;
+			break;
+		default:
+			return -1;
 	}
 
 	// set transport protocol
@@ -95,6 +98,8 @@ int create_isocket(const char* host, const char* service, char proto_osi4,      
 		case BOTH:
 			// memset set struct to 0 - we don't have to set it again to 0
 			break;		
+		default:
+			return -1;
 	}
 
 

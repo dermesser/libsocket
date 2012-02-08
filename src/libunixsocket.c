@@ -69,6 +69,8 @@ int create_usocket(const char* path, int socktype)
 			break;
 		case DGRAM:
 			sfd = socket(AF_UNIX,SOCK_DGRAM,0);
+		default:
+			return -1;
 	}
 
 	if ( -1 == check_error(sfd) )
