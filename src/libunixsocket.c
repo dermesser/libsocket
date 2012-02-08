@@ -30,7 +30,7 @@
 
 */
 
-# define VERBATIM
+# define VERBOSE
 
 // Macro definitions
 
@@ -46,7 +46,7 @@ static inline signed int check_error(int return_value)
 
 	if ( return_value < 0 )
 	{
-# ifdef VERBATIM
+# ifdef VERBOSE
 		errbuf = strerror(errno);
 		write(2,errbuf,strlen(errbuf));
 #endif

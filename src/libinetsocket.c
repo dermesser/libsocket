@@ -32,7 +32,7 @@
 
 // Macro definitions
 
-# define VERBATIM // Write errors on stderr?
+# define VERBOSE // Write errors on stderr?
 
 # define TCP 1
 # define UDP 2
@@ -51,7 +51,7 @@ static inline signed int check_error(int return_value)
 
 	if ( return_value < 0 )
 	{
-# ifdef VERBATIM
+# ifdef VERBOSE
 		errbuf = strerror(errno);
 		write(2,errbuf,strlen(errbuf));
 #endif
@@ -101,7 +101,7 @@ int create_socket(const char* host, const char* service, char proto_osi4,       
 	if ( 0 != (return_value = getaddrinfo(host,service,&hint,&result)))
 	{
 		errstring = gai_strerror(return_value);
-#ifdef VERBATIM
+#ifdef VERBOSE
 		write(2,errstring,strlen(errstring));
 #endif
 		return -1;
@@ -126,7 +126,7 @@ int create_socket(const char* host, const char* service, char proto_osi4,       
 
 	if ( result_check == NULL )
 	{
-#ifdef VERBATIM
+#ifdef VERBOSE
 		write(2,"Could not connect to any address!\n",34);
 #endif
 		return -1;

@@ -23,8 +23,6 @@
 
 */
 
-# define VERBATIM
-
 // Macro definitions
 
 # define STREAM 1
