@@ -34,6 +34,10 @@
 
 # define VERBOSE // Write errors on stderr?
 
+# define BACKLOG 128 // Linux accepts a backlog value at listen() up to 128
+
+// Symbolic macros
+
 # define TCP 1
 # define UDP 2
 
@@ -60,6 +64,12 @@ static inline signed int check_error(int return_value)
 
 	return 0;
 }
+
+/*
+ * Client part
+ *
+*/
+
 // Creates socket, connects it and gives it back
 //                Hostname          Port/Service         Transport protocol (TCP or UDP)  Network Protocol (IPv4 or IPv6)
 int create_isocket(const char* host, const char* service, char proto_osi4,                 char proto_osi3)
@@ -127,7 +137,7 @@ int create_isocket(const char* host, const char* service, char proto_osi4,      
 		close(sfd);
 	}
 	
-	// We do now have a valid socket connection to our target
+	// We do now have a working socket connection to our target
 
 	if ( result_check == NULL )
 	{
@@ -173,4 +183,86 @@ int shutdown_isocket(int sfd, int method)
 			return -1;
 	}
 	return 0;
+}
+
+/*
+ * Server part
+ *
+*/
+// create_issocket() (Create Internet Server Socket)
+//		   Bind address		   Port			  TCP/UDP	   IPv4/6
+int create_issocket(const char* bind_addr, const char* bind_port, char proto_osi4, char proto_osi3)
+{
+	int sfd, domain, type, retval;
+	struct addrinfo *result, *result_check, hints;
+	const char* errstr;
+
+	switch ( proto_osi4 )
+	{
+		case TCP:
+			type = SOCK_STREAM;
+			break;
+		case UDP:
+			type = SOCK_DGRAM;
+			break;
+		default:
+			return -1;
+	}
+	switch ( proto_osi3 )
+	{
+		case IPv4:
+			domain = AF_INET;
+			break;
+		case IPv6:
+			domain = AF_INET6;
+			break;
+		default:
+			return -1;
+	}
+
+	memset(&hints,0,sizeof(struct addrinfo));
+
+	hints.ai_socktype = type;
+	hints.ai_family = domain;
+
+	if ( -1 == (retval = getaddrinfo(bind_addr,bind_port,&hints,&result)) )
+	{
+# ifdef VERBOSE
+		errstr = gai_strerror(retval);
+		write(2,errstr,strlen(errstr));
+# endif
+		return -1;
+	}
+
+	// As described in "The Linux Programming Interface", Michael Kerrisk 2010, chapter 59.11 (p. 1220ff)
+	for ( result_check = result; result_check != NULL; result_check = result_check->ai_next ) // go through the linked list of struct addrinfo elements
+	{
+		sfd = socket(result_check->ai_family, result_check->ai_socktype, result_check->ai_protocol);
+
+		if ( sfd < 0 ) // Error at socket()!!!
+			continue;
+
+		retval = bind(sfd,result_check->ai_addr,(socklen_t)result_check->ai_addrlen);
+
+		if ( retval != 0 ) // Error at bind()!!!
+			continue;
+
+		retval = listen(sfd,BACKLOG);
+
+		if ( retval == 0 ) // If we came until here, there wasn't an error anywhere. It is safe to cancel the loop here
+			break;
+
+	}
+
+	if ( result_check == NULL )
+	{
+#ifdef VERBOSE
+		write(2,"Could not connect to any address!\n",34);
+#endif
+		return -1;
+	}
+
+	// We do now have a working socket connection to our target on which we may call accept()
+
+	return sfd;
 }
