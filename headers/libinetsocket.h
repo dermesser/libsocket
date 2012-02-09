@@ -59,7 +59,7 @@ extern int create_issocket(const char* bind_addr, const char* bind_port, char pr
 
 // Accept connections (like accept()). May block
 // Socket fd, memory for hostname, its length, Memory for service name, its length, Flags (NUMERIC)
-extern int socket_isaccept(int sfd, char* src_host, size_t src_host_len, char* src_service, size_t src_service_len, int flags);
+extern int accept_issocket(int sfd, char* src_host, size_t src_host_len, char* src_service, size_t src_service_len, int flags);
 
 
 # endif

@@ -73,21 +73,21 @@ Creates a new server socket:
 The call to `listen()` (which is not executed when using UDP sockets uses the biggest linux backlog size 128. You should change it in the source code if you
 want another value.
 
-This function returns an int value suitable for calls with `accept()` and `socket_isaccept()`.
+This function returns an int value suitable for calls with `accept()` and `accept_issocket()`.
 
-###`socket_isaccept()`
+###`accept_issocket()`
 
- 	int socket_isaccept(int sfd, char* src_host, size_t src_host_len, char* src_service, size_t src_service_len, int flags);
+ 	int accept_issocket(int sfd, char* src_host, size_t src_host_len, char* src_service, size_t src_service_len, int flags);
 
-`socket_isaccept()` performs an action similar to `accept()`. **It may not be called on UDP server sockets.** 
+`accept_issocket()` performs an action similar to `accept()`. **It may not be called on UDP server sockets.** 
 
 * `sfd` is the socket file descriptor
 * `src_host` is a pointer to a buffer into which the lib writes the hostname of the client. `src_host_len` is the length of its buffer. More bytes are truncated
 * `src_service` and `src_service_len` is the same like `src_host` and `src_host_len`, but for the ports
 * `flags` may be `NUMERIC`, which results in numeric host and service names.
 
-`socket_isaccept()` returns a file descriptor for a connection to the client which is to be used with `read()` and `write()`. 
-In case of failure, it returns -1. `socket_isaccept()` blocks until a client connects.
+`accept_issocket()` returns a file descriptor for a connection to the client which is to be used with `read()` and `write()`. 
+In case of failure, it returns -1. `accept_issocket()` blocks until a client connects.
 
 
 #Documentation for libunixsocket

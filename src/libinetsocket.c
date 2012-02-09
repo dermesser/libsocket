@@ -331,7 +331,7 @@ int create_issocket(const char* bind_addr, const char* bind_port, char proto_osi
 	return sfd;
 }
 
-int socket_isaccept(int sfd, char* src_host, size_t src_host_len, char* src_service, size_t src_service_len, int flags)
+int accept_issocket(int sfd, char* src_host, size_t src_host_len, char* src_service, size_t src_service_len, int flags)
 {
 	struct sockaddr_storage client_info;
 	int retval, client_sfd;
