@@ -54,14 +54,15 @@
 
 static inline signed int check_error(int return_value)
 {
+# ifdef VERBOSE
 	const char* errbuf;
-
+# endif
 	if ( return_value < 0 )
 	{
 # ifdef VERBOSE
 		errbuf = strerror(errno);
 		write(2,errbuf,strlen(errbuf));
-#endif
+# endif
 		return -1;
 	}
 
@@ -77,7 +78,9 @@ int create_isocket(const char* host, const char* service, char proto_osi4,      
 {
 	int sfd, return_value;
 	struct addrinfo hint, *result, *result_check;
-        const char* errstring;
+# ifdef VERBOSE
+	const char* errstring;
+# endif
 
 	memset(&hint,0,sizeof hint);
 
@@ -116,8 +119,8 @@ int create_isocket(const char* host, const char* service, char proto_osi4,      
 
 	if ( 0 != (return_value = getaddrinfo(host,service,&hint,&result)))
 	{
-		errstring = gai_strerror(return_value);
 #ifdef VERBOSE
+		errstring = gai_strerror(return_value);
 		write(2,errstring,strlen(errstring));
 #endif
 		return -1;
@@ -153,11 +156,71 @@ int create_isocket(const char* host, const char* service, char proto_osi4,      
 	return sfd;
 }
 
-int destroy_isocket(int sfd)
+// Connect inet socket to new peer
+// 		     Socket    New peer    and its port   TCP/UDP - IT HAS TO BE THE ONE WHICH YOU GAVE WHEN YOU CREATED IT!!!
+int reconnect_isocket(int sfd, char* host, char* service, int socktype)
 {
-	if ( -1 == check_error(shutdown(sfd,SHUT_RDWR)))
+	struct addrinfo *result, *result_check, hint;
+	struct sockaddr_storage oldsockaddr;
+	socklen_t oldsockaddrlen = sizeof(struct sockaddr_storage);
+	int return_value;
+# ifdef VERBOSE
+	const char* errstring;
+# endif
+
+	if ( -1 == check_error(getsockname(sfd,(struct sockaddr*)&oldsockaddr,&oldsockaddrlen)) )
+		return -1;
+		
+	if ( oldsockaddrlen > sizeof(struct sockaddr_storage) ) // If getsockname truncated the struct
 		return -1;
 
+	memset(&hint,0,sizeof(struct addrinfo));
+
+	hint.ai_family = ((struct sockaddr_in*)&oldsockaddr)->sin_family; // AF_INET or AF_INET6 - offset is same at sockaddr_in and sockaddr_in6
+	hint.ai_socktype = (socktype == TCP ? SOCK_STREAM : SOCK_DGRAM);
+
+	if ( 0 != (return_value = getaddrinfo(host,service,&hint,&result)))
+	{
+#ifdef VERBOSE
+		errstring = gai_strerror(return_value);
+		write(2,errstring,strlen(errstring));
+#endif
+		return -1;
+	}
+
+	// As described in "The Linux Programming Interface", Michael Kerrisk 2010, chapter 59.11 (p. 1220ff)
+	
+	for ( result_check = result; result_check != NULL; result_check = result_check->ai_next ) // go through the linked list of struct addrinfo elements
+	{
+		sfd = socket(result_check->ai_family, result_check->ai_socktype, result_check->ai_protocol);
+
+		if ( sfd < 0 ) // Error!!!
+			continue;
+
+		if ( -1 != connect(sfd,result_check->ai_addr,result_check->ai_addrlen)) // connected without error
+			break;
+
+		close(sfd);
+	}
+	
+	// We do now have a working (updated) socket connection to our target
+
+	if ( result_check == NULL ) // or not?
+	{
+#ifdef VERBOSE
+		write(2,"Could not connect to any address!\n",34);
+#endif
+		return -1;
+	}
+
+	freeaddrinfo(result);
+
+	return 0;
+}
+	
+
+int destroy_isocket(int sfd)
+{
 	if ( -1 == check_error(close(sfd)))
 		return -1;
 
@@ -190,7 +253,9 @@ int create_issocket(const char* bind_addr, const char* bind_port, char proto_osi
 {
 	int sfd, domain, type, retval;
 	struct addrinfo *result, *result_check, hints;
+# ifdef VERBOSE
 	const char* errstr;
+# endif
 
 	switch ( proto_osi4 )
 	{
@@ -270,7 +335,9 @@ int socket_isaccept(int sfd, char* src_host, size_t src_host_len, char* src_serv
 {
 	struct sockaddr_storage client_info;
 	int retval, client_sfd;
+# ifdef VERBOSE
 	const char* errstr;
+# endif
 	socklen_t addrlen = sizeof(struct sockaddr_storage);
 
 	if ( -1 == check_error((client_sfd = accept(sfd,(struct sockaddr*)&client_info,&addrlen)))) // blocks

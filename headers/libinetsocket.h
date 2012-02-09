@@ -40,6 +40,10 @@
 //                Hostname          Port/Service         Transport protocol (TCP or UDP)  Network Protocol (IPv4 or IPv6)
 extern int create_isocket(const char* host, const char* service, char proto_osi4,                 char proto_osi3);
 
+// Reconnect a socket to another peer
+//			     Socket,  new peer,   new port,      Type of the socket (UDP/TCP) - may not be changed to another value than specified at create_isocket()!
+extern int reconnect_isocket(int sfd, char* host, char* service, int socktype);
+
 // Destroy a socket
 //		   Socket file descriptor
 extern int destroy_isocket(int sfd);

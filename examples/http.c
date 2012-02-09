@@ -1,6 +1,6 @@
 # include <stdio.h>
 # include <stdlib.h>
-# include "headers/libinetsocket.h"
+# include "../headers/libinetsocket.h"
 # include <unistd.h>
 # include <string.h>
 
@@ -8,11 +8,11 @@ int main(void)
 {
 	int sfd, bytes;
 	char request[128], buf[32];
-	
+
 	buf[31] = 0;
 
 	sfd = create_isocket("lbo.spheniscida.de", "80", TCP, IPv4);
-	
+
 	sprintf(request,"GET / HTTP/1.1\nHost: lbo.spheniscida.de\n\n");
 
 	write(sfd,request,strlen(request));
@@ -26,3 +26,4 @@ int main(void)
 
 	return 0;
 }
+
