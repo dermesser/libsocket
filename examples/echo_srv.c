@@ -13,10 +13,10 @@
 int main(void)
 {
 	int sfd, cfd, bytes;
-	char src_host[128], src_service[10], buf[16];
+	char src_host[128], src_service[6], buf[16];
 
 	src_host[127] = 0;
-	src_service[9] = 0;
+	src_service[5] = 0;
 	buf[15] = 0;
 
 	sfd = create_issocket("0.0.0.0","1234",TCP,IPv4);
@@ -27,7 +27,7 @@ int main(void)
 		exit(1);
 	}
 
-	cfd = accept_issocket(sfd,src_host,127,src_service,9,NUMERIC);
+	cfd = accept_issocket(sfd,src_host,127,src_service,5,NUMERIC);
 
 	printf("Connection from %s port %s\n",src_host,src_service);
 	
