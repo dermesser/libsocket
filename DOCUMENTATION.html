@@ -85,7 +85,10 @@ an error if you shut it down before. But that's equal because <code>close()</cod
 <li>proto_osi3 is either IPv4 or IPv6</li>
 </ul>
 
-<p>This function returns a value suitable for calls with <code>accept()</code> and <code>socket_isaccept()</code>.</p>
+<p>The call to <code>listen()</code> (which is not executed when using UDP sockets uses the biggest linux backlog size 128. You should change it in the source code if you
+want another value.</p>
+
+<p>This function returns an int value suitable for calls with <code>accept()</code> and <code>socket_isaccept()</code>.</p>
 
 <h3><code>socket_isaccept()</code></h3>
 
@@ -100,6 +103,9 @@ an error if you shut it down before. But that's equal because <code>close()</cod
 <li><code>src_service</code> and <code>src_service_len</code> is the same like <code>src_host</code> and <code>src_host_len</code>, but for the ports</li>
 <li><code>flags</code> may be <code>NUMERIC</code>, which results in numeric host and service names.</li>
 </ul>
+
+<p><code>socket_isaccept()</code> returns a file descriptor for a connection to the client which is to be used with <code>read()</code> and <code>write()</code>. 
+In case of failure, it returns -1. <code>socket_isaccept()</code> blocks until a client connects.</p>
 
 <h1>Documentation for libunixsocket</h1>
 
