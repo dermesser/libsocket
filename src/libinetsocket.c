@@ -223,8 +223,9 @@ int create_issocket(const char* bind_addr, const char* bind_port, char proto_osi
 
 	hints.ai_socktype = type;
 	hints.ai_family = domain;
+	hints.ai_flags = AI_PASSIVE;
 
-	if ( -1 == (retval = getaddrinfo(bind_addr,bind_port,&hints,&result)) )
+	if ( 0 != (retval = getaddrinfo(bind_addr,bind_port,&hints,&result)) )
 	{
 # ifdef VERBOSE
 		errstr = gai_strerror(retval);
