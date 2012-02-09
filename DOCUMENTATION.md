@@ -75,6 +75,8 @@ want another value.
 
 This function returns an int value suitable for calls with `accept()` and `accept_issocket()`.
 
+A with this function created socket may be destroyed with `destroy_isocket()`.
+
 ###`accept_issocket()`
 
  	int accept_issocket(int sfd, char* src_host, size_t src_host_len, char* src_service, size_t src_service_len, int flags);
