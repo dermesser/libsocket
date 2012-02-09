@@ -246,7 +246,8 @@ int create_issocket(const char* bind_addr, const char* bind_port, char proto_osi
 		if ( retval != 0 ) // Error at bind()!!!
 			continue;
 
-		retval = listen(sfd,BACKLOG);
+		if (type == TCP)
+			retval = listen(sfd,BACKLOG);
 
 		if ( retval == 0 ) // If we came until here, there wasn't an error anywhere. It is safe to cancel the loop here
 			break;
