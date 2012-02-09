@@ -265,6 +265,8 @@ int create_issocket(const char* bind_addr, const char* bind_port, char proto_osi
 
 	// We do now have a working socket connection to our target on which we may call accept()
 
+	freeaddrinfo(result);
+
 	return sfd;
 }
 
