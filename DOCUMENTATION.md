@@ -19,6 +19,20 @@ Important for UDP sockets: The returned socket file descriptor may be used with 
 `recvfrom()`, don't use this library. But generally, it is not necessary to use sendto and recvfrom: When you use connected datagram sockets,
 each `read()` call will create a new datagram.
 
+###`reconnect_isocket()`
+
+	int reconnect_isocket(int sfd, char* host, char* service, int socktype);
+
+`reconnect_isocket()` is an easy way to connect an existing socket to a new peer. It is faster and more elegant than destroying the first socket with `destroy_isocket()`
+and make a new with `create_isocket()`. The parameters:
+
+* `sfd` is the existing Socket File Descriptor
+* `host` and `service` like in `create_isocket()`
+* `socktype` is either TCP or UDP (the macro constants from `create_isocket()`). It has to be the type 
+which you chose at `create_isocket()` because it is impossible to get the socktype from the file descriptor.
+
+This function returns either 0 (Success) or -1 (Failure).
+
 ###`shutdown_isocket()` 
 
 	int shutdown_isocket(int sfd, int method)
@@ -29,11 +43,45 @@ and the other peer gets an EOF signal (`read()` returns 0).
 * `sfd` is the Socket File Descriptor
 * `method` is either READ, WRITE or READ|WRITE (ORed).
 
+This function returns either 0 (Success) or -1 (Failure)
+
 ###`destroy_isocket()`
 	
 	int destroy_isocket(int sfd)
 
-`destroy_isocket()` shuts the socket down for READ and WRITE operations and `close()`s it.
+`destroy_isocket()` `close()`s the specified Socket file descriptor `sfd`. It does not perform a `shutdown()` on it because that would produce
+an error if you shut it down before. But that's equal because `close()` also sends EOF.
+
+This function returns either 0 (Success) or -1 (Failure)
+
+##Server
+
+libsocket also supports INET server sockets (also called Passive Sockets).
+
+###`create_issocket()`
+'issocket' stands for 'Internet Server Socket', not for 'is socket'. :)
+
+	int create_issocket(const char* bind_addr, const char* bind_port, char proto_osi4, char proto_osi3);
+
+Creates a new server socket:
+
+* `bind_addr` is the address to bind to. It's normally good when you specify "0.0.0.0".
+* `bind_port` is the port to bind to.
+* proto_osi4 is either TCP or UDP. If it's UDP, the socket doesn't `listen()`.
+* proto_osi3 is either IPv4 or IPv6
+
+This function returns a value suitable for calls with `accept()` and `socket_isaccept()`.
+
+###`socket_isaccept()`
+
+ 	int socket_isaccept(int sfd, char* src_host, size_t src_host_len, char* src_service, size_t src_service_len, int flags);
+
+`socket_isaccept()` performs an action similar to `accept()`. **It may not be called on UDP server sockets.** 
+
+* `sfd` is the socket file descriptor
+* `src_host` is a pointer to a buffer into which the lib writes the hostname of the client. `src_host_len` is the length of its buffer. More bytes are truncated
+* `src_service` and `src_service_len` is the same like `src_host` and `src_host_len`, but for the ports
+* `flags` may be `NUMERIC`, which results in numeric host and service names.
 
 #Documentation for libunixsocket
 
