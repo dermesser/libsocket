@@ -88,14 +88,16 @@ an error if you shut it down before. But that's equal because <code>close()</cod
 <p>The call to <code>listen()</code> (which is not executed when using UDP sockets uses the biggest linux backlog size 128. You should change it in the source code if you
 want another value.</p>
 
-<p>This function returns an int value suitable for calls with <code>accept()</code> and <code>socket_isaccept()</code>.</p>
+<p>This function returns an int value suitable for calls with <code>accept()</code> and <code>accept_issocket()</code>.</p>
 
-<h3><code>socket_isaccept()</code></h3>
+<p>A with this function created socket may be destroyed with <code>destroy_isocket()</code>.</p>
 
-<pre><code>int socket_isaccept(int sfd, char* src_host, size_t src_host_len, char* src_service, size_t src_service_len, int flags);
+<h3><code>accept_issocket()</code></h3>
+
+<pre><code>int accept_issocket(int sfd, char* src_host, size_t src_host_len, char* src_service, size_t src_service_len, int flags);
 </code></pre>
 
-<p><code>socket_isaccept()</code> performs an action similar to <code>accept()</code>. <strong>It may not be called on UDP server sockets.</strong> </p>
+<p><code>accept_issocket()</code> performs an action similar to <code>accept()</code>. <strong>It may not be called on UDP server sockets.</strong> </p>
 
 <ul>
 <li><code>sfd</code> is the socket file descriptor</li>
@@ -104,8 +106,8 @@ want another value.</p>
 <li><code>flags</code> may be <code>NUMERIC</code>, which results in numeric host and service names.</li>
 </ul>
 
-<p><code>socket_isaccept()</code> returns a file descriptor for a connection to the client which is to be used with <code>read()</code> and <code>write()</code>. 
-In case of failure, it returns -1. <code>socket_isaccept()</code> blocks until a client connects.</p>
+<p><code>accept_issocket()</code> returns a file descriptor for a connection to the client which is to be used with <code>read()</code> and <code>write()</code>. 
+In case of failure, it returns -1. <code>accept_issocket()</code> blocks until a client connects.</p>
 
 <h1>Documentation for libunixsocket</h1>
 
