@@ -32,7 +32,7 @@
 
 // Macro definitions
 
-# define VERBOSE // Write errors on stderr?
+//# define VERBOSE // Write errors on stderr?
 
 # define BACKLOG 128 // Linux accepts a backlog value at listen() up to 128
 # define CLIENT_NAME_BUF 1024 // How long is the buffer for the client's name?

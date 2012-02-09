@@ -30,7 +30,7 @@
 
 */
 
-# define VERBOSE
+// # define VERBOSE
 
 // Macro definitions
 
