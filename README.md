@@ -27,10 +27,10 @@ and call the compiler (eventually in a makefile) with the name of the C file:
 
 The libsocket library supports following things and protocols:
 
-* IPv4 (client)
-* IPv6 (client, if your machine supports it)
-* TCP (client)
-* UDP (client)
+* IPv4 (client, server)
+* IPv6 (client, server; if your machine supports it)
+* TCP (client, server)
+* UDP (client, server (not fully completed))
 * UNIX Domain Sockets (by now only as client)
 * Intelligent algorithms to get the best connection and no errors
 * Easy use (one function call to get a socket up and running, one another to close it)
@@ -39,13 +39,12 @@ The libsocket library supports following things and protocols:
 One of the main advantages of libsocket is that you don't have to write the often complex and error-prone
 procedures for connecting a socket, check it on errors etc. yourself.
 
-Support for server sockets will be added soon.
-
 ##PLATFORMS
 
 I'd like to get test reports and experiences from you. I already tested the library under the following conditions:
 
 * Linux 3.1, gcc-4.6, TCP IPv4 sockets
 * Linux 3.1, gcc-4.7, TCP IPv4 sockets
+* Linux 3.1, gcc-4.7, TCP IPv4 server sockets
 
 It is planned to test and get libsocket working on OpenBSD 5.0. If you want, you may port it anywhere.
