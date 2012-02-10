@@ -11,7 +11,7 @@
 * `service` is a string (0-terminated) containing the portname or service (e.g. `http`)
 * `proto_osi4` is a value representing the protocol on OSI layer 4 which we want to use (defined as macros): `TCP`, `UDP` or `BOTH` when libsocket should choose
 * `proto_osi3` is a value representing the protocol on OSI layer 3 which we want to use (defined as macros): `IPv6`, `IPv4` or `BOTH` when libsocket should choose
-* `flags` is `SOCK_CLOEXEC` and/or `SOCK_NONBLOCK` (as specified in socket(2)). `SOCK_CLOEXEC` will close the socket if you call `exec*()`. `SOCK_NONBLOCK` will return -1 instead of
+* `flags` is `SOCK_CLOEXEC` and/or `SOCK_NONBLOCK` (as specified in `socket(2)`). `SOCK_CLOEXEC` will close the socket if you call `exec*()`. `SOCK_NONBLOCK` will return -1 instead of
 waiting for data on the socket.
 
 The return value is either a valid file descriptor on which you can execute `write()` or `read()` (from `unistd.h`). If there's an error when creating
@@ -23,14 +23,13 @@ each `read()` call will create a new datagram.
 
 ###`reconnect_isocket()`
 
-	int reconnect_isocket(int sfd, char* host, char* service, int socktype);
+	int reconnect_isocket(int sfd, char* host, char* service);
 
 `reconnect_isocket()` is an easy way to connect an existing socket to a new peer. It is faster and more elegant than destroying the first socket with `destroy_isocket()`
-and make a new with `create_isocket()`. The parameters:
+and make a new with `create_isocket()`. ***IMPORTANT: IT MAY ONLY BE USED WITH UDP SOCKETS! IF USED WITH TCP SOCKETS, IT WON'T WORK!!!*** The parameters:
 
 * `sfd` is the existing Socket File Descriptor
 * `host` and `service` like in `create_isocket()`
-* `socktype` is either TCP or UDP (the macro constants from `create_isocket()`). It has to be the type 
 which you chose at `create_isocket()` because it is impossible to get the socktype from the file descriptor.
 
 This function returns either 0 (Success) or -1 (Failure).
@@ -100,12 +99,17 @@ In case of failure, it returns -1. `accept_issocket()` blocks until a client con
 `recvfrom_issocket()` receives some bytes from a UDP socket. It also may work with STREAM sockets (as TCP) but it is recommended to use `accept_issocket()` with TCP sockets.
 
 The parameters are:
+
 * `sfd` is the socket file descriptor
 * `buffer` is a memory block for the received bytes
 * `size` is the size of the buffer
 * `src_host` is a buffer for the client name and `src_host_len` its length
-* `src_service` is a buffer for the client's port and `src_service_len` its length.
+* `src_service` is a buffer for the client's port and `src_service_len` its length. If you use `NUMERIC` as flag (see next parameter), 
+you have to give a buffer of a length of 6 or more - elsewise, the internally used `getnameinfo()` will fail (5 digits for outgoing port plus a \0 byte) 
+with "unknown error"! If you use the nonnumerical form, you have to give even more buffer space.
 * `flags` may be NUMERIC which results in numeric client and port names.
+
+**Important: Please give buffers which are big enough to hold longer names - if you don't do so, `getnameinfo()` (which is used internally) will return with an unknown error.**
 
 #Documentation for libunixsocket
 

@@ -14,7 +14,7 @@
 <li><code>service</code> is a string (0-terminated) containing the portname or service (e.g. <code>http</code>)</li>
 <li><code>proto_osi4</code> is a value representing the protocol on OSI layer 4 which we want to use (defined as macros): <code>TCP</code>, <code>UDP</code> or <code>BOTH</code> when libsocket should choose</li>
 <li><code>proto_osi3</code> is a value representing the protocol on OSI layer 3 which we want to use (defined as macros): <code>IPv6</code>, <code>IPv4</code> or <code>BOTH</code> when libsocket should choose</li>
-<li><code>flags</code> is <code>SOCK_CLOEXEC</code> and/or <code>SOCK_NONBLOCK</code> (as specified in socket(2)). <code>SOCK_CLOEXEC</code> will close the socket if you call <code>exec*()</code>. <code>SOCK_NONBLOCK</code> will return -1 instead of
+<li><code>flags</code> is <code>SOCK_CLOEXEC</code> and/or <code>SOCK_NONBLOCK</code> (as specified in <code>socket(2)</code>). <code>SOCK_CLOEXEC</code> will close the socket if you call <code>exec*()</code>. <code>SOCK_NONBLOCK</code> will return -1 instead of
 waiting for data on the socket.</li>
 </ul>
 
@@ -27,16 +27,15 @@ each <code>read()</code> call will create a new datagram.</p>
 
 <h3><code>reconnect_isocket()</code></h3>
 
-<pre><code>int reconnect_isocket(int sfd, char* host, char* service, int socktype);
+<pre><code>int reconnect_isocket(int sfd, char* host, char* service);
 </code></pre>
 
 <p><code>reconnect_isocket()</code> is an easy way to connect an existing socket to a new peer. It is faster and more elegant than destroying the first socket with <code>destroy_isocket()</code>
-and make a new with <code>create_isocket()</code>. The parameters:</p>
+and make a new with <code>create_isocket()</code>. <strong><em>IMPORTANT: IT MAY ONLY BE USED WITH UDP SOCKETS! IF USED WITH TCP SOCKETS, IT WON'T WORK!!!</em></strong> The parameters:</p>
 
 <ul>
 <li><code>sfd</code> is the existing Socket File Descriptor</li>
-<li><code>host</code> and <code>service</code> like in <code>create_isocket()</code></li>
-<li><code>socktype</code> is either TCP or UDP (the macro constants from <code>create_isocket()</code>). It has to be the type 
+<li><code>host</code> and <code>service</code> like in <code>create_isocket()</code>
 which you chose at <code>create_isocket()</code> because it is impossible to get the socktype from the file descriptor.</li>
 </ul>
 
@@ -118,13 +117,20 @@ In case of failure, it returns -1. <code>accept_issocket()</code> blocks until a
 
 <p><code>recvfrom_issocket()</code> receives some bytes from a UDP socket. It also may work with STREAM sockets (as TCP) but it is recommended to use <code>accept_issocket()</code> with TCP sockets.</p>
 
-<p>The parameters are:
-* <code>sfd</code> is the socket file descriptor
-* <code>buffer</code> is a memory block for the received bytes
-* <code>size</code> is the size of the buffer
-* <code>src_host</code> is a buffer for the client name and <code>src_host_len</code> its length
-* <code>src_service</code> is a buffer for the client's port and <code>src_service_len</code> its length.
-* <code>flags</code> may be NUMERIC which results in numeric client and port names.</p>
+<p>The parameters are:</p>
+
+<ul>
+<li><code>sfd</code> is the socket file descriptor</li>
+<li><code>buffer</code> is a memory block for the received bytes</li>
+<li><code>size</code> is the size of the buffer</li>
+<li><code>src_host</code> is a buffer for the client name and <code>src_host_len</code> its length</li>
+<li><code>src_service</code> is a buffer for the client's port and <code>src_service_len</code> its length. If you use <code>NUMERIC</code> as flag (see next parameter), 
+you have to give a buffer of a length of 6 or more - elsewise, the internally used <code>getnameinfo()</code> will fail (5 digits for outgoing port plus a \0 byte) 
+with "unknown error"! If you use the nonnumerical form, you have to give even more buffer space.</li>
+<li><code>flags</code> may be NUMERIC which results in numeric client and port names.</li>
+</ul>
+
+<p><strong>Important: Please give buffers which are big enough to hold longer names - if you don't do so, <code>getnameinfo()</code> (which is used internally) will return with an unknown error.</strong></p>
 
 <h1>Documentation for libunixsocket</h1>
 
