@@ -11,7 +11,7 @@ int main(void)
 
 	buf[31] = 0;
 
-	sfd = create_isocket("lbo.spheniscida.de", "80", TCP, IPv4);
+	sfd = create_isocket("lbo.spheniscida.de", "80", TCP, IPv4,0);
 
 	sprintf(request,"GET / HTTP/1.1\nHost: lbo.spheniscida.de\n\n");
 

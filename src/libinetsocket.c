@@ -74,14 +74,14 @@ static inline signed int check_error(int return_value)
  *
 */
 
-int create_isocket(const char* host, const char* service, char proto_osi4,                 char proto_osi3)
+int create_isocket(const char* host, const char* service, char proto_osi4, char proto_osi3, int flags)
 {
 	int sfd, return_value;
 	struct addrinfo hint, *result, *result_check;
 # ifdef VERBOSE
 	const char* errstring;
 # endif
-
+	
 	memset(&hint,0,sizeof hint);
 
 	// set address family
@@ -130,7 +130,7 @@ int create_isocket(const char* host, const char* service, char proto_osi4,      
 	
 	for ( result_check = result; result_check != NULL; result_check = result_check->ai_next ) // go through the linked list of struct addrinfo elements
 	{
-		sfd = socket(result_check->ai_family, result_check->ai_socktype, result_check->ai_protocol);
+		sfd = socket(result_check->ai_family, result_check->ai_socktype | flags, result_check->ai_protocol);
 
 		if ( sfd < 0 ) // Error!!!
 			continue;

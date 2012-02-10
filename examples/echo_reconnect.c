@@ -17,7 +17,7 @@ int main(void)
 	
 	buf[31] = 0;
 
-	sfd = create_isocket("localhost","55555",TCP,IPv4);
+	sfd = create_isocket("localhost","55555",TCP,IPv4,0);
 
 	write(sfd,"abcde",5);
 

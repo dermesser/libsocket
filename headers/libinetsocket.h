@@ -37,8 +37,8 @@
 # define NUMERIC 1
 
 // Creates socket, connects it and gives it back
-//                Hostname          Port/Service         Transport protocol (TCP or UDP)  Network Protocol (IPv4 or IPv6)
-extern int create_isocket(const char* host, const char* service, char proto_osi4,                 char proto_osi3);
+//                Hostname          Port/Service         Transport protocol (TCP or UDP)  Network Protocol (IPv4 or IPv6)  may be SOCK_NONBLOCK (socket won't block) and SOCK_CLOEXEC (closes socket on exec() call)
+extern int create_isocket(const char* host, const char* service, char proto_osi4,         char proto_osi3,                 int flags);
 
 // Reconnect a socket to another peer
 //			     Socket,  new peer,   new port,      Type of the socket (UDP/TCP) - may not be changed to another value than specified at create_isocket()!
