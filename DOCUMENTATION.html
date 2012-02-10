@@ -4,7 +4,7 @@
 
 <h3><code>create_isocket()</code></h3>
 
-<pre><code>int create_isocket(const char* host, const char* service, char proto_osi4, char proto_osi3)
+<pre><code>int create_isocket(const char* host, const char* service, char proto_osi4, char proto_osi3, int flags)
 </code></pre>
 
 <p><code>create_isocket()</code> creates and connects a new socket. The parameters have to be filled like this:</p>
@@ -14,6 +14,8 @@
 <li><code>service</code> is a string (0-terminated) containing the portname or service (e.g. <code>http</code>)</li>
 <li><code>proto_osi4</code> is a value representing the protocol on OSI layer 4 which we want to use (defined as macros): <code>TCP</code>, <code>UDP</code> or <code>BOTH</code> when libsocket should choose</li>
 <li><code>proto_osi3</code> is a value representing the protocol on OSI layer 3 which we want to use (defined as macros): <code>IPv6</code>, <code>IPv4</code> or <code>BOTH</code> when libsocket should choose</li>
+<li><code>flags</code> is <code>SOCK_CLOEXEC</code> and/or <code>SOCK_NONBLOCK</code> (as specified in socket(2)). <code>SOCK_CLOEXEC</code> will close the socket if you call <code>exec*()</code>. <code>SOCK_NONBLOCK</code> will return -1 instead of
+waiting for data on the socket.</li>
 </ul>
 
 <p>The return value is either a valid file descriptor on which you can execute <code>write()</code> or <code>read()</code> (from <code>unistd.h</code>). If there's an error when creating
@@ -108,6 +110,21 @@ want another value.</p>
 
 <p><code>accept_issocket()</code> returns a file descriptor for a connection to the client which is to be used with <code>read()</code> and <code>write()</code>. 
 In case of failure, it returns -1. <code>accept_issocket()</code> blocks until a client connects.</p>
+
+<h3><code>recvfrom_issocket()</code></h3>
+
+<pre><code>size_t recvfrom_issocket(int sfd, void* buffer, size_t size, char* src_host, size_t src_host_len, char* src_service, size_t src_service_len, int flags)
+</code></pre>
+
+<p><code>recvfrom_issocket()</code> receives some bytes from a UDP socket. It also may work with STREAM sockets (as TCP) but it is recommended to use <code>accept_issocket()</code> with TCP sockets.</p>
+
+<p>The parameters are:
+* <code>sfd</code> is the socket file descriptor
+* <code>buffer</code> is a memory block for the received bytes
+* <code>size</code> is the size of the buffer
+* <code>src_host</code> is a buffer for the client name and <code>src_host_len</code> its length
+* <code>src_service</code> is a buffer for the client's port and <code>src_service_len</code> its length.
+* <code>flags</code> may be NUMERIC which results in numeric client and port names.</p>
 
 <h1>Documentation for libunixsocket</h1>
 

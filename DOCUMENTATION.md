@@ -3,7 +3,7 @@
 ##Clients
 ###`create_isocket()`
 
-	int create_isocket(const char* host, const char* service, char proto_osi4, char proto_osi3)
+	int create_isocket(const char* host, const char* service, char proto_osi4, char proto_osi3, int flags)
 	
 `create_isocket()` creates and connects a new socket. The parameters have to be filled like this:
 
@@ -11,6 +11,8 @@
 * `service` is a string (0-terminated) containing the portname or service (e.g. `http`)
 * `proto_osi4` is a value representing the protocol on OSI layer 4 which we want to use (defined as macros): `TCP`, `UDP` or `BOTH` when libsocket should choose
 * `proto_osi3` is a value representing the protocol on OSI layer 3 which we want to use (defined as macros): `IPv6`, `IPv4` or `BOTH` when libsocket should choose
+* `flags` is `SOCK_CLOEXEC` and/or `SOCK_NONBLOCK` (as specified in socket(2)). `SOCK_CLOEXEC` will close the socket if you call `exec*()`. `SOCK_NONBLOCK` will return -1 instead of
+waiting for data on the socket.
 
 The return value is either a valid file descriptor on which you can execute `write()` or `read()` (from `unistd.h`). If there's an error when creating
 that socket, it returns -1.
@@ -91,6 +93,19 @@ A with this function created socket may be destroyed with `destroy_isocket()`.
 `accept_issocket()` returns a file descriptor for a connection to the client which is to be used with `read()` and `write()`. 
 In case of failure, it returns -1. `accept_issocket()` blocks until a client connects.
 
+###`recvfrom_issocket()`
+
+	size_t recvfrom_issocket(int sfd, void* buffer, size_t size, char* src_host, size_t src_host_len, char* src_service, size_t src_service_len, int flags)
+
+`recvfrom_issocket()` receives some bytes from a UDP socket. It also may work with STREAM sockets (as TCP) but it is recommended to use `accept_issocket()` with TCP sockets.
+
+The parameters are:
+* `sfd` is the socket file descriptor
+* `buffer` is a memory block for the received bytes
+* `size` is the size of the buffer
+* `src_host` is a buffer for the client name and `src_host_len` its length
+* `src_service` is a buffer for the client's port and `src_service_len` its length.
+* `flags` may be NUMERIC which results in numeric client and port names.
 
 #Documentation for libunixsocket
 
