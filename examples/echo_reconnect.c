@@ -5,34 +5,27 @@
 # include <string.h>
 
 /*
- * This client is to be used with echosrv (https://github.com/dermesser/echosrv)
- * It demonstrates the concept of reconnect
+ * This example is to be used with echo_srv.c as server
  * At the reconnect_isocket() call, 192.168.1.8 is another address on which the same
  * server listens.
 */
 
 int main(void)
 {
-	int sfd, bytes;
-	char request[128], buf[32];
+	int sfd;
+
+	sfd = create_isocket("localhost","1234",UDP,IPv4,0); // Because we want to use reconnect_isocket() - 
 	
-	buf[31] = 0;
-
-	sfd = create_isocket("localhost","55555",TCP,IPv4,0);
-
-	write(sfd,"abcde",5);
-
-	read(sfd,buf,5);
-
-	write(1,buf,5);
+	write(sfd,"abcde",5); // Each write() generates a new UDP packet
 	
-	reconnect_isocket(sfd,"192.168.1.8","55555",TCP);
+	sleep(2);
 
-	write(sfd,"defghi",5);
+	if ( -1 == reconnect_isocket(sfd,"192.168.1.8","1234") ) // FIXME: Put your IP here...
+		printf("couldn't reconnect\n");
+	
+	sleep(2);
 
-	read(sfd,buf,5);
-
-	write(1,buf,5);
+	write(sfd,"defghi",6);
 
 	destroy_isocket(sfd);
 

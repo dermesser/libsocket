@@ -1,4 +1,5 @@
 # include <stdlib.h>
+# include <stdio.h>
 # include <sys/socket.h> 
 # include <sys/types.h>
 # include <unistd.h> // read()/write()
@@ -156,9 +157,9 @@ int create_isocket(const char* host, const char* service, char proto_osi4, char 
 	return sfd;
 }
 
-// Connect inet socket to new peer
-// 		     Socket    New peer    and its port   TCP/UDP - IT HAS TO BE THE ONE WHICH YOU GAVE WHEN YOU CREATED IT!!!
-int reconnect_isocket(int sfd, char* host, char* service, int socktype)
+// Connect inet socket to new peer - works for UDP only!!!
+// 		     Socket    New peer    and its port
+int reconnect_isocket(int sfd, char* host, char* service)
 {
 	struct addrinfo *result, *result_check, hint;
 	struct sockaddr_storage oldsockaddr;
@@ -177,7 +178,7 @@ int reconnect_isocket(int sfd, char* host, char* service, int socktype)
 	memset(&hint,0,sizeof(struct addrinfo));
 
 	hint.ai_family = ((struct sockaddr_in*)&oldsockaddr)->sin_family; // AF_INET or AF_INET6 - offset is same at sockaddr_in and sockaddr_in6
-	hint.ai_socktype = (socktype == TCP ? SOCK_STREAM : SOCK_DGRAM);
+	hint.ai_socktype = SOCK_DGRAM;
 
 	if ( 0 != (return_value = getaddrinfo(host,service,&hint,&result)))
 	{
@@ -192,15 +193,20 @@ int reconnect_isocket(int sfd, char* host, char* service, int socktype)
 	
 	for ( result_check = result; result_check != NULL; result_check = result_check->ai_next ) // go through the linked list of struct addrinfo elements
 	{
-		sfd = socket(result_check->ai_family, result_check->ai_socktype, result_check->ai_protocol);
+		//sfd = socket(result_check->ai_family, result_check->ai_socktype, result_check->ai_protocol);
 
-		if ( sfd < 0 ) // Error!!!
-			continue;
+		//if ( sfd < 0 ) // Error!!!
+		//	continue;
 
-		if ( -1 != connect(sfd,result_check->ai_addr,result_check->ai_addrlen)) // connected without error
+		if ( -1 != (return_value = connect(sfd,result_check->ai_addr,result_check->ai_addrlen))) // connected without error
+		{
 			break;
+		} else
+		{
+			check_error(return_value);
+		}
 
-		close(sfd);
+		//close(sfd);
 	}
 	
 	// We do now have a working (updated) socket connection to our target
@@ -370,7 +376,7 @@ int accept_issocket(int sfd, char* src_host, size_t src_host_len, char* src_serv
 // 			 Socket   Target        Size of buffer string for client and its size     client port        its size		     may be NUMERIC (give host and service in numeric form)
 size_t recvfrom_issocket(int sfd, void* buffer, size_t size, char* src_host, size_t src_host_len, char* src_service, size_t src_service_len, int flags)
 {
-	struct sockaddr_storage client_info, client;
+	struct sockaddr_storage client;
 	ssize_t bytes;
 	int retval;
 # ifdef VERBOSE
@@ -391,7 +397,7 @@ size_t recvfrom_issocket(int sfd, void* buffer, size_t size, char* src_host, siz
 			flags = 0; // To prevent errors
 		}
 
-		if ( 0 != (retval = getnameinfo((struct sockaddr*)&client_info,sizeof(struct sockaddr_storage),src_host,src_host_len,src_service,src_service_len,flags)) ) // Write information to the provided memory
+		if ( 0 != (retval = getnameinfo((struct sockaddr*)&client,sizeof(struct sockaddr_storage),src_host,src_host_len,src_service,src_service_len,flags)) ) // Write information to the provided memory
 		{
 # ifdef VERBOSE
 			errstr = gai_strerror(retval);

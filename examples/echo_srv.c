@@ -12,31 +12,31 @@
 
 int main(void)
 {
-	int sfd, cfd, bytes;
-	char src_host[128], src_service[6], buf[16];
+	int sfd, bytes;
+	char src_host[128], src_service[7], buf[16];
 
 	src_host[127] = 0;
-	src_service[5] = 0;
+	src_service[6] = 0;
 	buf[15] = 0;
 
-	sfd = create_issocket("0.0.0.0","1234",TCP,IPv4);
+	sfd = create_issocket("0.0.0.0","1234",UDP,IPv4);
 
 	if ( -1 == sfd )
 	{
 		printf("couldn't create server\n");
 		exit(1);
 	}
-
-	cfd = accept_issocket(sfd,src_host,127,src_service,5,NUMERIC);
-
-	printf("Connection from %s port %s\n",src_host,src_service);
 	
-	while ( 0 < ( bytes = read(cfd,buf,15) ) )
-	{
-		write(cfd,buf,bytes);
-		write(1,buf,bytes);
-	}
+	printf("Socket up and running\n");
 
+	while ( 1 )
+	{
+		bytes = recvfrom_issocket(sfd,buf,15,src_host,127,src_service,6,NUMERIC);
+
+		printf("Connection from %s port %s: %s (%i)\n",src_host,src_service,buf,bytes);
+		printf("Connection processed\n");
+	}
+	
 	destroy_isocket(sfd);
 
 	return 0;
