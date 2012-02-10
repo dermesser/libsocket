@@ -1,0 +1,1 @@
+It is destroy_usocket() from which shutdown() was removed, not shutdown_usocket().
