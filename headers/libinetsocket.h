@@ -56,10 +56,12 @@ extern int shutdown_isocket(int sfd, int method);
 // at which address to bind, at which port to bind, which protocol (TCP/UDP), which protocol (IPv4/IPv6)
 extern int create_issocket(const char* bind_addr, const char* bind_port, char proto_osi4, char proto_osi3);
 
-
 // Accept connections (like accept()). May block
 // Socket fd, memory for hostname, its length, Memory for service name, its length, Flags (NUMERIC)
 extern int accept_issocket(int sfd, char* src_host, size_t src_host_len, char* src_service, size_t src_service_len, int flags);
 
+// Receive some bytes from a (mostly UDP/SOCK_DGRAM) socket
+// 				File desc. Buffer and  its length   Client address and its length        Client port/service and its length         may be NUMERIC (gives host and service in numeric form)
+extern size_t recvfrom_issocket(int sfd, void* buffer, size_t size, char* src_host, size_t src_host_len, char* src_service, size_t src_service_len, int flags);
 
 # endif

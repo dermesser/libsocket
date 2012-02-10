@@ -365,3 +365,42 @@ int accept_issocket(int sfd, char* src_host, size_t src_host_len, char* src_serv
 
 	return client_sfd;
 }
+
+// Get a single UDP packet
+// 			 Socket   Target        Size of buffer string for client and its size     client port        its size		     may be NUMERIC (give host and service in numeric form)
+size_t recvfrom_issocket(int sfd, void* buffer, size_t size, char* src_host, size_t src_host_len, char* src_service, size_t src_service_len, int flags)
+{
+	struct sockaddr_storage client_info, client;
+	ssize_t bytes;
+	int retval;
+# ifdef VERBOSE
+	const char* errstr;
+# endif
+	socklen_t addrlen = sizeof(struct sockaddr_storage);
+
+	if ( -1 == check_error(bytes = recvfrom(sfd,buffer,size,0,(struct sockaddr*)&client,&addrlen)))
+		return -1;
+
+	if ( src_host_len > 0 || src_service_len > 0 ) // If one of the things is wanted. If you give a null pointer with a positive _len parameter, you won't get the address. 
+	{
+		if ( flags == NUMERIC )
+		{
+			flags = NI_NUMERICHOST | NI_NUMERICSERV;
+		} else
+		{
+			flags = 0; // To prevent errors
+		}
+
+		if ( 0 != (retval = getnameinfo((struct sockaddr*)&client_info,sizeof(struct sockaddr_storage),src_host,src_host_len,src_service,src_service_len,flags)) ) // Write information to the provided memory
+		{
+# ifdef VERBOSE
+			errstr = gai_strerror(retval);
+			write(2,errstr,strlen(errstr));
+# endif
+			return -1;
+		}
+	}
+
+	return bytes;
+}
+
