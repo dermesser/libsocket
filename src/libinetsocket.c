@@ -343,9 +343,9 @@ int accept_issocket(int sfd, char* src_host, size_t src_host_len, char* src_serv
 	if ( -1 == check_error((client_sfd = accept(sfd,(struct sockaddr*)&client_info,&addrlen)))) // blocks
 		return -1;
 
-	if ( src_host_len > 0 || src_service_len > 0 ) // If one of the things is wanted. If you give a null pointer with a positive _len parameter, you'll get what you deserve... SIGSEGV
+	if ( src_host_len > 0 || src_service_len > 0 ) // If one of the things is wanted. If you give a null pointer with a positive _len parameter, you won't get the address. 
 	{
-		if ( flags == 1 )
+		if ( flags == NUMERIC )
 		{
 			flags = NI_NUMERICHOST | NI_NUMERICSERV;
 		} else
@@ -353,7 +353,7 @@ int accept_issocket(int sfd, char* src_host, size_t src_host_len, char* src_serv
 			flags = 0; // To prevent errors
 		}
 
-		if ( -1 == (retval = getnameinfo((struct sockaddr*)&client_info,sizeof(struct sockaddr_storage),src_host,src_host_len,src_service,src_service_len,flags)) ) // Write information to the provided memory
+		if ( 0 != (retval = getnameinfo((struct sockaddr*)&client_info,sizeof(struct sockaddr_storage),src_host,src_host_len,src_service,src_service_len,flags)) ) // Write information to the provided memory
 		{
 # ifdef VERBOSE
 			errstr = gai_strerror(retval);
