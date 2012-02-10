@@ -7,7 +7,8 @@
 /*
  * This client is to be used with echosrv (https://github.com/dermesser/echosrv)
  * It demonstrates the concept of reconnect
- *
+ * At the reconnect_isocket() call, 192.168.1.8 is another address on which the same
+ * server listens.
 */
 
 int main(void)
