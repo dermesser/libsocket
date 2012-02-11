@@ -213,3 +213,15 @@ int accept_ussocket(int sfd, int flags)
 
 	return cfd;
 }
+
+// Receives data
+// 		      Socket   Buffer     its size
+ssize_t recv_ussocket(int sfd, void* buf, size_t size)
+{
+	int bytes;
+
+	if ( -1 == check_error(bytes = recv(sfd,buf,size,0)) )
+		return -1;
+
+	return bytes;
+}
