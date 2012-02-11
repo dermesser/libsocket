@@ -205,7 +205,7 @@ int accept_ussocket(int sfd, int flags)
 {
 	int cfd;
 
-	if ( flags != SOCK_NONBLOCK && flags != SOCK_CLOEXEC && flags != (SOCK_CLOEXEC|SOCK_NONBLOCK) )
+	if ( flags != SOCK_NONBLOCK && flags != SOCK_CLOEXEC && flags != (SOCK_CLOEXEC|SOCK_NONBLOCK) && flags != 0 )
 		return -1;
 
 	if ( -1 == check_error(cfd = accept4(sfd,0,0,flags)) )

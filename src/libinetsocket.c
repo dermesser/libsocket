@@ -92,7 +92,7 @@ int create_isocket(const char* host, const char* service, char proto_osi4, char 
 	const char* errstring;
 # endif
 	
-	if ( flags != SOCK_NONBLOCK && flags != SOCK_CLOEXEC && flags != (SOCK_CLOEXEC|SOCK_NONBLOCK) )
+	if ( flags != SOCK_NONBLOCK && flags != SOCK_CLOEXEC && flags != (SOCK_CLOEXEC|SOCK_NONBLOCK) && flags != 0 )
 		return -1;
 
 	memset(&hint,0,sizeof hint);
