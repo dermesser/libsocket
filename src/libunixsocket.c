@@ -92,7 +92,7 @@ int create_usocket(const char* path, int socktype)
 	memset(&saddr,0,sizeof(struct sockaddr_un));
 
 	saddr.sun_family = AF_UNIX;
-	strncpy(saddr.sun_path,path,sizeof(saddr.sun_path-1));
+	strncpy(saddr.sun_path,path,sizeof(saddr.sun_path)-1);
 	
 	if ( -1 == check_error(connect(sfd,(struct sockaddr*)&saddr,sizeof saddr)))
 		return -1;
