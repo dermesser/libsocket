@@ -4,6 +4,12 @@
 # include <unistd.h>
 # include <string.h>
 
+/*
+ * This example is part of libsocket/libinetsocket
+ * It may be used with the most HTTP servers
+ *
+*/
+
 int main(void)
 {
 	int sfd, bytes;

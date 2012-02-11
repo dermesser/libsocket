@@ -5,6 +5,11 @@
 # include <string.h>
 
 /*
+ * This example is part of libsocket/libinetsocket
+ *
+*/
+
+/*
  * This example is to be used with echo_srv.c as server
  * At the reconnect_isocket() call, 192.168.1.8 is another address on which the same
  * server listens.

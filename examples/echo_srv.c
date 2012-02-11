@@ -5,6 +5,11 @@
 # include <string.h>
 
 /*
+ * This example is part of libsocket/libinetsocket
+ *
+*/
+
+/*
  * This example is a little echo server processing only one request. It may be used with telnet.
  * If it receives a string, it writes the string back to the client and to stdout.
  *
