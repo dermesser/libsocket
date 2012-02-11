@@ -205,11 +205,6 @@ int reconnect_isocket(int sfd, char* host, char* service)
 	
 	for ( result_check = result; result_check != NULL; result_check = result_check->ai_next ) // go through the linked list of struct addrinfo elements
 	{
-		//sfd = socket(result_check->ai_family, result_check->ai_socktype, result_check->ai_protocol);
-
-		//if ( sfd < 0 ) // Error!!!
-		//	continue;
-
 		if ( -1 != (return_value = connect(sfd,result_check->ai_addr,result_check->ai_addrlen))) // connected without error
 		{
 			break;
@@ -217,8 +212,6 @@ int reconnect_isocket(int sfd, char* host, char* service)
 		{
 			check_error(return_value);
 		}
-
-		//close(sfd);
 	}
 	
 	// We do now have a working (updated) socket connection to our target

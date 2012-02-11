@@ -1,6 +1,6 @@
-# include <stdlib.h>
 # define _GNU_SOURCE // accept4()
 # include <sys/socket.h> 
+# include <stdlib.h>
 # include <sys/types.h>
 # include <unistd.h> // read()/write()
 # include <sys/un.h> // UNIX domain sockets
@@ -94,11 +94,28 @@ int create_usocket(const char* path, int socktype)
 	saddr.sun_family = AF_UNIX;
 	strncpy(saddr.sun_path,path,sizeof(saddr.sun_path-1));
 	
-	
 	if ( -1 == check_error(connect(sfd,(struct sockaddr*)&saddr,sizeof saddr)))
 		return -1;
 
 	return sfd;
+}
+
+// Reconnect a datagram UNIX domain socket - works only for DGRAM sockets!
+//		      Socket   New path
+int reconnect_usocket(int sfd, const char* path)
+{
+	struct sockaddr_un new_addr;
+
+	memset(&new_addr,0,sizeof(struct sockaddr_un));
+
+	new_addr.sun_family = AF_UNIX;
+	
+	strncpy(new_addr.sun_path,path,sizeof(new_addr.sun_path));
+
+	if ( -1 == check_error(connect(sfd,(struct sockaddr*)&new_addr,sizeof(struct sockaddr_un))) )
+		return -1;
+	
+	return 0;
 }
 
 // Destroy a socket

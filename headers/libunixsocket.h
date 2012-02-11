@@ -41,5 +41,7 @@ extern int shutdown_usocket(int sfd, int method);
 extern int create_ussocket(char* path, int socktype);
 // flags is SOCK_NONBLOCK or SOCK_CLOEXEC (or ORed)
 extern int accept_ussocket(int sfd, int flags);
+// Reconnect DGRAM socket
+extern int reconnect_usocket(int sfd, const char* path);
 
 # endif
