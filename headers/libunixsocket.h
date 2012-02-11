@@ -31,12 +31,15 @@
 # define READ  1
 # define WRITE 2
 
+// Create new socket
 extern int create_usocket(const char* path, int socktype);
-
+// Close a socket
 extern int destroy_usocket(int sfd);
-
+// Shutdown a socket (method is READ, WRITE or READ|WRITE)
 extern int shutdown_usocket(int sfd, int method);
-
+// socktype is STREAM or DGRAM
 extern int create_ussocket(char* path, int socktype);
+// flags is SOCK_NONBLOCK or SOCK_CLOEXEC (or ORed)
+extern int accept_ussocket(int sfd, int flags);
 
 # endif

@@ -1,4 +1,5 @@
 # include <stdlib.h>
+# define _GNU_SOURCE // accept4()
 # include <sys/socket.h> 
 # include <sys/types.h>
 # include <unistd.h> // read()/write()
@@ -28,6 +29,15 @@
 	OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 	POSSIBILITY OF SUCH DAMAGE.
 
+*/
+
+/*
+ * Structure of the functions defined here:
+ *
+ * <Declarations>
+ * <Checks on passed arguments>
+ * <actual code>
+ *
 */
 
 // # define VERBOSE
@@ -170,4 +180,19 @@ int create_ussocket(char* path, int socktype)
 	// Our socket is up and running and ready for accepting connections
 
 	return sfd;
+}
+
+// Accept connections
+//		    Socket   Flags (SOCK_NONBLOCK, SOCK_CLOEXEC)
+int accept_ussocket(int sfd, int flags)
+{
+	int cfd;
+
+	if ( flags != SOCK_NONBLOCK && flags != SOCK_CLOEXEC && flags != (SOCK_CLOEXEC|SOCK_NONBLOCK) )
+		return -1;
+
+	if ( -1 == check_error(cfd = accept4(sfd,0,0,flags)) )
+		return -1;
+
+	return cfd;
 }

@@ -31,6 +31,15 @@
 
 */
 
+/*
+ * Structure of the functions defined here:
+ *
+ * <Declarations>
+ * <Checks on passed arguments>
+ * <actual code>
+ *
+*/
+
 // Macro definitions
 
 //# define VERBOSE // Write errors on stderr?
@@ -83,6 +92,9 @@ int create_isocket(const char* host, const char* service, char proto_osi4, char 
 	const char* errstring;
 # endif
 	
+	if ( flags != SOCK_NONBLOCK && flags != SOCK_CLOEXEC && flags != (SOCK_CLOEXEC|SOCK_NONBLOCK) )
+		return -1;
+
 	memset(&hint,0,sizeof hint);
 
 	// set address family
@@ -337,6 +349,8 @@ int create_issocket(const char* bind_addr, const char* bind_port, char proto_osi
 	return sfd;
 }
 
+// Accept connections on TCP sockets
+// 		   Socket    Src string      Src str len          Src service        Src service len         NUMERIC?
 int accept_issocket(int sfd, char* src_host, size_t src_host_len, char* src_service, size_t src_service_len, int flags)
 {
 	struct sockaddr_storage client_info;
@@ -356,7 +370,7 @@ int accept_issocket(int sfd, char* src_host, size_t src_host_len, char* src_serv
 			flags = NI_NUMERICHOST | NI_NUMERICSERV;
 		} else
 		{
-			flags = 0; // To prevent errors
+			flags = 0; // To prevent errors: Unknown flags are ignored
 		}
 
 		if ( 0 != (retval = getnameinfo((struct sockaddr*)&client_info,sizeof(struct sockaddr_storage),src_host,src_host_len,src_service,src_service_len,flags)) ) // Write information to the provided memory
@@ -394,7 +408,7 @@ size_t recvfrom_issocket(int sfd, void* buffer, size_t size, char* src_host, siz
 			flags = NI_NUMERICHOST | NI_NUMERICSERV;
 		} else
 		{
-			flags = 0; // To prevent errors
+			flags = 0; // To prevent errors: Unknown flags are ignored
 		}
 
 		if ( 0 != (retval = getnameinfo((struct sockaddr*)&client,sizeof(struct sockaddr_storage),src_host,src_host_len,src_service,src_service_len,flags)) ) // Write information to the provided memory
