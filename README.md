@@ -10,7 +10,7 @@ It's friendly to mention libsocket in your product's Readme or advertisements an
 
 ##USE
 
-libsocket is built for little programs whose author(s) are too lazy to build own algorithms and functions for socket (UNIX (coming soon)
+libsocket is built for little programs whose author(s) are too lazy to build own algorithms and functions for socket (UNIX
 and Internet Domain (TCP/UDP)) communication.
 
 As you should know as experienced C programmer, it's quite easy to use this library.
@@ -42,12 +42,15 @@ The libsocket library supports following things and protocols:
 One of the main advantages of libsocket is that you don't have to write the complex and error-prone
 procedures for connecting a socket, check it on errors etc. yourself.
 
-##PLATFORMS
+##EXAMPLES
 
-I'd like to get test reports and experiences from you. I already tested the library under the following conditions:
+You may test libsocket and make some experiences by playing with the examples provided in the standard libsocket distribution
+in examples/.
+The collection of examples contain:
+* http.c: A simple http client
+* echo\_reconnect.c, echo\_srv.c: Less echo server than simple transmit of text using INET UDP sockets also showing the use of `reconnect\_isocket()`
+* unix\_stream\_client.c, unix\_stream\_server.c: Demonstrating UNIX STREAM sockets as echo server/client
+* unix\_dgram\_client.c, unix\_dgram\_server.c: Demonstrating UNIX DGRAM sockets as simple text transmit server/client.
 
-* Linux 3.1, gcc-4.6, TCP IPv4 sockets
-* Linux 3.1, gcc-4.7, TCP IPv4 sockets
-* Linux 3.1, gcc-4.7, TCP IPv4 server sockets
-
-It is planned to test and get libsocket working on OpenBSD 5.0. If you want, you may port it anywhere.
+You should have a look at the length of the code; while `http.c` is complete with 24 sloc (source lines of code) - the quite similar client 
+simple-http (https://github.com/dermesser/Simple-HTTP-client) uses almost 70 lines of code.
