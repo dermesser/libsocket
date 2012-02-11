@@ -115,7 +115,7 @@ with "unknown error"! If you use the nonnumerical form, you have to give even mo
 
 ##Client
 
-###`create_socket()`
+###`create_usocket()`
 
 	int create_usocket(const char* path, int socktype);
 
@@ -125,9 +125,9 @@ Creates and connects a new UNIX domain socket file descriptor for a socket locat
 Important for DGRAM sockets: Please think twice if you want to use DGRAM sockets in UNIX domain. They do not have any advantages
 over STREAM sockets!
 
-###`shutdown_socket()` 
+###`shutdown_usocket()` 
 
-	int shutdown_socket(int sfd, int method)
+	int shutdown_usocket(int sfd, int method)
 
 `shutdown_socket()` shuts a socket down. This means that (READ) you cannot read data anymore respectively (WRITE) you cannot write data anymore
 and the other peer gets an EOF signal (`read()` returns 0).
@@ -137,10 +137,24 @@ and the other peer gets an EOF signal (`read()` returns 0).
 
 ###`destroy_socket()`
 	
-	int destroy_socket(int sfd)
+	int destroy_usocket(int sfd)
 
 `destroy_socket()` shuts the socket down for READ and WRITE operations and `close()`s it.
 
+##Server
+
+###`create_ussocket()
+
+	int create_ussocket(char* path, int socktype);
+
+Create a new server socket and bind it to `path`. Protocol type (`socktype`) is either `DGRAM` for datagrams (**NOT RECOMMENDED**) or `STREAM`.
+
+###`accept_ussocket()`
+
+	int accept_ussocket(int sfd, int flags);
+
+Accept a new STREAM connection on socket `sfd`. `flags` may be `SOCK_NONBLOCK` which means that the new (returned) client socket won't block or `SOCK_CLOEXEC` which
+means that the client socket will be closed if you call a syscall from the `exec()` family.
 
 #Compile options
 

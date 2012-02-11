@@ -136,7 +136,7 @@ with "unknown error"! If you use the nonnumerical form, you have to give even mo
 
 <h2>Client</h2>
 
-<h3><code>create_socket()</code></h3>
+<h3><code>create_usocket()</code></h3>
 
 <pre><code>int create_usocket(const char* path, int socktype);
 </code></pre>
@@ -147,9 +147,9 @@ with "unknown error"! If you use the nonnumerical form, you have to give even mo
 <p>Important for DGRAM sockets: Please think twice if you want to use DGRAM sockets in UNIX domain. They do not have any advantages
 over STREAM sockets!</p>
 
-<h3><code>shutdown_socket()</code></h3>
+<h3><code>shutdown_usocket()</code></h3>
 
-<pre><code>int shutdown_socket(int sfd, int method)
+<pre><code>int shutdown_usocket(int sfd, int method)
 </code></pre>
 
 <p><code>shutdown_socket()</code> shuts a socket down. This means that (READ) you cannot read data anymore respectively (WRITE) you cannot write data anymore
@@ -162,10 +162,27 @@ and the other peer gets an EOF signal (<code>read()</code> returns 0).</p>
 
 <h3><code>destroy_socket()</code></h3>
 
-<pre><code>int destroy_socket(int sfd)
+<pre><code>int destroy_usocket(int sfd)
 </code></pre>
 
 <p><code>destroy_socket()</code> shuts the socket down for READ and WRITE operations and <code>close()</code>s it.</p>
+
+<h2>Server</h2>
+
+<h3>`create_ussocket()</h3>
+
+<pre><code>int create_ussocket(char* path, int socktype);
+</code></pre>
+
+<p>Create a new server socket and bind it to <code>path</code>. Protocol type (<code>socktype</code>) is either <code>DGRAM</code> for datagrams (<strong>NOT RECOMMENDED</strong>) or <code>STREAM</code>.</p>
+
+<h3><code>accept_ussocket()</code></h3>
+
+<pre><code>int accept_ussocket(int sfd, int flags);
+</code></pre>
+
+<p>Accept a new STREAM connection on socket <code>sfd</code>. <code>flags</code> may be <code>SOCK_NONBLOCK</code> which means that the new (returned) client socket won't block or <code>SOCK_CLOEXEC</code> which
+means that the client socket will be closed if you call a syscall from the <code>exec()</code> family.</p>
 
 <h1>Compile options</h1>
 
