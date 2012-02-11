@@ -1,3 +1,12 @@
+/*
+   This is a 2-clause BSD license, derived from that used by FreeBSD. It allows you to use
+   the source code and binaries of libsocket as long as you include this copyright notice in
+   the files you get from libsocket in your source tree (this notice is already in this files).
+   
+   This enables you to include the library (statically linked) in any kind of software, whether proprietary or
+   open, commercial or free.
+*/
+
 The committers of the libsocket project, all rights reserved
 (c) 2012, dermesser <lbo@spheniscida.de>
 
