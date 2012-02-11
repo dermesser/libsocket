@@ -167,6 +167,7 @@ means that the client socket will be closed if you call a syscall from the `exec
 	size_t recv_ussocket(int sfd, void* buf, size_t size)
 
 `recv_ussocket()` gets `size` bytes from `sfd` (usually a DGRAM socket) and writes them to `buf`.
+Actually, it's the same like `read()`, but it's more clear if you use `recv_ussocket()`.
 
 #Compile options
 

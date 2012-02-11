@@ -19,7 +19,7 @@ int main(void)
 	if ( -1 == (sfd = create_ussocket("/tmp/echosock",DGRAM)) )
 		return -1;
 
-	while ( 0 < ( bytes = recv_ussocket(sfd,buf,127) ) )
+	while ( 0 < ( bytes = read(sfd,buf,127) ) ) // read() is equivalent to recv_ussocket()
 	{
 		write(1,buf,bytes);
 	}

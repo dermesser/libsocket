@@ -196,7 +196,8 @@ means that the client socket will be closed if you call a syscall from the <code
 <pre><code>size_t recv_ussocket(int sfd, void* buf, size_t size)
 </code></pre>
 
-<p><code>recv_ussocket()</code> gets <code>size</code> bytes from <code>sfd</code> (usually a DGRAM socket) and writes them to <code>buf</code>.</p>
+<p><code>recv_ussocket()</code> gets <code>size</code> bytes from <code>sfd</code> (usually a DGRAM socket) and writes them to <code>buf</code>.
+Actually, it's the same like <code>read()</code>, but it's more clear if you use <code>recv_ussocket()</code>.</p>
 
 <h1>Compile options</h1>
 
