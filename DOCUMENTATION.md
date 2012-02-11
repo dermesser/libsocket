@@ -125,6 +125,12 @@ Creates and connects a new UNIX domain socket file descriptor for a socket locat
 Important for DGRAM sockets: Please think twice if you want to use DGRAM sockets in UNIX domain. They do not have any advantages
 over STREAM sockets!
 
+###`reconnect_usocket()`
+
+	int reconnect_usocket(int sfd, const char* path);
+
+Reconnect a DGRAM UNIX socket `sfd` to the new UNIX socket `path`.
+
 ###`shutdown_usocket()` 
 
 	int shutdown_usocket(int sfd, int method)
