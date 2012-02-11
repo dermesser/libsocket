@@ -49,9 +49,9 @@ in examples/.
 The collection of examples contain:
 
 * http.c: A simple http client
-* echo\_reconnect.c, echo\_srv.c: Less echo server than simple transmit of text using INET UDP sockets also showing the use of `reconnect_isocket()`
+* echo\_reconnect.c, echo\_srv.c: Less echo server than simple transmit of text using INET UDP sockets, but also showing the use of `reconnect_isocket()`
 * unix\_stream\_client.c, unix\_stream\_server.c: Demonstrating UNIX STREAM sockets as echo server/client
-* unix\_dgram\_client.c, unix\_dgram\_server.c: Demonstrating UNIX DGRAM sockets as simple text transmit server/client.
+* unix\_dgram\_client.c, unix\_dgram\_server.c: Demonstrating UNIX DGRAM sockets as simple server/client transmitting text.
 
 You should have a look at the length of the code; while `http.c` is complete with 24 sloc (source lines of code) - the quite similar client 
 simple-http (https://github.com/dermesser/Simple-HTTP-client) uses almost 70 lines of code.
