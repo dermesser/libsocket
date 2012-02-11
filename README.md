@@ -30,13 +30,13 @@ The libsocket library supports following things and protocols:
 * IPv4 (client, server)
 * IPv6 (client, server; if your machine supports it)
 * TCP (client, server)
-* UDP (client, server (not fully completed))
-* UNIX Domain Sockets (by now only as client)
+* UDP (client, server)
+* UNIX Domain Sockets (DGRAM&STREAM server/client)
 * Intelligent algorithms to get the best connection and no errors
 * Easy use (one function call to get a socket up and running, one another to close it)
-* Proper error processing (using errno, gai\_strerror() etc).
+* Proper error processing (using errno, gai\_strerror() etc.).
 
-One of the main advantages of libsocket is that you don't have to write the often complex and error-prone
+One of the main advantages of libsocket is that you don't have to write the complex and error-prone
 procedures for connecting a socket, check it on errors etc. yourself.
 
 ##PLATFORMS
