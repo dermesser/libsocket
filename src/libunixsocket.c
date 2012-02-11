@@ -42,14 +42,15 @@
 
 static inline signed int check_error(int return_value)
 {
+# ifdef VERBOSE
 	const char* errbuf;
-
+# endif
 	if ( return_value < 0 )
 	{
 # ifdef VERBOSE
 		errbuf = strerror(errno);
 		write(2,errbuf,strlen(errbuf));
-#endif
+# endif
 		return -1;
 	}
 

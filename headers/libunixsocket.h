@@ -32,6 +32,10 @@
 # define WRITE 2
 
 extern int create_usocket(const char* path, int socktype);
+
 extern int destroy_usocket(int sfd);
+
 extern int shutdown_usocket(int sfd, int method);
+
+
 # endif
