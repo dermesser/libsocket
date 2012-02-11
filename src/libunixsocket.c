@@ -34,6 +34,8 @@
 
 // Macro definitions
 
+# define BACKLOG 128
+
 # define STREAM 1
 # define DGRAM  2
 
@@ -112,4 +114,60 @@ int shutdown_usocket(int sfd, int method)
 	}
 
 	return 0;
+}
+
+// Create new UNIX domain server socket
+//
+int create_ussocket(char* path, int socktype)
+{
+	struct sockaddr_un saddr;
+	int sfd, type, retval;
+
+	if ( strlen(path) > sizeof(saddr.sun_path) )
+	{
+# ifdef VERBOSE
+		write(2,"Path too long\n",14);
+# endif
+		return -1;
+	}
+
+	switch ( socktype )
+	{
+		case STREAM:
+			type = SOCK_STREAM;
+			break;
+		case DGRAM:
+			type = SOCK_DGRAM;
+			break;
+		default:
+			return -1;
+	}
+
+	if ( -1 == check_error(sfd = socket(AF_UNIX,type,0)) )
+		return -1;
+
+	if ( (retval = unlink(path)) == -1 && errno != ENOENT ) // If there's another error than "doesn't exist"
+	{
+		check_error(retval);
+		return -1;
+	}
+
+	memset(&saddr,0,sizeof(struct sockaddr_un));
+
+	saddr.sun_family = AF_UNIX;
+
+	strncpy(saddr.sun_path,path,sizeof(saddr.sun_path) - 1);
+
+	if ( -1 == check_error(bind(sfd,(struct sockaddr*)&saddr,sizeof(struct sockaddr_un))) )
+		return -1;
+
+	if ( type == SOCK_STREAM )
+	{
+		if ( -1 == check_error(listen(sfd,BACKLOG)))
+			return -1;
+	}
+
+	// Our socket is up and running and ready for accepting connections
+
+	return sfd;
 }
