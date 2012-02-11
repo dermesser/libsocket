@@ -47,8 +47,9 @@ procedures for connecting a socket, check it on errors etc. yourself.
 You may test libsocket and make some experiences by playing with the examples provided in the standard libsocket distribution
 in examples/.
 The collection of examples contain:
+
 * http.c: A simple http client
-* echo\_reconnect.c, echo\_srv.c: Less echo server than simple transmit of text using INET UDP sockets also showing the use of `reconnect\_isocket()`
+* echo\_reconnect.c, echo\_srv.c: Less echo server than simple transmit of text using INET UDP sockets also showing the use of `reconnect_isocket()`
 * unix\_stream\_client.c, unix\_stream\_server.c: Demonstrating UNIX STREAM sockets as echo server/client
 * unix\_dgram\_client.c, unix\_dgram\_server.c: Demonstrating UNIX DGRAM sockets as simple text transmit server/client.
 
