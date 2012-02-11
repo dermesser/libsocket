@@ -117,7 +117,7 @@ int shutdown_usocket(int sfd, int method)
 }
 
 // Create new UNIX domain server socket
-//
+//		    Bind address DGRAM or STREAM
 int create_ussocket(char* path, int socktype)
 {
 	struct sockaddr_un saddr;

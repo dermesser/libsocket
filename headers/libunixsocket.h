@@ -37,5 +37,6 @@ extern int destroy_usocket(int sfd);
 
 extern int shutdown_usocket(int sfd, int method);
 
+extern int create_ussocket(char* path, int socktype);
 
 # endif
