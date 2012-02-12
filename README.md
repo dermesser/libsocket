@@ -42,6 +42,18 @@ The libsocket library supports following things and protocols:
 One of the main advantages of libsocket is that you don't have to write the complex and error-prone
 procedures for connecting a socket, check it on errors etc. yourself.
 
+But libsocket does not support any use of sockets. For example, there is no such function like `sendto()` because the developer
+thinks that connected UDP sockets are easier to handle and equal. The combination of connected DGRAM (DGRAM, UDP) sockets and the function
+`reconnect_isocket()` resp. `reconnect_usocket()` provides an interface which is also quite easy. On the other side, some functions support
+the use of 'raw' flags which are passed to the underlying Sockets API functions (e.g. `create_isocket()` which accepts flags like `SOCK_NONBLOCK`).
+I also had the design goal that the library should use the real sockets accepted by read()/write() syscalls etc and not structures (like FILE
+pointers used by libc) so you may control sockets nevertheless with `setsockopt()` or receive datagrams with `recvfrom()` although you have
+to handle the `struct sockaddr`s yourself. Another example for this design goal is that there is no function equivalent to `read()` or `write()`
+(except of `recv_ussocket()` which does no more than `read()`)
+
+If you want to have more control over the sockets you're using, this library is not the right tool for you. It's intended for the easy
+use of sockets.
+
 ##EXAMPLES
 
 You may test libsocket and make some experiences by playing with the examples provided in the standard libsocket distribution
