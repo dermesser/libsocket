@@ -176,7 +176,7 @@ and the other peer gets an EOF signal (<code>read()</code> returns 0).</p>
 
 <h2>Server</h2>
 
-<h3>`create_ussocket()</h3>
+<h3><code>create_ussocket()</code></h3>
 
 <pre><code>int create_ussocket(char* path, int socktype);
 </code></pre>
@@ -202,4 +202,5 @@ Actually, it's the same like <code>read()</code>, but it's more clear if you use
 <h1>Compile options</h1>
 
 <p>If you specify the flag <code>-DVERBOSE</code> at compile time, libsocket uses STDERR to print information about occurred errors.
-VERBOSE is not activated by default so libsocket is 'quiet'.</p>
+VERBOSE is not activated by default so libsocket is 'quiet'. Using VERBOSE is very useful when searching bugs in your program
+or my library.</p>

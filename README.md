@@ -54,6 +54,8 @@ to handle the `struct sockaddr`s yourself. Another example for this design goal 
 If you want to have more control over the sockets you're using, this library is not the right tool for you. It's intended for the easy
 use of sockets.
 
+For detailed documentation read DOCUMENTATION.md resp. DOCUMENTATION.html
+
 ##EXAMPLES
 
 You may test libsocket and make some experiences by playing with the examples provided in the standard libsocket distribution

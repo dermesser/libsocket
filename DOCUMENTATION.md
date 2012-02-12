@@ -149,7 +149,7 @@ and the other peer gets an EOF signal (`read()` returns 0).
 
 ##Server
 
-###`create_ussocket()
+###`create_ussocket()`
 
 	int create_ussocket(char* path, int socktype);
 
@@ -172,4 +172,5 @@ Actually, it's the same like `read()`, but it's more clear if you use `recv_usso
 #Compile options
 
 If you specify the flag `-DVERBOSE` at compile time, libsocket uses STDERR to print information about occurred errors.
-VERBOSE is not activated by default so libsocket is 'quiet'.
+VERBOSE is not activated by default so libsocket is 'quiet'. Using VERBOSE is very useful when searching bugs in your program
+or my library.
