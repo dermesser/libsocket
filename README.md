@@ -42,7 +42,7 @@ The libsocket library supports following things and protocols:
 One of the main advantages of libsocket is that you don't have to write the complex and error-prone
 procedures for connecting a socket, check it on errors etc. yourself.
 
-But libsocket does not support any use of sockets. For example, there is no such function like `sendto()` because the developer
+But libsocket does not support every use of sockets. For example, there is no such function like `sendto()` because the developer
 thinks that connected UDP sockets are easier to handle and equal. The combination of connected DGRAM (DGRAM, UDP) sockets and the function
 `reconnect_isocket()` resp. `reconnect_usocket()` provides an interface which is also quite easy. On the other side, some functions support
 the use of 'raw' flags which are passed to the underlying Sockets API functions (e.g. `create_isocket()` which accepts flags like `SOCK_NONBLOCK`).
