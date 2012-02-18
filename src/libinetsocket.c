@@ -8,6 +8,9 @@
 # include <string.h>
 # include <errno.h>
 
+# ifndef __linux__
+# include <netinet/in.h> // e.g. struct sockaddr_in on OpenBSD
+# endif
 /*
 
 	The committers of the libsocket project, all rights reserved
@@ -84,7 +87,12 @@ static inline signed int check_error(int return_value)
  *
 */
 
-int create_isocket(const char* host, const char* service, char proto_osi4, char proto_osi3, int flags)
+int create_isocket(const char* host, const char* service, char proto_osi4, char proto_osi3
+# ifdef __linux__
+		, int flags)
+# else
+)
+# endif
 {
 	int sfd, return_value;
 	struct addrinfo hint, *result, *result_check;
@@ -92,9 +100,12 @@ int create_isocket(const char* host, const char* service, char proto_osi4, char 
 	const char* errstring;
 # endif
 	
+# ifdef __linux__
 	if ( flags != SOCK_NONBLOCK && flags != SOCK_CLOEXEC && flags != (SOCK_CLOEXEC|SOCK_NONBLOCK) && flags != 0 )
 		return -1;
-
+# else
+	int flags = 0;
+# endif
 	memset(&hint,0,sizeof hint);
 
 	// set address family
