@@ -132,7 +132,7 @@ int create_isocket(const char* host, const char* service, char proto_osi4, char 
 
 	if ( 0 != (return_value = getaddrinfo(host,service,&hint,&result)))
 	{
-#ifdef VERBOSE
+# ifdef VERBOSE
 		errstring = gai_strerror(return_value);
 		write(2,errstring,strlen(errstring));
 #endif
@@ -158,7 +158,7 @@ int create_isocket(const char* host, const char* service, char proto_osi4, char 
 
 	if ( result_check == NULL )
 	{
-#ifdef VERBOSE
+# ifdef VERBOSE
 		write(2,"Could not connect to any address!\n",34);
 #endif
 		return -1;
@@ -194,7 +194,7 @@ int reconnect_isocket(int sfd, char* host, char* service)
 
 	if ( 0 != (return_value = getaddrinfo(host,service,&hint,&result)))
 	{
-#ifdef VERBOSE
+# ifdef VERBOSE
 		errstring = gai_strerror(return_value);
 		write(2,errstring,strlen(errstring));
 #endif
@@ -218,7 +218,7 @@ int reconnect_isocket(int sfd, char* host, char* service)
 
 	if ( result_check == NULL ) // or not?
 	{
-#ifdef VERBOSE
+# ifdef VERBOSE
 		write(2,"Could not connect to any address!\n",34);
 #endif
 		return -1;
@@ -329,7 +329,7 @@ int create_issocket(const char* bind_addr, const char* bind_port, char proto_osi
 
 	if ( result_check == NULL )
 	{
-#ifdef VERBOSE
+# ifdef VERBOSE
 		write(2,"Could not connect to any address!\n",34);
 #endif
 		return -1;
