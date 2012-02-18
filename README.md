@@ -69,3 +69,8 @@ The collection of examples contain:
 
 You should have a look at the length of the code; while `http.c` is complete with 24 sloc (source lines of code) - the quite similar client 
 simple-http (https://github.com/dermesser/Simple-HTTP-client) uses almost 70 lines of code.
+
+##PLATFORMS
+
+libsocket is developed on Linux 3.x; since revision 396d05, libinetsocket.c works on OpenBSD 5.0. I'm working on porting
+libunixsocket to OpenBSD which is much harder (as it seems at the moment).
