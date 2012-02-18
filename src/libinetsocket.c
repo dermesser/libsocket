@@ -8,9 +8,8 @@
 # include <string.h>
 # include <errno.h>
 
-# ifndef __linux__
 # include <netinet/in.h> // e.g. struct sockaddr_in on OpenBSD
-# endif
+
 /*
 
 	The committers of the libsocket project, all rights reserved
