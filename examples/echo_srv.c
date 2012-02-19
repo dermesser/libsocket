@@ -22,7 +22,6 @@ int main(void)
 
 	src_host[127] = 0;
 	src_service[6] = 0;
-	buf[15] = 0;
 
 	sfd = create_issocket("0.0.0.0","1234",UDP,IPv4);
 
@@ -36,6 +35,7 @@ int main(void)
 
 	while ( 1 )
 	{
+		memset(buf,0,16);
 		bytes = recvfrom_issocket(sfd,buf,15,src_host,127,src_service,6,NUMERIC);
 
 		printf("Connection from %s port %s: %s (%i)\n",src_host,src_service,buf,bytes);
