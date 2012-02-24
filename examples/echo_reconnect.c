@@ -6,13 +6,16 @@
 
 /*
  * This example is part of libsocket/libinetsocket
- *
+ * 
 */
 
 /*
  * This example is to be used with echo_srv.c as server
  * At the reconnect_isocket() call, 192.168.1.8 is another address on which the same
  * server listens.
+ *
+ * NOTE: Unfortunately, I'm not sure if it works fully correct. With the given example parameters,
+ * it'll work, but in some other scenarios I tested, it did not work correct :/
 */
 
 int main(void)
