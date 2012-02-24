@@ -38,7 +38,12 @@
 
 // Creates socket, connects it and gives it back
 //                Hostname          Port/Service         Transport protocol (TCP or UDP)  Network Protocol (IPv4 or IPv6)  may be SOCK_NONBLOCK (socket won't block) and SOCK_CLOEXEC (closes socket on exec() call)
-extern int create_isocket(const char* host, const char* service, char proto_osi4,         char proto_osi3,                 int flags);
+extern int create_isocket(const char* host, const char* service, char proto_osi4,         char proto_osi3,                 
+# ifdef __linux__
+		int flags);
+# else
+);
+# endif
 
 // Reconnect a socket to another peer - works only for UDP!
 //			     Socket,  new peer,   new port
