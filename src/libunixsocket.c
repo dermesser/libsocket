@@ -92,6 +92,14 @@ int create_usocket(const char* path, int socktype)
 
 	memset(&saddr,0,sizeof(struct sockaddr_un));
 
+	if ( strlen(path) > sizeof(saddr.sun_path)-1 )
+	{
+# ifdef VERBOSE
+		write(2,"Path too long\n",14);
+# endif
+		return -1;
+	}
+
 	saddr.sun_family = AF_UNIX;
 	strncpy(saddr.sun_path,path,sizeof(saddr.sun_path)-1);
 	
@@ -111,7 +119,15 @@ int reconnect_usocket(int sfd, const char* path)
 
 	new_addr.sun_family = AF_UNIX;
 	
-	strncpy(new_addr.sun_path,path,sizeof(new_addr.sun_path));
+	if ( strlen(path) > sizeof(new_addr.sun_path)-1 )
+	{
+# ifdef VERBOSE
+		write(2,"Path too long\n",14);
+# endif
+		return -1;
+	}
+
+	strncpy(new_addr.sun_path,path,sizeof(new_addr.sun_path)-1);
 
 	if ( -1 == check_error(connect(sfd,(struct sockaddr*)&new_addr,sizeof(struct sockaddr_un))) )
 		return -1;
