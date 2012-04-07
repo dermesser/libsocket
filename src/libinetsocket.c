@@ -188,17 +188,17 @@ int create_inet_stream_socket(const char* host, const char* service, char proto_
 
 
 
-
+//Working
 int create_inet_dgram_socket(char proto_osi3, int flags)
 {
 	int sfd;
 
 	// The problem: We don't know anything about future sendto() calls and the destination
 	// The argument given here must also be given at the sendto() and recvfrom calls
-	if (proto_osi3 == BOTH)
+	if (proto_osi3 != IPv4 && proto_osi3 != IPv6)
 	{
 # ifdef VERBOSE
-		write(2,"BOTH argument invalid when using DGRAM sockets\n",48);
+		write(2,"create_inet_dgram_socket: osi3 argument invalid when using DGRAM sockets\n",48);
 # endif
 		return -1;
 	}
@@ -266,6 +266,47 @@ int sendto_inet_dgram_socket(int sfd,void* buf, size_t size,char* host, char* se
 }
 
 
+// Get a single UDP packet
+// 			 Socket   Target        Size of buffer string for client and its size     client port        its size		     may be NUMERIC (give host and service in numeric form)
+size_t recvfrom_inet_dgram_socket(int sfd, void* buffer, size_t size, char* src_host, size_t src_host_len, char* src_service, size_t src_service_len, int flags)
+{
+	struct sockaddr_storage client;
+	ssize_t bytes;
+	int retval;
+# ifdef VERBOSE
+	const char* errstr;
+# endif
+	socklen_t addrlen = sizeof(struct sockaddr_storage);
+
+	if ( -1 == check_error(bytes = recvfrom(sfd,buffer,size,0,(struct sockaddr*)&client,&addrlen)))
+		return -1;
+
+	if ( src_host_len > 0 || src_service_len > 0 ) // If one of the things is wanted. If you give a null pointer with a positive _len parameter, you won't get the address. 
+	{
+		if ( flags == NUMERIC )
+		{
+			flags = NI_NUMERICHOST | NI_NUMERICSERV;
+		} else
+		{
+			flags = 0; // To prevent errors: Unknown flags are ignored
+		}
+
+		if ( 0 != (retval = getnameinfo((struct sockaddr*)&client,sizeof(struct sockaddr_storage),src_host,src_host_len,src_service,src_service_len,flags)) ) // Write information to the provided memory
+		{
+# ifdef VERBOSE
+			errstr = gai_strerror(retval);
+			write(2,errstr,strlen(errstr));
+# endif
+			return -1;
+		}
+	}
+
+	return bytes;
+}
+
+
+
+
 //Working
 // (re)connect inet socket to new peer - works for UDP only!!!
 // 		     Socket    New peer    and its port
@@ -328,7 +369,7 @@ int connect_inet_dgram_socket(int sfd, char* host, char* service)
 }
 	
 
-int destroy_isocket(int sfd)
+int destroy_inet_socket(int sfd)
 {
 	if ( -1 == check_error(close(sfd)))
 		return -1;
@@ -336,7 +377,7 @@ int destroy_isocket(int sfd)
 	return 0;
 }
 
-int shutdown_isocket(int sfd, int method)
+int shutdown_inet_stream_socket(int sfd, int method)
 {
 	if ( method & READ ) // READ is set (0001 && 0001 => 0001)
 	{
@@ -358,9 +399,8 @@ int shutdown_isocket(int sfd, int method)
  * Server part
  *
 */
-// create_issocket() (Create Internet Server Socket)
-//		   Bind address		   Port			  TCP/UDP	   IPv4/6
-int create_issocket(const char* bind_addr, const char* bind_port, char proto_osi4, char proto_osi3)
+//		              Bind address	   Port			  TCP/UDP	   IPv4/6
+int create_inet_server_socket(const char* bind_addr, const char* bind_port, char proto_osi4, char proto_osi3)
 {
 	int sfd, domain, type, retval;
 	struct addrinfo *result, *result_check, hints;
@@ -444,7 +484,7 @@ int create_issocket(const char* bind_addr, const char* bind_port, char proto_osi
 
 // Accept connections on TCP sockets
 // 		   Socket    Src string      Src str len          Src service        Src service len         NUMERIC?
-int accept_issocket(int sfd, char* src_host, size_t src_host_len, char* src_service, size_t src_service_len, int flags)
+int accept_inet_stream_socket(int sfd, char* src_host, size_t src_host_len, char* src_service, size_t src_service_len, int flags)
 {
 	struct sockaddr_storage client_info;
 	int retval, client_sfd;
@@ -477,43 +517,5 @@ int accept_issocket(int sfd, char* src_host, size_t src_host_len, char* src_serv
 	}
 
 	return client_sfd;
-}
-
-// Get a single UDP packet
-// 			 Socket   Target        Size of buffer string for client and its size     client port        its size		     may be NUMERIC (give host and service in numeric form)
-size_t recvfrom_inet_dgram_socket(int sfd, void* buffer, size_t size, char* src_host, size_t src_host_len, char* src_service, size_t src_service_len, int flags)
-{
-	struct sockaddr_storage client;
-	ssize_t bytes;
-	int retval;
-# ifdef VERBOSE
-	const char* errstr;
-# endif
-	socklen_t addrlen = sizeof(struct sockaddr_storage);
-
-	if ( -1 == check_error(bytes = recvfrom(sfd,buffer,size,0,(struct sockaddr*)&client,&addrlen)))
-		return -1;
-
-	if ( src_host_len > 0 || src_service_len > 0 ) // If one of the things is wanted. If you give a null pointer with a positive _len parameter, you won't get the address. 
-	{
-		if ( flags == NUMERIC )
-		{
-			flags = NI_NUMERICHOST | NI_NUMERICSERV;
-		} else
-		{
-			flags = 0; // To prevent errors: Unknown flags are ignored
-		}
-
-		if ( 0 != (retval = getnameinfo((struct sockaddr*)&client,sizeof(struct sockaddr_storage),src_host,src_host_len,src_service,src_service_len,flags)) ) // Write information to the provided memory
-		{
-# ifdef VERBOSE
-			errstr = gai_strerror(retval);
-			write(2,errstr,strlen(errstr));
-# endif
-			return -1;
-		}
-	}
-
-	return bytes;
 }
 
