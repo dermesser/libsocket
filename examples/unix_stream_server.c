@@ -15,12 +15,12 @@ int main(void)
 
 	buf[15] = 0;
 
-	if ( -1 == (sfd = create_ussocket("/tmp/echosock",STREAM)) )
+	if ( -1 == (sfd = create_unix_server_socket("/tmp/echosock",STREAM)) )
 		return -1;
 
 	for ( ;; )
 	{
-		cfd = accept_ussocket(sfd,0);
+		cfd = accept_unix_stream_socket(sfd,0);
 
 		if ( cfd == -1 )
 			return -1;
@@ -32,10 +32,10 @@ int main(void)
 		}
 
 		//shutdown_usocket(cfd,WRITE);
-		destroy_usocket(cfd);
+		destroy_unix_socket(cfd);
 	}
 
-	destroy_usocket(sfd);
+	destroy_unix_socket(sfd);
 
 	return 0;
 }
