@@ -146,7 +146,7 @@ int create_inet_stream_socket(const char* host, const char* service, char proto_
 # ifdef VERBOSE
 		errstring = gai_strerror(return_value);
 		write(2,errstring,strlen(errstring));
-#endif
+# endif
 		return -1;
 	}
 
@@ -171,7 +171,7 @@ int create_inet_stream_socket(const char* host, const char* service, char proto_
 	{
 # ifdef VERBOSE
 		write(2,"Could not connect to any address!\n",34);
-#endif
+# endif
 		return -1;
 	}
 	// Yes :)
@@ -232,8 +232,9 @@ int sendto_inet_dgram_socket(int sfd,void* buf, size_t size,char* host, char* se
 	struct sockaddr_storage oldsock;
 	struct addrinfo *result, *result_check, hint;
 	int oldsocklen = sizeof(struct sockaddr_storage), return_value;
+# ifdef VERBOSE
 	const char* errstring;
-
+# endif
 	if ( -1 == check_error(getsockname(sfd,(struct sockaddr*)&oldsock,(socklen_t*)&oldsocklen)) )
 		return -1;
 	
@@ -247,7 +248,7 @@ int sendto_inet_dgram_socket(int sfd,void* buf, size_t size,char* host, char* se
 # ifdef VERBOSE
 		errstring = gai_strerror(return_value);
 		write(2,errstring,strlen(errstring));
-#endif
+# endif
 		return -1;
 	}
 	
@@ -336,7 +337,7 @@ int connect_inet_dgram_socket(int sfd, char* host, char* service)
 # ifdef VERBOSE
 		errstring = gai_strerror(return_value);
 		write(2,errstring,strlen(errstring));
-#endif
+# endif
 		return -1;
 	}
 
@@ -359,7 +360,7 @@ int connect_inet_dgram_socket(int sfd, char* host, char* service)
 	{
 # ifdef VERBOSE
 		write(2,"Could not connect to any address!\n",34);
-#endif
+# endif
 		return -1;
 	}
 
@@ -471,7 +472,7 @@ int create_inet_server_socket(const char* bind_addr, const char* bind_port, char
 	{
 # ifdef VERBOSE
 		write(2,"Could not connect to any address!\n",34);
-#endif
+# endif
 		return -1;
 	}
 
