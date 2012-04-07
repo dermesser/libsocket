@@ -47,14 +47,19 @@ thinks that connected UDP sockets are easier to handle and equal. The combinatio
 `reconnect_isocket()` resp. `reconnect_usocket()` provides an interface which is also quite easy. On the other side, some functions support
 the use of 'raw' flags which are passed to the underlying Sockets API functions (e.g. `create_isocket()` which accepts flags like `SOCK_NONBLOCK`).
 I also had the design goal that the library should use the real sockets accepted by read()/write() syscalls etc and not structures (like FILE
-pointers used by libc) so you may control sockets nevertheless with `setsockopt()` or receive datagrams with `recvfrom()` although you have
-to handle the `struct sockaddr`s yourself. Another example for this design goal is that there is no function equivalent to `read()` or `write()`
-(except of `recv_ussocket()` which does no more than `read()`)
+pointers used by libc) so you may control sockets nevertheless with `setsockopt()`.
 
 If you want to have more control over the sockets you're using, this library is not the right tool for you. It's intended for the easy
 use of sockets.
 
 For detailed documentation read DOCUMENTATION.md resp. DOCUMENTATION.html
+
+##LIMITS
+It is important to say that the UNIX DGRAM socket implementation is not quite good. It may be enough for
+a simple server/client model, but even answering on connected DGRAM sockets is a quite creepy thing :|
+
+But this is not really bad because UNIX sockets are very easy to handle, also without libsocket. And UNIX DGRAM
+sockets are anyway hard to handle, I think...
 
 ##EXAMPLES
 
