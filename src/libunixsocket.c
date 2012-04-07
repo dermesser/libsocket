@@ -161,7 +161,7 @@ int shutdown_unix_stream_socket(int sfd, int method)
 }
 
 // Create new UNIX domain server socket
-//		    Bind address DGRAM or STREAM
+//			      Bind address DGRAM or STREAM
 int create_unix_server_socket(char* path, int socktype)
 {
 	struct sockaddr_un saddr;
@@ -211,8 +211,6 @@ int create_unix_server_socket(char* path, int socktype)
 			return -1;
 	}
 
-	// Our socket is up and running and ready for accepting connections
-
 	return sfd;
 }
 
@@ -232,7 +230,6 @@ int accept_unix_stream_ssocket(int sfd, int flags)
 }
 
 // Receives data
-// 		      Socket   Buffer     its size
 ssize_t recvfrom_ussocket(int sfd, void* buf, size_t size, char* from, size_t from_size)
 {
 	int bytes, socksize = sizeof(struct sockaddr_un);
