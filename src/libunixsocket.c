@@ -216,7 +216,7 @@ int create_unix_server_socket(char* path, int socktype)
 
 // Accept connections
 //		    Socket   Flags (SOCK_NONBLOCK, SOCK_CLOEXEC)
-int accept_unix_stream_ssocket(int sfd, int flags)
+int accept_unix_stream_socket(int sfd, int flags)
 {
 	int cfd;
 
