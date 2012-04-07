@@ -17,12 +17,12 @@ int main(void)
 
 	memset(buf,0,sizeof(buf));
 
-	if ( -1 == (sfd = create_usocket("/tmp/echosock",STREAM,"/tmp/abc")) )
+	if ( -1 == (sfd = create_unix_stream_socket("/tmp/echosock")) )
 		return -1;
 
 	write(sfd,string,26);
 
-	shutdown_usocket(sfd,WRITE); // Send EOF
+	shutdown_unix_stream_socket(sfd,WRITE); // Send EOF
 
 	while ( bytes > 0 )
 	{
@@ -30,7 +30,7 @@ int main(void)
 		write(1,buf,bytes);
 	}
 
-	destroy_usocket(sfd);
+	destroy_unix_socket(sfd);
 
 	return 0;
 }
