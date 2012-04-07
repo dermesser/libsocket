@@ -23,7 +23,7 @@ int main(void)
 	src_host[127] = 0;
 	src_service[6] = 0;
 
-	sfd = create_issocket("0.0.0.0","1234",UDP,IPv4);
+	sfd = create_inet_server_socket("0.0.0.0","1234",UDP,IPv4);
 
 	if ( -1 == sfd )
 	{
@@ -36,13 +36,15 @@ int main(void)
 	while ( 1 )
 	{
 		memset(buf,0,16);
-		bytes = recvfrom_issocket(sfd,buf,15,src_host,127,src_service,6,NUMERIC);
+		bytes = recvfrom_inet_dgram_socket(sfd,buf,15,src_host,127,src_service,6,NUMERIC);
+		
+		sendto_inet_dgram_socket(sfd,buf,bytes,src_host,src_service);
 
 		printf("Connection from %s port %s: %s (%i)\n",src_host,src_service,buf,bytes);
 		printf("Connection processed\n");
 	}
 	
-	destroy_isocket(sfd);
+	destroy_inet_socket(sfd);
 
 	return 0;
 }
