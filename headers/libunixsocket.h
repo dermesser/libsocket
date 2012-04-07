@@ -31,19 +31,14 @@
 # define READ  1
 # define WRITE 2
 
-// Create new socket
-extern int create_usocket(const char* path, int socktype, const char* bind_path);
-// Close a socket
-extern int destroy_usocket(int sfd);
-// Shutdown a socket (method is READ, WRITE or READ|WRITE)
-extern int shutdown_usocket(int sfd, int method);
-// socktype is STREAM or DGRAM
-extern int create_ussocket(char* path, int socktype);
-// flags is SOCK_NONBLOCK or SOCK_CLOEXEC (or ORed)
-extern int accept_ussocket(int sfd, int flags);
-// Reconnect DGRAM socket
-extern int reconnect_usocket(int sfd, const char* path);
-// Recv data sent to a DGRAM socket
-extern ssize_t recvfrom_ussocket(int sfd, void* buf, size_t size, char* from, size_t from_size);
+extern int create_unix_stream_socket(const char* path)
+extern int create_unix_dgram_socket(void)
+extern int connect_unix_dgram_socket(int sfd, const char* path)
+extern int destroy_unix_socket(int sfd)
+extern int shutdown_unix_stream_socket(int sfd, int method)
+extern int create_unix_server_socket(char* path, int socktype)
+extern int accept_unix_stream_ssocket(int sfd, int flags)
+extern ssize_t recvfrom_unix_dgram_socket(int sfd, void* buf, size_t size, char* from, size_t from_size)
+extern ssize_t sendto_unix_dgram_socket(int sfd, void* buf, size_t size, char* to)
 
 # endif
