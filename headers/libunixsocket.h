@@ -37,7 +37,7 @@ extern int connect_unix_dgram_socket(int sfd, const char* path);
 extern int destroy_unix_socket(int sfd);
 extern int shutdown_unix_stream_socket(int sfd, int method);
 extern int create_unix_server_socket(char* path, int socktype);
-extern int accept_unix_stream_ssocket(int sfd, int flags);
+extern int accept_unix_stream_socket(int sfd, int flags);
 extern ssize_t recvfrom_unix_dgram_socket(int sfd, void* buf, size_t size, char* from, size_t from_size);
 extern ssize_t sendto_unix_dgram_socket(int sfd, void* buf, size_t size, char* to);
 
