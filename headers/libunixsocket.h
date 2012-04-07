@@ -32,7 +32,7 @@
 # define WRITE 2
 
 extern int create_unix_stream_socket(const char* path);
-extern int create_unix_dgram_socket(void);
+extern int create_unix_dgram_socket(const char* bind_path);
 extern int connect_unix_dgram_socket(int sfd, const char* path);
 extern int destroy_unix_socket(int sfd);
 extern int shutdown_unix_stream_socket(int sfd, int method);

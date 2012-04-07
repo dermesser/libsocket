@@ -96,13 +96,31 @@ int create_unix_stream_socket(const char* path)
 	return sfd;
 }
 
-int create_unix_dgram_socket(void)
+int create_unix_dgram_socket(const char* bind_path)
 {
-	int sfd;
+	int sfd, retval;
+	struct sockaddr_un saddr;
 
 	if ( -1 == check_error(sfd = socket(AF_UNIX,SOCK_DGRAM,0)) )
 		return -1;
-	
+
+	memset(&saddr,0,sizeof(struct sockaddr_un));
+
+	if ( bind_path != 0 )
+	{
+
+		if ( (retval = unlink(bind_path)) == -1 && errno != ENOENT ) // If there's another error than "doesn't exist"
+		{
+			check_error(retval);
+			return -1;
+		}
+
+		saddr.sun_family = AF_UNIX;
+		strncpy(saddr.sun_path,bind_path,sizeof(saddr.sun_path));
+
+		bind(sfd,(struct sockaddr*)&saddr,sizeof(struct sockaddr));
+	}
+
 	return sfd;
 }
 
