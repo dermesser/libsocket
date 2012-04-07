@@ -11,31 +11,31 @@
 
 /*
  * This example is to be used with echo_srv.c as server
- * At the reconnect_isocket() call, 192.168.1.8 is another address on which the same
- * server listens.
- *
- * NOTE: Unfortunately, I'm not sure if it works fully correct. With the given example parameters,
- * it'll work, but in some other scenarios I tested, it did not work correct :/
 */
 
 int main(void)
 {
 	int sfd;
+	char buf[16];
 
-	sfd = create_isocket("localhost","1234",UDP,IPv4,0); // Because we want to use reconnect_isocket() - 
+	sfd = create_inet_dgram_socket(IPv4,0);
 	
-	write(sfd,"abcde",5); // Each write() generates a new UDP packet
+	sendto_inet_dgram_socket(sfd,"abcde",5,"localhost","1234"); 
 	
 	sleep(2);
-
+/*
 	if ( -1 == reconnect_isocket(sfd,"192.168.1.8","1234") ) // FIXME: Put your IP here...
 		printf("couldn't reconnect\n");
 	
 	sleep(2);
 
 	write(sfd,"defghi",6);
+*/
+	recvfrom_inet_dgram_socket(sfd,buf,5,0,0,0,0,NUMERIC);
+	
+	write(1,buf,5);
 
-	destroy_isocket(sfd);
+	destroy_inet_socket(sfd);
 
 	return 0;
 }
