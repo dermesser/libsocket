@@ -16,15 +16,15 @@ int main(void)
 
 	buf[127] = 0;
 	
-	if ( -1 == (sfd = create_ussocket("/tmp/echosock",DGRAM)) )
+	if ( -1 == (sfd = create_unix_server_socket("/tmp/echosock",DGRAM)) )
 		return -1;
 
-	while ( 0 < ( bytes = read(sfd,buf,127) ) ) // read() is equivalent to recv_ussocket()
+	while ( 0 < ( bytes = recvfrom_unix_dgram_socket(sfd,buf,127,0,0) ) ) // read() is equivalent to recv_ussocket()
 	{
 		write(1,buf,bytes);
 	}
 
-	destroy_usocket(sfd);
+	destroy_unix_socket(sfd);
 
 	return 0;
 }

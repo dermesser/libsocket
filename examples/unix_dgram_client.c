@@ -13,12 +13,12 @@
 int main(void)
 {
 	int sfd;
-	const char* string = "abcdefghijklmnopqrstuvwxyz";
+	char* string = "abcdefghijklmnopqrstuvwxyz";
 
-	if ( -1 == (sfd = create_unix_dgram_socket("/tmp/echosock")) )
+	if ( -1 == (sfd = create_unix_dgram_socket()) )
 		return -1;
 
-	write(sfd,string,26);
+	sendto_unix_dgram_socket(sfd,string,26,"/tmp/echosock");
 
 	destroy_unix_socket(sfd);
 
