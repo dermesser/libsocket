@@ -17,18 +17,18 @@ int main(void)
 
 	buf[31] = 0;
 
-	sfd = create_isocket("lbo.spheniscida.de", "80", TCP, IPv4,0);
+	sfd = create_inet_stream_socket("lbo.spheniscida.de", "80", IPv4,0);
 
 	sprintf(request,"GET / HTTP/1.1\nHost: lbo.spheniscida.de\n\n");
 
 	write(sfd,request,strlen(request));
 
-	shutdown_isocket(sfd,WRITE);
+	shutdown_inet_stream_socket(sfd,WRITE);
 
 	while ( 0 < (bytes = read(sfd,buf,31)) )
 		write(1,buf,bytes);
 
-	destroy_isocket(sfd);
+	destroy_inet_socket(sfd);
 
 	return 0;
 }
