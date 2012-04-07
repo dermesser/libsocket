@@ -15,7 +15,7 @@ int main(void)
 	int sfd;
 	const char* string = "abcdefghijklmnopqrstuvwxyz";
 
-	if ( -1 == (sfd = create_usocket("/tmp/echosock",DGRAM)) )
+	if ( -1 == (sfd = create_usocket("/tmp/echosock",DGRAM,0)) )
 		return -1;
 
 	write(sfd,string,26);

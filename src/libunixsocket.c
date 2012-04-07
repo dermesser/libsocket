@@ -70,9 +70,9 @@ static inline signed int check_error(int return_value)
 }
 
 // Create new unix socket
-int create_usocket(const char* path, int socktype)
+int create_usocket(const char* path, int socktype, const char* bind_path)
 {
-	struct sockaddr_un saddr;
+	struct sockaddr_un saddr, baddr;
 	int sfd;
 
 	switch ( socktype )
@@ -91,19 +91,37 @@ int create_usocket(const char* path, int socktype)
 		return -1;
 
 	memset(&saddr,0,sizeof(struct sockaddr_un));
+	memset(&baddr,0,sizeof(struct sockaddr_un));
 
 	if ( strlen(path) > sizeof(saddr.sun_path)-1 )
 	{
 # ifdef VERBOSE
-		write(2,"Path too long\n",14);
+		write(2,"UNIX destination socket path too long\n",14);
 # endif
 		return -1;
 	}
 
+	if ( bind_path != 0 )
+	{
+		if ( strlen(bind_path) > sizeof(baddr.sun_path) )
+		{
+# ifdef VERBOSE
+			write(2,"Bind path too long\n",14);
+# endif
+			return -1;
+		}
+		
+		baddr.sun_family = AF_UNIX;
+		strncpy(baddr.sun_path,bind_path,sizeof(saddr.sun_path)-1);
+		
+		if ( -1 == check_error(bind(sfd,(struct sockaddr*)&baddr,sizeof(struct sockaddr_un))) )
+			return -1;
+	}
+
 	saddr.sun_family = AF_UNIX;
 	strncpy(saddr.sun_path,path,sizeof(saddr.sun_path)-1);
-	
-	if ( -1 == check_error(connect(sfd,(struct sockaddr*)&saddr,sizeof saddr)))
+
+	if ( -1 == check_error(connect(sfd,(struct sockaddr*)&saddr,sizeof saddr)) )
 		return -1;
 
 	return sfd;

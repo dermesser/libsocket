@@ -17,7 +17,7 @@ int main(void)
 
 	memset(buf,0,sizeof(buf));
 
-	if ( -1 == (sfd = create_usocket("/tmp/echosock",STREAM)) )
+	if ( -1 == (sfd = create_usocket("/tmp/echosock",STREAM,"/tmp/abc")) )
 		return -1;
 
 	write(sfd,string,26);

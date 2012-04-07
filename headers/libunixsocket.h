@@ -32,7 +32,7 @@
 # define WRITE 2
 
 // Create new socket
-extern int create_usocket(const char* path, int socktype);
+extern int create_usocket(const char* path, int socktype, const char* bind_path);
 // Close a socket
 extern int destroy_usocket(int sfd);
 // Shutdown a socket (method is READ, WRITE or READ|WRITE)
