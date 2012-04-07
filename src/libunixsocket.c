@@ -259,7 +259,8 @@ ssize_t recvfrom_ussocket(int sfd, void* buf, size_t size, char* from, size_t fr
 	if ( -1 == check_error(bytes = recvfrom(sfd,buf,size,0,(struct sockaddr*)&saddr,&socksize)) )
 		return -1;
 	
-	strncpy(from,saddr.sun_path,from_size);
+	if ( from != 0 && from_size > 0 )
+		strncpy(from,saddr.sun_path,from_size);
 
 	return bytes;
 }
