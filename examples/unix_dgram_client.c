@@ -15,12 +15,12 @@ int main(void)
 	int sfd;
 	const char* string = "abcdefghijklmnopqrstuvwxyz";
 
-	if ( -1 == (sfd = create_usocket("/tmp/echosock",DGRAM,0)) )
+	if ( -1 == (sfd = create_unix_dgram_socket("/tmp/echosock")) )
 		return -1;
 
 	write(sfd,string,26);
 
-	destroy_usocket(sfd);
+	destroy_unix_socket(sfd);
 
 	return 0;
 }
