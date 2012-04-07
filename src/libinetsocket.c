@@ -215,7 +215,7 @@ int create_inet_dgram_socket(char proto_osi3, int flags)
 }
 
 //Working
-size_t sendto_inet_dgram_socket(int sfd,void* buf, size_t size,char* host, char* service)
+ssize_t sendto_inet_dgram_socket(int sfd,void* buf, size_t size,char* host, char* service)
 {
 	struct sockaddr_storage oldsock;
 	struct addrinfo *result, *result_check, hint;
@@ -257,7 +257,7 @@ size_t sendto_inet_dgram_socket(int sfd,void* buf, size_t size,char* host, char*
 
 // Get a single UDP packet
 // 			 Socket   Target        Size of buffer string for client and its size     client port        its size		     may be NUMERIC (give host and service in numeric form)
-size_t recvfrom_inet_dgram_socket(int sfd, void* buffer, size_t size, char* src_host, size_t src_host_len, char* src_service, size_t src_service_len, int flags)
+ssize_t recvfrom_inet_dgram_socket(int sfd, void* buffer, size_t size, char* src_host, size_t src_host_len, char* src_service, size_t src_service_len, int flags)
 {
 	struct sockaddr_storage client;
 	ssize_t bytes;
