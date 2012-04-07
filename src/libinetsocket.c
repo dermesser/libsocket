@@ -255,7 +255,9 @@ int shutdown_isocket(int sfd, int method)
 		if ( -1 == check_error(shutdown(sfd,SHUT_RD)))
 			return -1;
 
-	} else if ( method & WRITE ) // WRITE is set (0010 && 0010 => 0010)
+	}
+
+	if ( method & WRITE ) // WRITE is set (0010 && 0010 => 0010)
 	{
 		if ( -1 == check_error(shutdown(sfd,SHUT_WR)))
 			return -1;
