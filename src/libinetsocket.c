@@ -226,6 +226,7 @@ int create_inet_dgram_socket(char proto_osi3, int flags)
 
 
 
+//Working
 int sendto_inet_dgram_socket(int sfd,void* buf, size_t size,char* host, char* service)
 {
 	struct sockaddr_storage oldsock;
@@ -265,6 +266,7 @@ int sendto_inet_dgram_socket(int sfd,void* buf, size_t size,char* host, char* se
 }
 
 
+//Working
 // (re)connect inet socket to new peer - works for UDP only!!!
 // 		     Socket    New peer    and its port
 int connect_inet_dgram_socket(int sfd, char* host, char* service)
