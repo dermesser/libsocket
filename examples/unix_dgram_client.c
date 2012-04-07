@@ -14,11 +14,17 @@ int main(void)
 {
 	int sfd;
 	char* string = "abcdefghijklmnopqrstuvwxyz";
+	char buf[26];
 
-	if ( -1 == (sfd = create_unix_dgram_socket()) )
+
+	if ( -1 == (sfd = create_unix_dgram_socket("/tmp/client")) )
 		return -1;
 
 	sendto_unix_dgram_socket(sfd,string,26,"/tmp/echosock");
+
+	recvfrom_unix_dgram_socket(sfd,buf,26,0,0);
+
+	write(1,buf,26);
 
 	destroy_unix_socket(sfd);
 
