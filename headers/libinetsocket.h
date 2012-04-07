@@ -44,7 +44,7 @@ int create_inet_stream_socket(const char* host, const char* service, char proto_
 # endif
 
 extern int create_inet_dgram_socket(char proto_osi3, int flags);
-extern int sendto_inet_dgram_socket(int sfd,void* buf, size_t size,char* host, char* service);
+extern size_t sendto_inet_dgram_socket(int sfd,void* buf, size_t size,char* host, char* service);
 extern size_t recvfrom_inet_dgram_socket(int sfd, void* buffer, size_t size, char* src_host, size_t src_host_len, char* src_service, size_t src_service_len, int flags);
 extern int connect_inet_dgram_socket(int sfd, char* host, char* service);
 extern int destroy_inet_socket(int sfd);
