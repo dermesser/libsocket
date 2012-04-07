@@ -36,37 +36,20 @@
 
 # define NUMERIC 1
 
-// Creates socket, connects it and gives it back
-//                Hostname          Port/Service         Transport protocol (TCP or UDP)  Network Protocol (IPv4 or IPv6)  may be SOCK_NONBLOCK (socket won't block) and SOCK_CLOEXEC (closes socket on exec() call)
-extern int create_isocket(const char* host, const char* service, char proto_osi4,         char proto_osi3                 
+int create_inet_stream_socket(const char* host, const char* service, char proto_osi3
 # ifdef __linux__
 		, int flags);
 # else
 );
 # endif
 
-// Reconnect a socket to another peer - works only for UDP!
-//			     Socket,  new peer,   new port
-extern int reconnect_isocket(int sfd, char* host, char* service);
-
-// Destroy a socket
-//		   Socket file descriptor
-extern int destroy_isocket(int sfd);
-
-// Shutdown a socket
-// 			       FD       READ, WRITE, READ | WRITE
-extern int shutdown_isocket(int sfd, int method);
-
-// Create, bind and let a new server socket listen (stands for create internet server socket)
-// at which address to bind, at which port to bind, which protocol (TCP/UDP), which protocol (IPv4/IPv6)
-extern int create_issocket(const char* bind_addr, const char* bind_port, char proto_osi4, char proto_osi3);
-
-// Accept connections (like accept()). May block
-// Socket fd, memory for hostname, its length, Memory for service name, its length, Flags (NUMERIC)
-extern int accept_issocket(int sfd, char* src_host, size_t src_host_len, char* src_service, size_t src_service_len, int flags);
-
-// Receive some bytes from a (mostly UDP/SOCK_DGRAM) socket
-// 				File desc. Buffer and  its length   Client address and its length        Client port/service and its length         may be NUMERIC (gives host and service in numeric form)
-extern size_t recvfrom_issocket(int sfd, void* buffer, size_t size, char* src_host, size_t src_host_len, char* src_service, size_t src_service_len, int flags);
+extern int create_inet_dgram_socket(char proto_osi3, int flags);
+extern int sendto_inet_dgram_socket(int sfd,void* buf, size_t size,char* host, char* service);
+extern size_t recvfrom_inet_dgram_socket(int sfd, void* buffer, size_t size, char* src_host, size_t src_host_len, char* src_service, size_t src_service_len, int flags);
+extern int connect_inet_dgram_socket(int sfd, char* host, char* service);
+extern int destroy_inet_socket(int sfd);
+extern int shutdown_inet_stream_socket(int sfd, int method);
+extern int create_inet_server_socket(const char* bind_addr, const char* bind_port, char proto_osi4, char proto_osi3);
+extern int accept_inet_stream_socket(int sfd, char* src_host, size_t src_host_len, char* src_service, size_t src_service_len, int flags);
 
 # endif
