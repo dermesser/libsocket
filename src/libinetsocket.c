@@ -221,11 +221,6 @@ int create_inet_dgram_socket(char proto_osi3, int flags)
 	return sfd;
 }
 
-
-
-
-
-
 //Working
 int sendto_inet_dgram_socket(int sfd,void* buf, size_t size,char* host, char* service)
 {

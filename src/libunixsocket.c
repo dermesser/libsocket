@@ -230,7 +230,7 @@ int accept_unix_stream_ssocket(int sfd, int flags)
 }
 
 // Receives data
-ssize_t recvfrom_ussocket(int sfd, void* buf, size_t size, char* from, size_t from_size)
+ssize_t recvfrom_unix_dgram_socket(int sfd, void* buf, size_t size, char* from, size_t from_size)
 {
 	int bytes, socksize = sizeof(struct sockaddr_un);
 	struct sockaddr_un saddr;
@@ -243,3 +243,29 @@ ssize_t recvfrom_ussocket(int sfd, void* buf, size_t size, char* from, size_t fr
 
 	return bytes;
 }
+
+// Sends data
+ssize_t sendto_unix_dgram_socket(int sfd, void* buf, size_t size, char* to)
+{
+	int bytes;
+	struct sockaddr_un saddr;
+
+	if ( strlen(path) > sizeof(saddr.sun_path)-1 )
+	{
+# ifdef VERBOSE
+		write(2,"UNIX destination socket path too long\n",14);
+# endif
+		return -1;
+	}
+
+	memset(&saddr,0,sizeof(struct sockaddr_un));
+
+	saddr.sun_family = AF_UNIX;
+	strncpy(saddr.sun_path,path,sizeof(saddr.sun_path)-1);
+
+	if ( -1 == check_error(bytes = sendto(sfd,buf,size,0,saddr,sizeof(struct sockaddr_un))) )
+		return -1;
+
+	return bytes;
+}
+
