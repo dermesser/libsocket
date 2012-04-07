@@ -40,7 +40,7 @@
  *
 */
 
-// # define VERBOSE
+# define VERBOSE
 
 // Macro definitions
 
@@ -251,12 +251,15 @@ int accept_ussocket(int sfd, int flags)
 
 // Receives data
 // 		      Socket   Buffer     its size
-ssize_t recv_ussocket(int sfd, void* buf, size_t size)
+ssize_t recvfrom_ussocket(int sfd, void* buf, size_t size, char* from, size_t from_size)
 {
-	int bytes;
+	int bytes, socksize = sizeof(struct sockaddr_un);
+	struct sockaddr_un saddr;
 
-	if ( -1 == check_error(bytes = recv(sfd,buf,size,0)) )
+	if ( -1 == check_error(bytes = recvfrom(sfd,buf,size,0,(struct sockaddr*)&saddr,&socksize)) )
 		return -1;
+	
+	strncpy(from,saddr.sun_path,from_size);
 
 	return bytes;
 }

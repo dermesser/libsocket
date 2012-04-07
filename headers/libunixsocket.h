@@ -44,6 +44,6 @@ extern int accept_ussocket(int sfd, int flags);
 // Reconnect DGRAM socket
 extern int reconnect_usocket(int sfd, const char* path);
 // Recv data sent to a DGRAM socket
-ssize_t recv_ussocket(int sfd, void* buf, size_t size);
+extern ssize_t recvfrom_ussocket(int sfd, void* buf, size_t size, char* from, size_t from_size);
 
 # endif
