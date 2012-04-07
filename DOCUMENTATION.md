@@ -162,12 +162,12 @@ Create a new server socket and bind it to `path`. Protocol type (`socktype`) is 
 Accept a new STREAM connection on socket `sfd`. `flags` may be `SOCK_NONBLOCK` which means that the new (returned) client socket won't block or `SOCK_CLOEXEC` which
 means that the client socket will be closed if you call a syscall from the `exec()` family.
 
-###`recv_ussocket()`
+###`recvfrom_ussocket()`
 
-	size_t recv_ussocket(int sfd, void* buf, size_t size)
+	size_t recvfrom_ussocket(int sfd, void* buf, size_t size, char* from, size_t from_size)
 
 `recv_ussocket()` gets `size` bytes from `sfd` (usually a DGRAM socket) and writes them to `buf`.
-Actually, it's the same like `read()`, but it's more clear if you use `recv_ussocket()`.
+from may be 0 if you don't want to have the origin, or a pointer to a buffer of the size from_size.
 
 #Compile options
 
