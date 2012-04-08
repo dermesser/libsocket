@@ -463,7 +463,7 @@ int create_inet_server_socket(const char* bind_addr, const char* bind_port, char
 	if ( result_check == NULL )
 	{
 # ifdef VERBOSE
-		write(2,"Could not connect to any address!\n",34);
+		write(2,"Could not bind to any address!\n",34);
 # endif
 		return -1;
 	}
