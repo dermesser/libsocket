@@ -210,10 +210,10 @@ int create_inet_dgram_socket(char proto_osi3
 	switch ( proto_osi3 )
 	{
 		case IPv4 :
-			sfd = socket(AF_INET,SOCK_DGRAM,flags);
+			sfd = socket(AF_INET,SOCK_DGRAM|flags,0);
 			break;
 		case IPv6 :
-			sfd = socket(AF_INET6,SOCK_DGRAM,flags);
+			sfd = socket(AF_INET6,SOCK_DGRAM|flags,0);
 			break;
 		default:
 			return -1;
