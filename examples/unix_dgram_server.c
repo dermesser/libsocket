@@ -22,10 +22,10 @@ int main(void)
 	if ( -1 == (sfd = create_unix_server_socket("/tmp/echosock",DGRAM)) )
 		return -1;
 
-	while ( 0 < ( bytes = recvfrom_unix_dgram_socket(sfd,buf,127,from,127) ) ) // read() is equivalent to recv_ussocket()
+	while ( 0 < ( bytes = recvfrom_unix_dgram_socket(sfd,buf,127,from,127,0) ) ) // read() is equivalent to recv_ussocket()
 	{
 		write(1,buf,bytes);
-		sendto_unix_dgram_socket(sfd,buf,bytes,from);
+		sendto_unix_dgram_socket(sfd,buf,bytes,from,0);
 	}
 
 	destroy_unix_socket(sfd);

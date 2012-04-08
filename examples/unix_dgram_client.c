@@ -20,9 +20,9 @@ int main(void)
 	if ( -1 == (sfd = create_unix_dgram_socket("/tmp/client")) )
 		return -1;
 
-	sendto_unix_dgram_socket(sfd,string,26,"/tmp/echosock");
+	sendto_unix_dgram_socket(sfd,string,26,"/tmp/echosock",0);
 
-	recvfrom_unix_dgram_socket(sfd,buf,26,0,0);
+	recvfrom_unix_dgram_socket(sfd,buf,26,0,0,0);
 
 	write(1,buf,26);
 
