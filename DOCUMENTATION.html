@@ -43,13 +43,23 @@ of socket():</p>
 </ul>
 </blockquote>
 
-<p>extern int create<em>inet</em>dgram<em>socket(char proto</em>osi3, int flags);
-extern ssize<em>t sendto</em>inet<em>dgram</em>socket(int sfd,void* buf, size<em>t size,char* host, char* service, int sendto</em>flags);
+<p><code>SOCK_NONBLOCK</code> does not let you wait when read()ing or write()ing.</p>
+
+<p><code>SOCK_CLOEXEC</code> closes the socket if you call a syscall from the <code>exec()</code> family.</p>
+
+<h3><code>create_inet_dgram_socket()</code></h3>
+
+<p><code>int create_inet_dgram_socket(char proto_osi3, int flags)</code> (Linux)
+<code>int create_inet_dgram_socket(char proto_osi3)</code> (Others)</p>
+
+<p>Like the function before, this function also has different prototypes on different platforms.
+This happens because we check if we're on Linux (<code>__linux__</code>), and if we are, we may use
+additional flags at <code>socket()</code> - </p>
+
+<p>extern ssize<em>t sendto</em>inet<em>dgram</em>socket(int sfd,void* buf, size<em>t size,char* host, char* service, int sendto</em>flags);
 extern ssize<em>t recvfrom</em>inet<em>dgram</em>socket(int sfd, void* buffer, size<em>t size, char* src</em>host, size<em>t src</em>host<em>len, char* src</em>service, size<em>t src</em>service<em>len, int recvfrom</em>flags, int numeric);
 extern int connect<em>inet</em>dgram<em>socket(int sfd, char* host, char* service);
 extern int destroy</em>inet<em>socket(int sfd);
 extern int shutdown</em>inet<em>stream</em>socket(int sfd, int method);
 extern int create<em>inet</em>server<em>socket(const char* bind</em>addr, const char* bind<em>port, char proto</em>osi4, char proto<em>osi3);
 extern int accept</em>inet<em>stream</em>socket(int sfd, char* src<em>host, size</em>t src<em>host</em>len, char* src<em>service, size</em>t src<em>service</em>len, int flags);</p>
-
-<h1>endif</h1>

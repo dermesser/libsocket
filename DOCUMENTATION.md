@@ -38,9 +38,19 @@ This function creates and returns a inet stream socket (TCP socket) which is con
 >
 >	* `SOCK_CLOEXEC`    Set the close-on-exec (`FD_CLOEXEC`) flag on the new file descriptor.  See the description of the `O_CLOEXEC` flag in open(2) for reasons why this may be useful.
 
+`SOCK_NONBLOCK` does not let you wait when read()ing or write()ing.
 
+`SOCK_CLOEXEC` closes the socket if you call a syscall from the `exec()` family.
 
-extern int create_inet_dgram_socket(char proto_osi3, int flags);
+### `create_inet_dgram_socket()`
+
+`int create_inet_dgram_socket(char proto_osi3, int flags)` (Linux)
+`int create_inet_dgram_socket(char proto_osi3)` (Others)
+
+Like the function before, this function also has different prototypes on different platforms.
+This happens because we check if we're on Linux (`__linux__`), and if we are, we may use
+additional flags at `socket()` - 
+
 extern ssize_t sendto_inet_dgram_socket(int sfd,void* buf, size_t size,char* host, char* service, int sendto_flags);
 extern ssize_t recvfrom_inet_dgram_socket(int sfd, void* buffer, size_t size, char* src_host, size_t src_host_len, char* src_service, size_t src_service_len, int recvfrom_flags, int numeric);
 extern int connect_inet_dgram_socket(int sfd, char* host, char* service);
@@ -49,4 +59,3 @@ extern int shutdown_inet_stream_socket(int sfd, int method);
 extern int create_inet_server_socket(const char* bind_addr, const char* bind_port, char proto_osi4, char proto_osi3);
 extern int accept_inet_stream_socket(int sfd, char* src_host, size_t src_host_len, char* src_service, size_t src_service_len, int flags);
 
-# endif
