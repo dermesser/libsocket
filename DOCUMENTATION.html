@@ -1,0 +1,55 @@
+<h1>Documentation for libsocket</h1>
+
+<h2>Introduction</h2>
+
+<p>libsocket is a library written in C and designed to simplify the usage of <code>AF_INET/AF_INET6</code> (internet domain) and <code>AF_UNIX</code>
+(unix domain) sockets. With many specialized functions in the API, it's hard to do things wrong. And with the excellent error
+processing with optional verbosity, it's also quite easy to debug your applications.</p>
+
+<p>libsocket is the name for the whole project. libinetsocket is the part for <code>INET</code> sockets, libunixsocket for <code>UNIX</code> sockets.</p>
+
+<h3>libinetsocket</h3>
+
+<p>As the name says, libinetsocket is the part for internet domain sockets. All important features are supported and it's possible
+to give flags to the underlying calls, e.g. it's possible to give the flag <code>MSG_DONTROUTE</code> to the wrapper function of <code>sendto()</code>.</p>
+
+<h3>libunixsocket</h3>
+
+<p>libunixsocket is responsible for UNIX domain sockets. The calls are similar to the libinetsocket calls.</p>
+
+<h2>API calls</h2>
+
+<p>This section explains the single API calls of libsocket.</p>
+
+<h3>libinetsocket</h3>
+
+<h4><code>create_inet_stream_socket()</code></h4>
+
+<p><code>int create_inet_stream_socket(const char* host, const char* service, char proto_osi3, int flags)</code> (Linux)</p>
+
+<p><code>int create_inet_stream_socket(const char* host, const char* service, char proto_osi3)</code> (Others)</p>
+
+<p>This function creates and returns a inet stream socket (TCP socket) which is connected to <code>host</code>:<code>service</code>.
+<code>proto_osi3</code> is either <code>IPv4</code> or <code>IPv6</code> (defined in <code>libinetsocket.h</code>). <code>flags</code> is only available on Linux and allows to manipulate the <code>socket()</code> call. 
+<code>socket(2)</code> says the following:</p>
+
+<blockquote>
+  <p>Since Linux 2.6.27, the type argument serves a second purpose: in addition to specifying a socket type, it may include the bitwise OR of any of the following values, to modify the behavior
+of socket():</p>
+
+<ul>
+<li><p><code>SOCK_NONBLOCK</code>   Set the <code>O_NONBLOCK</code> file status flag on the new open file description.  Using this flag saves extra calls to fcntl(2) to achieve the same result.</p></li>
+<li><p><code>SOCK_CLOEXEC</code>    Set the close-on-exec (<code>FD_CLOEXEC</code>) flag on the new file descriptor.  See the description of the <code>O_CLOEXEC</code> flag in open(2) for reasons why this may be useful.</p></li>
+</ul>
+</blockquote>
+
+<p>extern int create<em>inet</em>dgram<em>socket(char proto</em>osi3, int flags);
+extern ssize<em>t sendto</em>inet<em>dgram</em>socket(int sfd,void* buf, size<em>t size,char* host, char* service, int sendto</em>flags);
+extern ssize<em>t recvfrom</em>inet<em>dgram</em>socket(int sfd, void* buffer, size<em>t size, char* src</em>host, size<em>t src</em>host<em>len, char* src</em>service, size<em>t src</em>service<em>len, int recvfrom</em>flags, int numeric);
+extern int connect<em>inet</em>dgram<em>socket(int sfd, char* host, char* service);
+extern int destroy</em>inet<em>socket(int sfd);
+extern int shutdown</em>inet<em>stream</em>socket(int sfd, int method);
+extern int create<em>inet</em>server<em>socket(const char* bind</em>addr, const char* bind<em>port, char proto</em>osi4, char proto<em>osi3);
+extern int accept</em>inet<em>stream</em>socket(int sfd, char* src<em>host, size</em>t src<em>host</em>len, char* src<em>service, size</em>t src<em>service</em>len, int flags);</p>
+
+<h1>endif</h1>
