@@ -261,13 +261,13 @@ int accept_unix_stream_socket(int sfd, int flags)
 }
 
 // Receives data
-ssize_t recvfrom_unix_dgram_socket(int sfd, void* buf, size_t size, char* from, size_t from_size)
+ssize_t recvfrom_unix_dgram_socket(int sfd, void* buf, size_t size, char* from, size_t from_size, int recvfrom_flags)
 {
 	int bytes;
 	socklen_t socksize = sizeof(struct sockaddr_un);
 	struct sockaddr_un saddr;
 
-	if ( -1 == check_error(bytes = recvfrom(sfd,buf,size,0,(struct sockaddr*)&saddr,&socksize)) )
+	if ( -1 == check_error(bytes = recvfrom(sfd,buf,size,recvfrom_flags,(struct sockaddr*)&saddr,&socksize)) )
 		return -1;
 	
 	if ( from != 0 && from_size > 0 )
@@ -277,7 +277,7 @@ ssize_t recvfrom_unix_dgram_socket(int sfd, void* buf, size_t size, char* from, 
 }
 
 // Sends data
-ssize_t sendto_unix_dgram_socket(int sfd, void* buf, size_t size, char* path)
+ssize_t sendto_unix_dgram_socket(int sfd, void* buf, size_t size, char* path, int sendto_flags)
 {
 	int bytes;
 	struct sockaddr_un saddr;
@@ -295,7 +295,7 @@ ssize_t sendto_unix_dgram_socket(int sfd, void* buf, size_t size, char* path)
 	saddr.sun_family = AF_UNIX;
 	strncpy(saddr.sun_path,path,sizeof(saddr.sun_path)-1);
 
-	if ( -1 == check_error(bytes = sendto(sfd,buf,size,0,(struct sockaddr*)&saddr,sizeof(struct sockaddr_un))) )
+	if ( -1 == check_error(bytes = sendto(sfd,buf,size,sendto_flags,(struct sockaddr*)&saddr,sizeof(struct sockaddr_un))) )
 		return -1;
 
 	return bytes;
