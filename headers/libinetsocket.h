@@ -36,14 +36,20 @@
 
 # define NUMERIC 1
 
-int create_inet_stream_socket(const char* host, const char* service, char proto_osi3
+extern int create_inet_stream_socket(const char* host, const char* service, char proto_osi3
 # ifdef __linux__
 		, int flags);
 # else
 );
 # endif
 
-extern int create_inet_dgram_socket(char proto_osi3, int flags);
+extern int create_inet_dgram_socket(char proto_osi3
+# ifdef __linux__
+		, int flags);
+# else
+);
+# endif
+
 extern ssize_t sendto_inet_dgram_socket(int sfd,void* buf, size_t size,char* host, char* service, int sendto_flags);
 extern ssize_t recvfrom_inet_dgram_socket(int sfd, void* buffer, size_t size, char* src_host, size_t src_host_len, char* src_service, size_t src_service_len, int recvfrom_flags, int numeric);
 extern int connect_inet_dgram_socket(int sfd, char* host, char* service);

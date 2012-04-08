@@ -181,8 +181,12 @@ int create_inet_stream_socket(const char* host, const char* service, char proto_
 	return sfd;
 }
 
-//Working
-int create_inet_dgram_socket(char proto_osi3, int flags)
+int create_inet_dgram_socket(char proto_osi3
+# ifdef __linux__
+		, int flags)
+# else
+)
+# endif
 {
 	int sfd;
 
@@ -196,8 +200,12 @@ int create_inet_dgram_socket(char proto_osi3, int flags)
 		return -1;
 	}
 	
+# ifdef __linux__
 	if ( flags != SOCK_NONBLOCK && flags != SOCK_CLOEXEC && flags != (SOCK_CLOEXEC|SOCK_NONBLOCK) && flags != 0 )
 		return -1;
+# else
+	int flags = 0;
+# endif
 
 	switch ( proto_osi3 )
 	{
