@@ -20,7 +20,7 @@ int main(void)
 	
 	sleep(2);
 	
-	recvfrom_inet_dgram_socket(sfd,buf,5,0,0,0,0,NUMERIC);
+	recvfrom_inet_dgram_socket(sfd,buf,5,0,0,0,0,0,NUMERIC);
 	
 	write(1,buf,5);
 

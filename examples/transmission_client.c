@@ -5,7 +5,7 @@
 
 int main(void)
 {
-	int sfd = create_inet_stream_socket("2001:554:2323:aabc::22ed","55555",IPv6,0);
+	int sfd = create_inet_stream_socket("::","55555",IPv6,0);
 	char* buf = "abcde";
 
 	write(sfd,buf,5);

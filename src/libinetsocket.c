@@ -215,7 +215,7 @@ int create_inet_dgram_socket(char proto_osi3, int flags)
 }
 
 //Working
-ssize_t sendto_inet_dgram_socket(int sfd,void* buf, size_t size,char* host, char* service)
+ssize_t sendto_inet_dgram_socket(int sfd,void* buf, size_t size,char* host, char* service, int sendto_flags)
 {
 	struct sockaddr_storage oldsock;
 	struct addrinfo *result, *result_check, hint;
@@ -242,7 +242,7 @@ ssize_t sendto_inet_dgram_socket(int sfd,void* buf, size_t size,char* host, char
 	
 	for ( result_check = result; result_check != NULL; result_check = result_check->ai_next ) // go through the linked list of struct addrinfo elements
 	{
-		if ( -1 != (return_value = sendto(sfd,buf,size,0,result_check->ai_addr,result_check->ai_addrlen))) // connected without error
+		if ( -1 != (return_value = sendto(sfd,buf,size,sendto_flags,result_check->ai_addr,result_check->ai_addrlen))) // connected without error
 		{
 			break; // Exit loop if send operation was successful
 		} else
@@ -257,7 +257,7 @@ ssize_t sendto_inet_dgram_socket(int sfd,void* buf, size_t size,char* host, char
 
 // Get a single UDP packet
 // 			 Socket   Target        Size of buffer string for client and its size     client port        its size		     may be NUMERIC (give host and service in numeric form)
-ssize_t recvfrom_inet_dgram_socket(int sfd, void* buffer, size_t size, char* src_host, size_t src_host_len, char* src_service, size_t src_service_len, int flags)
+ssize_t recvfrom_inet_dgram_socket(int sfd, void* buffer, size_t size, char* src_host, size_t src_host_len, char* src_service, size_t src_service_len, int recvfrom_flags, int numeric)
 {
 	struct sockaddr_storage client;
 	ssize_t bytes;
@@ -267,20 +267,17 @@ ssize_t recvfrom_inet_dgram_socket(int sfd, void* buffer, size_t size, char* src
 # endif
 	socklen_t addrlen = sizeof(struct sockaddr_storage);
 
-	if ( -1 == check_error(bytes = recvfrom(sfd,buffer,size,0,(struct sockaddr*)&client,&addrlen)))
+	if ( -1 == check_error(bytes = recvfrom(sfd,buffer,size,recvfrom_flags,(struct sockaddr*)&client,&addrlen)))
 		return -1;
 
 	if ( src_host_len > 0 || src_service_len > 0 ) // If one of the things is wanted. If you give a null pointer with a positive _len parameter, you won't get the address. 
 	{
-		if ( flags == NUMERIC )
+		if ( numeric == 1 )
 		{
-			flags = NI_NUMERICHOST | NI_NUMERICSERV;
-		} else
-		{
-			flags = 0; // To prevent errors: Unknown flags are ignored
+			numeric = NI_NUMERICHOST | NI_NUMERICSERV;
 		}
 
-		if ( 0 != (retval = getnameinfo((struct sockaddr*)&client,sizeof(struct sockaddr_storage),src_host,src_host_len,src_service,src_service_len,flags)) ) // Write information to the provided memory
+		if ( 0 != (retval = getnameinfo((struct sockaddr*)&client,sizeof(struct sockaddr_storage),src_host,src_host_len,src_service,src_service_len,numeric)) ) // Write information to the provided memory
 		{
 # ifdef VERBOSE
 			errstr = gai_strerror(retval);
