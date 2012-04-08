@@ -130,6 +130,19 @@ int create_unix_dgram_socket(const char* bind_path)
 int connect_unix_dgram_socket(int sfd, const char* path)
 {
 	struct sockaddr_un new_addr;
+	struct sockaddr deconnect;
+
+	if ( path == 0 )
+	{
+		memset(&deconnect,0,sizeof(struct sockaddr));
+
+		deconnect.sa_family = AF_UNSPEC;
+
+		if ( check_error(connect(sfd,&deconnect,sizeof(struct sockaddr))) )
+			return -1;
+
+		return 0;
+	}
 
 	memset(&new_addr,0,sizeof(struct sockaddr_un));
 

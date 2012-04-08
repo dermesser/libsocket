@@ -293,21 +293,28 @@ ssize_t recvfrom_inet_dgram_socket(int sfd, void* buffer, size_t size, char* src
 	return bytes;
 }
 
-
-
-
-//Working
-// (re)connect inet socket to new peer - works for UDP only!!!
-// 		     Socket    New peer    and its port
 int connect_inet_dgram_socket(int sfd, char* host, char* service)
 {
 	struct addrinfo *result, *result_check, hint;
 	struct sockaddr_storage oldsockaddr;
+	struct sockaddr deconnect;
 	socklen_t oldsockaddrlen = sizeof(struct sockaddr_storage);
 	int return_value;
 # ifdef VERBOSE
 	const char* errstring;
 # endif
+
+	if ( host == 0 )
+	{
+		memset(&deconnect,0,sizeof(struct sockaddr));
+
+		deconnect.sa_family = AF_UNSPEC;
+
+		if ( check_error(connect(sfd,&deconnect,sizeof(struct sockaddr))) )
+			return -1;
+
+		return 0;
+	}
 
 	if ( -1 == check_error(getsockname(sfd,(struct sockaddr*)&oldsockaddr,&oldsockaddrlen)) )
 		return -1;
