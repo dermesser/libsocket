@@ -9,10 +9,6 @@
  * 
 */
 
-/*
- * This example is to be used with echo_srv.c as server
-*/
-
 int main(void)
 {
 	int sfd;
@@ -23,14 +19,7 @@ int main(void)
 	sendto_inet_dgram_socket(sfd,"abcde",5,"localhost","1234"); 
 	
 	sleep(2);
-/*
-	if ( -1 == reconnect_isocket(sfd,"192.168.1.8","1234") ) // FIXME: Put your IP here...
-		printf("couldn't reconnect\n");
 	
-	sleep(2);
-
-	write(sfd,"defghi",6);
-*/
 	recvfrom_inet_dgram_socket(sfd,buf,5,0,0,0,0,NUMERIC);
 	
 	write(1,buf,5);
