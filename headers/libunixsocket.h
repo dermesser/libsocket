@@ -23,6 +23,10 @@
 
 */
 
+// Headers (e.g. for flags)
+# include <sys/types.h>
+# include <sys/socket.h>
+
 // Macro definitions
 
 # define STREAM 1
