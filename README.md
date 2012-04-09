@@ -34,13 +34,14 @@ The libsocket library supports following things and protocols:
 * IPv6 (client, server; if your machine supports it)
 * TCP (client, server)
 * UDP (client, server)
-* UNIX Domain Sockets (DGRAM&STREAM server/client)
+* UNIX Domain Sockets (DGRAM&STREAM server/client), only for Linux
 * Intelligent algorithms to get the best connection and no errors
 * Easy use (one function call to get a socket up and running, one another to close it)
-* Proper error processing (using errno, gai\_strerror() etc.).
+* Proper error processing (using `errno`, `gai\_strerror()` etc.).
 
 One of the main advantages of libsocket is that you don't have to write the complex and error-prone
-procedures for connecting a socket, check it for errors etc. yourself.
+procedures for connecting a socket, check it for errors etc. yourself. Your network programs
+get shorter and better readable.
 
 libsocket supports almost every socket types. During there is no useful documentation, take a look
 at the header files in headers/. Most of the functions are self-explaining.
@@ -78,5 +79,10 @@ simple-http (https://github.com/dermesser/Simple-HTTP-client) uses almost 70 lin
 ##PLATFORMS
 
 libsocket is developed on Linux 3.x with gcc, but every file was successfully tested with clang (from llvm 3.0) and works with it.
-Since revision 396d05, libinetsocket.c works on OpenBSD 5.0. I'm working on porting
-libunixsocket to OpenBSD which is much harder (I guess so at the moment).
+Since revision 396d05, libinetsocket.c works on OpenBSD 5.0. I'm working on porting libunixsocket to OpenBSD which is much harder (I guess so at the moment).
+
+##REWRITE
+
+Since e1688a6, the library was almost completely rewritten. The process is completed with tag `rewrite_complete_ii`.
+The new library is more reliable, clear and functional. If the old library works in your programs, there's no cause
+to migrate to the new library, but for new programs, the new library is recommended, especially the libunixsocket part.
