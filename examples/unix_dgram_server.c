@@ -19,7 +19,7 @@ int main(void)
 	memset(buf,0,128);
 	memset(from,0,128);
 	
-	if ( -1 == (sfd = create_unix_server_socket("/tmp/echosock",DGRAM)) )
+	if ( -1 == (sfd = create_unix_server_socket("/tmp/echosock",DGRAM,0)) )
 		return -1;
 
 	while ( 0 < ( bytes = recvfrom_unix_dgram_socket(sfd,buf,127,from,127,0) ) ) // read() is equivalent to recv_ussocket()

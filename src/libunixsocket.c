@@ -193,7 +193,7 @@ int shutdown_unix_stream_socket(int sfd, int method)
 
 // Create new UNIX domain server socket
 //			      Bind address DGRAM or STREAM
-int create_unix_server_socket(char* path, int socktype)
+int create_unix_server_socket(char* path, int socktype, int flags)
 {
 	struct sockaddr_un saddr;
 	int sfd, type, retval;
@@ -218,7 +218,7 @@ int create_unix_server_socket(char* path, int socktype)
 			return -1;
 	}
 
-	if ( -1 == check_error(sfd = socket(AF_UNIX,type,0)) )
+	if ( -1 == check_error(sfd = socket(AF_UNIX,type|flags,0)) )
 		return -1;
 
 	if ( (retval = unlink(path)) == -1 && errno != ENOENT ) // If there's another error than "doesn't exist"

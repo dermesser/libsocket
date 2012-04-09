@@ -15,7 +15,7 @@ int main(void)
 
 	buf[15] = 0;
 
-	if ( -1 == (sfd = create_unix_server_socket("/tmp/echosock",STREAM)) )
+	if ( -1 == (sfd = create_unix_server_socket("/tmp/echosock",STREAM,0)) )
 		return -1;
 
 	for ( ;; )
