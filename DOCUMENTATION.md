@@ -445,6 +445,29 @@ Accepts a connection on UNIX stream sockets.
 
 Returns a socket connected to the client, or -1 on error.
 
-extern ssize_t recvfrom_unix_dgram_socket(int sfd, void* buf, size_t size, char* from, size_t from_size, int recvfrom_flags);
-extern ssize_t sendto_unix_dgram_socket(int sfd, void* buf, size_t size, char* path, int sendto_flags);
+### `recvfrom_unix_dgram_socket()`
+`ssize_t recvfrom_unix_dgram_socket(int sfd, void* buf, size_t size, char* from, size_t from_size, int recvfrom_flags)`
 
+Receives a datagram which is sent to the socket `sfd` which should be bound to somewhere.
+
+* `sfd` is the socket
+* `buf` is a buffer to which the data is written
+* `size` is its size
+* `from` is a buffer to which the source address is written
+* `from_size` is its size
+* `recvfrom_flags` is a combination of flags for `recvfrom()` (see section `recvfrom_inet_dgram_socket()`)
+
+Returns the number of received bytes, or -1 on error.
+
+### `sendto_unix_dgram_socket()`
+`ssize_t sendto_unix_dgram_socket(int sfd, void* buf, size_t size, const char* path, int sendto_flags)`
+
+Sends a message to another socket.
+
+* `sfd`: Socket
+* `buf`: Buffer
+* `size`: Its length
+* `path`: The path of the other socket
+* `sendto_flags`: Combination of flags, as described at `sendto_inet_dgram_socket()`.
+
+Returns number of sent bytes or -1.

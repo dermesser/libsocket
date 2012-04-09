@@ -511,5 +511,35 @@ no difference between server and client when using DGRAM sockets (of course, you
 
 <p>Returns a socket connected to the client, or -1 on error.</p>
 
-<p>extern ssize<em>t recvfrom</em>unix<em>dgram</em>socket(int sfd, void* buf, size<em>t size, char* from, size</em>t from<em>size, int recvfrom</em>flags);
-extern ssize<em>t sendto</em>unix<em>dgram</em>socket(int sfd, void* buf, size<em>t size, char* path, int sendto</em>flags);</p>
+<h3><code>recvfrom_unix_dgram_socket()</code></h3>
+
+<p><code>ssize_t recvfrom_unix_dgram_socket(int sfd, void* buf, size_t size, char* from, size_t from_size, int recvfrom_flags)</code></p>
+
+<p>Receives a datagram which is sent to the socket <code>sfd</code> which should be bound to somewhere.</p>
+
+<ul>
+<li><code>sfd</code> is the socket</li>
+<li><code>buf</code> is a buffer to which the data is written</li>
+<li><code>size</code> is its size</li>
+<li><code>from</code> is a buffer to which the source address is written</li>
+<li><code>from_size</code> is its size</li>
+<li><code>recvfrom_flags</code> is a combination of flags for <code>recvfrom()</code> (see section <code>recvfrom_inet_dgram_socket()</code>)</li>
+</ul>
+
+<p>Returns the number of received bytes, or -1 on error.</p>
+
+<h3><code>sendto_unix_dgram_socket()</code></h3>
+
+<p><code>ssize_t sendto_unix_dgram_socket(int sfd, void* buf, size_t size, const char* path, int sendto_flags)</code></p>
+
+<p>Sends a message to another socket.</p>
+
+<ul>
+<li><code>sfd</code>: Socket</li>
+<li><code>buf</code>: Buffer</li>
+<li><code>size</code>: Its length</li>
+<li><code>path</code>: The path of the other socket</li>
+<li><code>sendto_flags</code>: Combination of flags, as described at <code>sendto_inet_dgram_socket()</code>.</li>
+</ul>
+
+<p>Returns number of sent bytes or -1.</p>
