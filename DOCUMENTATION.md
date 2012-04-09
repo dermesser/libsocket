@@ -1,5 +1,5 @@
 # Documentation for libsocket
-## Introduction
+## Introduction/Explanations
 
 libsocket is a library written in C and designed to simplify the usage of `AF_INET/AF_INET6` (internet domain) and `AF_UNIX`
 (unix domain) sockets. With many specialized functions in the API, it's hard to do things wrong. And with the excellent error
@@ -36,7 +36,16 @@ This means that I refer to manpages. They can be reached by the following comman
 in examples/. They compile fine on most modern Linux systems and should work out of the box**
 
 Note: The manpage extracts come from the manpages delivered with Debian (Linux manpages), usually created by
-the man-pages project, and the OpenBSD manpage extracts come from http://www.openbsd.org/cgi-bin/man.cgi.
+the man-pages project, and the OpenBSD manpage extracts come from http://www.openbsd.org/cgi-bin/man.cgi
+
+## Compile time configuration
+
+If the macro `VERBOSE` is defined, libsocket prints error messages on STDERR device. Typically,
+you specify it in the compile command:
+
+	gcc -DVERBOSE ...
+
+Usually, you'll use this option during development, but disable it when you finished the application.
 
 ### Usage of flags
 
@@ -72,6 +81,8 @@ This function creates, connects and returns a inet stream socket (TCP socket) wh
 * `proto_osi3`: OSI layer 3 protocol: either `IPv4` or `IPv6` (defined in `libinetsocket.h`). 
 * `flags` **is only available on Linux >= 2.6.27** and allows to manipulate the `socket()` call. 
 
+Returns on success the socket file descriptor number, on error -1.
+
 `socket(2)` says the following:
 
 >Since Linux 2.6.27, the type argument serves a second purpose: in addition to specifying a socket type, it may include the bitwise OR of any of the following values, to modify the behavior
@@ -91,7 +102,6 @@ The used protocol is TCP.
 To send and receive data from the freshly created socket, please use `read(2)` and `write(2)`.
 
 ### `create_inet_dgram_socket()`
-
 `int create_inet_dgram_socket(char proto_osi3, int flags)` (Linux)
 
 `int create_inet_dgram_socket(char proto_osi3)` (Others)
@@ -104,6 +114,8 @@ More than one flags may be ORed. **This argument is only available on Linux >= 2
 
 Like the function before, this function also has different prototypes on different platforms.
 
+Returns the socket file descriptor number, on error -1.
+
 The protocol which is used is UDP.
 
 To send and receive data with this socket, please use the functions explained below, `sendto_inet_dgram_socket()` and
@@ -111,7 +123,6 @@ To send and receive data with this socket, please use the functions explained be
 why do you use libsocket?
 
 ### `sendto_inet_dgram_socket()`
-
 `ssize_t sendto_inet_dgram_socket(int sfd,void* buf, size_t size,char* host, char* service, int sendto_flags)`
 
 This function is the equivalent to `sendto()`. It returns the number of bytes which was sent; usually, it's the value
@@ -127,6 +138,8 @@ you got from `create_inet_dgram_socket()`. *The usage with STREAM sockets is not
 ("ntp", "http", "gopher").
 * `sendto_flags` is available on all platforms. The value given here goes directly to the internal `sendto()` call. The
 flags which may be specified differ between the platforms. 
+
+Returns the number of bytes sent, on error -1.
 
 On Linux, you can get them from the manpage `sendto(2)`:
 
@@ -175,7 +188,6 @@ On OpenBSD, `sendto(2)` says this:
 If it is not possible to send data at the moment, this call blocks excepted you specified `SOCK_NONBLOCK` when creating the socket.
 
 ### `recvfrom_inet_dgram_socket()`
-
 `ssize_t recvfrom_inet_dgram_socket(int sfd, void* buffer, size_t size, char* src_host, size_t src_host_len, char* src_service, size_t src_service_len, int recvfrom_flags, int numeric)`
 
 `recvfrom_inet_dgram_socket()` is the equivalent to `recvfrom()`.
@@ -189,6 +201,8 @@ If it is not possible to send data at the moment, this call blocks excepted you 
 * `src_service_len`: Length of `src_service` buffer
 * `recvfrom_flags` is a ORed combination of the flags below (Linux)
 * `numeric`: May be `NUMERIC` (defined in header files, then source port and host are given back numeric.
+
+Returns the number of bytes received, or -1 if an error occurred.
 
 	       MSG_CMSG_CLOEXEC (recvmsg() only; since Linux 2.6.23)
 		      Set the close-on-exec flag for the file descriptor received via a UNIX domain file descriptor using the SCM_RIGHTS  operation
@@ -267,7 +281,6 @@ OpenBSD's `recvfrom(2)` says this about recvfrom()'s flags:
 		MSG_DONTWAIT    don't block
 
 ### `connect_inet_dgram_socket()`
-
 `int connect_inet_dgram_socket(int sfd, char* host, char* service)`
 
 Calling `connect(2)` on DGRAM sockets is possible - you do it with this function. 
@@ -287,15 +300,17 @@ You may 'de-connect' a socket by calling
 
 where the second 0 also could be "abc" - important is that the host argument is 0. After this call, the connection
 is solved and `write(2)/read(2)` is not possible anymore. Of course, you may call this function again to connect the socket.
-	
-### `destroy_inet_socket()`
 
+Returns 0 on success, -1 on error.
+
+### `destroy_inet_socket()`
 `int destroy_inet_socket(int sfd)`
 
 Simply calls `close(2)` on `sfd`.
 
-### `shutdown_inet_stream_socket()`
+Returns 0 on success, -1 on error.
 
+### `shutdown_inet_stream_socket()`
 `int shutdown_inet_stream_socket(int sfd, int method)`
 
 Calls `shutdown(2)` on `sfd`. 
@@ -309,8 +324,9 @@ Calling `shutdown_inet_stream_socket()` on a socket has the following effects:
 * if `method` is `WRITE`: Disallow subsequent calls to `write()` and send an EOF-like signal to the remote host
 * if `method` is `READ|WRITE`: Combination of the two actions before.
 
-### `create_inet_server_socket()`
+Returns 0 upon success, -1 on error.
 
+### `create_inet_server_socket()`
 `int create_inet_server_socket(const char* bind_addr, const char* bind_port, char proto_osi4, char proto_osi3, int flags)` (Linux)
 
 `int create_inet_server_socket(const char* bind_addr, const char* bind_port, char proto_osi4, char proto_osi3)` (others)
@@ -330,6 +346,8 @@ The arguments:
 Internals: The `backlog` argument of `listen(2)` when using TCP sockets is set to `BACKLOG`, defined at the beginning
 of src/libinetsocket.c. Default is 128, the maximum value on Linux. This may differ on other platforms.
 
+Returns a socket file descriptor on success, on error, -1 is returned.
+
 ### `accept_inet_stream_socket()`
 
 `int accept_inet_stream_socket(int sfd, char* src_host, size_t src_host_len, char* src_service, size_t src_service_len, int flags)`
@@ -345,28 +363,88 @@ Accept incoming connections on server sockets created with `create_inet_server_s
 
 This function will block until there's an incoming connection.
 
+Returns a stream file descriptor connected to the connecting client. On error, -1 is returned.
+
 ## libunixsocket
 As mentioned in the introduction, libunixsocket is Linux-specific. Until now, it did not run on other Unixes than Linux.
 
 ### `create_unix_stream_socket()`
-`int create_unix_stream_socket(const char* path)`
+`int create_unix_stream_socket(const char* path, int flags)`
 
 Creates a UNIX STREAM socket and connects it to `path`.
 
 * `path`: The socket is connected to the path given with this argument.
+* `flags`: Optional flags for `socket(2)`: `SOCK_CLOEXEC` and `SOCK_NONBLOCK`
+
+Returns a valid socket descriptor on success or -1 on error.
 
 ### `create_unix_dgram_socket()`
-`int create_unix_dgram_socket(const char* bind_path)`
+`int create_unix_dgram_socket(const char* bind_path, int flags)`
 
 Creates a UNIX DGRAM socket and binds it optionally to `bind_path`.
 
 * `bind_path`: If this is not 0, the socket is bound to this path, i.e. a socket file is created with this name.
+* `flags`: Optional flags for `socket(2)`: `SOCK_CLOEXEC` and `SOCK_NONBLOCK`
 
-extern int connect_unix_dgram_socket(int sfd, const char* path);
-extern int destroy_unix_socket(int sfd);
-extern int shutdown_unix_stream_socket(int sfd, int method);
-extern int create_unix_server_socket(char* path, int socktype, int flags);
-extern int accept_unix_stream_socket(int sfd, int flags);
+Returns a valid socket descriptor on success or -1 on error.
+
+### `connect_unix_dgram_socket()`
+`int connect_unix_dgram_socket(int sfd, const char* path)`
+
+Connect a UNIX DGRAM socket.
+
+* `sfd`: The socket
+* `path`: The path of the socket to which we want to connect the socket.
+
+Returns 0 on success and -1 on error.
+
+### `destroy_unix_socket()`
+`int destroy_unix_socket(int sfd)`
+
+Destroy (close) a socket.
+
+* `sfd`: The socket file descriptor.
+
+Returns 0 on success and -1 on error.
+
+### `shutdown_unix_stream_socket()`
+`int shutdown_unix_stream_socket(int sfd, int method)`
+
+* `sfd`: Socket file descriptor
+* `method`: `READ`/`WRITE`/`READ|WRITE`
+
+Calling `shutdown_inet_stream_socket()` on a socket has the following effects:
+
+* if `method` is `READ`: Disallow subsequent calls to `read()`
+* if `method` is `WRITE`: Disallow subsequent calls to `write()` and send an EOF-like signal to the remote host
+* if `method` is `READ|WRITE`: Combination of the two actions before.
+
+Returns 0 upon success, -1 on error.
+
+### `create_unix_server_socket()`
+`int create_unix_server_socket(const char* path, int socktype, int flags)`
+
+Creates a new UNIX server (passive) socket. 
+
+* `path`: Path to which the new socket is bound to.
+* `socktype`: `SOCK` or `DGRAM` (symbolic constants from header files)
+* `flags`: Flags for `socket(2)`: `SOCK_NONBLOCK` or `SOCK_CLOEXEC`
+
+Returns a valid passive socket descriptor or -1 on error.
+
+**Note: If you specify `DGRAM` as socktype, you get the same result like with `create_unix_dgram_socket("path",0)` because there's
+no difference between server and client when using DGRAM sockets (of course, you have to bind server sockets)**
+
+### `accept_unix_stream_socket()`
+`int accept_unix_stream_socket(int sfd, int flags)`
+
+Accepts a connection on UNIX stream sockets.
+
+* `sfd` is the passive socket, generated by `create_unix_server_socket()`.
+* `flags` is a combination of `SOCK_CLOEXEC` and/or `SOCK_STREAM` for the new (client) socket.
+
+Returns a socket connected to the client, or -1 on error.
+
 extern ssize_t recvfrom_unix_dgram_socket(int sfd, void* buf, size_t size, char* from, size_t from_size, int recvfrom_flags);
 extern ssize_t sendto_unix_dgram_socket(int sfd, void* buf, size_t size, char* path, int sendto_flags);
 
