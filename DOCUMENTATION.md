@@ -7,7 +7,7 @@ processing with optional verbosity, it's also quite easy to debug your applicati
 
 libsocket is the name for the whole project. libinetsocket is the part for `INET` sockets, libunixsocket for `UNIX` sockets.
 
-The names of the procedures (in the following also called 'functions' or 'API calls', syscalls are called 'syscall' or 'call')
+The names of the procedures (in the following also called 'functions' or 'API calls', syscalls are called 'syscall')
 follow a simple scheme to simplify the usage:
 
 	<action>_<domain>_<protocol>_socket()
@@ -62,7 +62,7 @@ This section explains the single API calls of libsocket.
 
 `int create_inet_stream_socket(const char* host, const char* service, char proto_osi3)` (Others)
 
-This function creates and returns a inet stream socket (TCP socket) which is connected to `host`:`service`.
+This function creates, connects and returns a inet stream socket (TCP socket) which is connected to `host`:`service`.
 
 `proto_osi3` is either `IPv4` or `IPv6` (defined in `libinetsocket.h`). 
 
@@ -266,7 +266,20 @@ OpenBSD's `recvfrom(2)` says this:
 `int connect_inet_dgram_socket(int sfd, char* host, char* service)`
 
 Calling `connect(2)` on DGRAM sockets is possible. If you do that, subsequent calls to `read(2)` and `write(2)`
-will receive and send data only to the host and service you connected to.
+will receive and send data only to the host and service you connected to. Sending/receiving to/from other hosts
+is still possible with `{recvfrom,sendto}_inet_dgram_socket()`. You may see an example covering this as explained here in 
+`examples/echo_dgram_connected_client.c`.
+
+`sfd` is the file descriptor, `host` and `service` the target address parameter, like in `create_inet_stream_socket()`.
+
+You may call this function multiple times on one socket to reconnect it.
+
+You may 'de-connect' a socket by calling
+
+	connect_inet_dgram_socket(socket,0,0);
+
+where the second 0 also could be "abc" - important is that the host argument is 0. After this call, the connection
+is solved and `write(2)/read(2)` is not possible anymore. You may call this function again to connect the socket, of course.
 	
 	extern int destroy_inet_socket(int sfd);
 	extern int shutdown_inet_stream_socket(int sfd, int method);
