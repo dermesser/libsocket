@@ -339,3 +339,4 @@ Accept incoming connections on server sockets created with `create_inet_server_s
 * `src_service_len`: Length of the previous buffer
 * `flags`: may be `NUMERIC`.
 
+This function will block until there's an incoming connection.
