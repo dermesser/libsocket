@@ -310,7 +310,9 @@ Calling `shutdown_inet_stream_socket()` on a socket has the following effects:
 
 ### `create_inet_server_socket()`
 
-`int create_inet_server_socket(const char* bind_addr, const char* bind_port, char proto_osi4, char proto_osi3)`
+`int create_inet_server_socket(const char* bind_addr, const char* bind_port, char proto_osi4, char proto_osi3, int flags)` (Linux)
+
+`int create_inet_server_socket(const char* bind_addr, const char* bind_port, char proto_osi4, char proto_osi3)` (others)
 
 Creates a server socket, also known as *Passive Socket*. With this socket, you may accept connections (STREAM) or
 simply bind a UDP socket - if you use it as UDP "server" socket, it's almost the same like a socket created with
@@ -322,6 +324,7 @@ The arguments:
 * `bind_port`: The port to bind to.
 * `proto_osi4`: `UDP` or `TCP` (defined in headers)
 * `proto_osi3`: `IPv4` or `IPv6`.
+* `flags`: `SOCK_NONBLOCK` or `SOCK_CLOEXEC` (like in `create_inet_stream_socket()` etc)
 
 Internals: The `backlog` argument of `listen(2)` when using TCP sockets is set to `BACKLOG`, defined at the beginning
 of src/libinetsocket.c. Default is 128, the maximum value on Linux. This may differ on other platforms.

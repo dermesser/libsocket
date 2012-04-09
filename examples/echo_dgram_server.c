@@ -23,7 +23,7 @@ int main(void)
 	src_host[127] = 0;
 	src_service[6] = 0;
 
-	sfd = create_inet_server_socket("0.0.0.0","1234",UDP,IPv4);
+	sfd = create_inet_server_socket("0.0.0.0","1234",UDP,IPv4,0);
 
 	if ( -1 == sfd )
 	{
