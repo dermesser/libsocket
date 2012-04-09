@@ -105,6 +105,9 @@ int create_inet_stream_socket(const char* host, const char* service, char proto_
 # else
 	int flags = 0;
 # endif
+	if ( host == 0 || service == 0 )
+		return -1;
+
 	memset(&hint,0,sizeof hint);
 
 	// set address family
@@ -216,6 +219,16 @@ ssize_t sendto_inet_dgram_socket(int sfd,void* buf, size_t size,char* host, char
 # ifdef VERBOSE
 	const char* errstring;
 # endif
+
+	if ( sfd < 0 )
+		return -1;
+
+	if ( buf == 0 || size == 0)
+		return -1;
+
+	if ( host == 0 || service == 0 )
+		return -1;
+
 	if ( -1 == check_error(getsockname(sfd,(struct sockaddr*)&oldsock,(socklen_t*)&oldsocklen)) )
 		return -1;
 	
@@ -258,6 +271,12 @@ ssize_t recvfrom_inet_dgram_socket(int sfd, void* buffer, size_t size, char* src
 # ifdef VERBOSE
 	const char* errstr;
 # endif
+	if ( sfd < 0 )
+		return -1;
+
+	if ( buf == 0 || size == 0)
+		return -1;
+
 	socklen_t addrlen = sizeof(struct sockaddr_storage);
 
 	if ( -1 == check_error(bytes = recvfrom(sfd,buffer,size,recvfrom_flags,(struct sockaddr*)&client,&addrlen)))
@@ -293,6 +312,9 @@ int connect_inet_dgram_socket(int sfd, char* host, char* service)
 # ifdef VERBOSE
 	const char* errstring;
 # endif
+
+	if ( sfd < 0 )
+		return -1;
 
 	if ( host == 0 )
 	{
@@ -357,6 +379,9 @@ int connect_inet_dgram_socket(int sfd, char* host, char* service)
 
 int destroy_inet_socket(int sfd)
 {
+	if ( sfd < 0 )
+		return -1;
+
 	if ( -1 == check_error(close(sfd)))
 		return -1;
 
@@ -365,6 +390,12 @@ int destroy_inet_socket(int sfd)
 
 int shutdown_inet_stream_socket(int sfd, int method)
 {
+	if ( sfd < 0 )
+		return -1;
+
+	if ( method != READ && method != WRITE && method != READ|WRITE )
+		return -1;
+
 	if ( method & READ ) // READ is set (0001 && 0001 => 0001)
 	{
 		if ( -1 == check_error(shutdown(sfd,SHUT_RD)))
@@ -402,6 +433,9 @@ int create_inet_server_socket(const char* bind_addr, const char* bind_port, char
 # ifndef __linux__
 	int flags = 0;
 # endif
+
+	if ( bind_addr == 0 || bind_port == 0 )
+		return -1;
 
 	switch ( proto_osi4 )
 	{
