@@ -26,7 +26,8 @@ int main(void)
 	
 	//read(sfd,buf,5);
 	// We may use the recvfrom/sendto routines also on connected sockets
-	recvfrom_inet_dgram_socket(sfd,buf,16,0,0,0,0,0,0);
+	if ( -1 == recvfrom_inet_dgram_socket(sfd,buf,16,0,0,0,0,0,0))
+		printf("Error when recvfrom()\n");
 
 	write(1,buf,5);
 
