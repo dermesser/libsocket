@@ -8,6 +8,34 @@ processing with optional verbosity, it's also quite easy to debug your applicati
 
 <p>libsocket is the name for the whole project. libinetsocket is the part for <code>INET</code> sockets, libunixsocket for <code>UNIX</code> sockets.</p>
 
+<p>The names of the procedures (in the following also called 'functions' or 'API calls', syscalls are called 'syscall' or 'call')
+follow a simple scheme to simplify the usage:</p>
+
+<pre><code>&lt;action&gt;_&lt;domain&gt;_&lt;protocol&gt;_socket()
+</code></pre>
+
+<p>e.g.</p>
+
+<pre><code>create_inet_stream_socket()
+</code></pre>
+
+<p>It's important to know this because then you may keep the names better in mind.</p>
+
+<p>If there's something in the text looking like</p>
+
+<pre><code>getaddrinfo(3)
+socket(2)
+</code></pre>
+
+<p>This means that I refer to manpages. They can be reached by the following commands:</p>
+
+<pre><code>$ man 3 getaddrinfo
+$ man 2 socket
+</code></pre>
+
+<p>Note: The manpage extracts come from the manpages delivered with Debian (Linux manpages), usually created by
+the man-pages project, and the OpenBSD manpage extracts come from http://www.openbsd.org/cgi-bin/man.cgi.</p>
+
 <h3>Usage of flags</h3>
 
 <p>The usage of the flags for some functions is described for every function. If you don't need any flags (you think),
@@ -63,6 +91,8 @@ return -1.</p>
 
 <p>The used protocol is TCP.</p>
 
+<p>To send and receive data from the freshly created socket, please use <code>read(2)</code> and <code>write(2)</code>.</p>
+
 <h3><code>create_inet_dgram_socket()</code></h3>
 
 <p><code>int create_inet_dgram_socket(char proto_osi3, int flags)</code> (Linux)</p>
@@ -79,6 +109,10 @@ More than one flags may be ORed. <strong>This argument is only available on Linu
 <p>Like the function before, this function also has different prototypes on different platforms.</p>
 
 <p>The protocol which is used is UDP.</p>
+
+<p>To send and receive data with this socket, please use the functions explained below, <code>sendto_inet_dgram_socket()</code> and
+<code>recvfrom_inet_dgram_socket()</code>. Of course, it's also possible to use <code>sendto(2)</code> and <code>recvfrom(2)</code>, but if you use them,
+why do you use libsocket?</p>
 
 <h3><code>sendto_inet_dgram_socket()</code></h3>
 
@@ -155,14 +189,98 @@ flags which may be specified differ between the platforms. On Linux, you can get
 
 <p><code>recvfrom_inet_dgram_socket()</code> is the equivalent to <code>recvfrom()</code>. It receives data from the socket <code>sfd</code>,
 places the data into the buffer <code>buffer</code> (which is <code>size</code> bytes long), and places the host from which the
-data comes to the <code>src_host_len</code> bytes long <code>src_host</code> buffer. The source port is placed to <code>src_service</code>, with a maximum
+data comes to the <code>src_host_len</code> bytes long <code>src_host</code> buffer. The source port is placed in <code>src_service</code>, with a maximum
 length of <code>src_service_len</code>. <code>recvfrom_flags</code> are given to <code>recvfrom()</code> (described below) and <code>numeric</code> may be
 <code>NUMERIC</code> (defined in header files) - this leads to numerical values in <code>src_host</code> and <code>src_service</code>.</p>
 
-<p><code>recvfrom_flags</code></p>
+<p><code>recvfrom_flags</code> is a ORed combination of the following flags (on Linux):</p>
 
-<pre><code>extern int connect_inet_dgram_socket(int sfd, char* host, char* service);
-extern int destroy_inet_socket(int sfd);
+<pre><code>   MSG_CMSG_CLOEXEC (recvmsg() only; since Linux 2.6.23)
+          Set the close-on-exec flag for the file descriptor received via a UNIX domain file descriptor using the SCM_RIGHTS  operation
+          (described in unix(7)).  This flag is useful for the same reasons as the O_CLOEXEC flag of open(2).
+
+   MSG_DONTWAIT (since Linux 2.2)
+          Enables  nonblocking  operation;  if the operation would block, the call fails with the error EAGAIN or EWOULDBLOCK (this can
+          also be enabled using the O_NONBLOCK flag with the F_SETFL fcntl(2)).
+
+   MSG_ERRQUEUE (since Linux 2.2)
+          This flag specifies that queued errors should be received from the socket error queue.  The error is passed in  an  ancillary
+          message  with  a  type  dependent on the protocol (for IPv4 IP_RECVERR).  The user should supply a buffer of sufficient size.
+          See cmsg(3) and ip(7) for more information.  The payload of the original packet that caused the error  is  passed  as  normal
+          data via msg_iovec.  The original destination address of the datagram that caused the error is supplied via msg_name.
+
+          For  local  errors,  no address is passed (this can be checked with the cmsg_len member of the cmsghdr).  For error receives,
+          the MSG_ERRQUEUE is set in the msghdr.  After an error has been passed, the pending socket error is regenerated based on  the
+          next queued error and will be passed on the next socket operation.
+
+          The error is supplied in a sock_extended_err structure:
+
+              #define SO_EE_ORIGIN_NONE    0
+              #define SO_EE_ORIGIN_LOCAL   1
+              #define SO_EE_ORIGIN_ICMP    2
+              #define SO_EE_ORIGIN_ICMP6   3
+
+              struct sock_extended_err
+              {
+                  uint32_t ee_errno;   /* error number */
+                  uint8_t  ee_origin;  /* where the error originated */
+                  uint8_t  ee_type;    /* type */
+                  uint8_t  ee_code;    /* code */
+                  uint8_t  ee_pad;     /* padding */
+                  uint32_t ee_info;    /* additional information */
+                  uint32_t ee_data;    /* other data */
+                  /* More data may follow */
+              };
+
+              struct sockaddr *SO_EE_OFFENDER(struct sock_extended_err *);
+
+          ee_errno  contains  the  errno  number of the queued error.  ee_origin is the origin code of where the error originated.  The
+          other fields are protocol-specific.  The macro SOCK_EE_OFFENDER returns a pointer to the address of the network object  where
+          the  error  originated  from given a pointer to the ancillary message.  If this address is not known, the sa_family member of
+          the sockaddr contains AF_UNSPEC and the other fields of the sockaddr are undefined.  The payload of the  packet  that  caused
+          the error is passed as normal data.
+
+          For  local  errors,  no address is passed (this can be checked with the cmsg_len member of the cmsghdr).  For error receives,
+          the MSG_ERRQUEUE is set in the msghdr.  After an error has been passed, the pending socket error is regenerated based on  the
+          next queued error and will be passed on the next socket operation.
+
+   MSG_OOB
+          This  flag  requests  receipt of out-of-band data that would not be received in the normal data stream.  Some protocols place
+          expedited data at the head of the normal data queue, and thus this flag cannot be used with such protocols.
+
+   MSG_PEEK
+          This flag causes the receive operation to return data from the beginning of the receive queue without removing that data from
+          the queue.  Thus, a subsequent receive call will return the same data.
+
+   MSG_TRUNC (since Linux 2.2)
+          For  raw (AF_PACKET), Internet datagram (since Linux 2.4.27/2.6.8), and netlink (since Linux 2.6.22) sockets: return the real
+          length of the packet or datagram, even when it was longer than the passed buffer.  Not implemented for UNIX domain  (unix(7))
+          sockets.
+
+          For use with Internet stream sockets, see tcp(7).
+
+   MSG_WAITALL (since Linux 2.2)
+          This  flag  requests  that  the operation block until the full request is satisfied.  However, the call may still return less
+          data than requested if a signal is caught, an error or disconnect occurs, or the next data to be received is of  a  different
+          type than that returned.
+</code></pre>
+
+<p>OpenBSD's <code>recvfrom(2)</code> says this:</p>
+
+<pre><code>    MSG_OOB         process out-of-band data
+    MSG_PEEK        peek at incoming message
+    MSG_WAITALL     wait for full request or error
+    MSG_DONTWAIT    don't block
+</code></pre>
+
+<h3><code>connect_inet_dgram_socket()</code></h3>
+
+<p><code>int connect_inet_dgram_socket(int sfd, char* host, char* service)</code></p>
+
+<p>Calling <code>connect(2)</code> on DGRAM sockets is possible. If you do that, subsequent calls to <code>read(2)</code> and <code>write(2)</code>
+will receive and send data only to the host and service you connected to.</p>
+
+<pre><code>extern int destroy_inet_socket(int sfd);
 extern int shutdown_inet_stream_socket(int sfd, int method);
 extern int create_inet_server_socket(const char* bind_addr, const char* bind_port, char proto_osi4, char proto_osi3);
 extern int accept_inet_stream_socket(int sfd, char* src_host, size_t src_host_len, char* src_service, size_t src_service_len, int flags);
