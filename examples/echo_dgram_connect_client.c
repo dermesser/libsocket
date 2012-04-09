@@ -24,7 +24,9 @@ int main(void)
 	
 	sleep(2);
 	
-	read(sfd,buf,5);
+	//read(sfd,buf,5);
+	// We may use the recvfrom/sendto routines also on connected sockets
+	recvfrom_inet_dgram_socket(sfd,buf,16,0,0,0,0,0,0);
 
 	write(1,buf,5);
 
