@@ -69,17 +69,17 @@ static inline signed int check_error(int return_value)
 	return 0;
 }
 
-int create_unix_stream_socket(const char* path)
+int create_unix_stream_socket(const char* path, int flags)
 {
 	struct sockaddr_un saddr;
 	int sfd;
 
-	if ( -1 == check_error(sfd = socket(AF_UNIX,SOCK_STREAM,0)) )
+	if ( -1 == check_error(sfd = socket(AF_UNIX,SOCK_STREAM|flags,0)) )
 		return -1;
 
 	memset(&saddr,0,sizeof(struct sockaddr_un));
 
-	if ( strlen(path) > sizeof(saddr.sun_path)-1 )
+	if ( strlen(path) > (sizeof(saddr.sun_path)-1) )
 	{
 # ifdef VERBOSE
 		write(2,"UNIX destination socket path too long\n",14);
@@ -96,22 +96,29 @@ int create_unix_stream_socket(const char* path)
 	return sfd;
 }
 
-int create_unix_dgram_socket(const char* bind_path)
+int create_unix_dgram_socket(const char* bind_path, int flags)
 {
 	int sfd, retval;
 	struct sockaddr_un saddr;
 
-	if ( -1 == check_error(sfd = socket(AF_UNIX,SOCK_DGRAM,0)) )
+	if ( -1 == check_error(sfd = socket(AF_UNIX,SOCK_DGRAM|flags,0)) )
 		return -1;
 
 	memset(&saddr,0,sizeof(struct sockaddr_un));
 
 	if ( bind_path != 0 )
 	{
-
 		if ( (retval = unlink(bind_path)) == -1 && errno != ENOENT ) // If there's another error than "doesn't exist"
 		{
 			check_error(retval);
+			return -1;
+		}
+		
+		if ( strlen(bind_path) > (sizeof(saddr.sun_path)-1) )
+		{
+# ifdef VERBOSE
+			write(2,"UNIX socket path too long\n",14);
+# endif
 			return -1;
 		}
 
@@ -193,12 +200,12 @@ int shutdown_unix_stream_socket(int sfd, int method)
 
 // Create new UNIX domain server socket
 //			      Bind address DGRAM or STREAM
-int create_unix_server_socket(char* path, int socktype, int flags)
+int create_unix_server_socket(const char* path, int socktype, int flags)
 {
 	struct sockaddr_un saddr;
 	int sfd, type, retval;
 
-	if ( strlen(path) > sizeof(saddr.sun_path) )
+	if ( strlen(path) > (sizeof(saddr.sun_path)-1) )
 	{
 # ifdef VERBOSE
 		write(2,"Path too long\n",14);
@@ -246,7 +253,6 @@ int create_unix_server_socket(char* path, int socktype, int flags)
 }
 
 // Accept connections
-//		    Socket   Flags (SOCK_NONBLOCK, SOCK_CLOEXEC)
 int accept_unix_stream_socket(int sfd, int flags)
 {
 	int cfd;

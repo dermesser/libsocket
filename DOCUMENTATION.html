@@ -6,6 +6,10 @@
 (unix domain) sockets. With many specialized functions in the API, it's hard to do things wrong. And with the excellent error
 processing with optional verbosity, it's also quite easy to debug your applications.</p>
 
+<p>libsocket is targeted at experienced C/Linux programmers which don't like the traditional BSD sockets API.
+libsocket is not targeted at programmers which do their first experiences with C or sockets! To understand the
+library, you must have experience with the actual syscalls.</p>
+
 <p>libsocket is the name for the whole project. libinetsocket is the part for <code>INET</code> sockets, libunixsocket for <code>UNIX</code> sockets.</p>
 
 <p>The names of the procedures (in the following also called 'functions' or 'API calls', syscalls are called 'syscall')
@@ -56,15 +60,14 @@ to get it working on OpenBSD.</p>
 
 <p>libunixsocket is responsible for UNIX domain sockets. The calls are similar to the libinetsocket calls.</p>
 
-<p>libunixsocket is very linux-specific; here, you can't see multi-platform adaptations etc.</p>
+<p>libunixsocket is very linux-specific; you can't see multi-platform adaptations etc., and it probably won't run on other
+platforms.</p>
 
-<h2>API calls</h2>
+<h1>API calls</h1>
 
-<p>This section explains the single API calls of libsocket.</p>
+<h2>libinetsocket</h2>
 
-<h3>libinetsocket</h3>
-
-<h4><code>create_inet_stream_socket()</code></h4>
+<h3><code>create_inet_stream_socket()</code></h3>
 
 <p><code>int create_inet_stream_socket(const char* host, const char* service, char proto_osi3, int flags)</code> (Linux)</p>
 
@@ -389,3 +392,35 @@ of src/libinetsocket.c. Default is 128, the maximum value on Linux. This may dif
 </ul>
 
 <p>This function will block until there's an incoming connection.</p>
+
+<h2>libunixsocket</h2>
+
+<p>As mentioned in the introduction, libunixsocket is Linux-specific. Until now, it did not run on other Unixes than Linux.</p>
+
+<h3><code>create_unix_stream_socket()</code></h3>
+
+<p><code>int create_unix_stream_socket(const char* path)</code></p>
+
+<p>Creates a UNIX STREAM socket and connects it to <code>path</code>.</p>
+
+<ul>
+<li><code>path</code>: The socket is connected to the path given with this argument.</li>
+</ul>
+
+<h3><code>create_unix_dgram_socket()</code></h3>
+
+<p><code>int create_unix_dgram_socket(const char* bind_path)</code></p>
+
+<p>Creates a UNIX DGRAM socket and binds it optionally to <code>bind_path</code>.</p>
+
+<ul>
+<li><code>bind_path</code>: If this is not 0, the socket is bound to this path, i.e. a socket file is created with this name.</li>
+</ul>
+
+<p>extern int connect<em>unix</em>dgram<em>socket(int sfd, const char* path);
+extern int destroy</em>unix<em>socket(int sfd);
+extern int shutdown</em>unix<em>stream</em>socket(int sfd, int method);
+extern int create<em>unix</em>server<em>socket(char* path, int socktype, int flags);
+extern int accept</em>unix<em>stream</em>socket(int sfd, int flags);
+extern ssize<em>t recvfrom</em>unix<em>dgram</em>socket(int sfd, void* buf, size<em>t size, char* from, size</em>t from<em>size, int recvfrom</em>flags);
+extern ssize<em>t sendto</em>unix<em>dgram</em>socket(int sfd, void* buf, size<em>t size, char* path, int sendto</em>flags);</p>

@@ -17,7 +17,7 @@ int main(void)
 	char buf[26];
 
 
-	if ( -1 == (sfd = create_unix_dgram_socket("/tmp/client")) )
+	if ( -1 == (sfd = create_unix_dgram_socket("/tmp/client",SOCK_CLOEXEC)) )
 		return -1;
 
 	sendto_unix_dgram_socket(sfd,string,26,"/tmp/echosock",0);
