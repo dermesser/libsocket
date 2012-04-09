@@ -74,6 +74,9 @@ int create_unix_stream_socket(const char* path, int flags)
 	struct sockaddr_un saddr;
 	int sfd;
 
+	if ( path == 0 )
+		return -1;
+
 	if ( -1 == check_error(sfd = socket(AF_UNIX,SOCK_STREAM|flags,0)) )
 		return -1;
 
@@ -139,6 +142,9 @@ int connect_unix_dgram_socket(int sfd, const char* path)
 	struct sockaddr_un new_addr;
 	struct sockaddr deconnect;
 
+	if ( sfd < 0 )
+		return -1;
+
 	if ( path == 0 )
 	{
 		memset(&deconnect,0,sizeof(struct sockaddr));
@@ -175,6 +181,9 @@ int connect_unix_dgram_socket(int sfd, const char* path)
 //		   Socket file descriptor
 int destroy_unix_socket(int sfd)
 {
+	if ( sfd < 0 )
+		return -1;
+
 	if ( -1 == check_error(close(sfd)))
 		return -1;
 	return 0;
@@ -182,6 +191,9 @@ int destroy_unix_socket(int sfd)
 
 int shutdown_unix_stream_socket(int sfd, int method)
 {
+	if ( sfd < 0 )
+		return -1;
+
 	if ( method & READ ) // READ is set (0001 && 0001 => 0001)
 	{
 		if ( -1 == check_error(shutdown(sfd,SHUT_RD)))
@@ -204,6 +216,9 @@ int create_unix_server_socket(const char* path, int socktype, int flags)
 {
 	struct sockaddr_un saddr;
 	int sfd, type, retval;
+	
+	if ( path == 0 )
+		return -1;
 
 	if ( strlen(path) > (sizeof(saddr.sun_path)-1) )
 	{
@@ -257,6 +272,9 @@ int accept_unix_stream_socket(int sfd, int flags)
 {
 	int cfd;
 
+	if ( sfd < 0 )
+		return -1;
+
 	if ( flags != SOCK_NONBLOCK && flags != SOCK_CLOEXEC && flags != (SOCK_CLOEXEC|SOCK_NONBLOCK) && flags != 0 )
 		return -1;
 
@@ -306,4 +324,3 @@ ssize_t sendto_unix_dgram_socket(int sfd, void* buf, size_t size, char* path, in
 
 	return bytes;
 }
-
