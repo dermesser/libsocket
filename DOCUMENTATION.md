@@ -51,7 +51,8 @@ to get it working on OpenBSD.
 
 libunixsocket is responsible for UNIX domain sockets. The calls are similar to the libinetsocket calls.
 
-libunixsocket is very linux-specific; here, you can't see multi-platform adaptations etc.
+libunixsocket is very linux-specific; you can't see multi-platform adaptations etc., and it probably won't run on other
+platforms.
 
 ## API calls
 
