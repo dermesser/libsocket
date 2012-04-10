@@ -274,7 +274,7 @@ ssize_t recvfrom_inet_dgram_socket(int sfd, void* buffer, size_t size, char* src
 	if ( sfd < 0 )
 		return -1;
 
-	if ( buf == 0 || size == 0)
+	if ( buffer == 0 || size == 0)
 		return -1;
 
 	socklen_t addrlen = sizeof(struct sockaddr_storage);
@@ -393,7 +393,7 @@ int shutdown_inet_stream_socket(int sfd, int method)
 	if ( sfd < 0 )
 		return -1;
 
-	if ( method != READ && method != WRITE && method != READ|WRITE )
+	if ( method != READ && method != WRITE && method != (READ|WRITE) )
 		return -1;
 
 	if ( method & READ ) // READ is set (0001 && 0001 => 0001)
