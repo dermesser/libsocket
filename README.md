@@ -6,7 +6,7 @@ It's recommended to compile libsocket statically into your program (by placing t
 You don't have to mind legal issues because libsocket is licensed by a slightly modified 2-clause BSD license which permits
 any use, as long as you include the license text in your product (so it's clear that libsocket is licensed by this License)
 and the notice that *we* wrote libsocket (as described in the license)
-It's friendly to mention libsocket in your product's Readme or advertisements anyway, of course :)
+It's nice to mention libsocket in your product's Readme or advertisements anyway, of course :)
 
 ##USE
 
