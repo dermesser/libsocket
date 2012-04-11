@@ -67,6 +67,12 @@ libunixsocket is responsible for UNIX domain sockets. The calls are similar to t
 libunixsocket is very linux-specific; you can't see multi-platform adaptations etc., and it probably won't run on other
 platforms.
 
+# Usage in your application
+Recommended is static linking. That means, copy a checkout of the library files (c/, headers/) to the
+source tree of your application. Then, simply compile the files together with the other files (as they would
+be normal part of your application).
+The 2-clause BSD license allows this, also for proprietary applications.
+
 # API calls
 ## libinetsocket
 ### `create_inet_stream_socket()`
