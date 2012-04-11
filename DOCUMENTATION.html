@@ -73,6 +73,13 @@ to get it working on OpenBSD.</p>
 <p>libunixsocket is very linux-specific; you can't see multi-platform adaptations etc., and it probably won't run on other
 platforms.</p>
 
+<h1>Usage in your application</h1>
+
+<p>Recommended is static linking. That means, copy a checkout of the library files (c/, headers/) to the
+source tree of your application. Then, simply compile the files together with the other files (as they would
+be normal part of your application).
+The 2-clause BSD license allows this, also for proprietary applications.</p>
+
 <h1>API calls</h1>
 
 <h2>libinetsocket</h2>
