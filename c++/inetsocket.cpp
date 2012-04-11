@@ -35,7 +35,7 @@ namespace libsocket
 
 		inet_socket();
 	};
-	
+
 	inet_socket::inet_socket() {}
 
 	class inet_stream : public inet_socket
@@ -55,7 +55,11 @@ namespace libsocket
 		int destroy(void);
 
 		// I/O
+		// O
 		friend inet_stream& operator<<(inet_stream& sock, const char* str);
+		friend inet_stream& operator<<(inet_stream& sock, string& str);
+
+		// I
 		friend inet_stream& operator>>(inet_stream& sock, string& dest);
 
 		// Getters
@@ -118,14 +122,16 @@ namespace libsocket
 	{
 		if ( 0 > destroy_inet_socket(sfd) )
 			throw inet_exception("Could not close socket\n");
-		
+
 		sfd = -1;
-		
+
 		return 0;
 	}
 
 	// I/O
-	
+
+	// O
+
 	inet_stream& operator<<(inet_stream& sock, const char* str)
 	{
 		if ( sock.sfd == -1 )
@@ -141,11 +147,22 @@ namespace libsocket
 		return sock;
 	}
 
+	inet_stream& operator<<(inet_stream& sock, string& str)
+	{
+		if ( sock.sfd == -1 )
+			throw inet_exception("Socket not connected!\n");
+
+		if ( -1 == write(sock.sfd,str.c_str(),str.size()) )
+			throw inet_exception("Write failed!\n");
+
+		return sock;
+	}
+
 	inet_stream& operator>>(inet_stream& sock, string& dest)
 	{
 		ssize_t read_bytes;
 		char* buffer; 
-		
+
 		buffer = new char[dest.size()];
 
 		if ( sock.sfd == -1 )
@@ -164,7 +181,7 @@ namespace libsocket
 
 		return sock;
 	}
-	
+
 	// Getters
 
 	int inet_stream::getfd(void) const

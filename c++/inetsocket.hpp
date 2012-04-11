@@ -62,7 +62,11 @@ namespace libsocket
 		int destroy(void);
 
 		// I/O
+		// O
 		friend inet_stream& operator<<(inet_stream& sock, const char* str);
+		friend inet_stream& operator<<(inet_stream& sock, string& str);
+
+		// I
 		friend inet_stream& operator>>(inet_stream& sock, string& dest);
 
 		// Getters
