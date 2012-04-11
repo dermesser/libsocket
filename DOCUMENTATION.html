@@ -86,9 +86,7 @@ The 2-clause BSD license allows this, also for proprietary applications.</p>
 
 <h3><code>create_inet_stream_socket()</code></h3>
 
-<p><code>int create_inet_stream_socket(const char* host, const char* service, char proto_osi3, int flags)</code> (Linux)</p>
-
-<p><code>int create_inet_stream_socket(const char* host, const char* service, char proto_osi3)</code> (Others)</p>
+<p><code>int create_inet_stream_socket(const char* host, const char* service, char proto_osi3, int flags)</code></p>
 
 <p>This function creates, connects and returns a inet stream socket (TCP socket) which is connected to <code>host</code>:<code>service</code>.</p>
 
@@ -96,7 +94,8 @@ The 2-clause BSD license allows this, also for proprietary applications.</p>
 <li><code>host</code>: Destination host</li>
 <li><code>service</code>: Destination host's port</li>
 <li><code>proto_osi3</code>: OSI layer 3 protocol: either <code>IPv4</code> or <code>IPv6</code> (defined in <code>libinetsocket.h</code>). </li>
-<li><code>flags</code> <strong>is only available on Linux >= 2.6.27</strong> and allows to manipulate the <code>socket()</code> call. </li>
+<li><code>flags</code> <strong>is only available on Linux >= 2.6.27 - elsewise, specify 0 to avoid errors</strong> 
+and allows to manipulate the <code>socket()</code> call. </li>
 </ul>
 
 <p>Returns on success the socket file descriptor number, on error -1.</p>
@@ -124,9 +123,7 @@ return -1.</p>
 
 <h3><code>create_inet_dgram_socket()</code></h3>
 
-<p><code>int create_inet_dgram_socket(char proto_osi3, int flags)</code> (Linux)</p>
-
-<p><code>int create_inet_dgram_socket(char proto_osi3)</code> (Others)</p>
+<p><code>int create_inet_dgram_socket(char proto_osi3, int flags)</code></p>
 
 <p>Returns an integer describing a DGRAM (UDP) socket.</p>
 
@@ -372,9 +369,7 @@ is solved and <code>write(2)/read(2)</code> is not possible anymore. Of course, 
 
 <h3><code>create_inet_server_socket()</code></h3>
 
-<p><code>int create_inet_server_socket(const char* bind_addr, const char* bind_port, char proto_osi4, char proto_osi3, int flags)</code> (Linux)</p>
-
-<p><code>int create_inet_server_socket(const char* bind_addr, const char* bind_port, char proto_osi4, char proto_osi3)</code> (others)</p>
+<p><code>int create_inet_server_socket(const char* bind_addr, const char* bind_port, char proto_osi4, char proto_osi3, int flags)</code></p>
 
 <p>Creates a server socket, also known as <em>Passive Socket</em>. With this socket, you may accept connections (STREAM) or
 simply bind a UDP socket - if you use it as UDP "server" socket, it's almost the same like a socket created with
@@ -387,7 +382,7 @@ simply bind a UDP socket - if you use it as UDP "server" socket, it's almost the
 <li><code>bind_port</code>: The port to bind to.</li>
 <li><code>proto_osi4</code>: <code>UDP</code> or <code>TCP</code> (defined in headers)</li>
 <li><code>proto_osi3</code>: <code>IPv4</code> or <code>IPv6</code>.</li>
-<li><code>flags</code>: <code>SOCK_NONBLOCK</code> or <code>SOCK_CLOEXEC</code> (like in <code>create_inet_stream_socket()</code> etc)</li>
+<li><code>flags</code>: <code>SOCK_NONBLOCK</code> or <code>SOCK_CLOEXEC</code> (like in <code>create_inet_stream_socket()</code> etc, on non-linux systems, specify it as 0)</li>
 </ul>
 
 <p>Internals: The <code>backlog</code> argument of <code>listen(2)</code> when using TCP sockets is set to <code>BACKLOG</code>, defined at the beginning

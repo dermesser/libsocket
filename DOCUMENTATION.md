@@ -76,16 +76,15 @@ The 2-clause BSD license allows this, also for proprietary applications.
 # API calls
 ## libinetsocket
 ### `create_inet_stream_socket()`
-`int create_inet_stream_socket(const char* host, const char* service, char proto_osi3, int flags)` (Linux)
-
-`int create_inet_stream_socket(const char* host, const char* service, char proto_osi3)` (Others)
+`int create_inet_stream_socket(const char* host, const char* service, char proto_osi3, int flags)`
 
 This function creates, connects and returns a inet stream socket (TCP socket) which is connected to `host`:`service`.
 
 * `host`: Destination host
 * `service`: Destination host's port
 * `proto_osi3`: OSI layer 3 protocol: either `IPv4` or `IPv6` (defined in `libinetsocket.h`). 
-* `flags` **is only available on Linux >= 2.6.27** and allows to manipulate the `socket()` call. 
+* `flags` **is only available on Linux >= 2.6.27 - elsewise, specify 0 to avoid errors** 
+and allows to manipulate the `socket()` call. 
 
 Returns on success the socket file descriptor number, on error -1.
 
@@ -108,9 +107,7 @@ The used protocol is TCP.
 To send and receive data from the freshly created socket, please use `read(2)` and `write(2)`.
 
 ### `create_inet_dgram_socket()`
-`int create_inet_dgram_socket(char proto_osi3, int flags)` (Linux)
-
-`int create_inet_dgram_socket(char proto_osi3)` (Others)
+`int create_inet_dgram_socket(char proto_osi3, int flags)`
 
 Returns an integer describing a DGRAM (UDP) socket.
 
@@ -333,9 +330,7 @@ Calling `shutdown_inet_stream_socket()` on a socket has the following effects:
 Returns 0 upon success, -1 on error.
 
 ### `create_inet_server_socket()`
-`int create_inet_server_socket(const char* bind_addr, const char* bind_port, char proto_osi4, char proto_osi3, int flags)` (Linux)
-
-`int create_inet_server_socket(const char* bind_addr, const char* bind_port, char proto_osi4, char proto_osi3)` (others)
+`int create_inet_server_socket(const char* bind_addr, const char* bind_port, char proto_osi4, char proto_osi3, int flags)`
 
 Creates a server socket, also known as *Passive Socket*. With this socket, you may accept connections (STREAM) or
 simply bind a UDP socket - if you use it as UDP "server" socket, it's almost the same like a socket created with
@@ -347,7 +342,7 @@ The arguments:
 * `bind_port`: The port to bind to.
 * `proto_osi4`: `UDP` or `TCP` (defined in headers)
 * `proto_osi3`: `IPv4` or `IPv6`.
-* `flags`: `SOCK_NONBLOCK` or `SOCK_CLOEXEC` (like in `create_inet_stream_socket()` etc)
+* `flags`: `SOCK_NONBLOCK` or `SOCK_CLOEXEC` (like in `create_inet_stream_socket()` etc, on non-linux systems, specify it as 0)
 
 Internals: The `backlog` argument of `listen(2)` when using TCP sockets is set to `BACKLOG`, defined at the beginning
 of src/libinetsocket.c. Default is 128, the maximum value on Linux. This may differ on other platforms.
