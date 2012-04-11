@@ -273,7 +273,27 @@ namespace libsocket
 		~inet_dgram();
 
 		// actions
-		int connect(const char* host, const char* port, int proto_osi3, int flags);
+		void connect(const char* host, const char* port, int proto_osi3, int flags);
+		void deconnect(void);
+
+		// I/O
+
+		void try_to_destroy(void);
+		void destroy(void);
+
+		// I/O
+		// O
+		friend inet_stream& operator<<(inet_stream& sock, const char* str);
+		friend inet_stream& operator<<(inet_stream& sock, string& str);
+
+		ssize_t snd(const void* buf, size_t len, int flags);
+		ssize_t sndto(const char* host, const char* port, const void* buf, size_t len, int flags);
+		// I
+		friend inet_stream& operator>>(inet_stream& sock, string& dest);
+
+		ssize_t rcv(void* buf, size_t len, int flags);
+		ssize_t rsvfrom(
+
 	};
 
 }
