@@ -1,5 +1,9 @@
+# ifndef INETSOCKET_HEAD
+# define INETSOCKET_HEAD
+
 # include <string>
 # include "../headers/libinetsocket.h"
+# include "socket.hpp"
 
 # define TCP 1
 # define UDP 2
@@ -29,13 +33,12 @@ namespace libsocket
 
 // // // // // // //
 
-	class inet_socket
+	class inet_socket : public socket
 	{
 		protected:
-		int sfd;
 		int proto;
-		string remote_host;
-		string remote_port;
+		const char* remote_host;
+		const char* remote_port;
 
 		public:
 
@@ -48,9 +51,24 @@ namespace libsocket
 
 		public:
 
-		inet_stream(string host, string port, int proto_osi3, int flags);
+		inet_stream(void);
+		inet_stream(const char* host, const char* port, int proto_osi3, int flags);
 		~inet_stream();
 
+		// Real actions
+		int connect(const char* host, const char* port, int proto_osi3, int flags);
 		int shutdown(int method);
+		void try_to_destroy(void);
+		int destroy(void);
+
+		// I/O
+		friend inet_stream& operator<<(inet_stream& sock, const char* str);
+		friend inet_stream& operator>>(inet_stream& sock, string& dest);
+
+		// Getters
+		int getfd(void) const;
+		const char* gethost(void) const;
+		const char* getport(void) const;
 	};
 }
+# endif
