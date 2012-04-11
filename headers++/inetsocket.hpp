@@ -107,13 +107,13 @@ namespace libsocket
 		// I/O
 		// O
 		// only if connected
-		friend inet_stream& operator<<(inet_stream& sock, const char* str);
-		friend inet_stream& operator<<(inet_stream& sock, string& str);
+		//friend inet_stream& operator<<(inet_stream& sock, const char* str);
+		//friend inet_stream& operator<<(inet_stream& sock, string& str);
 
 		ssize_t snd(const void* buf, size_t len, int flaags=0);
 		ssize_t sndto(const void* buf, size_t len, const char* host, const char* port, int sndto_flags=0);
 		// I
-		friend inet_stream& operator>>(inet_stream& sock, string& dest);
+		//friend inet_stream& operator>>(inet_stream& sock, string& dest);
 
 		ssize_t rcv(void* buf, size_t len, int flags=0);
 		ssize_t rcvfrom(void* buf, size_t len, char* host, size_t hostlen, char* port, size_t portlen, int rcvfrom_flags=0);
