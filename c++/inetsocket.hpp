@@ -66,12 +66,12 @@ namespace libsocket
 		friend inet_stream& operator<<(inet_stream& sock, const char* str);
 		friend inet_stream& operator<<(inet_stream& sock, string& str);
 
-		ssize_t send(const void* buf, size_t len, int flags);
+		ssize_t snd(const void* buf, size_t len, int flags);
 
 		// I
 		friend inet_stream& operator>>(inet_stream& sock, string& dest);
 
-		ssize_t recv(void* buf, size_t len, int flags);
+		ssize_t rcv(void* buf, size_t len, int flags);
 
 		// Getters
 		int getfd(void) const;

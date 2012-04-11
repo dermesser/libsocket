@@ -74,12 +74,12 @@ namespace libsocket
 		friend inet_stream& operator<<(inet_stream& sock, const char* str);
 		friend inet_stream& operator<<(inet_stream& sock, string& str);
 
-		ssize_t send(const void* buf, size_t len, int flags);
+		ssize_t snd(const void* buf, size_t len, int flags);
 
 		// I
 		friend inet_stream& operator>>(inet_stream& sock, string& dest);
 
-		ssize_t recv(void* buf, size_t len, int flags);
+		ssize_t rcv(void* buf, size_t len, int flags);
 
 		// Getters
 		int getfd(void) const;
@@ -139,6 +139,9 @@ namespace libsocket
 
 	int inet_stream::destroy(void)
 	{
+		if ( -1 == sfd )
+			throw inet_exception(__FILE__,__LINE__,"Socket was not connected!\n");
+
 		if ( 0 > destroy_inet_socket(sfd) )
 			throw inet_exception(__FILE__,__LINE__,"Could not close socket\n");
 
@@ -149,7 +152,7 @@ namespace libsocket
 
 	// I/O
 
-	// O
+	// I
 
 	inet_stream& operator<<(inet_stream& sock, const char* str)
 	{
@@ -177,6 +180,24 @@ namespace libsocket
 		return sock;
 	}
 
+	ssize_t inet_stream::rcv(void* buf, size_t len, int flags)
+	{
+		ssize_t recvd;
+
+		if ( sfd == -1 )
+			throw inet_exception(__FILE__,__LINE__,"Socket is not connected!\n");
+
+		if ( buf == NULL || len == 0 )
+			throw inet_exception(__FILE__,__LINE__,"Buffer or length is null!\n");
+
+		if ( -1 == (recvd = recv(sfd,buf,len,flags)) )
+			throw inet_exception(__FILE__,__LINE__,"Error while reading!\n");
+
+		return recvd;
+	}
+
+	// O
+
 	inet_stream& operator>>(inet_stream& sock, string& dest)
 	{
 		ssize_t read_bytes;
@@ -200,20 +221,21 @@ namespace libsocket
 
 		return sock;
 	}
-/*
-	ssize_t inet_stream::recv(void* buf, size_t len, int flags)
+
+	ssize_t inet_stream::snd(const void* buf, size_t len, int flags)
 	{
-		ssize_t recvd;
+		ssize_t snd_bytes;
 
 		if ( sfd == -1 )
-			throw inet_exception(" __FILE__ :__LINE__: Socket is not connected!\n");
+			throw inet_exception(__FILE__,__LINE__,"Socket not connected!\n");
 		if ( buf == NULL || len == 0 )
-			throw inet_exception(" __FILE__ :__LINE__: Buffer or length is null!\n");
+			throw inet_exception(__FILE__,__LINE__,"Buffer or length is null!\n");
 
-		if ( -1 == (recvd = recv(sfd,buf,len,flags)) )
-			throw inet_exception(" __FILE__ :__LINE__: Error while reading!\n"
+		if ( -1 == (snd_bytes = send(sfd,buf,len,flags)) )
+			throw inet_exception(__FILE__,__LINE__,"Error while sending\n");
 
-	*/
+		return snd_bytes;
+	}
 
 	// Getters
 
