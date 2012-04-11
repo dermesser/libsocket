@@ -337,6 +337,7 @@ namespace libsocket
 
 		remote_host = host;
 		remote_port = port;
+		connected = true;
 	}
 
 
@@ -361,7 +362,10 @@ namespace libsocket
 	// I/O
 
 	// O
-	// ssize_t inet_dgram::snd(const void* buf, size_t len, int flags)
+
+	ssize_t inet_dgram::snd(const void* buf, size_t len, int flags)
+	{
+
 
 	ssize_t inet_dgram::sndto(void* buf, size_t len, const char* host, const char* port, int sndto_flags)
 	{
