@@ -194,7 +194,7 @@ int create_inet_dgram_socket(char proto_osi3, int flags)
 }
 
 //Working
-ssize_t sendto_inet_dgram_socket(int sfd,void* buf, size_t size,const char* host, const char* service, int sendto_flags)
+ssize_t sendto_inet_dgram_socket(int sfd, const void* buf, size_t size,const char* host, const char* service, int sendto_flags)
 {
 	struct sockaddr_storage oldsock;
 	struct addrinfo *result, *result_check, hint;

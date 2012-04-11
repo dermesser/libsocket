@@ -292,8 +292,8 @@ namespace libsocket
 		//friend inet_stream& operator<<(inet_stream& sock, const char* str);
 		//friend inet_stream& operator<<(inet_stream& sock, string& str);
 
-		ssize_t snd(void* buf, size_t len, int flags=0); // flags: send()
-		ssize_t sndto(void* buf, size_t len, const char* host, const char* port, int sndto_flags=0); // flags: sendto()
+		ssize_t snd(const void* buf, size_t len, int flags=0); // flags: send()
+		ssize_t sndto(const void* buf, size_t len, const char* host, const char* port, int sndto_flags=0); // flags: sendto()
 
 		// I
 		//friend inet_stream& operator>>(inet_stream& sock, string& dest);
@@ -365,9 +365,21 @@ namespace libsocket
 
 	ssize_t inet_dgram::snd(const void* buf, size_t len, int flags)
 	{
+		ssize_t bytes;
 
+		if ( -1 == sfd )
+			throw inet_exception(__FILE__,__LINE__,"inet_dgram::snd() - Socket already closed!\n");
 
-	ssize_t inet_dgram::sndto(void* buf, size_t len, const char* host, const char* port, int sndto_flags)
+		if ( connected != true )
+			throw inet_exception(__FILE__,__LINE__,"inet_dgram::snd() - Socket is not connected!\n");
+
+		if ( -1 == (bytes = send(sfd,buf,len,flags)) )
+			throw inet_exception(__FILE__,__LINE__,"inet_dgram::snd() - send() failed!\n");
+
+		return bytes;
+	}
+
+	ssize_t inet_dgram::sndto(const void* buf, size_t len, const char* host, const char* port, int sndto_flags)
 	{
 		ssize_t bytes;
 

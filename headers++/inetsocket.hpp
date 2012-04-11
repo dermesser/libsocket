@@ -110,8 +110,9 @@ namespace libsocket
 		//friend inet_stream& operator<<(inet_stream& sock, const char* str);
 		//friend inet_stream& operator<<(inet_stream& sock, string& str);
 
-		ssize_t snd(const void* buf, size_t len, int flaags=0);
-		ssize_t sndto(const void* buf, size_t len, const char* host, const char* port, int sndto_flags=0);
+		ssize_t snd(const void* buf, size_t len, int flags=0); // flags: send()
+		ssize_t sndto(const void* buf, size_t len, const char* host, const char* port, int sndto_flags=0); // flags: sendto()
+
 		// I
 		//friend inet_stream& operator>>(inet_stream& sock, string& dest);
 
