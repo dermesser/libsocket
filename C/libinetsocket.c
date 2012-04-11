@@ -194,7 +194,7 @@ int create_inet_dgram_socket(char proto_osi3, int flags)
 }
 
 //Working
-ssize_t sendto_inet_dgram_socket(int sfd,void* buf, size_t size,char* host, char* service, int sendto_flags)
+ssize_t sendto_inet_dgram_socket(int sfd,void* buf, size_t size,const char* host, const char* service, int sendto_flags)
 {
 	struct sockaddr_storage oldsock;
 	struct addrinfo *result, *result_check, hint;
@@ -285,7 +285,7 @@ ssize_t recvfrom_inet_dgram_socket(int sfd, void* buffer, size_t size, char* src
 	return bytes;
 }
 
-int connect_inet_dgram_socket(int sfd, char* host, char* service)
+int connect_inet_dgram_socket(int sfd, const char* host, const char* service)
 {
 	struct addrinfo *result, *result_check, hint;
 	struct sockaddr_storage oldsockaddr;

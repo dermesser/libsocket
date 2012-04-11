@@ -62,12 +62,12 @@ namespace libsocket
 		public:
 
 		inet_stream(void);
-		inet_stream(const char* host, const char* port, int proto_osi3, int flags);
+		inet_stream(const char* host, const char* port, int proto_osi3, int flags=0);
 		
 		~inet_stream();
 
 		// Real actions
-		void connect(const char* host, const char* port, int proto_osi3, int flags);
+		void connect(const char* host, const char* port, int proto_osi3, int flags=0);
 		void shutdown(int method);
 		void try_to_destroy(void);
 		void destroy(void);
@@ -266,14 +266,13 @@ namespace libsocket
 
 		public:
 		
-		inet_dgram(void);
-		inet_dgram(int proto_osi3);
-		inet_dgram(const char* host, const char* port, int proto_osi3, int flags);
+		inet_dgram(int proto_osi3,int flags=0); // socket()
+		inet_dgram(const char* host, const char* port, int proto_osi3, int flags=0); // socket() connect()
 		
 		~inet_dgram();
 
 		// actions
-		void connect(const char* host, const char* port, int proto_osi3, int flags);
+		void connect(const char* host, const char* port);
 		void deconnect(void);
 
 		// I/O
@@ -287,13 +286,12 @@ namespace libsocket
 		friend inet_stream& operator<<(inet_stream& sock, string& str);
 
 		ssize_t snd(const void* buf, size_t len, int flags);
-		ssize_t sndto(const char* host, const char* port, const void* buf, size_t len, int flags);
+		ssize_t sndto(const void* buf, size_t len, const char* host, const char* port, int sndto_flags);
 		// I
 		friend inet_stream& operator>>(inet_stream& sock, string& dest);
 
 		ssize_t rcv(void* buf, size_t len, int flags);
-		ssize_t rsvfrom(
+		ssize_t rcvfrom(void* buf, size_t len, char* host, size_t hostlen, char* port, size_t portlen, int rcvfrom_flags);
 
 	};
-
 }
