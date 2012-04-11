@@ -88,7 +88,7 @@ namespace libsocket
 		public:
 
 		// Only create socket
-		inet_dgram(int proto_osi3,int flags=0); // Flags: socket()
+		inet_dgram(int proto_osi3, int flags=0); // Flags: socket()
 		// Create socket and connect it
 		inet_dgram(const char* host, const char* port, int proto_osi3, int flags=0); // Flags: socket()
 
@@ -117,7 +117,8 @@ namespace libsocket
 		//friend inet_stream& operator>>(inet_stream& sock, string& dest);
 
 		ssize_t rcv(void* buf, size_t len, int flags=0);
-		ssize_t rcvfrom(void* buf, size_t len, char* host, size_t hostlen, char* port, size_t portlen, int rcvfrom_flags=0);
+		ssize_t rcvfrom(void* buf, size_t len, char* host, size_t hostlen, char* port, size_t portlen, int rcvfrom_flags=0, bool numeric=false);
 	};
+
 }
 # endif

@@ -11,7 +11,7 @@ namespace libsocket
 
 		socket();
 		virtual ~socket();
-		
+
 	 	virtual int destroy(void);
 	};
 

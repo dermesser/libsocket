@@ -299,7 +299,7 @@ namespace libsocket
 		//friend inet_stream& operator>>(inet_stream& sock, string& dest);
 
 		ssize_t rcv(void* buf, size_t len, int flags=0);
-		ssize_t rcvfrom(void* buf, size_t len, char* host, size_t hostlen, char* port, size_t portlen, int rcvfrom_flags=0);
+		ssize_t rcvfrom(void* buf, size_t len, char* host, size_t hostlen, char* port, size_t portlen, int rcvfrom_flags=0, bool numeric=false);
 	};
 
 	// Managing
@@ -360,6 +360,38 @@ namespace libsocket
 	}
 
 	// I/O
+
+	// I
+
+	ssize_t inet_dgram::rcv(void* buf, size_t len, int flags)
+	{
+		ssize_t bytes;
+
+		if ( -1 == sfd )
+			throw inet_exception(__FILE__,__LINE__,"inet_dgram::rcv() - Socket already closed!\n");
+
+		if ( connected != true )
+			throw inet_exception(__FILE__,__LINE__,"inet_dgram::rcv() - Socket is not connected!\n");
+
+		if ( -1 == (bytes = recv(sfd,buf,len,flags)) )
+			throw inet_exception(__FILE__,__LINE__,"inet_dgram::rcv() - recv() failed!\n");
+
+		return bytes;
+	}
+
+	ssize_t inet_dgram::rcvfrom(void* buf, size_t len, char* host, size_t hostlen, char* port, size_t portlen, int rcvfrom_flags, bool numeric)
+	{
+		ssize_t bytes;
+		int num = ((numeric == true) ? NUMERIC : 0);
+
+		if ( -1 == sfd )
+			throw inet_exception(__FILE__,__LINE__,"inet_dgram::rcvfrom() - Socket already closed!\n");
+
+		if ( -1 == (bytes = recvfrom_inet_dgram_socket(sfd,buf,len,host,hostlen,port,portlen,rcvfrom_flags,num)) )
+			throw inet_exception(__FILE__,__LINE__,"inet_dgram::rcvfrom() - recvfrom() failed!\n");
+
+		return bytes;
+	}
 
 	// O
 
