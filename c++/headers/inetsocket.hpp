@@ -53,13 +53,14 @@ namespace libsocket
 
 		inet_stream(void);
 		inet_stream(const char* host, const char* port, int proto_osi3, int flags);
+		
 		~inet_stream();
 
 		// Real actions
-		int connect(const char* host, const char* port, int proto_osi3, int flags);
-		int shutdown(int method);
+		void connect(const char* host, const char* port, int proto_osi3, int flags);
+		void shutdown(int method);
 		void try_to_destroy(void);
-		int destroy(void);
+		void destroy(void);
 
 		// I/O
 		// O

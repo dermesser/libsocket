@@ -8,7 +8,7 @@
 # include <sys/types.h>
 # include <stdio.h>
 
-// Quite simple oo wrapper around libinetsocket
+// oo wrapper around libinetsocket
 
 namespace libsocket
 {
@@ -37,7 +37,7 @@ namespace libsocket
 		mesg = m;
 	}
 
-// // // // // // //
+/***************** inet_socket base class **********************/
 
 	class inet_socket : public socket
 	{
@@ -53,6 +53,8 @@ namespace libsocket
 
 	inet_socket::inet_socket() {}
 
+/**************** inet_stream class (TCP inet sockets) *********/
+
 	class inet_stream : public inet_socket
 	{
 		private:
@@ -61,13 +63,14 @@ namespace libsocket
 
 		inet_stream(void);
 		inet_stream(const char* host, const char* port, int proto_osi3, int flags);
+		
 		~inet_stream();
 
 		// Real actions
-		int connect(const char* host, const char* port, int proto_osi3, int flags);
-		int shutdown(int method);
+		void connect(const char* host, const char* port, int proto_osi3, int flags);
+		void shutdown(int method);
 		void try_to_destroy(void);
-		int destroy(void);
+		void destroy(void);
 
 		// I/O
 		// O
@@ -95,8 +98,13 @@ namespace libsocket
 
 	inet_stream::inet_stream(const char* host, const char* port, int proto_osi3, int flags)
 	{
-		if ( 0 > connect(host,port,proto_osi3,flags) )
+		try 
+		{ 
+			connect(host,port,proto_osi3,flags); 
+		} catch ( inet_exception(exc) )
+		{
 			throw inet_exception(__FILE__,__LINE__,"Could not create socket");
+		}
 	}
 
 	inet_stream::~inet_stream(void)
@@ -104,7 +112,7 @@ namespace libsocket
 		try_to_destroy();
 	}
 
-	int inet_stream::connect(const char* host, const char* port, int proto_osi3, int flags)
+	void inet_stream::connect(const char* host, const char* port, int proto_osi3, int flags)
 	{
 		if ( sfd != -1 ) // Socket is already connected
 			throw inet_exception(__FILE__,__LINE__,"Already connected!\n");
@@ -116,19 +124,16 @@ namespace libsocket
 
 		remote_host = host;
 		remote_port = port;
-
-		return 0;
+		proto = proto_osi3;
 	}
 
 
-	int inet_stream::shutdown(int method)
+	void inet_stream::shutdown(int method)
 	{
 		if ( 0 > shutdown_inet_stream_socket(sfd,method))
 		{
 			throw inet_exception(__FILE__,__LINE__,"Could not shutdown socket\n");
 		}
-
-		return 0;
 	}
 
 	void inet_stream::try_to_destroy(void)
@@ -137,7 +142,7 @@ namespace libsocket
 		sfd = -1;
 	}
 
-	int inet_stream::destroy(void)
+	void inet_stream::destroy(void)
 	{
 		if ( -1 == sfd )
 			throw inet_exception(__FILE__,__LINE__,"Socket was not connected!\n");
@@ -146,8 +151,6 @@ namespace libsocket
 			throw inet_exception(__FILE__,__LINE__,"Could not close socket\n");
 
 		sfd = -1;
-
-		return 0;
 	}
 
 	// I/O
@@ -253,4 +256,24 @@ namespace libsocket
 	{
 		return remote_port;
 	}
+
+/************** inet_dgram class (inet UDP sockets) ************/
+
+	class inet_dgram : public inet_socket
+	{
+		private:
+		bool connected;
+
+		public:
+		
+		inet_dgram(void);
+		inet_dgram(int proto_osi3);
+		inet_dgram(const char* host, const char* port, int proto_osi3, int flags);
+		
+		~inet_dgram();
+
+		// actions
+		int connect(const char* host, const char* port, int proto_osi3, int flags);
+	};
+
 }
