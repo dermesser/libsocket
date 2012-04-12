@@ -23,7 +23,7 @@ e.g.
 It's important to know this because then you may keep the names better in mind.
 
 If there's something in the text looking like
-	
+
 	getaddrinfo(3)
 	socket(2)
 
@@ -68,9 +68,29 @@ libunixsocket is very linux-specific; you can't see multi-platform adaptations e
 platforms.
 
 # Usage in your application
-Recommended is static linking. That means, copy a checkout of the library files (c/, headers/) to the
+Recommended is static linking. That means, copy a checkout of the library files (C/, headers/) to the
 source tree of your application. Then, simply compile the files together with the other files (as they would
 be normal part of your application).
+
+*Details about dependancies:* The actual code is in `libinetsocket.c` resp. `libunixsocket.c`. Every
+file of your application which wants to use this functions has to include the header files, e.g.:
+
+	# include "../headers/libinetsocket.c"
+	# include <stdio.h>
+	...
+	.
+	.
+	.
+
+Then, compile it (paths are only examples):
+
+	$ gcc -c src/*.c
+	$ gcc -c libsocket/*.c
+	$ gcc *.o
+
+or...
+
+	$ gcc src/*.c libsocket/*.c
 The 2-clause BSD license allows this, also for proprietary applications.
 
 # API calls
