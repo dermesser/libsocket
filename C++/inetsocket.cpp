@@ -300,6 +300,12 @@ namespace libsocket
 
 		ssize_t rcv(void* buf, size_t len, int flags=0);
 		ssize_t rcvfrom(void* buf, size_t len, char* host, size_t hostlen, char* port, size_t portlen, int rcvfrom_flags=0, bool numeric=false);
+
+		// Getters
+
+		bool getconn(void);
+		const char* gethost(void);
+		const char* getport(void);
 	};
 
 	// Managing
@@ -338,6 +344,18 @@ namespace libsocket
 		remote_host = host;
 		remote_port = port;
 		connected = true;
+	}
+
+	void inet_dgram::deconnect(void)
+	{
+		if ( -1 == sfd )
+			throw inet_exception(__FILE__,__LINE__,"inet_dgram::deconnect() - Socket not connected!\n");
+		if ( -1 == (connect_inet_dgram_socket(sfd,0,0)) )
+			throw inet_exception(__FILE__,__LINE__,"inet_dgram::deconnect() - Could not deconnect!\n");
+
+		connected = false;
+		remote_host = 0;
+		remote_port = 0;
 	}
 
 
@@ -422,5 +440,21 @@ namespace libsocket
 			throw inet_exception(__FILE__,__LINE__,"inet_dgram::sndto() - Error at sendto\n");
 
 		return bytes;
+	}
+
+	// Getters
+	bool inet_dgram::getconn(void)
+	{
+		return connected;
+	}
+
+	const char* inet_dgram::gethost(void)
+	{
+		return remote_host;
+	}
+
+	const char* inet_dgram::getport(void)
+	{
+		return remote_port;
 	}
 }
