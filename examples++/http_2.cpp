@@ -13,7 +13,7 @@ int main(void)
 	char* buf = new char[10000];
 
 	libsocket::inet_stream sock(host.c_str(),port.c_str(),IPv4);
-	
+
 	sock.snd("GET / HTTP/1.0\n\n",16);
 
 	sock.shutdown(WRITE);

@@ -15,7 +15,7 @@ int main(void)
 	buf[9] = 0;
 
 	libsocket::inet_dgram sock(IPv4);
-	
+
 	for ( int i = 0; i < 20; i++ )
 	{
 		sock.sndto("abcdefghi",9,host.c_str(),port.c_str());

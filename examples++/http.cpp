@@ -6,6 +6,8 @@ int main(void)
 {
 	using std::string;
 
+	using libsocket::inet_stream;
+
 	string host = "176.28.21.82";
 	string port = "80";
 	string answer;
@@ -13,11 +15,11 @@ int main(void)
 	string request2("Host: spheniscida.de\n\n");
 
 	libsocket::inet_stream sock(host.c_str(),port.c_str(),IPv4,0);
-	
+
 	sock << request1 << request2;
 
 	sock.shutdown(WRITE);
-	
+
 	answer.resize(2000);
 
 	while ( answer.size() > 0 )

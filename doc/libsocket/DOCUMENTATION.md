@@ -23,7 +23,7 @@ e.g.
 It's important to know this because then you may keep the names better in mind.
 
 If there's something in the text looking like
-	
+
 	getaddrinfo(3)
 	socket(2)
 

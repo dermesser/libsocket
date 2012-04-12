@@ -18,7 +18,7 @@ int main(void)
 
 	memset(buf,0,128);
 	memset(from,0,128);
-	
+
 	if ( -1 == (sfd = create_unix_server_socket("/tmp/echosock",DGRAM,0)) )
 		return -1;
 

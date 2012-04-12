@@ -148,7 +148,7 @@ namespace libsocket
 	void inet_stream::destroy(void)
 	{
 		if ( -1 == sfd )
-			return;
+			throw inet_exception(__FILE__,__LINE__,"inet_stream::destroy() - Socket already closed!\n");
 
 		if ( 0 > destroy_inet_socket(sfd) )
 			throw inet_exception(__FILE__,__LINE__,"inet_stream::destroy() - Could not close socket\n");

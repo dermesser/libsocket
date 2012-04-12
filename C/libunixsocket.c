@@ -116,7 +116,7 @@ int create_unix_dgram_socket(const char* bind_path, int flags)
 			check_error(retval);
 			return -1;
 		}
-		
+
 		if ( strlen(bind_path) > (sizeof(saddr.sun_path)-1) )
 		{
 # ifdef VERBOSE
@@ -160,7 +160,7 @@ int connect_unix_dgram_socket(int sfd, const char* path)
 	memset(&new_addr,0,sizeof(struct sockaddr_un));
 
 	new_addr.sun_family = AF_UNIX;
-	
+
 	if ( strlen(path) > sizeof(new_addr.sun_path)-1 )
 	{
 # ifdef VERBOSE
@@ -173,7 +173,7 @@ int connect_unix_dgram_socket(int sfd, const char* path)
 
 	if ( -1 == check_error(connect(sfd,(struct sockaddr*)&new_addr,sizeof(struct sockaddr_un))) )
 		return -1;
-	
+
 	return 0;
 }
 
@@ -200,7 +200,7 @@ int shutdown_unix_stream_socket(int sfd, int method)
 			return -1;
 
 	}
-	
+
 	if ( method & WRITE ) // WRITE is set (0010 && 0010 => 0010)
 	{
 		if ( -1 == check_error(shutdown(sfd,SHUT_WR)))
@@ -216,7 +216,7 @@ int create_unix_server_socket(const char* path, int socktype, int flags)
 {
 	struct sockaddr_un saddr;
 	int sfd, type, retval;
-	
+
 	if ( path == 0 )
 		return -1;
 
@@ -293,7 +293,7 @@ ssize_t recvfrom_unix_dgram_socket(int sfd, void* buf, size_t size, char* from, 
 
 	if ( -1 == check_error(bytes = recvfrom(sfd,buf,size,recvfrom_flags,(struct sockaddr*)&saddr,&socksize)) )
 		return -1;
-	
+
 	if ( from != 0 && from_size > 0 )
 		strncpy(from,saddr.sun_path,from_size);
 

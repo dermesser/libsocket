@@ -2,7 +2,8 @@
 # define INETSOCKET_HEAD
 
 # include <string>
-# include "../headers/libinetsocket.h"
+# include <sys/types.h>
+# include <sys/socket.h>
 # include "socket.hpp"
 
 # define TCP 1
