@@ -9,6 +9,7 @@ int main(void)
 	string host = "176.28.21.82";
 	string port = "80";
 	ssize_t len;
+	string test;
 
 	char* buf = new char[10000];
 

@@ -73,7 +73,7 @@ The collection of examples contain:
 * unix\_stream\_client.c, unix\_stream\_server.c: Demonstrating UNIX STREAM sockets as echo server/client
 * unix\_dgram\_client.c, unix\_dgram\_server.c: Demonstrating UNIX DGRAM sockets as simple server/client transmitting text.
 
-You should have a look at the length of the code; while `http.c` is complete with 24 sloc (source lines of code) - the quite similar client 
+You should have a look at the length of the code; while `http.c` is complete with 24 sloc (source lines of code) - the quite similar client
 simple-http (https://github.com/dermesser/Simple-HTTP-client) uses almost 70 lines of code.
 
 ##PLATFORMS

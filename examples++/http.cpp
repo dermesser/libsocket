@@ -22,6 +22,7 @@ int main(void)
 
 	answer.resize(2000);
 
+
 	while ( answer.size() > 0 )
 	{
 		sock >> answer;

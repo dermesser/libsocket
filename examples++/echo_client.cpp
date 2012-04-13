@@ -16,6 +16,13 @@ int main(void)
 
 	libsocket::inet_dgram sock(IPv4);
 
+	try {
+		std::cout << sock.gethost();
+	} catch (libsocket::inet_exception exc)
+	{
+		std::cerr << exc.mesg;
+	}
+
 	for ( int i = 0; i < 20; i++ )
 	{
 		sock.sndto("abcdefghi",9,host.c_str(),port.c_str());

@@ -43,15 +43,15 @@ namespace libsocket
 	{
 		protected:
 		int proto;
-		const char* remote_host;
-		const char* remote_port;
+		string remote_host;
+		string remote_port;
 
 		public:
 
 		inet_socket();
 	};
 
-	inet_socket::inet_socket() {}
+	inet_socket::inet_socket() : remote_host(""), remote_port("") {}
 
 /**************** inet_stream class (TCP inet sockets) *********/
 
@@ -77,7 +77,7 @@ namespace libsocket
 		friend inet_stream& operator<<(inet_stream& sock, const char* str);
 		friend inet_stream& operator<<(inet_stream& sock, string& str);
 
-		ssize_t snd(void* buf, size_t len, int flags=0); // flags: send()
+		ssize_t snd(const void* buf, size_t len, int flags=0); // flags: send()
 
 		// I
 		friend inet_stream& operator>>(inet_stream& sock, string& dest);
@@ -86,8 +86,8 @@ namespace libsocket
 
 		// Getters
 		int getfd(void) const;
-		const char* gethost(void) const;
-		const char* getport(void) const;
+		string gethost(void) const;
+		string getport(void) const;
 	};
 
 	// Managing
@@ -228,7 +228,7 @@ namespace libsocket
 		return sock;
 	}
 
-	ssize_t inet_stream::snd(void* buf, size_t len, int flags)
+	ssize_t inet_stream::snd(const void* buf, size_t len, int flags)
 	{
 		ssize_t snd_bytes;
 
@@ -250,12 +250,12 @@ namespace libsocket
 		return sfd;
 	}
 
-	const char* inet_stream::gethost(void) const
+	string inet_stream::gethost(void) const
 	{
 		return remote_host;
 	}
 
-	const char* inet_stream::getport(void) const
+	string inet_stream::getport(void) const
 	{
 		return remote_port;
 	}
@@ -304,8 +304,8 @@ namespace libsocket
 		// Getters
 
 		bool getconn(void);
-		const char* gethost(void);
-		const char* getport(void);
+		string gethost(void);
+		string getport(void);
 	};
 
 	// Managing
@@ -354,8 +354,8 @@ namespace libsocket
 			throw inet_exception(__FILE__,__LINE__,"inet_dgram::deconnect() - Could not deconnect!\n");
 
 		connected = false;
-		remote_host = 0;
-		remote_port = 0;
+		remote_host.resize(0);
+		remote_port.resize(0);
 	}
 
 
@@ -448,13 +448,19 @@ namespace libsocket
 		return connected;
 	}
 
-	const char* inet_dgram::gethost(void)
+	string inet_dgram::gethost(void)
 	{
+		if ( connected == false )
+			throw inet_exception(__FILE__,__LINE__,"inet_dgram::gethost() - DGRAM socket not connected!\n");
+
 		return remote_host;
 	}
 
-	const char* inet_dgram::getport(void)
+	string inet_dgram::getport(void)
 	{
+		if ( connected == false )
+			throw inet_exception(__FILE__,__LINE__,"inet_dgram::getport() - DGRAM socket not connected!\n");
+
 		return remote_port;
 	}
 }

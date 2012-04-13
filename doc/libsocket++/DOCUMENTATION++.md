@@ -33,7 +33,7 @@ Legend:
 		|  		Provides: socket file descriptor data element,
 		|			  generic destroy() function
 		|`------------------------------------------------------------------------------------+
-		|                                                                                     |	
+		|                                                                                     |
 	[ libsocket::inet_socket ]{ C++/inetsocket.cpp }				[ libsocket::unix_socket ] // Not implemented yet
 		|	Provides: some data elements
                 |`---------------------------------------------+
@@ -111,7 +111,7 @@ has to be 0 to avoid errors)
 
 	void connect(const char* host, const char* port, int proto_osi3, int flags=0);
 
-Connects the socket. Throws an exception if the socket is already connected. 
+Connects the socket. Throws an exception if the socket is already connected.
 
 - `host`: Destination host; if you have the host as `std::string`, use its routine `std::string::c_str()` to get
 the C string
@@ -173,62 +173,85 @@ Conventional receive function: Receive `len` bytes from socket and write them to
 
 Stream-like read from socket: Reads at most `dest.size()` bytes from socket and puts them
 to the string. If less than `dest.size()` characters could be read, the string is resized to
-the number of read characters so you can check (`string.size() == 0`) if the server is done 
+the number of read characters so you can check (`string.size() == 0`) if the server is done
 with sending - either closed the socket on his side or shut it down for write access.
 
 ### Getters
 
 	int getfd(void) const;
-	const char* gethost(void) const;
-	const char* getport(void) const;
+	string gethost(void) const;
+	string getport(void) const;
 
 `getfd()` returns the socket file descriptor.
 
-`gethost()` returns a C string containing the host to which the socket is connected.
+`gethost()` returns a C++ string containing the host to which the socket is connected.
 
-`getport()` returns a C string containing the port/service to which the socket is connected.
+`getport()` returns a C++ string containing the port/service to which the socket is connected.
 
-	class inet_dgram : public inet_socket
-	{
-		private:
-		bool connected;
+## `inet_dgram` Class: Internet UDP Sockets
+### Constructors
+	inet_dgram(int proto_osi3, int flags=0); // Flags: socket()
+	inet_dgram(const char* host, const char* port, int proto_osi3, int flags=0); // Flags: socket()
 
-		public:
+Because the UDP socket can be connected multiple times and send data to various hosts,
+it's mandatory to specify the address family at instantiation time. `proto_osi3` may be
+`IPv4` or `IPv6`; this information is used to create a socket with `create_inet_dgram_socket()`
+and finally `socket(2)`.
 
-		// Only create socket
-		inet_dgram(int proto_osi3, int flags=0); // Flags: socket()
-		// Create socket and connect it
-		inet_dgram(const char* host, const char* port, int proto_osi3, int flags=0); // Flags: socket()
+The second form allows to specify a host and a port to which the UDP socket is connected.
+If an UDP socket is connected, calls to `snd()` and `rcv()` act like it is a stream socket:
+The data is sent and received only to/from the host to which the socket is connected.
 
-		~inet_dgram();
+### Connect Functions
 
-		// actions
-		// connect/reconnect
-		void connect(const char* host, const char* port);
-		void deconnect(void);
+	void connect(const char* host, const char* port);
 
-		// I/O
-		// destroy but don't complain
-		void try_to_destroy(void);
-		void destroy(void);
+(Re)connects the socket to the specified host/port. If you want to change the address family, you have to create
+another socket.
 
-		// I/O
-		// O
-		// only if connected
-		//friend inet_stream& operator<<(inet_stream& sock, const char* str);
-		//friend inet_stream& operator<<(inet_stream& sock, string& str);
+	void deconnect(void);
 
-		ssize_t snd(const void* buf, size_t len, int flags=0); // flags: send()
-		ssize_t sndto(const void* buf, size_t len, const char* host, const char* port, int sndto_flags=0); // flags: sendto()
+Cut the connection to the host to which the socket was connected to. Now, stream-like
+functions like `snd()` or `rcv()` may not be used anymore.
 
-		// I
-		//friend inet_stream& operator>>(inet_stream& sock, string& dest);
+### Destroy Functions
 
-		ssize_t rcv(void* buf, size_t len, int flags=0);
-		ssize_t rcvfrom(void* buf, size_t len, char* host, size_t hostlen, char* port, size_t portlen, int rcvfrom_flags=0, bool numeric=false);
-	};
+	void try_to_destroy(void);
 
-}
+Try to destroy the socket, but do not throw an exception if it failed.
+
+	void destroy(void);
+
+Try to destroy the socket and throw an exception if it failed.
+
+### Send/Upload Functions
+
+	ssize_t snd(const void* buf, size_t len, int flags=0); // flags: send()
+
+Conventional send, *only available if socket is connected*.
+
+Send `len` bytes from `buf` (does not need to be `const`; in C++ an implicit conversion to const is allowed)
+to the connected peer. `flags` may be specified and take the flags described in `send(2)` (`MSG_...`).
+
+	ssize_t sndto(const void* buf, size_t len, const char* host, const char* port, int sndto_flags=0); // flags: sendto()
+
+Send `len` bytes from `buf` to `host`:`port`. `sndto_flags` may be specified and take the flags described
+in `sendto(2)` (`MSG_...`).
+
+### Receive/Download Functions
+
+	ssize_t rcv(void* buf, size_t len, int flags=0);
+
+Conventional receive function: Receive `len` bytes from the socket and write them to `buf`. `flags` may take the
+flags described in `recv(2)` (`MSG_...`).
+
+	ssize_t rcvfrom(void* buf, size_t len, char* host, size_t hostlen, char* port, size_t portlen, int rcvfrom_flags=0, bool numeric=false);
+
+Receive `len` bytes from the socket and place them in `buf`. The source host is placed in `host`, which is at least
+`hostlen` bytes long, the source port gets written to `port`, which is at least `portlen` bytes long. `recvfrom_flags`
+can take the flags described in `recvfrom(2)`, `numeric` is considered as `false`, but if you specify it as
+`true`, source host and source port are expressed in numerical form. This is recommended because it's faster
+than an additional (internal) rDNS query.
 
 # libunixsocket++
 
