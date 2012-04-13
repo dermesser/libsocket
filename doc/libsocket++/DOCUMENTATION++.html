@@ -127,7 +127,7 @@ has to be 0 to avoid errors)</li>
 <pre><code>void connect(const char* host, const char* port, int proto_osi3, int flags=0);
 </code></pre>
 
-<p>Connects the socket. Throws an exception if the socket is already connected. </p>
+<p>Connects the socket. Throws an exception if the socket is already connected.</p>
 
 <ul>
 <li><code>host</code>: Destination host; if you have the host as <code>std::string</code>, use its routine <code>std::string::c_str()</code> to get
@@ -250,7 +250,7 @@ functions like <code>snd()</code> or <code>rcv()</code> may not be used anymore.
 <pre><code>void try_to_destroy(void);
 </code></pre>
 
-<p>Try to destroy the socket, but do not throw an exception if it failed.  </p>
+<p>Try to destroy the socket, but do not throw an exception if it failed.</p>
 
 <pre><code>void destroy(void);
 </code></pre>
@@ -272,6 +272,16 @@ to the connected peer. <code>flags</code> may be specified and take the flags de
 
 <p>Send <code>len</code> bytes from <code>buf</code> to <code>host</code>:<code>port</code>. <code>sndto_flags</code> may be specified and take the flags described
 in <code>sendto(2)</code> (<code>MSG_...</code>).</p>
+
+<pre><code>friend inet_dgram&amp; operator&lt;&lt;(inet_dgram&amp; sock, const char* str);
+friend inet_dgram&amp; operator&lt;&lt;(inet_dgram&amp; sock, string&amp; str);
+</code></pre>
+
+<p>Only for connected sockets. Send either a string or a C string to the connected peer.
+Usage like streams:</p>
+
+<pre><code>sock &lt;&lt; "abc" &lt;&lt; string("def");
+</code></pre>
 
 <h3>Receive/Download Functions</h3>
 

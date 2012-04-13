@@ -238,6 +238,14 @@ to the connected peer. `flags` may be specified and take the flags described in 
 Send `len` bytes from `buf` to `host`:`port`. `sndto_flags` may be specified and take the flags described
 in `sendto(2)` (`MSG_...`).
 
+	friend inet_dgram& operator<<(inet_dgram& sock, const char* str);
+	friend inet_dgram& operator<<(inet_dgram& sock, string& str);
+
+Only for connected sockets. Send either a string or a C string to the connected peer.
+Usage like streams:
+
+	sock << "abc" << string("def");
+
 ### Receive/Download Functions
 
 	ssize_t rcv(void* buf, size_t len, int flags=0);

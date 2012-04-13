@@ -289,8 +289,8 @@ namespace libsocket
 		// I/O
 		// O
 		// only if connected
-		//friend inet_stream& operator<<(inet_stream& sock, const char* str);
-		//friend inet_stream& operator<<(inet_stream& sock, string& str);
+		friend inet_dgram& operator<<(inet_dgram& sock, const char* str);
+		friend inet_dgram& operator<<(inet_dgram& sock, string& str);
 
 		ssize_t snd(const void* buf, size_t len, int flags=0); // flags: send()
 		ssize_t sndto(const void* buf, size_t len, const char* host, const char* port, int sndto_flags=0); // flags: sendto()
@@ -442,6 +442,34 @@ namespace libsocket
 		return bytes;
 	}
 
+	inet_dgram& operator<<(inet_dgram& sock, const char* str)
+	{
+		if ( sock.sfd == -1 )
+			throw inet_exception(__FILE__,__LINE__,"inet dgram <<(const char*) output: Socket not connected!\n");
+		if ( str == NULL )
+			throw inet_exception(__FILE__,__LINE__,"inet dgram <<(const char*) output: Null buffer given!\n");
+		if ( connected == false )
+			throw inet_exception(__FILE__,__LINE__,"inet dgram <<(const char*) output: DGRAM socket not connected!\n");
+
+		size_t len = strlen(str);
+
+		if ( -1 == write(sock.sfd,str,len) )
+			throw inet_exception(__FILE__,__LINE__,"inet dgram <<(const char*) output: Write failed!\n");
+
+		return sock;
+	}
+
+	inet_dgram& operator<<(inet_dgram& sock, string& str)
+	{
+		if ( sock.sfd == -1 )
+			throw inet_exception(__FILE__,__LINE__,"inet dgram<<(std::string) output: Socket not connected!\n");
+		if ( connected == false )
+			throw inet_exception(__FILE__,__LINE__,"inet dgram <<(std::string) output: DGRAM socket not connected!\n");
+		if ( -1 == write(sock.sfd,str.c_str(),str.size()) )
+			throw inet_exception(__FILE__,__LINE__,"inet dgram <<(std::string) output: Write failed!\n");
+
+		return sock;
+	}
 	// Getters
 	bool inet_dgram::getconn(void)
 	{
