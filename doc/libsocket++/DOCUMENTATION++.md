@@ -261,6 +261,11 @@ can take the flags described in `recvfrom(2)`, `numeric` is considered as `false
 `true`, source host and source port are expressed in numerical form. This is recommended because it's faster
 than an additional (internal) rDNS query.
 
+	friend inet_dgram& operator>>(inet_dgram& sock, string& dest);
+
+Stream-like read from (connected!) socket: Reads at most `dest.size()` bytes from socket and puts them
+to the string. If less than `dest.size()` characters could be read, the string is resized to
+the number of read characters. One read call normally returns one datagram
 # libunixsocket++
 
 Not implemented yet.

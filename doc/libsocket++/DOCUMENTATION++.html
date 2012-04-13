@@ -300,6 +300,13 @@ can take the flags described in <code>recvfrom(2)</code>, <code>numeric</code> i
 <code>true</code>, source host and source port are expressed in numerical form. This is recommended because it's faster
 than an additional (internal) rDNS query.</p>
 
+<pre><code>friend inet_dgram&amp; operator&gt;&gt;(inet_dgram&amp; sock, string&amp; dest);
+</code></pre>
+
+<p>Stream-like read from (connected!) socket: Reads at most <code>dest.size()</code> bytes from socket and puts them
+to the string. If less than <code>dest.size()</code> characters could be read, the string is resized to
+the number of read characters. One read call normally returns one datagram</p>
+
 <h1>libunixsocket++</h1>
 
 <p>Not implemented yet.</p>
