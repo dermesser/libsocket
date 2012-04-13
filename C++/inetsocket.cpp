@@ -98,9 +98,9 @@ namespace libsocket
 
 	inet_stream::inet_stream(const char* host, const char* port, int proto_osi3, int flags)
 	{
-		try 
-		{ 
-			connect(host,port,proto_osi3,flags); 
+		try
+		{
+			connect(host,port,proto_osi3,flags);
 		} catch ( inet_exception(exc) )
 		{
 			throw inet_exception(__FILE__,__LINE__,"inet_stream::inet_stream() - Could not create socket");
@@ -160,6 +160,48 @@ namespace libsocket
 
 	// I
 
+	ssize_t inet_stream::rcv(void* buf, size_t len, int flags)
+	{
+		ssize_t recvd;
+
+		if ( sfd == -1 )
+			throw inet_exception(__FILE__,__LINE__,"inet_stream::rcv() - Socket is not connected!\n");
+
+		if ( buf == NULL || len == 0 )
+			throw inet_exception(__FILE__,__LINE__,"inet_stream::rcv() - Buffer or length is null!\n");
+
+		if ( -1 == (recvd = recv(sfd,buf,len,flags)) )
+			throw inet_exception(__FILE__,__LINE__,"inet_stream::rcv() - Error while reading!\n");
+
+		return recvd;
+	}
+
+	inet_stream& operator>>(inet_stream& sock, string& dest)
+	{
+		ssize_t read_bytes;
+		char* buffer;
+
+		buffer = new char[dest.size()];
+
+		if ( sock.sfd == -1 )
+			throw inet_exception(__FILE__,__LINE__,">>(std::string) input: Socket not connected!\n");
+
+		if ( -1 == (read_bytes = read(sock.sfd,buffer,dest.size())) )
+			throw inet_exception(__FILE__,__LINE__,">>(std::string) input: Error while reading!\n");
+
+		if ( read_bytes < static_cast<ssize_t>(dest.size()) )
+			dest.resize(read_bytes); // So the client doesn't print content more than one time
+						 // and it can check if the string's length is 0 (end of transmission)
+
+		dest.assign(buffer,read_bytes);
+
+		delete buffer;
+
+		return sock;
+	}
+
+	// O
+
 	inet_stream& operator<<(inet_stream& sock, const char* str)
 	{
 		if ( sock.sfd == -1 )
@@ -182,48 +224,6 @@ namespace libsocket
 
 		if ( -1 == write(sock.sfd,str.c_str(),str.size()) )
 			throw inet_exception(__FILE__,__LINE__,"<<(std::string) output: Write failed!\n");
-
-		return sock;
-	}
-
-	ssize_t inet_stream::rcv(void* buf, size_t len, int flags)
-	{
-		ssize_t recvd;
-
-		if ( sfd == -1 )
-			throw inet_exception(__FILE__,__LINE__,"inet_stream::rcv() - Socket is not connected!\n");
-
-		if ( buf == NULL || len == 0 )
-			throw inet_exception(__FILE__,__LINE__,"inet_stream::rcv() - Buffer or length is null!\n");
-
-		if ( -1 == (recvd = recv(sfd,buf,len,flags)) )
-			throw inet_exception(__FILE__,__LINE__,"inet_stream::rcv() - Error while reading!\n");
-
-		return recvd;
-	}
-
-	// O
-
-	inet_stream& operator>>(inet_stream& sock, string& dest)
-	{
-		ssize_t read_bytes;
-		char* buffer; 
-
-		buffer = new char[dest.size()];
-
-		if ( sock.sfd == -1 )
-			throw inet_exception(__FILE__,__LINE__,">>(std::string) input: Socket not connected!\n");
-
-		if ( -1 == (read_bytes = read(sock.sfd,buffer,dest.size())) )
-			throw inet_exception(__FILE__,__LINE__,">>(std::string) input: Error while reading!\n");
-
-		if ( read_bytes < static_cast<ssize_t>(dest.size()) )
-			dest.resize(read_bytes); // So the client doesn't print content more than one time
-						 // and it can check if the string's length is 0 (end of transmission)
-
-		dest.assign(buffer,read_bytes);
-
-		delete buffer;
 
 		return sock;
 	}
@@ -296,7 +296,7 @@ namespace libsocket
 		ssize_t sndto(const void* buf, size_t len, const char* host, const char* port, int sndto_flags=0); // flags: sendto()
 
 		// I
-		//friend inet_stream& operator>>(inet_stream& sock, string& dest);
+		friend inet_dgram& operator>>(inet_dgram& sock, string& dest);
 
 		ssize_t rcv(void* buf, size_t len, int flags=0);
 		ssize_t rcvfrom(void* buf, size_t len, char* host, size_t hostlen, char* port, size_t portlen, int rcvfrom_flags=0, bool numeric=false);
@@ -411,6 +411,30 @@ namespace libsocket
 		return bytes;
 	}
 
+	inet_dgram& operator>>(inet_dgram& sock, string& dest)
+	{
+		ssize_t read_bytes;
+		char* buffer;
+
+		buffer = new char[dest.size()];
+
+		if ( sock.sfd == -1 )
+			throw inet_exception(__FILE__,__LINE__,">>(std::string) input: Socket not connected!\n");
+
+		if ( -1 == (read_bytes = read(sock.sfd,buffer,dest.size())) )
+			throw inet_exception(__FILE__,__LINE__,">>(std::string) input: Error while reading!\n");
+
+		if ( read_bytes < static_cast<ssize_t>(dest.size()) )
+			dest.resize(read_bytes); // So the client doesn't print content more than one time
+						 // and it can check if the string's length is 0 (end of transmission)
+
+		dest.assign(buffer,read_bytes);
+
+		delete buffer;
+
+		return sock;
+	}
+
 	// O
 
 	ssize_t inet_dgram::snd(const void* buf, size_t len, int flags)
@@ -448,7 +472,7 @@ namespace libsocket
 			throw inet_exception(__FILE__,__LINE__,"inet dgram <<(const char*) output: Socket not connected!\n");
 		if ( str == NULL )
 			throw inet_exception(__FILE__,__LINE__,"inet dgram <<(const char*) output: Null buffer given!\n");
-		if ( connected == false )
+		if ( sock.connected == false )
 			throw inet_exception(__FILE__,__LINE__,"inet dgram <<(const char*) output: DGRAM socket not connected!\n");
 
 		size_t len = strlen(str);
@@ -463,13 +487,14 @@ namespace libsocket
 	{
 		if ( sock.sfd == -1 )
 			throw inet_exception(__FILE__,__LINE__,"inet dgram<<(std::string) output: Socket not connected!\n");
-		if ( connected == false )
+		if ( sock.connected == false )
 			throw inet_exception(__FILE__,__LINE__,"inet dgram <<(std::string) output: DGRAM socket not connected!\n");
 		if ( -1 == write(sock.sfd,str.c_str(),str.size()) )
 			throw inet_exception(__FILE__,__LINE__,"inet dgram <<(std::string) output: Write failed!\n");
 
 		return sock;
 	}
+
 	// Getters
 	bool inet_dgram::getconn(void)
 	{
