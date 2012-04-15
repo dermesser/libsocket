@@ -5,6 +5,7 @@
 # include <sys/types.h>
 # include <sys/socket.h>
 # include "socket.hpp"
+# include "inetbase.hpp"
 
 # define TCP 1
 # define UDP 2
@@ -24,27 +25,6 @@
 namespace libsocket
 {
 	using std::string;
-
-	struct inet_exception
-	{
-		string mesg;
-
-		inet_exception(string,int,string);
-	};
-
-// // // // // // //
-
-	class inet_socket : public socket
-	{
-		protected:
-		int proto;
-		string host;
-		string port;
-
-		public:
-
-		inet_socket();
-	};
 
 	class inet_stream : public inet_socket
 	{

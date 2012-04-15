@@ -51,6 +51,7 @@ As you see in the figure above, the code comes in two main files: `socket.cpp` a
 
 In every file using the classes mentioned above, header files must be included:
 - `headers++/socket.hpp` - usually included by `inetsocket.hpp` or `unixsocket.hpp`
+- `headers++/inetbase.hpp` - usually included by `inetsocket.hpp`, responsible for `inet_exception` and `inet_socket`
 - `headers++/inetsocket.hpp` - files using `inet_dgram` or `inet_stream`
 - `headers++/unixsocket.hpp` - files using `unix_dgram` or `unix_stream`
 

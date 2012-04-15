@@ -1,5 +1,6 @@
 # include <string>
 # include "../headers++/socket.hpp"
+# include <stdio.h>
 
 namespace libsocket
 {
