@@ -1,5 +1,5 @@
-# ifndef SOCKET_HEAD
-# define SOCKET_HEAD
+# ifndef SOCKET
+# define SOCKET
 namespace libsocket
 {
 	class socket

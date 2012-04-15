@@ -1,5 +1,5 @@
-# ifndef INETSOCKET_HEAD
-# define INETSOCKET_HEAD
+# ifndef INETSOCKET
+# define INETSOCKET
 
 # include <string>
 # include <sys/types.h>

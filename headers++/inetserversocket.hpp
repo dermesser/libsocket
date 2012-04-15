@@ -1,6 +1,9 @@
 # ifndef INETSERVERSOCKET
 # define INETSERVERSOCKET
 
+# include "inetbase.hpp"
+# include "inetsocket.hpp"
+
 namespace libsocket
 {
 	class inet_stream_server : public inet_socket
