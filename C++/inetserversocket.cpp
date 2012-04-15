@@ -8,6 +8,8 @@
 
 namespace libsocket
 {
+	using std::string;
+
 	class inet_stream_server : public inet_socket
 	{
 		private:
@@ -21,6 +23,9 @@ namespace libsocket
 		void setup(const char* bindhost, const char* bindport, int proto_osi3, int flags=0);
 
 		inet_stream accept(int numeric=0);
+
+		string getbindhost(void);
+		string getbindport(void);
 	};
 
 	inet_stream_server::inet_stream_server(void) : listening(false)
@@ -38,9 +43,11 @@ namespace libsocket
 			throw inet_exception(__FILE__,__LINE__,"inet_stream_server::inet_stream_server() - already bound and listening!\n");
 		if ( bindhost == 0 || bindport == 0 )
 			throw inet_exception(__FILE__,__LINE__,"inet_stream_server::inet_stream_server() - at least one bind argument invalid!\n");
-
 		if ( -1 == (sfd = create_inet_server_socket(bindhost,bindport,TCP,proto_osi3,flags)) )
 			throw inet_exception(__FILE__,__LINE__,"inet_stream_server::inet_stream_server() - could not create server socket!\n");
+
+		host = string(bindhost);
+		port = string(bindport);
 
 		listening = true;
 	}
@@ -69,4 +76,13 @@ namespace libsocket
 		return client;
 	}
 
+	string inet_stream_server::getbindhost(void)
+	{
+		return host;
+	}
+
+	string inet_stream_server::getbindport(void)
+	{
+		return port;
+	}
 }
