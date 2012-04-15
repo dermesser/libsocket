@@ -59,6 +59,8 @@ namespace libsocket
 		int getfd(void) const;
 		string gethost(void) const;
 		string getport(void) const;
+
+		friend class inet_stream_server;
 	};
 
 	class inet_dgram : public inet_socket
