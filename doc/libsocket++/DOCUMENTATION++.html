@@ -57,6 +57,7 @@ and maintain it twice, libsocket++ calls the functions from libsocket.</p>
 
 <p>In every file using the classes mentioned above, header files must be included:
 - <code>headers++/socket.hpp</code> - usually included by <code>inetsocket.hpp</code> or <code>unixsocket.hpp</code>
+- <code>headers++/inetbase.hpp</code> - usually included by <code>inetsocket.hpp</code>, responsible for <code>inet_exception</code> and <code>inet_socket</code>
 - <code>headers++/inetsocket.hpp</code> - files using <code>inet_dgram</code> or <code>inet_stream</code>
 - <code>headers++/unixsocket.hpp</code> - files using <code>unix_dgram</code> or <code>unix_stream</code></p>
 
