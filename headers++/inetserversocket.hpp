@@ -18,7 +18,7 @@ namespace libsocket
 
 		void setup(const char* bindhost, const char* bindport, int proto_osi3, int flags=0);
 
-		inet_stream accept(int numeric=0);
+		inet_stream* accept(int numeric=0);
 
 		string getbindhost(void);
 		string getbindport(void);

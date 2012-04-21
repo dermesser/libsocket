@@ -1,6 +1,7 @@
 # ifndef INETBASE
 # define INETBASE
 # include <string>
+# include "socket.hpp"
 
 namespace libsocket
 {

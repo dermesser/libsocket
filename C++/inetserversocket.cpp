@@ -22,7 +22,7 @@ namespace libsocket
 
 		void setup(const char* bindhost, const char* bindport, int proto_osi3, int flags=0);
 
-		inet_stream accept(int numeric=0);
+		inet_stream* accept(int numeric=0);
 
 		string getbindhost(void);
 		string getbindport(void);
@@ -34,6 +34,8 @@ namespace libsocket
 
 	inet_stream_server::inet_stream_server(const char* bindhost, const char* bindport, int proto_osi3, int flags)
 	{
+		listening = false;
+
 		setup(bindhost,bindport,proto_osi3,flags);
 	}
 
@@ -52,13 +54,13 @@ namespace libsocket
 		listening = true;
 	}
 
-	inet_stream inet_stream_server::accept(int numeric)
+	inet_stream* inet_stream_server::accept(int numeric)
 	{
 		char* src_host = new char[1024];
 		char* src_port = new char[32];
 
 		int client_sfd;
-		inet_stream client;
+		inet_stream* client = new inet_stream;
 
 		memset(src_host,0,1024);
 		memset(src_port,0,32);
@@ -68,10 +70,10 @@ namespace libsocket
 		if ( -1 == (client_sfd = accept_inet_stream_socket(sfd,src_host,1024,src_port,32,numeric)) )
 			throw inet_exception(__FILE__,__LINE__,"inet_stream_server::accept() - could not accept new connection on stream server socket!\n");
 
-		client.sfd = client_sfd;
-		client.host = string(src_host);
-		client.port = string(src_port);
-		client.proto = proto;
+		client->sfd = client_sfd;
+		client->host = string(src_host);
+		client->port = string(src_port);
+		client->proto = proto;
 
 		return client;
 	}
