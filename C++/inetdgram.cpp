@@ -24,8 +24,6 @@ namespace libsocket
 		private:
 		public:
 
-		~inet_dgram();
-
 		// I/O
 		// destroy but don't complain
 		void try_to_destroy(void);
@@ -45,11 +43,6 @@ namespace libsocket
 	};
 
 	// Managing
-
-	inet_dgram::~inet_dgram(void)
-	{
-		try_to_destroy();
-	}
 
 	void inet_dgram::try_to_destroy(void)
 	{
