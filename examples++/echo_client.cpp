@@ -1,7 +1,6 @@
 # include <iostream>
+# include <unistd.h>
 # include "../headers++/inetdgramclient.hpp"
-
-// To be used with examples/echo_dgram_server.c
 
 int main(void)
 {
@@ -28,8 +27,10 @@ int main(void)
 		sock.sndto("abcdefghi",9,host.c_str(),port.c_str());
 		sock.rcvfrom(buf,9,0,0,0,0);
 		std::cout << buf;
-	}
 
+		std::cout.flush();
+	}
+	
 	sock.destroy();
 
 	return 0;

@@ -25,6 +25,8 @@ namespace libsocket
 	{
 		if ( 0 > close(sfd))
 			return -1;
+	
+		sfd = -1;
 
 		return 0;
 	}

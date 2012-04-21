@@ -174,11 +174,7 @@ int create_inet_dgram_socket(char proto_osi3, int flags)
 # endif
 		return -1;
 	}
-<<<<<<< HEAD:C/libinetsocket.c
-	
-=======
 
->>>>>>> c++-server:C/libinetsocket.c
 	if ( flags != SOCK_NONBLOCK && flags != SOCK_CLOEXEC && flags != (SOCK_CLOEXEC|SOCK_NONBLOCK) && flags != 0 )
 		return -1;
 

@@ -49,6 +49,8 @@ namespace libsocket
 			return;
 
 		destroy_inet_socket(sfd);
+
+		sfd = -1;
 	}
 
 	// I/O

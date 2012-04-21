@@ -1,5 +1,5 @@
 # include <iostream>
-# include "../headers++/inetserversocket.hpp"
+# include "../headers++/inetserverdgram.hpp"
 
 // To be used with examples/echo_dgram_server.c
 
