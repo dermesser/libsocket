@@ -3,6 +3,7 @@
 
 # include "inetbase.hpp"
 # include "inetstreamclient.hpp"
+# include "inetdgram.hpp"
 
 # define IPv4 3
 # define IPv6 4
