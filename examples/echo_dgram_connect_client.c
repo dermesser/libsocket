@@ -17,13 +17,13 @@ int main(void)
 	memset(buf,0,16);
 
 	sfd = create_inet_dgram_socket(IPv4,0);
-	
+
 	connect_inet_dgram_socket(sfd,"localhost","1234");
-	
+
 	write(sfd,"abcde",5);
-	
+
 	sleep(2);
-	
+
 	//read(sfd,buf,5);
 	// We may use the recvfrom/sendto routines also on connected sockets
 	if ( -1 == recvfrom_inet_dgram_socket(sfd,buf,16,0,0,0,0,0,0))

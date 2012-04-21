@@ -93,7 +93,7 @@ int create_inet_stream_socket(const char* host, const char* service, char proto_
 # ifdef VERBOSE
 	const char* errstring;
 # endif
-	
+
 	if ( flags != SOCK_NONBLOCK && flags != SOCK_CLOEXEC && flags != (SOCK_CLOEXEC|SOCK_NONBLOCK) && flags != 0 )
 		return -1;
 
@@ -131,7 +131,7 @@ int create_inet_stream_socket(const char* host, const char* service, char proto_
 	}
 
 	// As described in "The Linux Programming Interface", Michael Kerrisk 2010, chapter 59.11 (p. 1220ff)
-	
+
 	for ( result_check = result; result_check != NULL; result_check = result_check->ai_next ) // go through the linked list of struct addrinfo elements
 	{
 		sfd = socket(result_check->ai_family, result_check->ai_socktype | flags, result_check->ai_protocol);
@@ -144,7 +144,7 @@ int create_inet_stream_socket(const char* host, const char* service, char proto_
 
 		close(sfd);
 	}
-	
+
 	// We do now have a working socket STREAM connection to our target
 
 	if ( result_check == NULL ) // Have we?
@@ -157,7 +157,7 @@ int create_inet_stream_socket(const char* host, const char* service, char proto_
 	// Yes :)
 
 	freeaddrinfo(result);
-	
+
 	return sfd;
 }
 
@@ -174,7 +174,11 @@ int create_inet_dgram_socket(char proto_osi3, int flags)
 # endif
 		return -1;
 	}
+<<<<<<< HEAD:C/libinetsocket.c
 	
+=======
+
+>>>>>>> c++-server:C/libinetsocket.c
 	if ( flags != SOCK_NONBLOCK && flags != SOCK_CLOEXEC && flags != (SOCK_CLOEXEC|SOCK_NONBLOCK) && flags != 0 )
 		return -1;
 
@@ -194,7 +198,7 @@ int create_inet_dgram_socket(char proto_osi3, int flags)
 }
 
 //Working
-ssize_t sendto_inet_dgram_socket(int sfd,void* buf, size_t size,char* host, char* service, int sendto_flags)
+ssize_t sendto_inet_dgram_socket(int sfd, const void* buf, size_t size,const char* host, const char* service, int sendto_flags)
 {
 	struct sockaddr_storage oldsock;
 	struct addrinfo *result, *result_check, hint;
@@ -214,12 +218,12 @@ ssize_t sendto_inet_dgram_socket(int sfd,void* buf, size_t size,char* host, char
 
 	if ( -1 == check_error(getsockname(sfd,(struct sockaddr*)&oldsock,(socklen_t*)&oldsocklen)) )
 		return -1;
-	
+
 	memset(&hint,0,sizeof(struct addrinfo));
 
 	hint.ai_family = oldsock.ss_family;
 	hint.ai_socktype = SOCK_DGRAM;
-	
+
 	if ( 0 != (return_value = getaddrinfo(host,service,&hint,&result)))
 	{
 # ifdef VERBOSE
@@ -228,7 +232,7 @@ ssize_t sendto_inet_dgram_socket(int sfd,void* buf, size_t size,char* host, char
 # endif
 		return -1;
 	}
-	
+
 	for ( result_check = result; result_check != NULL; result_check = result_check->ai_next ) // go through the linked list of struct addrinfo elements
 	{
 		if ( -1 != (return_value = sendto(sfd,buf,size,sendto_flags,result_check->ai_addr,result_check->ai_addrlen))) // connected without error
@@ -285,7 +289,7 @@ ssize_t recvfrom_inet_dgram_socket(int sfd, void* buffer, size_t size, char* src
 	return bytes;
 }
 
-int connect_inet_dgram_socket(int sfd, char* host, char* service)
+int connect_inet_dgram_socket(int sfd, const char* host, const char* service)
 {
 	struct addrinfo *result, *result_check, hint;
 	struct sockaddr_storage oldsockaddr;
@@ -313,7 +317,7 @@ int connect_inet_dgram_socket(int sfd, char* host, char* service)
 
 	if ( -1 == check_error(getsockname(sfd,(struct sockaddr*)&oldsockaddr,&oldsockaddrlen)) )
 		return -1;
-		
+
 	if ( oldsockaddrlen > sizeof(struct sockaddr_storage) ) // If getsockname truncated the struct
 		return -1;
 
@@ -332,7 +336,7 @@ int connect_inet_dgram_socket(int sfd, char* host, char* service)
 	}
 
 	// As described in "The Linux Programming Interface", Michael Kerrisk 2010, chapter 59.11 (p. 1220ff)
-	
+
 	for ( result_check = result; result_check != NULL; result_check = result_check->ai_next ) // go through the linked list of struct addrinfo elements
 	{
 		if ( -1 != (return_value = connect(sfd,result_check->ai_addr,result_check->ai_addrlen))) // connected without error
@@ -343,7 +347,7 @@ int connect_inet_dgram_socket(int sfd, char* host, char* service)
 			check_error(return_value);
 		}
 	}
-	
+
 	// We do now have a working (updated) socket connection to our target
 
 	if ( result_check == NULL ) // or not?
@@ -358,7 +362,7 @@ int connect_inet_dgram_socket(int sfd, char* host, char* service)
 
 	return 0;
 }
-	
+
 
 int destroy_inet_socket(int sfd)
 {
@@ -432,6 +436,9 @@ int create_inet_server_socket(const char* bind_addr, const char* bind_port, char
 			break;
 		case IPv6:
 			domain = AF_INET6;
+			break;
+		case BOTH:
+			domain = AF_UNSPEC;
 			break;
 		default:
 			return -1;

@@ -15,13 +15,13 @@ int main(void)
 	char buf[16];
 
 	sfd = create_inet_dgram_socket(IPv4,0);
-	
+
 	sendto_inet_dgram_socket(sfd,"abcde",5,"localhost","1234",0); 
-	
+
 	sleep(2);
-	
+
 	recvfrom_inet_dgram_socket(sfd,buf,5,0,0,0,0,0,NUMERIC);
-	
+
 	write(1,buf,5);
 
 	destroy_inet_socket(sfd);
