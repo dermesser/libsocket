@@ -93,7 +93,7 @@ the .destroy() routine.</p>
 
 <h3>Constructors</h3>
 
-<p>Declared in <code>inetstreamclient.hpp</code>, defined in <code>inetstreamclient.cpp</code></p>
+<p>Declared in <code>inetclientstream.hpp</code>, defined in <code>inetclientstream.cpp</code></p>
 
 <pre><code>inet_stream(void);
 inet_stream(const char* host, const char* port, int proto_osi3, int flags=0);
@@ -115,7 +115,7 @@ has to be 0 to avoid errors)</li>
 
 <h3><code>connect()</code></h3>
 
-<p>Declared in <code>inetstreamclient.hpp</code>, defined in <code>inetstreamclient.cpp</code></p>
+<p>Declared in <code>inetclientstream.hpp</code>, defined in <code>inetclientstream.cpp</code></p>
 
 <pre><code>void connect(const char* host, const char* port, int proto_osi3, int flags=0);
 </code></pre>
@@ -133,7 +133,7 @@ has to be 0 to avoid errors)</li>
 
 <h3><code>shutdown()</code></h3>
 
-<p>Declared in <code>inetstreamclient.hpp</code>, defined in <code>inetstreamclient.cpp</code></p>
+<p>Declared in <code>inetclientstream.hpp</code>, defined in <code>inetclientstream.cpp</code></p>
 
 <pre><code>void shutdown(int method);
 </code></pre>
@@ -145,7 +145,7 @@ in <code>inetsocket.hpp</code></p>
 
 <h3>Destroy Functions</h3>
 
-<p>Declared in <code>inetstreamclient.hpp</code>, defined in <code>inetstreamclient.cpp</code></p>
+<p>Declared in <code>inetclientstream.hpp</code>, defined in <code>inetclientstream.cpp</code></p>
 
 <pre><code>void destroy(void);
 </code></pre>
@@ -154,7 +154,7 @@ in <code>inetsocket.hpp</code></p>
 
 <h3>Output/Upload Functions</h3>
 
-<p>Declared in <code>inetstreamclient.hpp</code>, defined in <code>inetstreamclient.cpp</code></p>
+<p>Declared in <code>inetclientstream.hpp</code>, defined in <code>inetclientstream.cpp</code></p>
 
 <pre><code>ssize_t snd(const void* buf, size_t len, int flags=0);
 </code></pre>
@@ -182,7 +182,7 @@ C strings (<code>const char*</code>, you may also use <code>char*</code>) and C+
 
 <h3>Input/Download Functions</h3>
 
-<p>Declared in <code>inetstreamclient.hpp</code>, defined in <code>inetstreamclient.cpp</code></p>
+<p>Declared in <code>inetclientstream.hpp</code>, defined in <code>inetclientstream.cpp</code></p>
 
 <pre><code>ssize_t rcv(void* buf, size_t len, int flags=0);
 </code></pre>
@@ -200,7 +200,7 @@ with sending - either closed the socket on his side or shut it down for write ac
 
 <h3>Getters</h3>
 
-<p>Declared in <code>inetstreamclient.hpp</code>, defined in <code>inetstreamclient.cpp</code></p>
+<p>Declared in <code>inetclientstream.hpp</code>, defined in <code>inetclientstream.cpp</code></p>
 
 <pre><code>int getfd(void) const;
 string gethost(void) const;
@@ -215,7 +215,7 @@ string getport(void) const;
 
 <h2><code>inet_stream_server</code> - TCP Internet server</h2>
 
-<p>Declared in <code>inetserversocket.hpp</code>, defined in <code>inetserversocket.cpp</code></p>
+<p>Declared in <code>inetserverstream.hpp</code>, defined in <code>inetserverstream.cpp</code></p>
 
 <pre><code>inet_stream_server(void);
 inet_stream_server(const char* bindhost, const char* bindport, int proto_osi3, int flags=0);
@@ -230,7 +230,7 @@ binds the socket to <code>bindhost:bindport</code> using <code>proto_osi3</code>
 
 <h3><code>accept()</code></h3>
 
-<p>Declared in <code>inetserversocket.hpp</code>, defined in <code>inetserversocket.cpp</code></p>
+<p>Declared in <code>inetserverstream.hpp</code>, defined in <code>inetserverstream.cpp</code></p>
 
 <pre><code>inet_stream* accept(int numeric=0);
 </code></pre>
@@ -252,7 +252,7 @@ binds the socket to <code>bindhost:bindport</code> using <code>proto_osi3</code>
 
 <h3>Constructors</h3>
 
-<p>Declared in <code>inetdgramclient.hpp</code>, defined in <code>inetdgramclient.cpp</code></p>
+<p>Declared in <code>inetclientdgram.hpp</code>, defined in <code>inetclientdgram.cpp</code></p>
 
 <pre><code>inet_dgram_client(int proto_osi3, int flags=0); // Flags: socket()
 inet_dgram_client(const char* host, const char* port, int proto_osi3, int flags=0); // Flags: socket()
@@ -269,7 +269,7 @@ The data is sent and received only to/from the host to which the socket is conne
 
 <h3>Connect Functions</h3>
 
-<p>Declared in <code>inetdgramclient.hpp</code>, defined in <code>inetdgramclient.cpp</code></p>
+<p>Declared in <code>inetclientdgram.hpp</code>, defined in <code>inetclientdgram.cpp</code></p>
 
 <pre><code>void connect(const char* host, const char* port);
 </code></pre>
@@ -294,7 +294,7 @@ functions like <code>snd()</code> or <code>rcv()</code> may not be used anymore.
 
 <h3>Send/Upload Functions</h3>
 
-<p>Declared in <code>inetdgramclient.hpp</code>, <code>inetdgram.hpp</code>; defined in <code>inetdgram.cpp</code>, <code>inetdgramclient.cpp</code></p>
+<p>Declared in <code>inetclientdgram.hpp</code>, <code>inetdgram.hpp</code>; defined in <code>inetdgram.cpp</code>, <code>inetclientdgram.cpp</code></p>
 
 <pre><code>ssize_t snd(const void* buf, size_t len, int flags=0); // flags: send()
 </code></pre>
@@ -322,7 +322,7 @@ Usage like streams:</p>
 
 <h3>Receive/Download Functions</h3>
 
-<p>Declared in <code>inetdgramclient.hpp</code>, <code>inetdgram.hpp</code>; defined in <code>inetdgram.cpp</code>, <code>inetdgramclient.cpp</code></p>
+<p>Declared in <code>inetclientdgram.hpp</code>, <code>inetdgram.hpp</code>; defined in <code>inetdgram.cpp</code>, <code>inetclientdgram.cpp</code></p>
 
 <pre><code>ssize_t rcv(void* buf, size_t len, int flags=0);
 </code></pre>
@@ -348,7 +348,7 @@ the number of read characters. One read call normally returns one datagram</p>
 
 <h2><code>inet_dgram_server</code> - INET DGRAM server sockets</h2>
 
-<p>Declared in <code>inetserversocket.hpp</code>, defined in <code>inetserversocket.hpp</code>.</p>
+<p>Declared in <code>inetserverdgram.hpp</code>, defined in <code>inetserverdgram.hpp</code>.</p>
 
 <pre><code>inet_dgram_server(const char* host, const char* port, int proto_osi3, int flags=0);
 </code></pre>
