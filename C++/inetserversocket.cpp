@@ -1,8 +1,8 @@
 # include "../headers/libinetsocket.h"
 # include "../headers++/socket.hpp"
 # include "../headers++/inetbase.hpp"
-# include "../headers++/inetsocket.hpp"
 # include "../headers++/inetdgram.hpp"
+# include "../headers++/inetstreamclient.hpp"
 
 # include <string.h>
 # include <string>

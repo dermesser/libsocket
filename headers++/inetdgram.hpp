@@ -31,7 +31,6 @@ namespace libsocket
 
 		// I/O
 		// destroy but don't complain
-		void try_to_destroy(void);
 		void destroy(void);
 
 		// I/O

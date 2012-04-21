@@ -47,18 +47,7 @@ Legend:
 
 ## Usage in Your Application
 
-As you see in the figure above, the code comes in two main files: `socket.cpp` and `inetsocket.cpp` (resp. `unixsocket.cpp`).
-
-In every file using the classes mentioned above, header files must be included:
-- `headers++/socket.hpp` - usually included by `inetsocket.hpp` or `unixsocket.hpp`
-- `headers++/inetbase.hpp` - usually included by `inetsocket.hpp`, responsible for `inet_exception` and `inet_socket`
-- `headers++/inetsocket.hpp` - files using `inet_dgram` or `inet_stream`
-- `headers++/unixsocket.hpp` - files using `unix_dgram` or `unix_stream`
-
-*Please note:* `inetsocket.cpp` and `unixsocket.cpp` are using the header file `socket.hpp` so you have to
-change the include paths in the first both files eventually (default is "../headers++/socket.hpp").
-
-Then, compile the files (like mentioned in DOCUMENTATION.md) like every other:
+Compile the files (like mentioned in DOCUMENTATION.md) like every other:
 
 	$ gcc -c */*.cpp
 	$ gcc *.o
@@ -70,7 +59,7 @@ or
 libinetsocket++ is the wrapper around libinetsocket.
 
 ## Exception Handling
-Exception handling is done with the following class:
+Exception handling is done with the following class (declared in `inetbase.hpp`, defined in `inetbase.cpp`)
 
 	struct inet_exception
 	{
@@ -79,9 +68,8 @@ Exception handling is done with the following class:
 		inet_exception(string,int,string);
 	};
 
-An instantiation of this object is thrown in case of error. Almost every function (excepted
-the `try_to_...()` functions) is able to throw one or more exceptions. The member `mesg`
-contains a string looking like this:
+An instantiation of this object is thrown in case of error. Almost every function
+may raise an exception containing a string looking like this:
 
 	../C++/inetsocket.cpp:151: inet_stream::destroy() - Socket already closed!
 		(1)		(2)		(3)		(4)
@@ -92,6 +80,7 @@ the .destroy() routine.
 
 ## `inet_stream` Class: Internet TCP Stream Sockets
 ### Constructors
+Declared in `inetstreamclient.hpp`, defined in `inetstreamclient.cpp`
 
 	inet_stream(void);
 	inet_stream(const char* host, const char* port, int proto_osi3, int flags=0);
@@ -109,6 +98,7 @@ the C string
 has to be 0 to avoid errors)
 
 ### `connect()`
+Declared in `inetstreamclient.hpp`, defined in `inetstreamclient.cpp`
 
 	void connect(const char* host, const char* port, int proto_osi3, int flags=0);
 
@@ -122,6 +112,7 @@ the C string
 has to be 0 to avoid errors)
 
 ### `shutdown()`
+Declared in `inetstreamclient.hpp`, defined in `inetstreamclient.cpp`
 
 	void shutdown(int method);
 
@@ -131,16 +122,14 @@ Shuts the socket down (`shutdown(2)`).
 in `inetsocket.hpp`
 
 ### Destroy Functions
+Declared in `inetstreamclient.hpp`, defined in `inetstreamclient.cpp`
 
-	void try_to_destroy(void);
 	void destroy(void);
 
-These two functions do the same thing: Close the socket and destroy the connection.
-
-The difference is that `try_to_destroy()` fails silently and `destroy()` would fail
-with an exception if the socket is already closed.
+Close the socket and destroy the connection.
 
 ### Output/Upload Functions
+Declared in `inetstreamclient.hpp`, defined in `inetstreamclient.cpp`
 
 	ssize_t snd(const void* buf, size_t len, int flags=0);
 
@@ -164,6 +153,7 @@ As you can see at the return value, you may cascade it (from `examples++/http.c`
 Throws exceptions e.g. if the socket is not connected or `write(2)` returned -1.
 
 ### Input/Download Functions
+Declared in `inetstreamclient.hpp`, defined in `inetstreamclient.cpp`
 
 	ssize_t rcv(void* buf, size_t len, int flags=0);
 
@@ -178,6 +168,7 @@ the number of read characters so you can check (`string.size() == 0`) if the ser
 with sending - either closed the socket on his side or shut it down for write access.
 
 ### Getters
+Declared in `inetstreamclient.hpp`, defined in `inetstreamclient.cpp`
 
 	int getfd(void) const;
 	string gethost(void) const;
@@ -190,10 +181,12 @@ with sending - either closed the socket on his side or shut it down for write ac
 `getport()` returns a C++ string containing the port/service to which the socket is connected.
 
 ## `inet_stream_server` - TCP Internet server
-		inet_stream_server(void);
-		inet_stream_server(const char* bindhost, const char* bindport, int proto_osi3, int flags=0);
+Declared in `inetserversocket.hpp`, defined in `inetserversocket.cpp`
 
-Create an internet tcp server (passive) socket. 
+	inet_stream_server(void);
+	inet_stream_server(const char* bindhost, const char* bindport, int proto_osi3, int flags=0);
+
+Create an internet tcp server (passive) socket.
 
 If you use the first constructor, you have to `setup()` the socket before using it. The latter constructor
 binds the socket to `bindhost:bindport` using `proto_osi3` (`IPv4` or `IPv6` or `BOTH`).
@@ -201,12 +194,25 @@ binds the socket to `bindhost:bindport` using `proto_osi3` (`IPv4` or `IPv6` or 
 `flags` are supplied to the internal `socket(2)` call.
 
 ### `accept()`
+Declared in `inetserversocket.hpp`, defined in `inetserversocket.cpp`
+
 	inet_stream* accept(int numeric=0);
 
 Accept an incoming connection. `numeric` may be `NUMERIC` if you want to have the host and port as numbers.
 
+Returns a pointer to a dynamically allocated `inet_stream` object
+
+### Destroy
+Declared in `socket.hpp`, defined in `socket.cpp`
+
+	void socket::destroy(void);
+
+Inherited from `socket` class. Destroy (close) socket.
+
 ## `inet_dgram_client` Class: Internet UDP Sockets
 ### Constructors
+Declared in `inetdgramclient.hpp`, defined in `inetdgramclient.cpp`
+
 	inet_dgram_client(int proto_osi3, int flags=0); // Flags: socket()
 	inet_dgram_client(const char* host, const char* port, int proto_osi3, int flags=0); // Flags: socket()
 
@@ -220,6 +226,7 @@ If an UDP socket is connected, calls to `snd()` and `rcv()` act like it is a str
 The data is sent and received only to/from the host to which the socket is connected.
 
 ### Connect Functions
+Declared in `inetdgramclient.hpp`, defined in `inetdgramclient.cpp`
 
 	void connect(const char* host, const char* port);
 
@@ -232,16 +239,14 @@ Cut the connection to the host to which the socket was connected to. Now, stream
 functions like `snd()` or `rcv()` may not be used anymore.
 
 ### Destroy Functions
-
-	void try_to_destroy(void);
-
-Try to destroy the socket, but do not throw an exception if it failed.
+Declared in `inetdgram.hpp`, defined in `inetdgram.cpp`
 
 	void destroy(void);
 
 Try to destroy the socket and throw an exception if it failed.
 
 ### Send/Upload Functions
+Declared in `inetdgramclient.hpp`, `inetdgram.hpp`; defined in `inetdgram.cpp`, `inetdgramclient.cpp`
 
 	ssize_t snd(const void* buf, size_t len, int flags=0); // flags: send()
 
@@ -264,6 +269,7 @@ Usage like streams:
 	sock << "abc" << string("def");
 
 ### Receive/Download Functions
+Declared in `inetdgramclient.hpp`, `inetdgram.hpp`; defined in `inetdgram.cpp`, `inetdgramclient.cpp`
 
 	ssize_t rcv(void* buf, size_t len, int flags=0);
 
@@ -284,7 +290,19 @@ Stream-like read from (connected!) socket: Reads at most `dest.size()` bytes fro
 to the string. If less than `dest.size()` characters could be read, the string is resized to
 the number of read characters. One read call normally returns one datagram
 
+## `inet_dgram_server` - INET DGRAM server sockets
+Declared in `inetserversocket.hpp`, defined in `inetserversocket.hpp`.
 
+	inet_dgram_server(const char* host, const char* port, int proto_osi3, int flags=0);
+
+Create and bind a DGRAM socket. The only difference to `inet_dgram_client` is that this socket is explicitly bound to somewhere.
+
+* `host` to bind to
+* `port` to bind to
+* `proto_osi3` - `IPv4 IPv6 BOTH`
+* `flags` is passed to `socket(2)`
+
+It is not possible to call `connect(), rcv(), snd()` on such sockets; the `rcvfrom(), sndto()` functions may be called, of course.
 
 # libunixsocket++
 

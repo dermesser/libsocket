@@ -31,7 +31,6 @@ namespace libsocket
 		// Real actions
 		void connect(const char* dsthost, const char* dstport, int proto_osi3, int flags=0); // flags: socket()
 		void shutdown(int method);
-		void try_to_destroy(void);
 		void destroy(void);
 
 		// I/O
@@ -75,7 +74,7 @@ namespace libsocket
 
 	inet_stream::~inet_stream(void)
 	{
-		try_to_destroy();
+		destroy();
 	}
 
 	void inet_stream::connect(const char* dsthost, const char* dstport, int proto_osi3, int flags)
@@ -102,22 +101,12 @@ namespace libsocket
 		}
 	}
 
-	void inet_stream::try_to_destroy(void)
-	{
-		if ( sfd != -1 )
-		{
-			close(sfd);
-			sfd = -1;
-		}
-	}
-
 	void inet_stream::destroy(void)
 	{
 		if ( -1 == sfd )
 			throw inet_exception(__FILE__,__LINE__,"inet_stream::destroy() - Socket already closed!\n");
 
-		if ( 0 > destroy_inet_socket(sfd) )
-			throw inet_exception(__FILE__,__LINE__,"inet_stream::destroy() - Could not close socket\n");
+		destroy_inet_socket(sfd);
 
 		sfd = -1;
 	}

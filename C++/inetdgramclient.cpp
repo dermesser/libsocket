@@ -82,7 +82,7 @@ namespace libsocket
 
 	inet_dgram_client::~inet_dgram_client(void)
 	{
-		try_to_destroy();
+		destroy();
 	}
 
 	void inet_dgram_client::connect(const char* dsthost, const char* dstport)

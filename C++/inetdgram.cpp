@@ -26,7 +26,6 @@ namespace libsocket
 
 		// I/O
 		// destroy but don't complain
-		void try_to_destroy(void);
 		void destroy(void);
 
 		// I/O
@@ -44,22 +43,12 @@ namespace libsocket
 
 	// Managing
 
-	void inet_dgram::try_to_destroy(void)
-	{
-		if ( sfd != -1 )
-		{
-			close(sfd);
-			sfd = -1;
-		}
-	}
-
 	void inet_dgram::destroy(void)
 	{
 		if ( -1 == sfd )
 			return;
 
-		if ( -1 == destroy_inet_socket(sfd) )
-			throw inet_exception(__FILE__,__LINE__,"inet_dgram::destroy() - Could not close socket!\n");
+		destroy_inet_socket(sfd);
 	}
 
 	// I/O
