@@ -1,5 +1,0 @@
-socket.hpp: Basic socket functionality. Not needed in normal applications.
-inetbase.hpp: Basic inet socket functionality. Not needed in normal applications.
-inetsocket.hpp: Needed for every source file using active DGRAM or STREAM inet sockets
-inetserversocket.hpp: Needed for every source file using passive DGRAM or STREAM inet sockets.
-inetdgram.hpp: Base class for DGRAM sockets. Not needed in normal applications.
