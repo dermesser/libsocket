@@ -6,7 +6,6 @@
 # include <sys/socket.h>
 # include "socket.hpp"
 # include "inetbase.hpp"
-# include "inetdgram.hpp"
 
 # define TCP 1
 # define UDP 2
