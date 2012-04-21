@@ -10,6 +10,8 @@ namespace libsocket
 {
 	using std::string;
 
+/***************** STREAM ******************/
+
 	class inet_stream_server : public inet_socket
 	{
 		private:
@@ -87,4 +89,6 @@ namespace libsocket
 	{
 		return port;
 	}
+
+/****************** DGRAM *******************/
 }

@@ -6,6 +6,7 @@
 # include <sys/socket.h>
 # include "socket.hpp"
 # include "inetbase.hpp"
+# include "inetdgram.hpp"
 
 # define TCP 1
 # define UDP 2
@@ -63,7 +64,7 @@ namespace libsocket
 		friend class inet_stream_server;
 	};
 
-	class inet_dgram : public inet_socket
+	class inet_dgram_client : public inet_dgram
 	{
 		private:
 		bool connected;
@@ -71,11 +72,11 @@ namespace libsocket
 		public:
 
 		// Only create socket
-		inet_dgram(int proto_osi3,int flags=0); // Flags: socket()
+		inet_dgram_client(int proto_osi3,int flags=0); // Flags: socket()
 		// Create socket and connect it
-		inet_dgram(const char* dsthost, const char* dstport, int proto_osi3, int flags=0); // Flags: socket()
+		inet_dgram_client(const char* dsthost, const char* dstport, int proto_osi3, int flags=0); // Flags: socket()
 
-		~inet_dgram();
+		~inet_dgram_client();
 
 		// actions
 		// connect/reconnect
@@ -83,30 +84,21 @@ namespace libsocket
 		void deconnect(void);
 
 		// I/O
-		// destroy but don't complain
-		void try_to_destroy(void);
-		void destroy(void);
-
-		// I/O
 		// O
 		// only if connected
-		friend inet_dgram& operator<<(inet_dgram& sock, const char* str);
-		friend inet_dgram& operator<<(inet_dgram& sock, string& str);
+		friend inet_dgram_client& operator<<(inet_dgram_client& sock, const char* str);
+		friend inet_dgram_client& operator<<(inet_dgram_client& sock, string& str);
 
 		ssize_t snd(const void* buf, size_t len, int flags=0); // flags: send()
-		ssize_t sndto(const void* buf, size_t len, const char* dsthost, const char* dstport, int sndto_flags=0); // flags: sendto()
 
 		// I
-		friend inet_dgram& operator>>(inet_dgram& sock, string& dest);
+		friend inet_dgram_client& operator>>(inet_dgram_client& sock, string& dest);
 
 		ssize_t rcv(void* buf, size_t len, int flags=0);
-		ssize_t rcvfrom(void* buf, size_t len, char* dsthost, size_t hostlen, char* dstport, size_t portlen, int rcvfrom_flags=0, bool numeric=false);
 
 		// Getters
 
 		bool getconn(void);
-		string gethost(void);
-		string getport(void);
 	};
 
 }

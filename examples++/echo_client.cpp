@@ -14,7 +14,7 @@ int main(void)
 
 	buf[9] = 0;
 
-	libsocket::inet_dgram sock(IPv4);
+	libsocket::inet_dgram_client sock(IPv4);
 
 	try {
 		std::cout << sock.gethost();

@@ -5,6 +5,7 @@
 # include "../headers/libinetsocket.h"
 # include "../headers++/socket.hpp"
 # include "../headers++/inetbase.hpp"
+# include "../headers++/inetdgram.hpp"
 
 # include <unistd.h>
 # include <sys/socket.h>
@@ -230,7 +231,7 @@ namespace libsocket
 
 /************** inet_dgram class (inet UDP sockets) ************/
 
-	class inet_dgram : public inet_socket
+	class inet_dgram_client : public inet_dgram
 	{
 		private:
 		bool connected;
@@ -238,11 +239,11 @@ namespace libsocket
 		public:
 
 		// Only create socket
-		inet_dgram(int proto_osi3,int flags=0); // Flags: socket()
+		inet_dgram_client(int proto_osi3,int flags=0); // Flags: socket()
 		// Create socket and connect it
-		inet_dgram(const char* dsthost, const char* dstport, int proto_osi3, int flags=0); // Flags: socket()
+		inet_dgram_client(const char* dsthost, const char* dstport, int proto_osi3, int flags=0); // Flags: socket()
 
-		~inet_dgram();
+		~inet_dgram_client();
 
 		// actions
 		// connect/reconnect
@@ -250,35 +251,26 @@ namespace libsocket
 		void deconnect(void);
 
 		// I/O
-		// destroy but don't complain
-		void try_to_destroy(void);
-		void destroy(void);
-
-		// I/O
 		// O
 		// only if connected
-		friend inet_dgram& operator<<(inet_dgram& sock, const char* str);
-		friend inet_dgram& operator<<(inet_dgram& sock, string& str);
+		friend inet_dgram_client& operator<<(inet_dgram_client& sock, const char* str);
+		friend inet_dgram_client& operator<<(inet_dgram_client& sock, string& str);
 
 		ssize_t snd(const void* buf, size_t len, int flags=0); // flags: send()
-		ssize_t sndto(const void* buf, size_t len, const char* dsthost, const char* dstport, int sndto_flags=0); // flags: sendto()
 
 		// I
-		friend inet_dgram& operator>>(inet_dgram& sock, string& dest);
+		friend inet_dgram_client& operator>>(inet_dgram_client& sock, string& dest);
 
 		ssize_t rcv(void* buf, size_t len, int flags=0);
-		ssize_t rcvfrom(void* buf, size_t len, char* dsthost, size_t hostlen, char* dstport, size_t portlen, int rcvfrom_flags=0, bool numeric=false);
 
 		// Getters
 
 		bool getconn(void);
-		string gethost(void);
-		string getport(void);
 	};
 
 	// Managing
 
-	inet_dgram::inet_dgram(int proto_osi3, int flags) : connected(false)
+	inet_dgram_client::inet_dgram_client(int proto_osi3, int flags) : connected(false)
 	{
 		if ( -1 == (sfd = create_inet_dgram_socket(proto_osi3,flags)) )
 			throw inet_exception(__FILE__,__LINE__,"inet_dgram::inet_dgram() - Could not create inet dgram socket!\n");
@@ -286,7 +278,7 @@ namespace libsocket
 		proto = proto_osi3;
 	}
 
-	inet_dgram::inet_dgram(const char* dsthost, const char* dstport, int proto_osi3, int flags)
+	inet_dgram_client::inet_dgram_client(const char* dsthost, const char* dstport, int proto_osi3, int flags)
 	{
 		if ( -1 == (sfd = create_inet_dgram_socket(proto_osi3,flags)) )
 			throw inet_exception(__FILE__,__LINE__,"inet_dgram::inet_dgram() - Could not create inet dgram socket!\n");
@@ -299,12 +291,12 @@ namespace libsocket
 		}
 	}
 
-	inet_dgram::~inet_dgram(void)
+	inet_dgram_client::~inet_dgram_client(void)
 	{
 		try_to_destroy();
 	}
 
-	void inet_dgram::connect(const char* dsthost, const char* dstport)
+	void inet_dgram_client::connect(const char* dsthost, const char* dstport)
 	{
 		if ( -1 == (connect_inet_dgram_socket(sfd,dsthost,dstport)) )
 			throw inet_exception(__FILE__,__LINE__,"inet_dgram::connect() - Could not connect dgram socket!\n");
@@ -314,7 +306,7 @@ namespace libsocket
 		connected = true;
 	}
 
-	void inet_dgram::deconnect(void)
+	void inet_dgram_client::deconnect(void)
 	{
 		if ( -1 == sfd )
 			throw inet_exception(__FILE__,__LINE__,"inet_dgram::deconnect() - Socket not connected!\n");
@@ -326,30 +318,11 @@ namespace libsocket
 		port.resize(0);
 	}
 
-
-	void inet_dgram::try_to_destroy(void)
-	{
-		if ( sfd != -1 )
-		{
-			close(sfd);
-			sfd = -1;
-		}
-	}
-
-	void inet_dgram::destroy(void)
-	{
-		if ( -1 == sfd )
-			return;
-
-		if ( -1 == destroy_inet_socket(sfd) )
-			throw inet_exception(__FILE__,__LINE__,"inet_dgram::destroy() - Could not close socket!\n");
-	}
-
 	// I/O
 
 	// I
 
-	ssize_t inet_dgram::rcv(void* buf, size_t len, int flags)
+	ssize_t inet_dgram_client::rcv(void* buf, size_t len, int flags)
 	{
 		ssize_t bytes;
 
@@ -365,21 +338,7 @@ namespace libsocket
 		return bytes;
 	}
 
-	ssize_t inet_dgram::rcvfrom(void* buf, size_t len, char* hostbuf, size_t hostbuflen, char* portbuf, size_t portbuflen, int rcvfrom_flags, bool numeric)
-	{
-		ssize_t bytes;
-		int num = ((numeric == true) ? NUMERIC : 0);
-
-		if ( -1 == sfd )
-			throw inet_exception(__FILE__,__LINE__,"inet_dgram::rcvfrom() - Socket already closed!\n");
-
-		if ( -1 == (bytes = recvfrom_inet_dgram_socket(sfd,buf,len,hostbuf,hostbuflen,portbuf,portbuflen,rcvfrom_flags,num)) )
-			throw inet_exception(__FILE__,__LINE__,"inet_dgram::rcvfrom() - recvfrom() failed!\n");
-
-		return bytes;
-	}
-
-	inet_dgram& operator>>(inet_dgram& sock, string& dest)
+	inet_dgram_client& operator>>(inet_dgram_client& sock, string& dest)
 	{
 		ssize_t read_bytes;
 		char* buffer;
@@ -405,7 +364,7 @@ namespace libsocket
 
 	// O
 
-	ssize_t inet_dgram::snd(const void* buf, size_t len, int flags)
+	ssize_t inet_dgram_client::snd(const void* buf, size_t len, int flags)
 	{
 		ssize_t bytes;
 
@@ -421,20 +380,7 @@ namespace libsocket
 		return bytes;
 	}
 
-	ssize_t inet_dgram::sndto(const void* buf, size_t len, const char* dsthost, const char* dstport, int sndto_flags)
-	{
-		ssize_t bytes;
-
-		if ( -1 == sfd )
-			throw inet_exception(__FILE__,__LINE__,"inet_dgram::sendto() - Socket already closed!\n");
-
-		if ( -1 == (bytes = sendto_inet_dgram_socket(sfd,buf,len,dsthost,dstport,sndto_flags)) )
-			throw inet_exception(__FILE__,__LINE__,"inet_dgram::sndto() - Error at sendto\n");
-
-		return bytes;
-	}
-
-	inet_dgram& operator<<(inet_dgram& sock, const char* str)
+	inet_dgram_client& operator<<(inet_dgram_client& sock, const char* str)
 	{
 		if ( sock.sfd == -1 )
 			throw inet_exception(__FILE__,__LINE__,"inet dgram <<(const char*) output: Socket not connected!\n");
@@ -451,7 +397,7 @@ namespace libsocket
 		return sock;
 	}
 
-	inet_dgram& operator<<(inet_dgram& sock, string& str)
+	inet_dgram_client& operator<<(inet_dgram_client& sock, string& str)
 	{
 		if ( sock.sfd == -1 )
 			throw inet_exception(__FILE__,__LINE__,"inet dgram<<(std::string) output: Socket not connected!\n");
@@ -464,24 +410,8 @@ namespace libsocket
 	}
 
 	// Getters
-	bool inet_dgram::getconn(void)
+	bool inet_dgram_client::getconn(void)
 	{
 		return connected;
-	}
-
-	string inet_dgram::gethost(void)
-	{
-		if ( connected == false )
-			throw inet_exception(__FILE__,__LINE__,"inet_dgram::gethost() - DGRAM socket not connected!\n");
-
-		return host;
-	}
-
-	string inet_dgram::getport(void)
-	{
-		if ( connected == false )
-			throw inet_exception(__FILE__,__LINE__,"inet_dgram::getport() - DGRAM socket not connected!\n");
-
-		return port;
 	}
 }
