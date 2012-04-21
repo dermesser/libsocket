@@ -1,3 +1,6 @@
+# ifndef INETDGRAM
+# define INETDGRAM
+
 # include <iostream>
 # include <string>
 # include <string.h>
@@ -23,7 +26,7 @@ namespace libsocket
 	{
 		private:
 		public:
-		
+
 		~inet_dgram();
 
 		// I/O
@@ -45,3 +48,5 @@ namespace libsocket
 	};
 
 }
+
+# endif
