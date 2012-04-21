@@ -19,32 +19,6 @@ or use some things or the whole namespace:
 
 	using libsocket::inet_stream;
 
-### Internal Class Hierarchy
-[ For a good-looking version, take a look to the markdown file! ]
-
-Legend:
-
-- [ ] full-qualified class name
-- { } file name of the class
-- Provides: - What stuff is provided by this class?
-- |/\\\_ - Path to inheriting class
-
-	[ libsocket::socket ]{ C++/socket.cpp }
-		|  		Provides: socket file descriptor data element,
-		|			  generic destroy() function
-		|`------------------------------------------------------------------------------------+
-		|                                                                                     |
-	[ libsocket::inet_socket ]{ C++/inetsocket.cpp }				[ libsocket::unix_socket ] // Not implemented yet
-		|	Provides: some data elements
-                |`---------------------------------------------+
-	        |                                              |
-	[ libsocket::inet_stream ]{ C++/inetsocket.cpp }       |
-			Provides: All functions to be used     |
-							       |
-		+----------------------------------------------+
-	        |
-	[ libsocket::inet_dgram ]{ C++/inetsocket.cpp }
-
 ## Usage in Your Application
 
 Compile the files (like mentioned in DOCUMENTATION.md) like every other:
