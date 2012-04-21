@@ -1,6 +1,6 @@
 # include <iostream>
 # include <string>
-# include "../headers++/inetsocket.hpp"
+# include "../headers++/inetstreamclient.hpp"
 
 int main(void)
 {

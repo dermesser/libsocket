@@ -433,6 +433,9 @@ int create_inet_server_socket(const char* bind_addr, const char* bind_port, char
 		case IPv6:
 			domain = AF_INET6;
 			break;
+		case BOTH:
+			domain = AF_UNSPEC;
+			break;
 		default:
 			return -1;
 	}

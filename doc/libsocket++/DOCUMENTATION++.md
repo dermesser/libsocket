@@ -189,14 +189,30 @@ with sending - either closed the socket on his side or shut it down for write ac
 
 `getport()` returns a C++ string containing the port/service to which the socket is connected.
 
-## `inet_dgram` Class: Internet UDP Sockets
+## `inet_stream_server` - TCP Internet server
+		inet_stream_server(void);
+		inet_stream_server(const char* bindhost, const char* bindport, int proto_osi3, int flags=0);
+
+Create an internet tcp server (passive) socket. 
+
+If you use the first constructor, you have to `setup()` the socket before using it. The latter constructor
+binds the socket to `bindhost:bindport` using `proto_osi3` (`IPv4` or `IPv6` or `BOTH`).
+
+`flags` are supplied to the internal `socket(2)` call.
+
+### `accept()`
+	inet_stream* accept(int numeric=0);
+
+Accept an incoming connection. `numeric` may be `NUMERIC` if you want to have the host and port as numbers.
+
+## `inet_dgram_client` Class: Internet UDP Sockets
 ### Constructors
-	inet_dgram(int proto_osi3, int flags=0); // Flags: socket()
-	inet_dgram(const char* host, const char* port, int proto_osi3, int flags=0); // Flags: socket()
+	inet_dgram_client(int proto_osi3, int flags=0); // Flags: socket()
+	inet_dgram_client(const char* host, const char* port, int proto_osi3, int flags=0); // Flags: socket()
 
 Because the UDP socket can be connected multiple times and send data to various hosts,
 it's mandatory to specify the address family at instantiation time. `proto_osi3` may be
-`IPv4` or `IPv6`; this information is used to create a socket with `create_inet_dgram_socket()`
+`IPv4` or `IPv6`; this information is used to create a socket with `create_inet_dgram_client_socket()`
 and finally `socket(2)`.
 
 The second form allows to specify a host and a port to which the UDP socket is connected.
@@ -239,8 +255,8 @@ to the connected peer. `flags` may be specified and take the flags described in 
 Send `len` bytes from `buf` to `host`:`port`. `sndto_flags` may be specified and take the flags described
 in `sendto(2)` (`MSG_...`).
 
-	friend inet_dgram& operator<<(inet_dgram& sock, const char* str);
-	friend inet_dgram& operator<<(inet_dgram& sock, string& str);
+	friend inet_dgram_client& operator<<(inet_dgram_client& sock, const char* str);
+	friend inet_dgram_client& operator<<(inet_dgram_client& sock, string& str);
 
 Only for connected sockets. Send either a string or a C string to the connected peer.
 Usage like streams:
@@ -262,11 +278,14 @@ can take the flags described in `recvfrom(2)`, `numeric` is considered as `false
 `true`, source host and source port are expressed in numerical form. This is recommended because it's faster
 than an additional (internal) rDNS query.
 
-	friend inet_dgram& operator>>(inet_dgram& sock, string& dest);
+	friend inet_dgram_client& operator>>(inet_dgram_client& sock, string& dest);
 
 Stream-like read from (connected!) socket: Reads at most `dest.size()` bytes from socket and puts them
 to the string. If less than `dest.size()` characters could be read, the string is resized to
 the number of read characters. One read call normally returns one datagram
+
+
+
 # libunixsocket++
 
 Not implemented yet.

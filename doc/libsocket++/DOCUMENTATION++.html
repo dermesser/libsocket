@@ -215,17 +215,37 @@ string getport(void) const;
 
 <p><code>getport()</code> returns a C++ string containing the port/service to which the socket is connected.</p>
 
-<h2><code>inet_dgram</code> Class: Internet UDP Sockets</h2>
+<h2><code>inet_stream_server</code> - TCP Internet server</h2>
+
+<pre><code>    inet_stream_server(void);
+    inet_stream_server(const char* bindhost, const char* bindport, int proto_osi3, int flags=0);
+</code></pre>
+
+<p>Create an internet tcp server (passive) socket. </p>
+
+<p>If you use the first constructor, you have to <code>setup()</code> the socket before using it. The latter constructor
+binds the socket to <code>bindhost:bindport</code> using <code>proto_osi3</code> (<code>IPv4</code> or <code>IPv6</code> or <code>BOTH</code>).</p>
+
+<p><code>flags</code> are supplied to the internal <code>socket(2)</code> call.</p>
+
+<h3><code>accept()</code></h3>
+
+<pre><code>inet_stream* accept(int numeric=0);
+</code></pre>
+
+<p>Accept an incoming connection. <code>numeric</code> may be <code>NUMERIC</code> if you want to have the host and port as numbers.</p>
+
+<h2><code>inet_dgram_client</code> Class: Internet UDP Sockets</h2>
 
 <h3>Constructors</h3>
 
-<pre><code>inet_dgram(int proto_osi3, int flags=0); // Flags: socket()
-inet_dgram(const char* host, const char* port, int proto_osi3, int flags=0); // Flags: socket()
+<pre><code>inet_dgram_client(int proto_osi3, int flags=0); // Flags: socket()
+inet_dgram_client(const char* host, const char* port, int proto_osi3, int flags=0); // Flags: socket()
 </code></pre>
 
 <p>Because the UDP socket can be connected multiple times and send data to various hosts,
 it's mandatory to specify the address family at instantiation time. <code>proto_osi3</code> may be
-<code>IPv4</code> or <code>IPv6</code>; this information is used to create a socket with <code>create_inet_dgram_socket()</code>
+<code>IPv4</code> or <code>IPv6</code>; this information is used to create a socket with <code>create_inet_dgram_client_socket()</code>
 and finally <code>socket(2)</code>.</p>
 
 <p>The second form allows to specify a host and a port to which the UDP socket is connected.
@@ -274,8 +294,8 @@ to the connected peer. <code>flags</code> may be specified and take the flags de
 <p>Send <code>len</code> bytes from <code>buf</code> to <code>host</code>:<code>port</code>. <code>sndto_flags</code> may be specified and take the flags described
 in <code>sendto(2)</code> (<code>MSG_...</code>).</p>
 
-<pre><code>friend inet_dgram&amp; operator&lt;&lt;(inet_dgram&amp; sock, const char* str);
-friend inet_dgram&amp; operator&lt;&lt;(inet_dgram&amp; sock, string&amp; str);
+<pre><code>friend inet_dgram_client&amp; operator&lt;&lt;(inet_dgram_client&amp; sock, const char* str);
+friend inet_dgram_client&amp; operator&lt;&lt;(inet_dgram_client&amp; sock, string&amp; str);
 </code></pre>
 
 <p>Only for connected sockets. Send either a string or a C string to the connected peer.
@@ -301,7 +321,7 @@ can take the flags described in <code>recvfrom(2)</code>, <code>numeric</code> i
 <code>true</code>, source host and source port are expressed in numerical form. This is recommended because it's faster
 than an additional (internal) rDNS query.</p>
 
-<pre><code>friend inet_dgram&amp; operator&gt;&gt;(inet_dgram&amp; sock, string&amp; dest);
+<pre><code>friend inet_dgram_client&amp; operator&gt;&gt;(inet_dgram_client&amp; sock, string&amp; dest);
 </code></pre>
 
 <p>Stream-like read from (connected!) socket: Reads at most <code>dest.size()</code> bytes from socket and puts them

@@ -18,18 +18,23 @@ int main(void)
 	from[127] = 0;
 	fromport[15] = 0;
 
-	libsocket::inet_dgram_server srv(host.c_str(),port.c_str(),IPv4);
+	try {
+		libsocket::inet_dgram_server srv(host.c_str(),port.c_str(),BOTH);
+		for (;;)
+		{
+			srv.rcvfrom(buf,9,from,127,fromport,15);
+			
+			std::cout << buf << std::endl;
 
-	for (;;)
+			srv.sndto(buf,9,from,fromport);
+		}
+
+		srv.destroy();
+	} catch (libsocket::inet_exception exc)
 	{
-		srv.rcvfrom(buf,9,from,127,fromport,15);
-		
-		std::cout << buf << std::endl;
-
-		srv.sndto(buf,9,from,fromport);
+		std::cout << exc.mesg;
 	}
 
-	srv.destroy();
 
 	return 0;
 }
