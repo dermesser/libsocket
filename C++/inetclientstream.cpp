@@ -31,7 +31,6 @@ namespace libsocket
 		// Real actions
 		void connect(const char* dsthost, const char* dstport, int proto_osi3, int flags=0); // flags: socket()
 		void shutdown(int method);
-		void destroy(void);
 
 		// I/O
 		// O
@@ -99,16 +98,6 @@ namespace libsocket
 		{
 			throw inet_exception(__FILE__,__LINE__,"inet_stream::shutdown() - Could not shutdown socket\n");
 		}
-	}
-
-	void inet_stream::destroy(void)
-	{
-		if ( -1 == sfd )
-			return;
-
-		destroy_inet_socket(sfd);
-
-		sfd = -1;
 	}
 
 	// I/O

@@ -22,35 +22,6 @@ and maintain it twice, libsocket++ calls the functions from libsocket.</p>
 <pre><code>using libsocket::inet_stream;
 </code></pre>
 
-<h3>Internal Class Hierarchy</h3>
-
-<p>[ For a good-looking version, take a look to the markdown file! ]</p>
-
-<p>Legend:</p>
-
-<ul>
-<li>[ ] full-qualified class name</li>
-<li>{ } file name of the class</li>
-<li>Provides: - What stuff is provided by this class?</li>
-<li><p>|/\_ - Path to inheriting class</p>
-
-<p>[ libsocket::socket ]{ C++/socket.cpp }
-    |       Provides: socket file descriptor data element,
-    |             generic destroy() function
-    |<code>------------------------------------------------------------------------------------+
-    |                                                                                     |
-[ libsocket::inet_socket ]{ C++/inetsocket.cpp }                [ libsocket::unix_socket ] // Not implemented yet
-    |   Provides: some data elements
-            |</code>---------------------------------------------+
-        |                                              |
-[ libsocket::inet<em>stream ]{ C++/inetsocket.cpp }       |
-        Provides: All functions to be used     |
-                               |
-    +----------------------------------------------+
-        |
-[ libsocket::inet</em>dgram ]{ C++/inetsocket.cpp }</p></li>
-</ul>
-
 <h2>Usage in Your Application</h2>
 
 <p>Compile the files (like mentioned in DOCUMENTATION.md) like every other:</p>
@@ -61,6 +32,20 @@ $ gcc *.o
 
 <p>or
     $ gcc <em>/</em>.cpp</p>
+
+<h2>Class Hierarchy</h2>
+
+<p>Legend:
+indentation - inheritance level
+(<code>a</code>,<code>b</code>) - (header file, source file)</p>
+
+<p>Base class: <code>socket</code> - provides e.g. <code>sfd</code>, field for the file descriptor number (<code>socket.hpp</code>,<code>socket.cpp</code>)
+    Derived class: inet<em>socket - provides e.g. <code>host</code> and <code>port</code> (<code>inetbase.hpp</code>,<code>inetbase.cpp</code>)
+        Derived class: inet</em>stream - active (client) TCP socket (<code>inetclientstream.hpp</code>,<code>inetclientstream.cpp</code>)
+        Derived class: inet<em>stream</em>server - passive (server) TCP socket (<code>inetserverstream.hpp</code>,<code>inetserverstream.cpp</code>)
+        Derived class: inet<em>dgram - base class for inet dgram (UDP) sockets. Provides e.g. <code>rcvfrom() sndto()</code> (<code>inetdgram.hpp</code>,<code>inetdgram.cpp</code>)
+            Derived class: inet</em>dgram<em>client - unbound UDP socket. Provides further: <code>rcv() snd() connect() deconnect()</code> and some others (<code>inetclientdgram.hpp</code>,<code>inetclientdgram.cpp</code>)
+            Derived class: inet</em>dgram_server - bound UDP socket. No further functions except of the constructor (<code>inetserverdgram.hpp</code>,<code>inetserverdgram.cpp</code></p>
 
 <h1>libinetsocket++</h1>
 
@@ -81,13 +66,23 @@ $ gcc *.o
 <p>An instantiation of this object is thrown in case of error. Almost every function
 may raise an exception containing a string looking like this:</p>
 
-<pre><code>../C++/inetsocket.cpp:151: inet_stream::destroy() - Socket already closed!
-    (1)     (2)     (3)     (4)
+<pre><code>../C++/inetclientstream.cpp:167: &lt;&lt;(std::string) output: Socket not connected!
+    (1)         (2)     (3)          (4)
 </code></pre>
 
 <p>It contains information about the file (1), the line (2), the function throwing the exception (3)
 and information about the cause for the exception (4) - here, the socket was already closed when calling
 the .destroy() routine.</p>
+
+<p>Example for error handling:</p>
+
+<pre><code>try {
+    sock &lt;&lt; "test";
+} catch (libsocket::inet_exception exc)
+{
+    std::cerr &lt;&lt; exc.mesg;
+}
+</code></pre>
 
 <h2><code>inet_stream</code> Class: Internet TCP Stream Sockets</h2>
 
@@ -145,12 +140,14 @@ in <code>inetsocket.hpp</code></p>
 
 <h3>Destroy Functions</h3>
 
-<p>Declared in <code>inetclientstream.hpp</code>, defined in <code>inetclientstream.cpp</code></p>
+<p>Declared in <code>socket.hpp</code>, defined in <code>socket.cpp</code></p>
 
-<pre><code>void destroy(void);
+<pre><code>int destroy(void);
 </code></pre>
 
 <p>Close the socket and destroy the connection.</p>
+
+<p>Return value 0 if successfull, otherwise -1.</p>
 
 <h3>Output/Upload Functions</h3>
 
@@ -243,10 +240,12 @@ binds the socket to <code>bindhost:bindport</code> using <code>proto_osi3</code>
 
 <p>Declared in <code>socket.hpp</code>, defined in <code>socket.cpp</code></p>
 
-<pre><code>void socket::destroy(void);
+<pre><code>int destroy(void);
 </code></pre>
 
 <p>Inherited from <code>socket</code> class. Destroy (close) socket.</p>
+
+<p>Return value 0 if successful, otherwise -1.</p>
 
 <h2><code>inet_dgram_client</code> Class: Internet UDP Sockets</h2>
 
@@ -285,9 +284,9 @@ functions like <code>snd()</code> or <code>rcv()</code> may not be used anymore.
 
 <h3>Destroy Functions</h3>
 
-<p>Declared in <code>inetdgram.hpp</code>, defined in <code>inetdgram.cpp</code></p>
+<p>Declared in <code>socket.hpp</code>, defined in <code>socket.cpp</code></p>
 
-<pre><code>void destroy(void);
+<pre><code>int destroy(void);
 </code></pre>
 
 <p>Try to destroy the socket and throw an exception if it failed.</p>

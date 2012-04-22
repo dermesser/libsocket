@@ -40,7 +40,6 @@ namespace libsocket
 		// Real actions
 		void connect(const char* dsthost, const char* dstport, int proto_osi3, int flags=0); // flags: socket()
 		void shutdown(int method);
-		void destroy(void);
 
 		// I/O
 		// O

@@ -25,10 +25,6 @@ namespace libsocket
 		public:
 
 		// I/O
-		// destroy but don't complain
-		void destroy(void);
-
-		// I/O
 		// O
 		ssize_t sndto(const void* buf, size_t len, const char* dsthost, const char* dstport, int sndto_flags=0); // flags: sendto()
 
@@ -40,18 +36,6 @@ namespace libsocket
 		string gethost(void);
 		string getport(void);
 	};
-
-	// Managing
-
-	void inet_dgram::destroy(void)
-	{
-		if ( -1 == sfd )
-			return;
-
-		destroy_inet_socket(sfd);
-
-		sfd = -1;
-	}
 
 	// I/O
 

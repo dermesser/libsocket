@@ -28,6 +28,20 @@ Compile the files (like mentioned in DOCUMENTATION.md) like every other:
 or
 	$ gcc */*.cpp
 
+## Class Hierarchy
+
+Legend:
+indentation - inheritance level
+(`a`,`b`) - (header file, source file)
+
+Base class: `socket` - provides e.g. `sfd`, field for the file descriptor number (`socket.hpp`,`socket.cpp`)
+	Derived class: inet_socket - provides e.g. `host` and `port` (`inetbase.hpp`,`inetbase.cpp`)
+		Derived class: inet_stream - active (client) TCP socket (`inetclientstream.hpp`,`inetclientstream.cpp`)
+		Derived class: inet_stream_server - passive (server) TCP socket (`inetserverstream.hpp`,`inetserverstream.cpp`)
+		Derived class: inet_dgram - base class for inet dgram (UDP) sockets. Provides e.g. `rcvfrom() sndto()` (`inetdgram.hpp`,`inetdgram.cpp`)
+			Derived class: inet_dgram_client - unbound UDP socket. Provides further: `rcv() snd() connect() deconnect()` and some others (`inetclientdgram.hpp`,`inetclientdgram.cpp`)
+			Derived class: inet_dgram_server - bound UDP socket. No further functions except of the constructor (`inetserverdgram.hpp`,`inetserverdgram.cpp`
+
 # libinetsocket++
 
 libinetsocket++ is the wrapper around libinetsocket.
@@ -45,12 +59,21 @@ Exception handling is done with the following class (declared in `inetbase.hpp`,
 An instantiation of this object is thrown in case of error. Almost every function
 may raise an exception containing a string looking like this:
 
-	../C++/inetsocket.cpp:151: inet_stream::destroy() - Socket already closed!
-		(1)		(2)		(3)		(4)
+	../C++/inetclientstream.cpp:167: <<(std::string) output: Socket not connected!
+		(1)	  	    (2)		(3)		     (4)
 
 It contains information about the file (1), the line (2), the function throwing the exception (3)
 and information about the cause for the exception (4) - here, the socket was already closed when calling
 the .destroy() routine.
+
+Example for error handling:
+
+	try {
+		sock << "test";
+	} catch (libsocket::inet_exception exc)
+	{
+		std::cerr << exc.mesg;
+	}
 
 ## `inet_stream` Class: Internet TCP Stream Sockets
 ### Constructors
@@ -96,11 +119,13 @@ Shuts the socket down (`shutdown(2)`).
 in `inetsocket.hpp`
 
 ### Destroy Functions
-Declared in `inetclientstream.hpp`, defined in `inetclientstream.cpp`
+Declared in `socket.hpp`, defined in `socket.cpp`
 
-	void destroy(void);
+	int destroy(void);
 
 Close the socket and destroy the connection.
+
+Return value 0 if successfull, otherwise -1.
 
 ### Output/Upload Functions
 Declared in `inetclientstream.hpp`, defined in `inetclientstream.cpp`
@@ -179,9 +204,11 @@ Returns a pointer to a dynamically allocated `inet_stream` object
 ### Destroy
 Declared in `socket.hpp`, defined in `socket.cpp`
 
-	void socket::destroy(void);
+	int destroy(void);
 
 Inherited from `socket` class. Destroy (close) socket.
+
+Return value 0 if successful, otherwise -1.
 
 ## `inet_dgram_client` Class: Internet UDP Sockets
 ### Constructors
@@ -213,9 +240,9 @@ Cut the connection to the host to which the socket was connected to. Now, stream
 functions like `snd()` or `rcv()` may not be used anymore.
 
 ### Destroy Functions
-Declared in `inetdgram.hpp`, defined in `inetdgram.cpp`
+Declared in `socket.hpp`, defined in `socket.cpp`
 
-	void destroy(void);
+	int destroy(void);
 
 Try to destroy the socket and throw an exception if it failed.
 
