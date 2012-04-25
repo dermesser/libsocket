@@ -32,13 +32,7 @@ namespace libsocket
 
 		// I
 		ssize_t rcvfrom(void* buf, size_t len, char* dsthost, size_t hostlen, char* dstport, size_t portlen, int rcvfrom_flags=0, bool numeric=false);
-
-		// Getters
-
-		string gethost(void);
-		string getport(void);
 	};
-
 }
 
 # endif

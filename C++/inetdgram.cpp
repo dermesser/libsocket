@@ -21,7 +21,6 @@ namespace libsocket
 
 	class inet_dgram : public inet_socket
 	{
-		private:
 		public:
 
 		// I/O
@@ -32,9 +31,6 @@ namespace libsocket
 		ssize_t rcvfrom(void* buf, size_t len, char* dsthost, size_t hostlen, char* dstport, size_t portlen, int rcvfrom_flags=0, bool numeric=false);
 
 		// Getters
-
-		string gethost(void);
-		string getport(void);
 	};
 
 	// I/O
@@ -68,17 +64,5 @@ namespace libsocket
 			throw inet_exception(__FILE__,__LINE__,"inet_dgram::sndto() - Error at sendto\n");
 
 		return bytes;
-	}
-
-	// Getters
-
-	string inet_dgram::gethost(void)
-	{
-		return host;
-	}
-
-	string inet_dgram::getport(void)
-	{
-		return port;
 	}
 }
