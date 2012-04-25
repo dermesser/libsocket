@@ -53,11 +53,6 @@ namespace libsocket
 
 		ssize_t rcv(void* buf, size_t len, int flags=0); // flags: recv()
 
-		// Getters
-		int getfd(void) const;
-		string gethost(void) const;
-		string getport(void) const;
-
 		friend class inet_stream_server;
 	};
 }

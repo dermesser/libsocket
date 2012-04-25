@@ -32,8 +32,6 @@ namespace libsocket
 		// Create socket and connect it
 		inet_dgram_client(const char* dsthost, const char* dstport, int proto_osi3, int flags=0); // Flags: socket()
 
-		~inet_dgram_client();
-
 		// actions
 		// connect/reconnect
 		void connect(const char* dsthost, const char* dstport);
@@ -78,11 +76,6 @@ namespace libsocket
 		{
 			throw inet_exception(__FILE__,__LINE__,"inet_dgram::inet_dgram() - Could not connect dgram socket\n");
 		}
-	}
-
-	inet_dgram_client::~inet_dgram_client(void)
-	{
-		destroy();
 	}
 
 	void inet_dgram_client::connect(const char* dsthost, const char* dstport)

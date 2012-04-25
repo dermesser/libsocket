@@ -39,8 +39,6 @@ namespace libsocket
 		// Create socket and connect it
 		inet_dgram_client(const char* dsthost, const char* dstport, int proto_osi3, int flags=0); // Flags: socket()
 
-		~inet_dgram_client();
-
 		// actions
 		// connect/reconnect
 		void connect(const char* dsthost, const char* dstport);

@@ -13,6 +13,8 @@ namespace libsocket
 		virtual ~socket();
 
 	 	virtual int destroy(void);
+
+		int getfd(void) const;
 	};
 
 	socket::socket() : sfd(-1) {}
@@ -25,9 +27,14 @@ namespace libsocket
 	{
 		if ( 0 > close(sfd))
 			return -1;
-	
+
 		sfd = -1;
 
 		return 0;
+	}
+
+	int socket::getfd(void) const
+	{
+		return sfd;
 	}
 }

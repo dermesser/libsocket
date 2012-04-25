@@ -6,8 +6,8 @@
 # include <string.h>
 
 # include "../headers/libinetsocket.h"
-# include "../headers++/socket.hpp"
-# include "../headers++/inetbase.hpp"
+# include "socket.hpp"
+# include "inetbase.hpp"
 
 # include <unistd.h>
 # include <sys/socket.h>
@@ -24,10 +24,7 @@ namespace libsocket
 
 	class inet_dgram : public inet_socket
 	{
-		private:
 		public:
-
-		~inet_dgram();
 
 		// I/O
 		// O

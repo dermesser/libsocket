@@ -26,6 +26,9 @@ namespace libsocket
 		public:
 
 		inet_socket();
+
+		string gethost(void) const;
+		string getport(void) const;
 	};
 }
 

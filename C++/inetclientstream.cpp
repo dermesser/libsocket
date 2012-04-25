@@ -19,14 +19,10 @@ namespace libsocket
 
 	class inet_stream : public inet_socket
 	{
-		private:
-
 		public:
 
 		inet_stream(void);
 		inet_stream(const char* dsthost, const char* dstport, int proto_osi3, int flags=0); // flags: socket()
-
-		~inet_stream();
 
 		// Real actions
 		void connect(const char* dsthost, const char* dstport, int proto_osi3, int flags=0); // flags: socket()
@@ -44,14 +40,9 @@ namespace libsocket
 
 		ssize_t rcv(void* buf, size_t len, int flags=0); // flags: recv()
 
-		// Getters
-		int getfd(void) const;
-		string gethost(void) const;
-		string getport(void) const;
-
 		// Other friends
 
-		friend class inet_stream_server;
+		friend class inet_stream_server; // So it's possible for inet_stream_server::accept() to construct an instance with given fd
 	};
 
 	// Managing
@@ -69,11 +60,6 @@ namespace libsocket
 		{
 			throw inet_exception(__FILE__,__LINE__,"inet_stream::inet_stream() - Could not create socket");
 		}
-	}
-
-	inet_stream::~inet_stream(void)
-	{
-		destroy();
 	}
 
 	void inet_stream::connect(const char* dsthost, const char* dstport, int proto_osi3, int flags)
@@ -185,22 +171,5 @@ namespace libsocket
 			throw inet_exception(__FILE__,__LINE__,"inet_stream::snd() - Error while sending\n");
 
 		return snd_bytes;
-	}
-
-	// Getters
-
-	int inet_stream::getfd(void) const
-	{
-		return sfd;
-	}
-
-	string inet_stream::gethost(void) const
-	{
-		return host;
-	}
-
-	string inet_stream::getport(void) const
-	{
-		return port;
 	}
 }

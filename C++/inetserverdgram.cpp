@@ -2,7 +2,7 @@
 # include "../headers++/socket.hpp"
 # include "../headers++/inetbase.hpp"
 # include "../headers++/inetdgram.hpp"
-# include "../headers++/inetstreamclient.hpp"
+//# include "../headers++/inetclientstream.hpp"
 
 # include <string.h>
 # include <string>

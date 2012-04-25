@@ -2,7 +2,6 @@
 # define INETSERVERSOCKET
 
 # include "inetbase.hpp"
-# include "inetstreamclient.hpp"
 # include "inetdgram.hpp"
 
 # define IPv4 3

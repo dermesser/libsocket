@@ -39,9 +39,21 @@ namespace libsocket
 		string port;
 
 		public:
-
 		inet_socket();
+
+		string gethost(void) const;
+		string getport(void) const;
 	};
 
 	inet_socket::inet_socket() : host(""), port("") {}
+
+	string inet_socket::gethost(void) const
+	{
+		return host;
+	}
+
+	string inet_socket::getport(void) const
+	{
+		return port;
+	}
 }
