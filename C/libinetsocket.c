@@ -94,8 +94,8 @@ int create_inet_stream_socket(const char* host, const char* service, char proto_
 	const char* errstring;
 # endif
 
-	if ( flags != SOCK_NONBLOCK && flags != SOCK_CLOEXEC && flags != (SOCK_CLOEXEC|SOCK_NONBLOCK) && flags != 0 )
-		return -1;
+	//if ( flags != SOCK_NONBLOCK && flags != SOCK_CLOEXEC && flags != (SOCK_CLOEXEC|SOCK_NONBLOCK) && flags != 0 )
+	//	return -1;
 
 	if ( host == 0 || service == 0 )
 		return -1;
@@ -175,8 +175,8 @@ int create_inet_dgram_socket(char proto_osi3, int flags)
 		return -1;
 	}
 
-	if ( flags != SOCK_NONBLOCK && flags != SOCK_CLOEXEC && flags != (SOCK_CLOEXEC|SOCK_NONBLOCK) && flags != 0 )
-		return -1;
+	//if ( flags != SOCK_NONBLOCK && flags != SOCK_CLOEXEC && flags != (SOCK_CLOEXEC|SOCK_NONBLOCK) && flags != 0 )
+	//	return -1;
 
 	switch ( proto_osi3 )
 	{
@@ -408,8 +408,8 @@ int create_inet_server_socket(const char* bind_addr, const char* bind_port, char
 	const char* errstr;
 # endif
 
-	if ( flags != SOCK_NONBLOCK && flags != SOCK_CLOEXEC && flags != (SOCK_CLOEXEC|SOCK_NONBLOCK) && flags != 0 )
-		return -1;
+	//if ( flags != SOCK_NONBLOCK && flags != SOCK_CLOEXEC && flags != (SOCK_CLOEXEC|SOCK_NONBLOCK) && flags != 0 )
+	//	return -1;
 
 	if ( bind_addr == 0 || bind_port == 0 )
 		return -1;
