@@ -79,7 +79,8 @@ simple-http (https://github.com/dermesser/Simple-HTTP-client) uses almost 70 lin
 ##PLATFORMS
 
 libsocket is developed on Linux 3.x with gcc, but every file was successfully tested with clang (from llvm 3.0) and works with it.
-Since revision 396d05, libinetsocket.c works on OpenBSD 5.0. I'm working on porting libunixsocket to OpenBSD which is much harder (I guess so at the moment).
+
+Unfortunately, libinetsocket won't work on OpenBSD anymore after the rewrite. On Linux, everything's fine.
 
 ##REWRITE
 

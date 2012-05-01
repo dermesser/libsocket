@@ -18,7 +18,7 @@ int main(void)
 
 	sendto_inet_dgram_socket(sfd,"abcde",5,"localhost","1234",0); 
 
-	sleep(2);
+	//sleep(2);
 
 	recvfrom_inet_dgram_socket(sfd,buf,5,0,0,0,0,0,NUMERIC);
 
