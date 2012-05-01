@@ -1,5 +1,9 @@
 # ifndef SOCKET
 # define SOCKET
+
+# include <sys/socket.h>
+# include <sys/types.h>
+
 namespace libsocket
 {
 	class socket
