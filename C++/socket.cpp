@@ -21,6 +21,7 @@ namespace libsocket
 
 	socket::~socket(void)
 	{
+		destroy();
 	}
 
 	int socket::destroy(void)
