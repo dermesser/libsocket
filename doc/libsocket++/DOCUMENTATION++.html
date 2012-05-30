@@ -26,26 +26,45 @@ and maintain it twice, libsocket++ calls the functions from libsocket.</p>
 
 <p>Compile the files (like mentioned in DOCUMENTATION.md) like every other:</p>
 
-<pre><code>$ gcc -c */*.cpp
-$ gcc *.o
+<pre><code>$ g++ -c */*.cpp
+$ g++ *.o
 </code></pre>
 
 <p>or
-    $ gcc <em>/</em>.cpp</p>
+    $ g++ <em>/</em>.cpp</p>
+
+<p>To reduce the size of the executables, it is recommended to compile your code only with that library files which are really necessary.
+For example, if you have a program which serves as client for a UDP based application:</p>
+
+<pre><code>$ g++ -o client client.cpp /path/to/libsocket/C/libinetsocket.c /path/to/libsocket/C++/{socket,inetbase,inetdgram,inetclientdgram}.cpp
+</code></pre>
 
 <h2>Class Hierarchy</h2>
 
-<p>Legend:
-indentation - inheritance level
-(<code>a</code>,<code>b</code>) - (header file, source file)</p>
+<p>Legend:</p>
 
-<p>Base class: <code>socket</code> - provides e.g. <code>sfd</code>, field for the file descriptor number (<code>socket.hpp</code>,<code>socket.cpp</code>)
-    Derived class: inet<em>socket - provides e.g. <code>host</code> and <code>port</code> (<code>inetbase.hpp</code>,<code>inetbase.cpp</code>)
-        Derived class: inet</em>stream - active (client) TCP socket (<code>inetclientstream.hpp</code>,<code>inetclientstream.cpp</code>)
-        Derived class: inet<em>stream</em>server - passive (server) TCP socket (<code>inetserverstream.hpp</code>,<code>inetserverstream.cpp</code>)
-        Derived class: inet<em>dgram - base class for inet dgram (UDP) sockets. Provides e.g. <code>rcvfrom() sndto()</code> (<code>inetdgram.hpp</code>,<code>inetdgram.cpp</code>)
-            Derived class: inet</em>dgram<em>client - unbound UDP socket. Provides further: <code>rcv() snd() connect() deconnect()</code> and some others (<code>inetclientdgram.hpp</code>,<code>inetclientdgram.cpp</code>)
-            Derived class: inet</em>dgram_server - bound UDP socket. No further functions except of the constructor (<code>inetserverdgram.hpp</code>,<code>inetserverdgram.cpp</code></p>
+<ul>
+<li>indentation - inheritance level</li>
+<li>(<code>a</code>,<code>b</code>) - (header file, source file)</li>
+</ul>
+
+<p>Now the actual class hierarchy:</p>
+
+<ul>
+<li>Base class: <code>socket</code> - provides e.g. <code>sfd</code>, field for the file descriptor number (<code>socket.hpp</code>,<code>socket.cpp</code>)
+<ul>
+<li>Derived class: <code>inet_socket</code> - provides e.g. <code>host</code> and <code>port</code> (<code>inetbase.hpp</code>,<code>inetbase.cpp</code>)
+<ul>
+<li>Derived class: <code>inet_stream</code> - active (client) TCP socket (<code>inetclientstream.hpp</code>,<code>inetclientstream.cpp</code>)</li>
+<li>Derived class: <code>inet_stream_server</code> - passive (server) TCP socket (<code>inetserverstream.hpp</code>,<code>inetserverstream.cpp</code>)</li>
+<li>Derived class: <code>inet_dgram</code> - base class for inet dgram (UDP) sockets. Provides e.g. <code>rcvfrom() sndto()</code> (<code>inetdgram.hpp</code>,<code>inetdgram.cpp</code>)
+<ul>
+<li>Derived class: <code>inet_dgram_client</code> - unbound UDP socket. Provides further: <code>rcv() snd() connect() deconnect()</code> and some others (<code>inetclientdgram.hpp</code>,<code>inetclientdgram.cpp</code>)</li>
+<li>Derived class: <code>inet_dgram_server</code> - bound UDP socket. No further functions except of the constructor (<code>inetserverdgram.hpp</code>,<code>inetserverdgram.cpp</code></li>
+</ul></li>
+</ul></li>
+</ul></li>
+</ul>
 
 <h1>libinetsocket++</h1>
 
