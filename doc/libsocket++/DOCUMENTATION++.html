@@ -348,14 +348,18 @@ Usage like streams:</p>
 <p>Conventional receive function: Receive <code>len</code> bytes from the socket and write them to <code>buf</code>. <code>flags</code> may take the
 flags described in <code>recv(2)</code> (<code>MSG_...</code>).</p>
 
-<pre><code>ssize_t rcvfrom(void* buf, size_t len, char* host, size_t hostlen, char* port, size_t portlen, int rcvfrom_flags=0, bool numeric=false);
+<pre><code>1: ssize_t rcvfrom(void* buf, size_t len, char* host, size_t hostlen, char* port, size_t portlen, int rcvfrom_flags=0, bool numeric=false);
+
+2: ssize_t rcvfrom(void* buf, size_t len, string&amp; srchost, string&amp; srcport, int rcvfrom_flags=0, bool numeric=false);
 </code></pre>
 
-<p>Receive <code>len</code> bytes from the socket and place them in <code>buf</code>. The source host is placed in <code>host</code>, which is at least
+<p>1: Receive <code>len</code> bytes from the socket and place them in <code>buf</code>. The source host is placed in <code>host</code>, which is at least
 <code>hostlen</code> bytes long, the source port gets written to <code>port</code>, which is at least <code>portlen</code> bytes long. <code>recvfrom_flags</code>
 can take the flags described in <code>recvfrom(2)</code>, <code>numeric</code> is considered as <code>false</code>, but if you specify it as
 <code>true</code>, source host and source port are expressed in numerical form. This is recommended because it's faster
 than an additional (internal) rDNS query.</p>
+
+<p>2: Same as form 1, but use strings. The strings are resized to the appropriate length of host and port.</p>
 
 <pre><code>friend inet_dgram_client&amp; operator&gt;&gt;(inet_dgram_client&amp; sock, string&amp; dest);
 </code></pre>

@@ -285,13 +285,17 @@ Declared in `inetclientdgram.hpp`, `inetdgram.hpp`; defined in `inetdgram.cpp`, 
 Conventional receive function: Receive `len` bytes from the socket and write them to `buf`. `flags` may take the
 flags described in `recv(2)` (`MSG_...`).
 
-	ssize_t rcvfrom(void* buf, size_t len, char* host, size_t hostlen, char* port, size_t portlen, int rcvfrom_flags=0, bool numeric=false);
+	1: ssize_t rcvfrom(void* buf, size_t len, char* host, size_t hostlen, char* port, size_t portlen, int rcvfrom_flags=0, bool numeric=false);
 
-Receive `len` bytes from the socket and place them in `buf`. The source host is placed in `host`, which is at least
+	2: ssize_t rcvfrom(void* buf, size_t len, string& srchost, string& srcport, int rcvfrom_flags=0, bool numeric=false);
+
+1: Receive `len` bytes from the socket and place them in `buf`. The source host is placed in `host`, which is at least
 `hostlen` bytes long, the source port gets written to `port`, which is at least `portlen` bytes long. `recvfrom_flags`
 can take the flags described in `recvfrom(2)`, `numeric` is considered as `false`, but if you specify it as
 `true`, source host and source port are expressed in numerical form. This is recommended because it's faster
 than an additional (internal) rDNS query.
+
+2: Same as form 1, but use strings. The strings are resized to the appropriate length of host and port.
 
 	friend inet_dgram_client& operator>>(inet_dgram_client& sock, string& dest);
 
