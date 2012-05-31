@@ -47,6 +47,7 @@ namespace libsocket
 		// I/O
 		// O
 		ssize_t sndto(const void* buf, size_t len, const char* dsthost, const char* dstport, int sndto_flags=0); // flags: sendto()
+		ssize_t sndto(const void* buf, size_t len, const string& dsthost, const string& dstport, int sndto_flags=0);
 
 		// I
 		ssize_t rcvfrom(void* buf, size_t len, char* srchost, size_t hostlen, char* srcport, size_t portlen, int rcvfrom_flags=0, bool numeric=false);
@@ -78,7 +79,7 @@ namespace libsocket
 	{
 		ssize_t bytes;
 
-		char* host = new char[1024];
+		char* host = new char[1024]; // Let's say, that's enough
 		char* port = new char[64];
 
 		memset(host,0,1024);
@@ -109,6 +110,15 @@ namespace libsocket
 
 		if ( -1 == (bytes = sendto_inet_dgram_socket(sfd,buf,len,dsthost,dstport,sndto_flags)) )
 			throw inet_exception(__FILE__,__LINE__,"inet_dgram::sndto() - Error at sendto\n");
+
+		return bytes;
+	}
+
+	ssize_t inet_dgram::sndto(const void* buf, size_t len, const string& dsthost, const string& dstport, int sndto_flags)
+	{
+		ssize_t bytes;
+
+		bytes = sndto(buf,len,dsthost.c_str(),dstport.c_str(),sndto_flags);
 
 		return bytes;
 	}

@@ -16,8 +16,6 @@ int main(void)
 	string fromport;
 
 	buf[9] = 0;
-	from[127] = 0;
-	fromport[15] = 0;
 
 	try {
 		libsocket::inet_dgram_server srv(host.c_str(),port.c_str(),BOTH);
@@ -27,7 +25,7 @@ int main(void)
 
 			std::cout << from << ":" << fromport << " " << buf << std::endl;
 
-			srv.sndto(buf,9,from.c_str(),fromport.c_str());
+			srv.sndto(buf,9,from,fromport);
 		}
 
 		srv.destroy();
