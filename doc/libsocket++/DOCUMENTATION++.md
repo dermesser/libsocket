@@ -59,13 +59,13 @@ Exception handling is done with the following class (declared in `inetbase.hpp`,
 
 	struct inet_exception
 	{
-		string mesg;
+		std::string mesg;
 
-		inet_exception(string,int,string);
+		inet_exception(std::string,int,string);
 	};
 
 An instantiation of this object is thrown in case of error. Almost every function
-may raise an exception containing a string looking like this:
+may raise an exception containing a std::string looking like this:
 
 	../C++/inetclientstream.cpp:167: <<(std::string) output: Socket not connected!
 		(1)	  	    (2)		(3)		     (4)
@@ -167,7 +167,7 @@ Declared in `inetclientstream.hpp`, defined in `inetclientstream.cpp`
 Conventional receive function: Receive `len` bytes from socket and write them to `buf`.
 `flags` may be specified and may take the flags specified in `recv(2)` (those beginning with `MSG_`)
 
-	friend inet_stream& operator>>(inet_stream& sock, string& dest);
+	friend inet_stream& operator>>(inet_stream& sock, std::string& dest);
 
 Stream-like read from socket: Reads at most `dest.size()` bytes from socket and puts them
 to the string. If less than `dest.size()` characters could be read, the string is resized to
@@ -178,14 +178,14 @@ with sending - either closed the socket on his side or shut it down for write ac
 Declared in `inetclientstream.hpp`, defined in `inetclientstream.cpp`
 
 	int getfd(void) const;
-	string gethost(void) const;
-	string getport(void) const;
+	std::string gethost(void) const;
+	std::string getport(void) const;
 
 `getfd()` returns the socket file descriptor.
 
-`gethost()` returns a C++ string containing the host to which the socket is connected.
+`gethost()` returns a C++ std::string containing the host to which the socket is connected.
 
-`getport()` returns a C++ string containing the port/service to which the socket is connected.
+`getport()` returns a C++ std::string containing the port/service to which the socket is connected.
 
 ## `inet_stream_server` - TCP Internet server
 Declared in `inetserverstream.hpp`, defined in `inetserverstream.cpp`
@@ -264,18 +264,20 @@ Conventional send, *only available if socket is connected*.
 Send `len` bytes from `buf` (does not need to be `const`; in C++ an implicit conversion to const is allowed)
 to the connected peer. `flags` may be specified and take the flags described in `send(2)` (`MSG_...`).
 
-	ssize_t sndto(const void* buf, size_t len, const char* host, const char* port, int sndto_flags=0); // flags: sendto()
+	1: ssize_t sndto(const void* buf, size_t len, const char* host, const char* port, int sndto_flags=0);
+	
+	2: ssize_t sndto(const void* buf, size_t len, const std::string& host, const std::string& port, int sndto_flags=0)
 
-Send `len` bytes from `buf` to `host`:`port`. `sndto_flags` may be specified and take the flags described
+1, 2: Send `len` bytes from `buf` to `host`:`port`. `sndto_flags` may be specified and take the flags described
 in `sendto(2)` (`MSG_...`).
 
 	friend inet_dgram_client& operator<<(inet_dgram_client& sock, const char* str);
-	friend inet_dgram_client& operator<<(inet_dgram_client& sock, string& str);
+	friend inet_dgram_client& operator<<(inet_dgram_client& sock, std::string& str);
 
 Only for connected sockets. Send either a string or a C string to the connected peer.
 Usage like streams:
 
-	sock << "abc" << string("def");
+	sock << "abc" << std::string("def");
 
 ### Receive/Download Functions
 Declared in `inetclientdgram.hpp`, `inetdgram.hpp`; defined in `inetdgram.cpp`, `inetclientdgram.cpp`
@@ -287,7 +289,7 @@ flags described in `recv(2)` (`MSG_...`).
 
 	1: ssize_t rcvfrom(void* buf, size_t len, char* host, size_t hostlen, char* port, size_t portlen, int rcvfrom_flags=0, bool numeric=false);
 
-	2: ssize_t rcvfrom(void* buf, size_t len, string& srchost, string& srcport, int rcvfrom_flags=0, bool numeric=false);
+	2: ssize_t rcvfrom(void* buf, size_t len, std::string& srchost, std::string& srcport, int rcvfrom_flags=0, bool numeric=false);
 
 1: Receive `len` bytes from the socket and place them in `buf`. The source host is placed in `host`, which is at least
 `hostlen` bytes long, the source port gets written to `port`, which is at least `portlen` bytes long. `recvfrom_flags`
@@ -297,7 +299,7 @@ than an additional (internal) rDNS query.
 
 2: Same as form 1, but use strings. The strings are resized to the appropriate length of host and port.
 
-	friend inet_dgram_client& operator>>(inet_dgram_client& sock, string& dest);
+	friend inet_dgram_client& operator>>(inet_dgram_client& sock, std::string& dest);
 
 Stream-like read from (connected!) socket: Reads at most `dest.size()` bytes from socket and puts them
 to the string. If less than `dest.size()` characters could be read, the string is resized to

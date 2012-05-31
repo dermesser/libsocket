@@ -76,14 +76,14 @@ For example, if you have a program which serves as client for a UDP based applic
 
 <pre><code>struct inet_exception
 {
-    string mesg;
+    std::string mesg;
 
-    inet_exception(string,int,string);
+    inet_exception(std::string,int,string);
 };
 </code></pre>
 
 <p>An instantiation of this object is thrown in case of error. Almost every function
-may raise an exception containing a string looking like this:</p>
+may raise an exception containing a std::string looking like this:</p>
 
 <pre><code>../C++/inetclientstream.cpp:167: &lt;&lt;(std::string) output: Socket not connected!
     (1)         (2)     (3)          (4)
@@ -206,7 +206,7 @@ C strings (<code>const char*</code>, you may also use <code>char*</code>) and C+
 <p>Conventional receive function: Receive <code>len</code> bytes from socket and write them to <code>buf</code>.
 <code>flags</code> may be specified and may take the flags specified in <code>recv(2)</code> (those beginning with <code>MSG_</code>)</p>
 
-<pre><code>friend inet_stream&amp; operator&gt;&gt;(inet_stream&amp; sock, string&amp; dest);
+<pre><code>friend inet_stream&amp; operator&gt;&gt;(inet_stream&amp; sock, std::string&amp; dest);
 </code></pre>
 
 <p>Stream-like read from socket: Reads at most <code>dest.size()</code> bytes from socket and puts them
@@ -219,15 +219,15 @@ with sending - either closed the socket on his side or shut it down for write ac
 <p>Declared in <code>inetclientstream.hpp</code>, defined in <code>inetclientstream.cpp</code></p>
 
 <pre><code>int getfd(void) const;
-string gethost(void) const;
-string getport(void) const;
+std::string gethost(void) const;
+std::string getport(void) const;
 </code></pre>
 
 <p><code>getfd()</code> returns the socket file descriptor.</p>
 
-<p><code>gethost()</code> returns a C++ string containing the host to which the socket is connected.</p>
+<p><code>gethost()</code> returns a C++ std::string containing the host to which the socket is connected.</p>
 
-<p><code>getport()</code> returns a C++ string containing the port/service to which the socket is connected.</p>
+<p><code>getport()</code> returns a C++ std::string containing the port/service to which the socket is connected.</p>
 
 <h2><code>inet_stream_server</code> - TCP Internet server</h2>
 
@@ -322,20 +322,22 @@ functions like <code>snd()</code> or <code>rcv()</code> may not be used anymore.
 <p>Send <code>len</code> bytes from <code>buf</code> (does not need to be <code>const</code>; in C++ an implicit conversion to const is allowed)
 to the connected peer. <code>flags</code> may be specified and take the flags described in <code>send(2)</code> (<code>MSG_...</code>).</p>
 
-<pre><code>ssize_t sndto(const void* buf, size_t len, const char* host, const char* port, int sndto_flags=0); // flags: sendto()
+<pre><code>1: ssize_t sndto(const void* buf, size_t len, const char* host, const char* port, int sndto_flags=0);
+
+2: ssize_t sndto(const void* buf, size_t len, const std::string&amp; host, const std::string&amp; port, int sndto_flags=0)
 </code></pre>
 
-<p>Send <code>len</code> bytes from <code>buf</code> to <code>host</code>:<code>port</code>. <code>sndto_flags</code> may be specified and take the flags described
+<p>1, 2: Send <code>len</code> bytes from <code>buf</code> to <code>host</code>:<code>port</code>. <code>sndto_flags</code> may be specified and take the flags described
 in <code>sendto(2)</code> (<code>MSG_...</code>).</p>
 
 <pre><code>friend inet_dgram_client&amp; operator&lt;&lt;(inet_dgram_client&amp; sock, const char* str);
-friend inet_dgram_client&amp; operator&lt;&lt;(inet_dgram_client&amp; sock, string&amp; str);
+friend inet_dgram_client&amp; operator&lt;&lt;(inet_dgram_client&amp; sock, std::string&amp; str);
 </code></pre>
 
 <p>Only for connected sockets. Send either a string or a C string to the connected peer.
 Usage like streams:</p>
 
-<pre><code>sock &lt;&lt; "abc" &lt;&lt; string("def");
+<pre><code>sock &lt;&lt; "abc" &lt;&lt; std::string("def");
 </code></pre>
 
 <h3>Receive/Download Functions</h3>
@@ -350,7 +352,7 @@ flags described in <code>recv(2)</code> (<code>MSG_...</code>).</p>
 
 <pre><code>1: ssize_t rcvfrom(void* buf, size_t len, char* host, size_t hostlen, char* port, size_t portlen, int rcvfrom_flags=0, bool numeric=false);
 
-2: ssize_t rcvfrom(void* buf, size_t len, string&amp; srchost, string&amp; srcport, int rcvfrom_flags=0, bool numeric=false);
+2: ssize_t rcvfrom(void* buf, size_t len, std::string&amp; srchost, std::string&amp; srcport, int rcvfrom_flags=0, bool numeric=false);
 </code></pre>
 
 <p>1: Receive <code>len</code> bytes from the socket and place them in <code>buf</code>. The source host is placed in <code>host</code>, which is at least
@@ -361,7 +363,7 @@ than an additional (internal) rDNS query.</p>
 
 <p>2: Same as form 1, but use strings. The strings are resized to the appropriate length of host and port.</p>
 
-<pre><code>friend inet_dgram_client&amp; operator&gt;&gt;(inet_dgram_client&amp; sock, string&amp; dest);
+<pre><code>friend inet_dgram_client&amp; operator&gt;&gt;(inet_dgram_client&amp; sock, std::string&amp; dest);
 </code></pre>
 
 <p>Stream-like read from (connected!) socket: Reads at most <code>dest.size()</code> bytes from socket and puts them
