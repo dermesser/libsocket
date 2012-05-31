@@ -15,8 +15,11 @@ int main(void)
 	answer[6] = 0;
 
 	try {
+# if __cplusplus == 201103L
+		libsocket::inet_stream sock(host,port,IPv6);
+# else
 		libsocket::inet_stream sock(host.c_str(),port.c_str(),IPv6);
-
+# endif
 		sock.rcv(answer,6);
 
 		std::cout << answer;

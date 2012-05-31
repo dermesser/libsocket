@@ -56,6 +56,10 @@ namespace libsocket
 		inet_stream(void);
 		inet_stream(const char* dsthost, const char* dstport, int proto_osi3, int flags=0); // flags: socket()
 
+# if __cplusplus == 201103L
+		inet_stream(const string& dsthost, const string& dstport, int proto_osi3, int flags=0);
+# endif
+
 		~inet_stream();
 
 		// Real actions

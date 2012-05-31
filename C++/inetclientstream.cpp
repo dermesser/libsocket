@@ -44,7 +44,9 @@ namespace libsocket
 
 		inet_stream(void);
 		inet_stream(const char* dsthost, const char* dstport, int proto_osi3, int flags=0); // flags: socket()
-
+# if __cplusplus == 201103L
+		inet_stream(const string& dsthost, const string& dstport, int proto_osi3, int flags=0);
+# endif
 		// Real actions
 		void connect(const char* dsthost, const char* dstport, int proto_osi3, int flags=0); // flags: socket()
 		void shutdown(int method);
@@ -82,6 +84,14 @@ namespace libsocket
 			throw inet_exception(__FILE__,__LINE__,"inet_stream::inet_stream() - Could not create socket");
 		}
 	}
+
+	// C++11 part: Delegating Constructors. Known as working for gcc >= 4.7 and clang++ >= 3.0
+# if __cplusplus == 201103L
+	inet_stream::inet_stream(const string& dsthost, const string& dstport, int proto_osi3, int flags)
+	: inet_stream(dsthost.c_str(),dstport.c_str(),proto_osi3,flags)
+	{
+	}
+# endif
 
 	void inet_stream::connect(const char* dsthost, const char* dstport, int proto_osi3, int flags)
 	{
