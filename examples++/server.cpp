@@ -1,6 +1,7 @@
 # include <iostream>
 # include <string>
 # include "../headers++/inetserverstream.hpp"
+# include "../headers++/exception.hpp"
 # include <unistd.h>
 # include <stdio.h>
 # include <errno.h>
@@ -34,7 +35,7 @@ int main(void)
 
 		srv.destroy();
 
-	} catch (libsocket::inet_exception exc)
+	} catch (libsocket::socket_exception exc)
 	{
 		std::cout << exc.mesg << std::endl;
 	}

@@ -1,6 +1,7 @@
 # include <iostream>
 # include <string>
 # include "../headers++/inetclientstream.hpp"
+# include "../headers++/exception.hpp"
 
 int main(void)
 {
@@ -27,7 +28,7 @@ int main(void)
 		sock << "Hello back!\n";
 
 		sock.destroy();
-	} catch (libsocket::inet_exception exc)
+	} catch (libsocket::socket_exception exc)
 	{
 		std::cout << exc.mesg;
 	}
