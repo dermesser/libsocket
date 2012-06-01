@@ -1,5 +1,6 @@
 # include <iostream>
 # include "../headers++/inetserverdgram.hpp"
+# include "../headers++/exception.hpp"
 
 // To be used with examples/echo_dgram_server.c
 
@@ -29,7 +30,7 @@ int main(void)
 		}
 
 		srv.destroy();
-	} catch (libsocket::inet_exception exc)
+	} catch (libsocket::socket_exception exc)
 	{
 		std::cout << exc.mesg;
 	}

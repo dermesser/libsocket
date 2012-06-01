@@ -5,6 +5,7 @@
 # include <unistd.h>
 # include <stdio.h>
 # include <errno.h>
+# include "../headers++/exception.hpp"
 
 int main(void)
 {

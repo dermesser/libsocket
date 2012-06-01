@@ -1,6 +1,7 @@
 # include <iostream>
 # include <unistd.h>
 # include "../headers++/inetclientdgram.hpp"
+# include "../headers++/exception.hpp"
 
 int main(void)
 {
@@ -20,7 +21,7 @@ int main(void)
 
 	try {
 		std::cout << sock.gethost();
-	} catch (libsocket::inet_exception exc)
+	} catch (libsocket::socket_exception exc)
 	{
 		std::cerr << exc.mesg;
 	}
