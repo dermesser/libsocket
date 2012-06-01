@@ -27,10 +27,7 @@ namespace libsocket
 {
 	using std::string;
 
-
-/***************** inet_socket base class **********************/
-
-	class inet_socket : public virtual socket
+	class inet_socket : public socket
 	{
 		protected:
 		int proto;

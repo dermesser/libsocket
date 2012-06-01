@@ -4,12 +4,13 @@
 # include <string>
 
 using std::string;
+namespace libsocket
+{
+	struct socket_exception
+	{
+		string mesg;
 
-struct socket_exception
-{       
-	string mesg;
-
-	socket_exception(string,int,string);
-};
-
+		socket_exception(string,int,string);
+	};
+}
 # endif
