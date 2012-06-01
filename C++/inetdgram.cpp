@@ -5,6 +5,7 @@
 # include "../headers/libinetsocket.h"
 # include "../headers++/socket.hpp"
 # include "../headers++/inetbase.hpp"
+# include "../headers++/exception.hpp"
 
 # include <unistd.h>
 # include <sys/socket.h>
@@ -66,10 +67,10 @@ namespace libsocket
 		int num = ((numeric == true) ? NUMERIC : 0);
 
 		if ( -1 == sfd )
-			throw inet_exception(__FILE__,__LINE__,"inet_dgram::rcvfrom() - Socket already closed!\n");
+			throw socket_exception(__FILE__,__LINE__,"inet_dgram::rcvfrom() - Socket already closed!\n");
 
 		if ( -1 == (bytes = recvfrom_inet_dgram_socket(sfd,buf,len,hostbuf,hostbuflen,portbuf,portbuflen,rcvfrom_flags,num)) )
-			throw inet_exception(__FILE__,__LINE__,"inet_dgram::rcvfrom() - recvfrom() failed!\n");
+			throw socket_exception(__FILE__,__LINE__,"inet_dgram::rcvfrom() - recvfrom() failed!\n");
 
 		return bytes;
 	}
@@ -106,10 +107,10 @@ namespace libsocket
 		ssize_t bytes;
 
 		if ( -1 == sfd )
-			throw inet_exception(__FILE__,__LINE__,"inet_dgram::sendto() - Socket already closed!\n");
+			throw socket_exception(__FILE__,__LINE__,"inet_dgram::sendto() - Socket already closed!\n");
 
 		if ( -1 == (bytes = sendto_inet_dgram_socket(sfd,buf,len,dsthost,dstport,sndto_flags)) )
-			throw inet_exception(__FILE__,__LINE__,"inet_dgram::sndto() - Error at sendto\n");
+			throw socket_exception(__FILE__,__LINE__,"inet_dgram::sndto() - Error at sendto\n");
 
 		return bytes;
 	}

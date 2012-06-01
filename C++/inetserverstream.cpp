@@ -3,6 +3,7 @@
 # include "../headers++/inetbase.hpp"
 # include "../headers++/inetdgram.hpp"
 # include "../headers++/inetclientstream.hpp"
+# include "../headers++/exception.hpp"
 
 # include <string.h>
 # include <string>
@@ -74,11 +75,11 @@ namespace libsocket
 	void inet_stream_server::setup(const char* bindhost, const char* bindport, int proto_osi3, int flags)
 	{
 		if ( listening == true )
-			throw inet_exception(__FILE__,__LINE__,"inet_stream_server::inet_stream_server() - already bound and listening!\n");
+			throw socket_exception(__FILE__,__LINE__,"inet_stream_server::inet_stream_server() - already bound and listening!\n");
 		if ( bindhost == 0 || bindport == 0 )
-			throw inet_exception(__FILE__,__LINE__,"inet_stream_server::inet_stream_server() - at least one bind argument invalid!\n");
+			throw socket_exception(__FILE__,__LINE__,"inet_stream_server::inet_stream_server() - at least one bind argument invalid!\n");
 		if ( -1 == (sfd = create_inet_server_socket(bindhost,bindport,TCP,proto_osi3,flags)) )
-			throw inet_exception(__FILE__,__LINE__,"inet_stream_server::inet_stream_server() - could not create server socket!\n");
+			throw socket_exception(__FILE__,__LINE__,"inet_stream_server::inet_stream_server() - could not create server socket!\n");
 
 		host = string(bindhost);
 		port = string(bindport);
@@ -98,9 +99,9 @@ namespace libsocket
 		memset(src_port,0,32);
 
 		if ( listening != true )
-			throw inet_exception(__FILE__,__LINE__,"inet_stream_server::accept() - stream server socket is not in listening state!\n");
+			throw socket_exception(__FILE__,__LINE__,"inet_stream_server::accept() - stream server socket is not in listening state!\n");
 		if ( -1 == (client_sfd = accept_inet_stream_socket(sfd,src_host,1024,src_port,32,numeric)) )
-			throw inet_exception(__FILE__,__LINE__,"inet_stream_server::accept() - could not accept new connection on stream server socket!\n");
+			throw socket_exception(__FILE__,__LINE__,"inet_stream_server::accept() - could not accept new connection on stream server socket!\n");
 
 		client->sfd = client_sfd;
 		client->host = string(src_host);

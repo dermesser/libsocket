@@ -2,7 +2,7 @@
 # include "../headers++/socket.hpp"
 # include "../headers++/inetbase.hpp"
 # include "../headers++/inetdgram.hpp"
-
+# include "../headers++/exception.hpp"
 
 # include <string.h>
 # include <string>
@@ -57,7 +57,7 @@ namespace libsocket
 		bound = false;
 
 		if ( -1 == (sfd = create_inet_server_socket(bhost,bport,UDP,proto_osi3,flags)) )
-			throw inet_exception(__FILE__,__LINE__,"inet_dgram_server::inet_dgram_server() - could not create server socket!\n");
+			throw socket_exception(__FILE__,__LINE__,"inet_dgram_server::inet_dgram_server() - could not create server socket!\n");
 
 		proto = proto_osi3;
 		bound = true;
