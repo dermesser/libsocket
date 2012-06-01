@@ -81,7 +81,7 @@ namespace libsocket
 			connect(dsthost,dstport,proto_osi3,flags);
 		} catch ( inet_exception(exc) )
 		{
-			throw inet_exception(__FILE__,__LINE__,"inet_stream::inet_stream() - Could not create socket");
+			throw inet_exception(__FILE__,__LINE__,"inet_stream::inet_stream() - Could not create socket\n");
 		}
 	}
 
