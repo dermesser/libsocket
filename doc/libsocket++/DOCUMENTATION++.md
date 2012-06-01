@@ -15,7 +15,7 @@ or use some things or the whole namespace:
 
 	using namespace libsocket;
 
-(resp., for the internet TCP socket class)
+(for the internet TCP client socket class)
 
 	using libsocket::inet_stream;
 
@@ -27,6 +27,9 @@ Compile the files (like mentioned in DOCUMENTATION.md) like every other:
 	$ g++ *.o
 or
 	$ g++ */*.cpp
+
+Please note that libsocket++ is only an object-oriented wrapper around libsocket and not independant; you always have to compile
+C/libinetsocket.c, too.
 
 To reduce the size of the executables, it is recommended to compile your code only with that library files which are really necessary.
 For example, if you have a program which serves as client for a UDP based application:
@@ -83,17 +86,20 @@ Example for error handling:
 		std::cerr << exc.mesg;
 	}
 
-## `inet_stream` Class: Internet TCP Stream Sockets
+## `inet_stream` Class: Internet TCP Client Stream Sockets
 ### Constructors
 Declared in `inetclientstream.hpp`, defined in `inetclientstream.cpp`
 
-	inet_stream(void);
-	inet_stream(const char* host, const char* port, int proto_osi3, int flags=0);
+Please note that the name is _not_ `inet_stream_client`!
 
-The first constructor only initializes the most important things. The socket remains unconnected
-and must be connected before use using `connect()`.
+	1: inet_stream(void);
+	2: inet_stream(const char* host, const char* port, int proto_osi3, int flags=0);
+	3: inet_stream(const string& dsthost, const string& dstport, int proto_osi3, int flags=0);
 
-The second constructors initializes the socket and connects it with the given host:
+1: Only initializes the most important things. The socket remains unconnected
+and _must_ be connected before use using `connect()`.
+
+2,3: The constructor initializes the socket and connects it with the given host:
 
 - `host`: Destination host; if you have the host as `std::string`, use its routine `std::string::c_str()` to get
 the C string
@@ -101,6 +107,9 @@ the C string
 - `proto_osi3`: `IPv4`, `IPv6` or `BOTH` (`BOTH` lets the library choose; pp macros; defined in header file `inetsocket.hpp`)
 - `flags`: Default 0, can be `SOCK_NONBLOCK` or `SOCK_CLOEXEC` (see: `socket(2)`; on other platforms than Linux
 has to be 0 to avoid errors)
+
+3: This constructor is only available when using a C++11-compliant compiler; it delegates the constructor. Otherwise, you have
+to use constructor 2.
 
 ### `connect()`
 Declared in `inetclientstream.hpp`, defined in `inetclientstream.cpp`

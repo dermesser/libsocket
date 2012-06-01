@@ -17,7 +17,7 @@ and maintain it twice, libsocket++ calls the functions from libsocket.</p>
 <pre><code>using namespace libsocket;
 </code></pre>
 
-<p>(resp., for the internet TCP socket class)</p>
+<p>(for the internet TCP client socket class)</p>
 
 <pre><code>using libsocket::inet_stream;
 </code></pre>
@@ -32,6 +32,9 @@ $ g++ *.o
 
 <p>or
     $ g++ <em>/</em>.cpp</p>
+
+<p>Please note that libsocket++ is only an object-oriented wrapper around libsocket and not independant; you always have to compile
+C/libinetsocket.c, too.</p>
 
 <p>To reduce the size of the executables, it is recommended to compile your code only with that library files which are really necessary.
 For example, if you have a program which serves as client for a UDP based application:</p>
@@ -103,20 +106,23 @@ the .destroy() routine.</p>
 }
 </code></pre>
 
-<h2><code>inet_stream</code> Class: Internet TCP Stream Sockets</h2>
+<h2><code>inet_stream</code> Class: Internet TCP Client Stream Sockets</h2>
 
 <h3>Constructors</h3>
 
 <p>Declared in <code>inetclientstream.hpp</code>, defined in <code>inetclientstream.cpp</code></p>
 
-<pre><code>inet_stream(void);
-inet_stream(const char* host, const char* port, int proto_osi3, int flags=0);
+<p>Please note that the name is <em>not</em> <code>inet_stream_client</code>!</p>
+
+<pre><code>1: inet_stream(void);
+2: inet_stream(const char* host, const char* port, int proto_osi3, int flags=0);
+3: inet_stream(const string&amp; dsthost, const string&amp; dstport, int proto_osi3, int flags=0);
 </code></pre>
 
-<p>The first constructor only initializes the most important things. The socket remains unconnected
-and must be connected before use using <code>connect()</code>.</p>
+<p>1: Only initializes the most important things. The socket remains unconnected
+and <em>must</em> be connected before use using <code>connect()</code>.</p>
 
-<p>The second constructors initializes the socket and connects it with the given host:</p>
+<p>2,3: The constructor initializes the socket and connects it with the given host:</p>
 
 <ul>
 <li><code>host</code>: Destination host; if you have the host as <code>std::string</code>, use its routine <code>std::string::c_str()</code> to get
@@ -126,6 +132,9 @@ the C string</li>
 <li><code>flags</code>: Default 0, can be <code>SOCK_NONBLOCK</code> or <code>SOCK_CLOEXEC</code> (see: <code>socket(2)</code>; on other platforms than Linux
 has to be 0 to avoid errors)</li>
 </ul>
+
+<p>3: This constructor is only available when using a C++11-compliant compiler; it delegates the constructor. Otherwise, you have
+to use constructor 2.</p>
 
 <h3><code>connect()</code></h3>
 
