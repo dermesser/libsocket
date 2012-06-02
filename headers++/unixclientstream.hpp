@@ -29,6 +29,8 @@ namespace libsocket
 
 		friend unix_stream_client& operator<<(unix_stream_client& sock,const char* data);
 		friend unix_stream_client& operator<<(unix_stream_client& sock,string& data);
+
+		friend class unix_stream_server;
 	}
 }
 # endif
