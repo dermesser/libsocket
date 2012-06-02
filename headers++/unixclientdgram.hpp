@@ -1,9 +1,9 @@
-# ifndef UNIXBASE
-# define UNIXBASE
-# include <string>
-# include "../headers++/socket.hpp"
+# ifndef UNIXCLIENTDGRAM
+# define UNIXCLIENTDGRAM
 
-# include "../headers/libunixsocket.h"
+# include "unixbase.hpp"
+# include "dgramclient.hpp"
+# include <string>
 
 /*
 The committers of the libsocket project, all rights reserved
@@ -27,17 +27,28 @@ POSSIBILITY OF SUCH DAMAGE.
 
 */
 
+using std::string;
+
 namespace libsocket
 {
-	using std::string;
-
-	class unix_socket : public virtual socket
+	class unix_dgram_client : public unix_dgram, public dgram_client_socket
 	{
 		private:
-		string bindpath;
+		bool connected;
 
 		public:
-		unix_socket();
+
+		unix_dgram_client(int flags=0);
+		unix_dgram_client(const char* path, int flags=0);
+
+# if __cplusplus == 201103L
+		unix_dgram_client(const string& path, int flags=0);
+# endif
+		void connect(const char* path);
+		void connect(const string& path);
+
+		void deconnect(void);
 	};
 }
+
 # endif

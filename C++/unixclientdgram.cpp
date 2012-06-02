@@ -3,6 +3,7 @@
 # include "../headers++/unixbase.hpp"
 # include "../headers++/unixdgram.hpp"
 # include "../headers++/dgramclient.hpp"
+# include "../headers/libunixsocket.h"
 # include <string>
 
 using std::string;
@@ -44,9 +45,49 @@ namespace libsocket
 # if __cplusplus == 201103L
 		unix_dgram_client(const string& path, int flags=0);
 # endif
-		void connect(const char* path, int flags=0);
-		void connect(const string& path, int flags=0);
+		void connect(const char* path);
+		void connect(const string& path);
 
 		void deconnect(void);
 	};
+
+	unix_dgram_client::unix_dgram_client(int flags)
+	{
+		sfd = create_unix_dgram_socket(0,flags);
+
+		if ( sfd < 0 )
+			throw socket_exception(__FILE__,__LINE__,"unix_dgram_client::unix_dgram_client: Could not create unix dgram client socket!\n");
+
+	}
+
+	unix_dgram_client::unix_dgram_client(const char* path, int flags)
+	{
+		sfd = create_unix_dgram_socket(path,flags);
+
+		if ( sfd < 0 )
+			throw socket_exception(__FILE__,__LINE__,"unix_dgram_client::unix_dgram_client: Could not create unix dgram client socket!\n");
+	}
+
+	// Delegating constructor
+# if __cplusplus == 201103L
+	unix_dgram_client(const string& path, int flags)
+		: unix_dgram_client(path.c_str(),flags) {}
+# endif
+
+	void unix_dgram_client::connect(const char* path)
+	{
+		if ( connect_unix_dgram_socket(sfd,path) < 0 )
+			throw socket_exception(__FILE__,__LINE__,"unix_dgram_client::connect: Could not connect dgram socket!\n");
+	}
+
+	void unix_dgram_client::connect(const string& path)
+	{
+		connect(path.c_str());
+	}
+
+	void unix_dgram_client::deconnect(void)
+	{
+		if ( connect_unix_dgram_socket(sfd,0) < 0 )
+			throw socket_exception(__FILE__,__LINE__,"unix_dgram_client::deconnect: Could not disconnect dgram socket!\n");
+	}
 }
