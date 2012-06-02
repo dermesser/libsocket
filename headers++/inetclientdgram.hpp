@@ -7,6 +7,7 @@
 # include "socket.hpp"
 # include "inetbase.hpp"
 # include "inetdgram.hpp"
+# include "dgramclient.hpp"
 
 # define TCP 1
 # define UDP 2
@@ -46,7 +47,7 @@ namespace libsocket
 {
 	using std::string;
 
-	class inet_dgram_client : public inet_dgram
+	class inet_dgram_client : public inet_dgram, public dgram_client_socket
 	{
 		private:
 		bool connected;
@@ -62,7 +63,7 @@ namespace libsocket
 		// connect/reconnect
 		void connect(const char* dsthost, const char* dstport);
 		void deconnect(void);
-
+		/*
 		// I/O
 		// O
 		// only if connected
@@ -79,6 +80,7 @@ namespace libsocket
 		// Getters
 
 		bool getconn(void);
+		*/
 	};
 
 }

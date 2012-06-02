@@ -1,5 +1,5 @@
 # define _GNU_SOURCE // accept4()
-# include <sys/socket.h> 
+# include <sys/socket.h>
 # include <stdlib.h>
 # include <sys/types.h>
 # include <unistd.h> // read()/write()
