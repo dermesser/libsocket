@@ -29,9 +29,23 @@ int main(void)
 	try {
 		for ( int i = 0; i < 20; i++ )
 		{
-			sock.sndto("abcdefghi",9,host.c_str(),port.c_str());
+			/*sock.sndto("abcdefghi",9,host.c_str(),port.c_str());
 
 			sock.rcvfrom(buf,9,peer_h,peer_p);
+			*/
+
+			/*
+			 * Some other possibilities...
+
+			sock.connect(host.c_str(),port.c_str());
+
+			sock.snd("abcdefghi",9);
+
+			sock << "abcdefghi";
+			*/
+			sock.rcv(buf,9);
+			peer_h = host;
+			peer_p = port;
 
 			std::cout << peer_h << ":" << peer_p << " " << buf << std::endl;
 

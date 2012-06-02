@@ -7,7 +7,7 @@
 # include "../headers++/inetbase.hpp"
 # include "../headers++/inetdgram.hpp"
 # include "../headers++/exception.hpp"
-# include "../headers++/dgram.hpp"
+# include "../headers++/dgramclient.hpp"
 
 # include <unistd.h>
 # include <sys/socket.h>
@@ -43,11 +43,8 @@ namespace libsocket
 
 /************** inet_dgram class (inet UDP sockets) ************/
 
-	class inet_dgram_client : public inet_dgram, public dgram_socket
+	class inet_dgram_client : public inet_dgram, public dgram_client_socket
 	{
-		private:
-		bool connected;
-
 		public:
 
 		// Only create socket
@@ -65,11 +62,11 @@ namespace libsocket
 
 	// Managing
 
-	inet_dgram_client::inet_dgram_client(int proto_osi3, int flags) : connected(false)
+	inet_dgram_client::inet_dgram_client(int proto_osi3, int flags)
 	{
 		if ( -1 == (sfd = create_inet_dgram_socket(proto_osi3,flags)) )
 			throw socket_exception(__FILE__,__LINE__,"inet_dgram::inet_dgram() - Could not create inet dgram socket!\n");
-		
+
 		proto = proto_osi3;
 	}
 
@@ -90,7 +87,7 @@ namespace libsocket
 	{
 		if ( -1 == (connect_inet_dgram_socket(sfd,dsthost,dstport)) )
 			throw socket_exception(__FILE__,__LINE__,"inet_dgram::connect() - Could not connect dgram socket!\n");
-
+		std::cerr << "connecting...\n";
 		host = dsthost;
 		port = dstport;
 		connected = true;

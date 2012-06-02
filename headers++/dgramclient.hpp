@@ -10,7 +10,7 @@ namespace libsocket
 {
 	class dgram_client_socket : public virtual socket
 	{
-		private:
+		protected:
 		bool connected;
 
 		public:

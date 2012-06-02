@@ -32,7 +32,7 @@ namespace libsocket
 
 	class dgram_client_socket : public virtual socket
 	{
-		private:
+		protected:
 		bool connected;
 
 		public:
@@ -53,7 +53,7 @@ namespace libsocket
 
 		bool getconn(void);
 	};
-	
+
 	dgram_client_socket::dgram_client_socket(void) : connected(false) {}
 
 	ssize_t dgram_client_socket::rcv(void* buf, size_t len, int flags)

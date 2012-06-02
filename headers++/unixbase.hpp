@@ -28,16 +28,7 @@ namespace libsocket
 {
 	using std::string;
 
-	struct unix_exception
-	{
-		string mesg;
-
-		unix_exception(string,int,string);
-	};
-
-	/* ******************** */
-
-	class unix_socket : public socket
+	class unix_socket : public virtual socket
 	{
 		private:
 		string bindpath;
