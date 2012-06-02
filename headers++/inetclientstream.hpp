@@ -1,5 +1,5 @@
-# ifndef INETSOCKET
-# define INETSOCKET
+# ifndef INETSTREAMCLIENT
+# define INETSTREAMCLIENT
 
 # include <string>
 # include <sys/types.h>
@@ -20,7 +20,7 @@
 
 # define NUMERIC 1
 
-// Quite simple oo wrapper around libinetsocket
+// Quite simple oo wrapper around libINETSTREAMCLIENT
 /*
 The committers of the libsocket project, all rights reserved
 (c) 2012, dermesser <lbo@spheniscida.de>
