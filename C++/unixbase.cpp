@@ -31,7 +31,7 @@ namespace libsocket
 {
 	using std::string;
 
-	class unix_socket : public socket
+	class unix_socket : public virtual socket
 	{
 		private:
 		string bindpath;

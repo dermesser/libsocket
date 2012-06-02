@@ -2,6 +2,11 @@
 # include "../headers++/socket.hpp"
 # include "../headers++/unixbase.hpp"
 # include "../headers++/unixdgram.hpp"
+# include "../headers++/dgramclient.hpp"
+# include <string>
+
+using std::string;
+
 /*
 The committers of the libsocket project, all rights reserved
 (c) 2012, dermesser <lbo@spheniscida.de>
@@ -26,10 +31,22 @@ POSSIBILITY OF SUCH DAMAGE.
 
 namespace libsocket
 {
-	class unix_dgram_client : public unix_dgram
+	class unix_dgram_client : public unix_dgram, public dgram_client_socket
 	{
 		private:
 		bool connected;
 
 		public:
 
+		unix_dgram_client(int flags=0);
+		unix_dgram_client(const char* path, int flags=0);
+
+# if __cplusplus == 201103L
+		unix_dgram_client(const string& path, int flags=0);
+# endif
+		void connect(const char* path, int flags=0);
+		void connect(const string& path, int flags=0);
+
+		void deconnect(void);
+	};
+}

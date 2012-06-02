@@ -45,12 +45,12 @@ namespace libsocket
 	{
 		if ( buf == NULL )
 			throw socket_exception(__FILE__,__LINE__,"unix_dgram::sndto: Buffer is NULL!\n");
-		
+
 		ssize_t bytes;
 
 		if ( 0 > (bytes = sendto_unix_dgram_socket(sfd,buf,length,path,sendto_flags)) )
 			throw socket_exception(__FILE__,__LINE__,"unix_dgram::sndto: Could not send data to peer!\n");
-		
+
 		return bytes;
 	}
 
@@ -59,7 +59,7 @@ namespace libsocket
 		return sndto(buf,length,path.c_str(),sendto_flags);
 	}
 
-	
+
 	ssize_t unix_dgram::rcvfrom(void* buf, size_t length, char* source, size_t source_len, int recvfrom_flags)
 	{
 		if ( buf == NULL )
@@ -68,7 +68,7 @@ namespace libsocket
 		ssize_t bytes;
 
 		bytes = recvfrom_unix_dgram_socket(sfd,buf,length,source,source_len,recvfrom_flags);
-		
+
 		if ( bytes < 0 )
 			throw socket_exception(__FILE__,__LINE__,"unix_dgram::rcvfrom: Could not receive data from peer!\n");
 
