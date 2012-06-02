@@ -4,7 +4,6 @@
 # include <string>
 # include <sys/types.h>
 # include <sys/socket.h>
-# include "socket.hpp"
 # include "inetbase.hpp"
 
 # define TCP 1

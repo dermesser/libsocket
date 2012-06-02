@@ -1,7 +1,6 @@
 # ifndef INETSERVERSOCKET
 # define INETSERVERSOCKET
 
-# include "inetbase.hpp"
 # include "inetclientstream.hpp"
 
 # define IPv4 3
