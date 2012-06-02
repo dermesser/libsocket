@@ -1,6 +1,7 @@
 # include "../headers/libunixsocket.h"
 # include "../headers++/unixbase.hpp"
 # include "../headers++/socket.hpp"
+# include "../headers++/exception.hpp"
 # include <string>
 # include <string.h>
 
@@ -46,7 +47,7 @@ namespace libsocket
 		sfd = create_unix_stream_socket(path,socket_flags);
 
 		if ( sfd < 0 )
-			throw unix_exception(__FILE__,__LINE__,"unix_stream_client::unix_stream_client: Could not create and connect UNIX socket!\n");
+			throw socket_exception(__FILE__,__LINE__,"unix_stream_client::unix_stream_client: Could not create and connect UNIX socket!\n");
 	}
 
 # if __cplusplus == 201103L
@@ -59,7 +60,7 @@ namespace libsocket
 		sfd = create_unix_stream_socket(path,socket_flags);
 
 		if ( sfd < 0 )
-			throw unix_exception(__FILE__,__LINE__,"unix_stream_client::unix_stream_client: Could not create and connect UNIX socket!\n");
+			throw socket_exception(__FILE__,__LINE__,"unix_stream_client::unix_stream_client: Could not create and connect UNIX socket!\n");
 	}
 
 	void unix_stream_client::connect(const string& path, int socket_flags)
@@ -67,7 +68,7 @@ namespace libsocket
 		sfd = create_unix_stream_socket(path.c_str(),socket_flags);
 
 		if ( sfd < 0 )
-			throw unix_exception(__FILE__,__LINE__,"unix_stream_client::unix_stream_client: Could not create and connect UNIX socket!\n");
+			throw socket_exception(__FILE__,__LINE__,"unix_stream_client::unix_stream_client: Could not create and connect UNIX socket!\n");
 	}
 
 	void unix_stream_client::shutdown(int method)
@@ -75,7 +76,7 @@ namespace libsocket
 		int ret = shutdown_unix_stream_socket(sfd,method);
 
 		if ( ret < 0 )
-			throw unix_exception(__FILE__,__LINE__,"unix_stream_client::shutdown: Could not shut the socket down!\n");
+			throw socket_exception(__FILE__,__LINE__,"unix_stream_client::shutdown: Could not shut the socket down!\n");
 	}
 
 	/* *********** */
@@ -83,17 +84,17 @@ namespace libsocket
 	ssize_t unix_stream_client::snd(const void* buf, size_t buflen, int send_flags)
 	{
 		if ( buf == NULL )
-			throw unix_exception(__FILE__,__LINE__,"unix_stream_client::snd: Buffer pointer is NULL!\n");
+			throw socket_exception(__FILE__,__LINE__,"unix_stream_client::snd: Buffer pointer is NULL!\n");
 
 		if ( buflen == 0 )
-			throw unix_exception(__FILE__,__LINE__,"unix_stream_client::snd: Buffer length is 0\n");
+			throw socket_exception(__FILE__,__LINE__,"unix_stream_client::snd: Buffer length is 0\n");
 
 		ssize_t retval;
 
 		retval = send(sfd,buf,buflen,send_flags);
 
 		if ( retval < 0 )
-			throw unix_exception(__FILE__,__LINE__,"unix_stream_client::snd: Error while sending!\n");
+			throw socket_exception(__FILE__,__LINE__,"unix_stream_client::snd: Error while sending!\n");
 
 		return retval;
 	}
@@ -101,14 +102,14 @@ namespace libsocket
 	ssize_t unix_stream_client::rcv(void* buf, size_t buflen, int rcv_flags)
 	{
 		if ( buf == NULL )
-			throw unix_exception(__FILE__,__LINE__,"unix_stream_client::rcv: Buffer pointer is NULL!\n");
+			throw socket_exception(__FILE__,__LINE__,"unix_stream_client::rcv: Buffer pointer is NULL!\n");
 		if ( buflen == 0 )
-			throw unix_exception(__FILE__,__LINE__,"unix_stream_client::rcv: Buffer length is null!\n");
+			throw socket_exception(__FILE__,__LINE__,"unix_stream_client::rcv: Buffer length is null!\n");
 
 		ssize_t retval;
 
 		if ( 0 < (retval = recv(sfd,buf,buflen,rcv_flags)))
-				throw unix_exception(__FILE__,__LINE__,"unix_stream_client::rcv: recv() failed!\n");
+				throw socket_exception(__FILE__,__LINE__,"unix_stream_client::rcv: recv() failed!\n");
 
 		return retval;
 	}
