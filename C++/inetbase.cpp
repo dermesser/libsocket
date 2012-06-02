@@ -23,6 +23,20 @@ POSSIBILITY OF SUCH DAMAGE.
 
 */
 
+/*
+ * DESCRIPTION FOR INETBASE.CPP
+ *
+ * 	inetbase.cpp defines the class inet_socket. This class
+ * 	is used as base class in the hierarchy between socket and
+ * 	the next specific class. Inheriting classes are inet_dgram,
+ * 	inet_stream_client and inet_stream_server.
+ *
+ * 	The class contains the data elements host and port. If the inheriting
+ * 	class is a client, like inet_stream_client or inet_dgram_client (via inet_dgram),
+ * 	this fields contain the remote peer. If the inheriting class is a server socket,
+ * 	this fields contain the address and the port to which the server is bound.
+*/
+
 namespace libsocket
 {
 	using std::string;

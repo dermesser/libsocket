@@ -26,6 +26,22 @@ POSSIBILITY OF SUCH DAMAGE.
 
 */
 
+/*
+ * DESCRIPTION FOR DGRAMCLIENT.CPP
+ * 	dgramclient.cpp contains the class dgram_client_socket. This
+ * 	class provides the read/write functions for connected datagram
+ * 	sockets (alias client dgram sockets...). This helps to avoid
+ * 	writing the same code more than one time.
+ * 	The client datagram classes for specific domains, which are
+ * 	unix_dgram_client and inet_dgram_client inherit the functions
+ * 	declared and defined here to get the ability to send and receive
+ * 	data via connected datagram sockets. It is not possible to use
+ * 	a class which has this functions also for stream sockets because
+ * 	the functions have to check if the socket is connected (bool connected;).
+ * 	In the stream classes, this check is realized by checking if the file
+ * 	descriptor is -1 or not.
+*/
+
 namespace libsocket
 {
 	using std::string;

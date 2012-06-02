@@ -22,6 +22,22 @@ POSSIBILITY OF SUCH DAMAGE.
 
 */
 
+/*
+ * DESCRIPTION FOR EXCEPTION.CPP
+ *	The class defined here, socket_exception, is a
+ *	class for exception objects. Objects instantiated
+ *	from this class are thrown if something goes wrong.
+ *
+ *	The class contains only the data member mesg and the
+ *	constructor which constructs the error string in mesg.
+ *	Typically, you'd create an object of this class with the
+ *	following call:
+ *		socket_exception(__FILE__,__LINE__,"Error Message");
+ *
+ *	The tokens are substituded by the preprocessor and show where
+ *	the error occurred.
+*/
+
 namespace libsocket
 {
 	using std::string;
