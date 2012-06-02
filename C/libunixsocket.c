@@ -301,7 +301,7 @@ ssize_t recvfrom_unix_dgram_socket(int sfd, void* buf, size_t size, char* from, 
 }
 
 // Sends data
-ssize_t sendto_unix_dgram_socket(int sfd, void* buf, size_t size, const char* path, int sendto_flags)
+ssize_t sendto_unix_dgram_socket(int sfd, const void* buf, size_t size, const char* path, int sendto_flags)
 {
 	int bytes;
 	struct sockaddr_un saddr;
