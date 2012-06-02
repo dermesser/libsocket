@@ -1,6 +1,6 @@
 # include <stdlib.h>
 # include <stdio.h>
-# include <sys/socket.h> 
+# include <sys/socket.h>
 # include <sys/types.h>
 # include <unistd.h> // read()/write()
 # include <stdint.h>
@@ -190,6 +190,9 @@ int create_inet_dgram_socket(char proto_osi3, int flags)
 			return -1;
 	}
 
+	if ( -1 == check_error(sfd) )
+		return -1;
+
 	return sfd;
 }
 
@@ -265,7 +268,7 @@ ssize_t recvfrom_inet_dgram_socket(int sfd, void* buffer, size_t size, char* src
 	if ( -1 == check_error(bytes = recvfrom(sfd,buffer,size,recvfrom_flags,(struct sockaddr*)&client,&addrlen)))
 		return -1;
 
-	if ( src_host_len > 0 || src_service_len > 0 ) // If one of the things is wanted. If you give a null pointer with a positive _len parameter, you won't get the address. 
+	if ( src_host_len > 0 || src_service_len > 0 ) // If one of the things is wanted. If you give a null pointer with a positive _len parameter, you won't get the address.
 	{
 		if ( numeric == 1 )
 		{
@@ -505,7 +508,7 @@ int accept_inet_stream_socket(int sfd, char* src_host, size_t src_host_len, char
 	if ( -1 == check_error((client_sfd = accept(sfd,(struct sockaddr*)&client_info,&addrlen)))) // blocks
 		return -1;
 
-	if ( src_host_len > 0 || src_service_len > 0 ) // If one of the things is wanted. If you give a null pointer with a positive _len parameter, you won't get the address. 
+	if ( src_host_len > 0 || src_service_len > 0 ) // If one of the things is wanted. If you give a null pointer with a positive _len parameter, you won't get the address.
 	{
 		if ( flags == NUMERIC )
 		{

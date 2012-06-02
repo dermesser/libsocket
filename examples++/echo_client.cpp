@@ -26,15 +26,20 @@ int main(void)
 		std::cerr << exc.mesg;
 	}
 
-	for ( int i = 0; i < 20; i++ )
+	try {
+		for ( int i = 0; i < 20; i++ )
+		{
+			sock.sndto("abcdefghi",9,host.c_str(),port.c_str());
+
+			sock.rcvfrom(buf,9,peer_h,peer_p);
+
+			std::cout << peer_h << ":" << peer_p << " " << buf << std::endl;
+
+			std::cout.flush();
+		}
+	} catch ( libsocket::socket_exception exc )
 	{
-		sock.sndto("abcdefghi",9,host.c_str(),port.c_str());
-
-		sock.rcvfrom(buf,9,peer_h,peer_p);
-
-		std::cout << peer_h << ":" << peer_p << " " << buf << std::endl;
-
-		std::cout.flush();
+		std::cerr << exc.mesg;
 	}
 
 	sock.destroy();
