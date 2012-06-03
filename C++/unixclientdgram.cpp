@@ -34,9 +34,6 @@ namespace libsocket
 {
 	class unix_dgram_client : public unix_dgram, public dgram_client_socket
 	{
-		private:
-		bool connected;
-
 		public:
 
 		unix_dgram_client(int flags=0);
