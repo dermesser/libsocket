@@ -52,6 +52,8 @@ For example, if you have a program which serves as client for a UDP based applic
 One exception: The TCP internet client class is called <code>inet_stream</code> (for historical reasons; in addition, every library needs an
 inconsistence ;)</p>
 
+<p>The files use another schema: <code>&lt;domain&gt;&lt;role&gt;&lt;protocol&gt;.(c|h)pp</code>, e.g. <code>inetclientstream.cpp</code> for the class <code>inet_stream_client</code>.</p>
+
 <p>Among this classes, there are many other classes. In the diagram, this classes are the white boxes. It makes no sense to instantiate
 objects from this classes although it's possible (they aren't abstract).</p>
 
@@ -401,7 +403,7 @@ unix_stream_client(const string&amp; path, int socket_flags=0);
 </code></pre>
 
 <p>Create a new unix domain stream client socket. The second and the third form connect the socket immediately to <code>path</code>.
-If you use the first form, you have to <code>connect()</code> your socket before using it. <code>socket_flags</code> are flags for the 
+If you use the first form, you have to <code>connect()</code> your socket before using it. <code>socket_flags</code> are flags for the
 <code>socket(2)</code> syscall.</p>
 
 <h3><code>connect()</code></h3>
@@ -425,7 +427,7 @@ void connect(const string&amp; path, int socket_flags=0);
 
 <h3><code>snd() rcv()</code></h3>
 
-<p>Defined in <code>streamclient.cpp</code></p>
+<p>Defined in <code>streamclient.cpp</code>, inherited from <code>stream_client_socket</code></p>
 
 <pre><code>1: ssize_t snd(const void* buf, size_t buflen, int send_flags=0);
 2: ssize_t rcv(void* buf, size_t len, int recv_flags=0);
@@ -433,3 +435,54 @@ void connect(const string&amp; path, int socket_flags=0);
 
 <p>1: Send the data in <code>buf</code> which is <code>buflen</code> bytes to the connected peer. <code>send_flags</code> is passed to <code>send(2)</code>.
 2: Receive <code>buflen</code> bytes from the connected peer and store them in buf. <code>recv_flags</code> is passed to <code>recv(2)</code>.</p>
+
+<h3>Stream operators</h3>
+
+<p>Defined in <code>streamclient.cpp</code>, inherited from <code>stream_client_socket</code></p>
+
+<pre><code>    friend stream_client_socket&amp; operator&lt;&lt;(stream_client_socket&amp; sock, const char* str);
+    friend stream_client_socket&amp; operator&lt;&lt;(stream_client_socket&amp; sock, string&amp; str);
+
+    friend stream_client_socket&amp; operator&gt;&gt;(stream_client_socket&amp; sock, string&amp; dest);
+</code></pre>
+
+<p>Like the normal file stream operators. <code>unix_stream_client</code> is a child of `stream<em>client</em>socket´.</p>
+
+<p>Output ("upload") works for strings and legacy C strings, input ("download") only for C++ strings.
+The download function reads at most <code>dest.size()</code> bytes from the socket. If it reads less,
+the string is resized to the new length, 0 if the peer shut its socket down or closed the connection.</p>
+
+<p><em>SO RESIZE YOUR STRINGS BEFORE DOWNLOADING DATA!</em></p>
+
+<h2><code>unix_stream_server</code></h2>
+
+<p>Defined in <code>unixserverstream.cpp</code></p>
+
+<pre><code>    unix_stream_server(void);
+    unix_stream_server(const char* path, int flags=0);
+    unix_stream_server(const string&amp; path, int flags=0);
+</code></pre>
+
+<p>Create a unix domain SOCK_STREAM server socket which is bound to <code>path</code>. <code>flags</code> are passed to <code>socket(2)</code>.
+If you use the <code>void</code> constructor, you have to <code>setup()</code> your socket before using it.</p>
+
+<h3><code>setup()</code></h3>
+
+<p>Defined in <code>unixserverstream.cpp</code></p>
+
+<pre><code>void setup(const char* path, int flags=0);
+</code></pre>
+
+<p>If the socket was not set up with a constructor, you have to call this function before using the new socket.
+The server socket is bound to <code>path</code>, and <code>flags</code> are passed to <code>socket(2)</code>.</p>
+
+<h3><code>accept()</code></h3>
+
+<p>Defined in <code>unixserverstream.cpp</code></p>
+
+<pre><code>unix_stream_client* accept(int flags=0);
+</code></pre>
+
+<p>Accept a new connection on the socket. <code>flags</code> are passed to <code>accept4(2)</code>. Returns a pointer to a dynamically allocated
+<code>unix_stream_client</code> object. It's recommended, especially for long-running applications, to call <code>delete</code> on this pointer
+when it isn't needed anymore.</p>

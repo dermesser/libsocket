@@ -87,6 +87,7 @@ namespace libsocket
 	{
 		if ( -1 == (connect_inet_dgram_socket(sfd,dsthost,dstport)) )
 			throw socket_exception(__FILE__,__LINE__,"inet_dgram::connect() - Could not connect dgram socket!\n");
+
 		std::cerr << "connecting...\n";
 		host = dsthost;
 		port = dstport;

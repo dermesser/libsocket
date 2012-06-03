@@ -38,13 +38,15 @@ For example, if you have a program which serves as client for a UDP based applic
 
 ## Class Hierarchy and names
 
-The class hierarchy is very complex. You may take a look at it by viewing `classes.svg` in this directory. 
+The class hierarchy is very complex. You may take a look at it by viewing `classes.svg` in this directory.
 
 To understand the library, you also have to understand the names.
 
 The classes have names which are built like this: `<domain>_<protocol>_<role>`: E.g. `unix_stream_server` or `inet_dgram_client`.
 One exception: The TCP internet client class is called `inet_stream` (for historical reasons; in addition, every library needs an
 inconsistence ;)
+
+The files use another schema: `<domain><role><protocol>.(c|h)pp`, e.g. `inetclientstream.cpp` for the class `inet_stream_client`.
 
 Among this classes, there are many other classes. In the diagram, this classes are the white boxes. It makes no sense to instantiate
 objects from this classes although it's possible (they aren't abstract).
@@ -273,7 +275,7 @@ to the connected peer. `flags` may be specified and take the flags described in 
 Defined in `inetdgram.cpp`
 
 	1: ssize_t sndto(const void* buf, size_t len, const char* host, const char* port, int sndto_flags=0);
-	
+
 	2: ssize_t sndto(const void* buf, size_t len, const std::string& host, const std::string& port, int sndto_flags=0)
 
 1, 2: Send `len` bytes from `buf` to `host`:`port`. `sndto_flags` may be specified and take the flags described
@@ -341,7 +343,7 @@ Defined in `unixclientstream.cpp`
 	unix_stream_client(const string& path, int socket_flags=0);
 
 Create a new unix domain stream client socket. The second and the third form connect the socket immediately to `path`.
-If you use the first form, you have to `connect()` your socket before using it. `socket_flags` are flags for the 
+If you use the first form, you have to `connect()` your socket before using it. `socket_flags` are flags for the
 `socket(2)` syscall.
 
 ### `connect()`
@@ -360,11 +362,54 @@ Defined in `unixclientstream.cpp`
 Shut the socket down. `method` is `READ`, `WRITE` or `READ|WRITE` and specifies how the socket should be shut down.
 
 ### `snd() rcv()`
-Defined in `streamclient.cpp`
+Defined in `streamclient.cpp`, inherited from `stream_client_socket`
 
 	1: ssize_t snd(const void* buf, size_t buflen, int send_flags=0);
 	2: ssize_t rcv(void* buf, size_t len, int recv_flags=0);
 
 1: Send the data in `buf` which is `buflen` bytes to the connected peer. `send_flags` is passed to `send(2)`.
 2: Receive `buflen` bytes from the connected peer and store them in buf. `recv_flags` is passed to `recv(2)`.
+
+### Stream operators
+Defined in `streamclient.cpp`, inherited from `stream_client_socket`
+
+		friend stream_client_socket& operator<<(stream_client_socket& sock, const char* str);
+		friend stream_client_socket& operator<<(stream_client_socket& sock, string& str);
+
+		friend stream_client_socket& operator>>(stream_client_socket& sock, string& dest);
+
+Like the normal file stream operators. `unix_stream_client` is a child of `stream_client_socket´.
+
+Output ("upload") works for strings and legacy C strings, input ("download") only for C++ strings.
+The download function reads at most `dest.size()` bytes from the socket. If it reads less,
+the string is resized to the new length, 0 if the peer shut its socket down or closed the connection.
+
+*SO RESIZE YOUR STRINGS BEFORE DOWNLOADING DATA!*
+
+##`unix_stream_server`
+Defined in `unixserverstream.cpp`
+
+		unix_stream_server(void);
+		unix_stream_server(const char* path, int flags=0);
+		unix_stream_server(const string& path, int flags=0);
+
+Create a unix domain SOCK_STREAM server socket which is bound to `path`. `flags` are passed to `socket(2)`.
+If you use the `void` constructor, you have to `setup()` your socket before using it.
+
+###`setup()`
+Defined in `unixserverstream.cpp`
+
+	void setup(const char* path, int flags=0);
+
+If the socket was not set up with a constructor, you have to call this function before using the new socket.
+The server socket is bound to `path`, and `flags` are passed to `socket(2)`.
+
+###`accept()`
+Defined in `unixserverstream.cpp`
+
+	unix_stream_client* accept(int flags=0);
+
+Accept a new connection on the socket. `flags` are passed to `accept4(2)`. Returns a pointer to a dynamically allocated
+`unix_stream_client` object. It's recommended, especially for long-running applications, to call `delete` on this pointer
+when it isn't needed anymore.
 
