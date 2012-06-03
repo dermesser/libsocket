@@ -64,13 +64,9 @@ and <code>inet_dgram_client</code>. The latter is also a child of <code>dgram_cl
 (which is also a child of <code>dgram_client_socket</code>) and <code>unix_dgram_server</code>. The latter is similar to <code>unix_dgram_client</code>, but it does not have
 the recv and send functions.</p>
 
-<h1>libinetsocket++</h1>
-
-<p>libinetsocket++ is the wrapper around libinetsocket.</p>
-
 <h2>Exception Handling</h2>
 
-<p>Exception handling is done with the following class (declared in <code>inetbase.hpp</code>, defined in <code>inetbase.cpp</code>)</p>
+<p>Defined in <code>exception.cpp</code>, has to be included from <code>exception.hpp</code></p>
 
 <pre><code>struct socket_exception
 {
@@ -100,6 +96,10 @@ the .destroy() routine.</p>
     std::cerr &lt;&lt; exc.mesg;
 }
 </code></pre>
+
+<h1>libinetsocket++</h1>
+
+<p>libinetsocket++ is the wrapper around libinetsocket.</p>
 
 <h2><code>inet_stream</code> Class: Internet TCP Client Stream Sockets</h2>
 
@@ -398,4 +398,4 @@ the number of read characters. One read call normally returns one datagram</p>
 
 <h1>libunixsocket++</h1>
 
-<p>Not implemented yet.</p>
+<p>libunixsocket++ is the UNIX domain socket part of libsocket++. The class tree is described above.</p>

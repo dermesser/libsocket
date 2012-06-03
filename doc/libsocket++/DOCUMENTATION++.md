@@ -58,12 +58,8 @@ On the unix side of this tree, it's the same. `unix_socket` is the father of `un
 (which is also a child of `dgram_client_socket`) and `unix_dgram_server`. The latter is similar to `unix_dgram_client`, but it does not have
 the recv and send functions.
 
-# libinetsocket++
-
-libinetsocket++ is the wrapper around libinetsocket.
-
 ## Exception Handling
-Exception handling is done with the following class (declared in `inetbase.hpp`, defined in `inetbase.cpp`)
+Defined in `exception.cpp`, has to be included from `exception.hpp`
 
 	struct socket_exception
 	{
@@ -90,6 +86,11 @@ Example for error handling:
 	{
 		std::cerr << exc.mesg;
 	}
+
+# libinetsocket++
+
+libinetsocket++ is the wrapper around libinetsocket.
+
 
 ## `inet_stream` Class: Internet TCP Client Stream Sockets
 ### Constructors
@@ -339,4 +340,4 @@ It is not possible to call `connect(), rcv(), snd()` on such sockets; the `rcvfr
 
 # libunixsocket++
 
-Not implemented yet.
+libunixsocket++ is the UNIX domain socket part of libsocket++. The class tree is described above.
