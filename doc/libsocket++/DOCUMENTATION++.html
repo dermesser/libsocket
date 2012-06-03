@@ -42,27 +42,18 @@ For example, if you have a program which serves as client for a UDP based applic
 <pre><code>$ g++ -o client client.cpp /path/to/libsocket/C/libinetsocket.c /path/to/libsocket/C++/{socket,inetbase,inetdgram,inetclientdgram}.cpp
 </code></pre>
 
-<h2>Class Hierarchy</h2>
+<h2>Class Hierarchy and names</h2>
 
-<p>Unfortunately, the class hierarchy is too complex to sketch it here completely. But I'll try it nevertheless:</p>
+<p>The class hierarchy is very complex. You may take a look at it by viewing <code>classes.svg</code> in this directory. </p>
 
-<p>The base class is <code>socket</code>. It provides things like destroy() or the file descriptor field. These things may be used for every socket type.
-Three classes inherit the features of this class: <code>inet_socket</code>, <code>unix_socket</code> and <code>dgram_client_socket</code>. <code>inet_socket</code> provides the data fields
-for internet sockets: Host and port. If the inheriting class is a server class, this fields are the bind parameters. If it's a client class,
-this fields contain the parameters of the remote peer. <code>unix_socket</code> is the same, but for UNIX domain sockets. It contains a data field for the
-bind path (which is not used at unix stream clients). The third class is <code>dgram_client_socket</code>. It provides typical functions to be used with
-connected datagram sockets. These functions are the same for inet and unix sockets (rcv, send, and stream operators). <em>NOTE</em>: These three classes are
-virtual base classes of <code>socket</code>, because the dgram client classes inherit the features of socket via two ways!</p>
+<p>To understand the library, you also have to understand the names.</p>
 
-<p><code>inet_socket</code> is the base class of <code>inet_stream</code> (which should actually be called <code>inet_stream_client</code>), which provides everything you need
-for TCP clients. <code>inet_stream_server</code> is a brother and is used for TCP servers. Another brother is <code>inet_dgram</code> which is again a base class
-for the internet datagram sockets (UDP sockets). It provides common datagram functions like sendto and recvfrom and its childs are <code>inet_dgram_server</code>
-and <code>inet_dgram_client</code>. The latter is also a child of <code>dgram_client_socket</code> from which it inherits the connected datagram functions (recv, send).</p>
+<p>The classes have names which are built like this: <code>&lt;domain&gt;_&lt;protocol&gt;_&lt;role&gt;</code>: E.g. <code>unix_stream_server</code> or <code>inet_dgram_client</code>.
+One exception: The TCP internet client class is called <code>inet_stream</code> (for historical reasons; in addition, every library needs an
+inconsistence ;)</p>
 
-<p>On the unix side of this tree, it's the same. <code>unix_socket</code> is the father of <code>unix_stream_server</code> and <code>unix_stream_client</code>. Another child is 
-<code>unix_dgram</code>, providing UNIX domain datagram services, like the Unix-specific functions recvfrom and sendto. Its childs are <code>unix_dgram_client</code>
-(which is also a child of <code>dgram_client_socket</code>) and <code>unix_dgram_server</code>. The latter is similar to <code>unix_dgram_client</code>, but it does not have
-the recv and send functions.</p>
+<p>Among this classes, there are many other classes. In the diagram, this classes are the white boxes. It makes no sense to instantiate
+objects from this classes although it's possible (they aren't abstract).</p>
 
 <h2>Exception Handling</h2>
 
@@ -434,17 +425,11 @@ void connect(const string&amp; path, int socket_flags=0);
 
 <h3><code>snd() rcv()</code></h3>
 
+<p>Defined in <code>streamclient.cpp</code></p>
+
 <pre><code>1: ssize_t snd(const void* buf, size_t buflen, int send_flags=0);
 2: ssize_t rcv(void* buf, size_t len, int recv_flags=0);
 </code></pre>
 
 <p>1: Send the data in <code>buf</code> which is <code>buflen</code> bytes to the connected peer. <code>send_flags</code> is passed to <code>send(2)</code>.
 2: Receive <code>buflen</code> bytes from the connected peer and store them in buf. <code>recv_flags</code> is passed to <code>recv(2)</code>.</p>
-
-<h3>Stream operators</h3>
-
-<pre><code>friend unix_stream_client&amp; operator&lt;&lt;(unix_stream_client&amp; sock,const char* data);
-friend unix_stream_client&amp; operator&lt;&lt;(unix_stream_client&amp; sock,string&amp; data);
-</code></pre>
-
-<p>Send data to the connected peer. Works with <code>const char*</code> and <code>std::string</code>.</p>

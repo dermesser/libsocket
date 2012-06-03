@@ -36,27 +36,18 @@ For example, if you have a program which serves as client for a UDP based applic
 
 	$ g++ -o client client.cpp /path/to/libsocket/C/libinetsocket.c /path/to/libsocket/C++/{socket,inetbase,inetdgram,inetclientdgram}.cpp
 
-## Class Hierarchy
+## Class Hierarchy and names
 
-Unfortunately, the class hierarchy is too complex to sketch it here completely. But I'll try it nevertheless:
+The class hierarchy is very complex. You may take a look at it by viewing `classes.svg` in this directory. 
 
-The base class is `socket`. It provides things like destroy() or the file descriptor field. These things may be used for every socket type.
-Three classes inherit the features of this class: `inet_socket`, `unix_socket` and `dgram_client_socket`. `inet_socket` provides the data fields
-for internet sockets: Host and port. If the inheriting class is a server class, this fields are the bind parameters. If it's a client class,
-this fields contain the parameters of the remote peer. `unix_socket` is the same, but for UNIX domain sockets. It contains a data field for the
-bind path (which is not used at unix stream clients). The third class is `dgram_client_socket`. It provides typical functions to be used with
-connected datagram sockets. These functions are the same for inet and unix sockets (rcv, send, and stream operators). _NOTE_: These three classes are
-virtual base classes of `socket`, because the dgram client classes inherit the features of socket via two ways!
+To understand the library, you also have to understand the names.
 
-`inet_socket` is the base class of `inet_stream` (which should actually be called `inet_stream_client`), which provides everything you need
-for TCP clients. `inet_stream_server` is a brother and is used for TCP servers. Another brother is `inet_dgram` which is again a base class
-for the internet datagram sockets (UDP sockets). It provides common datagram functions like sendto and recvfrom and its childs are `inet_dgram_server`
-and `inet_dgram_client`. The latter is also a child of `dgram_client_socket` from which it inherits the connected datagram functions (recv, send).
+The classes have names which are built like this: `<domain>_<protocol>_<role>`: E.g. `unix_stream_server` or `inet_dgram_client`.
+One exception: The TCP internet client class is called `inet_stream` (for historical reasons; in addition, every library needs an
+inconsistence ;)
 
-On the unix side of this tree, it's the same. `unix_socket` is the father of `unix_stream_server` and `unix_stream_client`. Another child is 
-`unix_dgram`, providing UNIX domain datagram services, like the Unix-specific functions recvfrom and sendto. Its childs are `unix_dgram_client`
-(which is also a child of `dgram_client_socket`) and `unix_dgram_server`. The latter is similar to `unix_dgram_client`, but it does not have
-the recv and send functions.
+Among this classes, there are many other classes. In the diagram, this classes are the white boxes. It makes no sense to instantiate
+objects from this classes although it's possible (they aren't abstract).
 
 ## Exception Handling
 Defined in `exception.cpp`, has to be included from `exception.hpp`
@@ -369,6 +360,7 @@ Defined in `unixclientstream.cpp`
 Shut the socket down. `method` is `READ`, `WRITE` or `READ|WRITE` and specifies how the socket should be shut down.
 
 ### `snd() rcv()`
+Defined in `streamclient.cpp`
 
 	1: ssize_t snd(const void* buf, size_t buflen, int send_flags=0);
 	2: ssize_t rcv(void* buf, size_t len, int recv_flags=0);
@@ -376,9 +368,3 @@ Shut the socket down. `method` is `READ`, `WRITE` or `READ|WRITE` and specifies 
 1: Send the data in `buf` which is `buflen` bytes to the connected peer. `send_flags` is passed to `send(2)`.
 2: Receive `buflen` bytes from the connected peer and store them in buf. `recv_flags` is passed to `recv(2)`.
 
-### Stream operators
-
-	friend unix_stream_client& operator<<(unix_stream_client& sock,const char* data);
-	friend unix_stream_client& operator<<(unix_stream_client& sock,string& data);
-
-Send data to the connected peer. Works with `const char*` and `std::string`.
