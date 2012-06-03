@@ -76,9 +76,6 @@ namespace libsocket
 	{
 		ssize_t bytes;
 
-		if ( -1 == sfd )
-			throw socket_exception(__FILE__,__LINE__,"dgram_client_socket::rcv() - Socket already closed!\n");
-
 		if ( connected != true )
 			throw socket_exception(__FILE__,__LINE__,"dgram_client_socket::rcv() - Socket is not connected!\n");
 
@@ -92,11 +89,11 @@ namespace libsocket
 	{
 		ssize_t read_bytes;
 		char* buffer;
-
+		
+		if ( sock.connected != true )
+			throw socket_exception(__FILE__,__LINE__,">>(dgram_client_socket, std::string) - Socket is not connected!\n");
+		
 		buffer = new char[dest.size()];
-
-		if ( sock.sfd == -1 )
-			throw socket_exception(__FILE__,__LINE__,">>(dgram_client_socket, std::string) input: Socket not connected!\n");
 
 		if ( -1 == (read_bytes = read(sock.sfd,buffer,dest.size())) )
 			throw socket_exception(__FILE__,__LINE__,">>(dgram_client_socket, std::string) input: Error while reading!\n");
@@ -116,9 +113,6 @@ namespace libsocket
 	{
 		ssize_t bytes;
 
-		if ( -1 == sfd )
-			throw socket_exception(__FILE__,__LINE__,"dgram_client_socket::snd() - Socket already closed!\n");
-
 		if ( connected != true )
 			throw socket_exception(__FILE__,__LINE__,"dgram_client_socket::snd() - Socket is not connected!\n");
 
@@ -130,8 +124,6 @@ namespace libsocket
 
 	dgram_client_socket& operator<<(dgram_client_socket& sock, const char* str)
 	{
-		if ( sock.sfd == -1 )
-			throw socket_exception(__FILE__,__LINE__,"dgram_client_socket <<(const char*) output: Socket not connected!\n");
 		if ( str == NULL )
 			throw socket_exception(__FILE__,__LINE__,"dgram_client_socket <<(const char*) output: Null buffer given!\n");
 		if ( sock.connected == false )
@@ -147,8 +139,6 @@ namespace libsocket
 
 	dgram_client_socket& operator<<(dgram_client_socket& sock, string& str)
 	{
-		if ( sock.sfd == -1 )
-			throw socket_exception(__FILE__,__LINE__,"dgram_client_socket<<(std::string) output: Socket not connected!\n");
 		if ( sock.connected == false )
 			throw socket_exception(__FILE__,__LINE__,"dgram_client_socket <<(std::string) output: DGRAM socket not connected!\n");
 		if ( -1 == write(sock.sfd,str.c_str(),str.size()) )
@@ -162,5 +152,4 @@ namespace libsocket
 	{
 		return connected;
 	}
-
 }
