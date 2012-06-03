@@ -1,6 +1,8 @@
 # ifndef UNIXCLIENTSTREAM
 # define UNIXCLIENTSTREAM
 
+# include <string>
+# include "streamclient.hpp"
 # include "unixbase.hpp"
 
 # define READ  1
@@ -31,7 +33,7 @@ namespace libsocket
 {
 	using std::string;
 
-	class unix_stream_client : public unix_socket
+	class unix_stream_client : public unix_socket, public stream_client_socket
 	{
 		private:
 		string peer_path;
@@ -46,13 +48,6 @@ namespace libsocket
 		void connect(const string& path, int socket_flags=0);
 
 		void shutdown(int method=WRITE);
-
-		ssize_t snd(const void* buf, size_t buflen, int send_flags=0);
-		ssize_t rcv(void* buf, size_t len, int recv_flags=0);
-
-		friend unix_stream_client& operator<<(unix_stream_client& sock,const char* data);
-		friend unix_stream_client& operator<<(unix_stream_client& sock,string& data);
-
 		friend class unix_stream_server;
 	};
 }

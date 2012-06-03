@@ -1,7 +1,10 @@
 # ifndef STREAMCLIENT
 # define STREAMCLIENT
 
+# include <string>
 # include "socket.hpp"
+
+using std::string;
 
 namespace libsocket
 {
