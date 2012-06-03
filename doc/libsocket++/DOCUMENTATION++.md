@@ -341,3 +341,44 @@ It is not possible to call `connect(), rcv(), snd()` on such sockets; the `rcvfr
 # libunixsocket++
 
 libunixsocket++ is the UNIX domain socket part of libsocket++. The class tree is described above.
+
+##`unix_stream_client`
+Defined in `unixclientstream.cpp`
+
+	unix_stream_client(void);
+	unix_stream_client(const char* path, int socket_flags=0);
+	unix_stream_client(const string& path, int socket_flags=0);
+
+Create a new unix domain stream client socket. The second and the third form connect the socket immediately to `path`.
+If you use the first form, you have to `connect()` your socket before using it. `socket_flags` are flags for the 
+`socket(2)` syscall.
+
+### `connect()`
+Defined in `unixclientstream.cpp`
+
+	void connect(const char* path, int socket_flags=0);
+	void connect(const string& path, int socket_flags=0);
+
+Connect the socket to `path`. `socket_flags` are given to `socket(2)`.
+
+### `shutdown()`
+Defined in `unixclientstream.cpp`
+
+	void shutdown(int method=WRITE);
+
+Shut the socket down. `method` is `READ`, `WRITE` or `READ|WRITE` and specifies how the socket should be shut down.
+
+### `snd() rcv()`
+
+	1: ssize_t snd(const void* buf, size_t buflen, int send_flags=0);
+	2: ssize_t rcv(void* buf, size_t len, int recv_flags=0);
+
+1: Send the data in `buf` which is `buflen` bytes to the connected peer. `send_flags` is passed to `send(2)`.
+2: Receive `buflen` bytes from the connected peer and store them in buf. `recv_flags` is passed to `recv(2)`.
+
+### Stream operators
+
+	friend unix_stream_client& operator<<(unix_stream_client& sock,const char* data);
+	friend unix_stream_client& operator<<(unix_stream_client& sock,string& data);
+
+Send data to the connected peer. Works with `const char*` and `std::string`.

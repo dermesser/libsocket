@@ -399,3 +399,52 @@ the number of read characters. One read call normally returns one datagram</p>
 <h1>libunixsocket++</h1>
 
 <p>libunixsocket++ is the UNIX domain socket part of libsocket++. The class tree is described above.</p>
+
+<h2><code>unix_stream_client</code></h2>
+
+<p>Defined in <code>unixclientstream.cpp</code></p>
+
+<pre><code>unix_stream_client(void);
+unix_stream_client(const char* path, int socket_flags=0);
+unix_stream_client(const string&amp; path, int socket_flags=0);
+</code></pre>
+
+<p>Create a new unix domain stream client socket. The second and the third form connect the socket immediately to <code>path</code>.
+If you use the first form, you have to <code>connect()</code> your socket before using it. <code>socket_flags</code> are flags for the 
+<code>socket(2)</code> syscall.</p>
+
+<h3><code>connect()</code></h3>
+
+<p>Defined in <code>unixclientstream.cpp</code></p>
+
+<pre><code>void connect(const char* path, int socket_flags=0);
+void connect(const string&amp; path, int socket_flags=0);
+</code></pre>
+
+<p>Connect the socket to <code>path</code>. <code>socket_flags</code> are given to <code>socket(2)</code>.</p>
+
+<h3><code>shutdown()</code></h3>
+
+<p>Defined in <code>unixclientstream.cpp</code></p>
+
+<pre><code>void shutdown(int method=WRITE);
+</code></pre>
+
+<p>Shut the socket down. <code>method</code> is <code>READ</code>, <code>WRITE</code> or <code>READ|WRITE</code> and specifies how the socket should be shut down.</p>
+
+<h3><code>snd() rcv()</code></h3>
+
+<pre><code>1: ssize_t snd(const void* buf, size_t buflen, int send_flags=0);
+2: ssize_t rcv(void* buf, size_t len, int recv_flags=0);
+</code></pre>
+
+<p>1: Send the data in <code>buf</code> which is <code>buflen</code> bytes to the connected peer. <code>send_flags</code> is passed to <code>send(2)</code>.
+2: Receive <code>buflen</code> bytes from the connected peer and store them in buf. <code>recv_flags</code> is passed to <code>recv(2)</code>.</p>
+
+<h3>Stream operators</h3>
+
+<pre><code>friend unix_stream_client&amp; operator&lt;&lt;(unix_stream_client&amp; sock,const char* data);
+friend unix_stream_client&amp; operator&lt;&lt;(unix_stream_client&amp; sock,string&amp; data);
+</code></pre>
+
+<p>Send data to the connected peer. Works with <code>const char*</code> and <code>std::string</code>.</p>
