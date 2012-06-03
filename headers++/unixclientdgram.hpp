@@ -34,16 +34,14 @@ namespace libsocket
 	class unix_dgram_client : public unix_dgram, public dgram_client_socket
 	{
 		private:
-		bool connected;
+		void _setup(const char* path, int flags=0);
 
 		public:
 
 		unix_dgram_client(int flags=0);
 		unix_dgram_client(const char* path, int flags=0);
-
-# if __cplusplus == 201103L
 		unix_dgram_client(const string& path, int flags=0);
-# endif
+
 		void connect(const char* path);
 		void connect(const string& path);
 

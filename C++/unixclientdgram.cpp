@@ -34,42 +34,44 @@ namespace libsocket
 {
 	class unix_dgram_client : public unix_dgram, public dgram_client_socket
 	{
+		private:
+		void _setup(const char* path, int flags=0);
+
 		public:
 
 		unix_dgram_client(int flags=0);
 		unix_dgram_client(const char* path, int flags=0);
-
-# if __cplusplus == 201103L
 		unix_dgram_client(const string& path, int flags=0);
-# endif
+
 		void connect(const char* path);
 		void connect(const string& path);
 
 		void deconnect(void);
 	};
 
-	unix_dgram_client::unix_dgram_client(int flags)
-	{
-		sfd = create_unix_dgram_socket(0,flags);
-
-		if ( sfd < 0 )
-			throw socket_exception(__FILE__,__LINE__,"unix_dgram_client::unix_dgram_client: Could not create unix dgram client socket!\n");
-
-	}
-
-	unix_dgram_client::unix_dgram_client(const char* path, int flags)
+	void unix_dgram_client::_setup(const char* path, int flags)
 	{
 		sfd = create_unix_dgram_socket(path,flags);
 
 		if ( sfd < 0 )
 			throw socket_exception(__FILE__,__LINE__,"unix_dgram_client::unix_dgram_client: Could not create unix dgram client socket!\n");
+
 	}
 
-	// Delegating constructor
-# if __cplusplus == 201103L
+	unix_dgram_client::unix_dgram_client(int flags)
+	{
+		_setup(0,flags); // bind to nowhere
+	}
+
+	unix_dgram_client::unix_dgram_client(const char* path, int flags)
+	{
+		_setup(path,flags); // bind to path
+	}
+
 	unix_dgram_client(const string& path, int flags)
-		: unix_dgram_client(path.c_str(),flags) {}
-# endif
+	{
+		_setup(path.c_str(),flags);
+	}
 
 	void unix_dgram_client::connect(const char* path)
 	{

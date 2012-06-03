@@ -18,7 +18,7 @@ namespace libsocket
 		unix_dgram_server(void);
 		unix_dgram_server(const char* bindpath, int socket_flags=0);
 		unix_dgram_server(const string& bindpath, int socket_flags=0);
-		
+
 		void setup(const char* bindpath, int socket_flags=0);
 		void setup(const string& bindpath, int socket_flags=0);
 	};
