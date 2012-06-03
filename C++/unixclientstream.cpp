@@ -129,8 +129,12 @@ namespace libsocket
 
 		ssize_t retval;
 
-		if ( 0 < (retval = recv(sfd,buf,buflen,rcv_flags)))
-				throw socket_exception(__FILE__,__LINE__,"unix_stream_client::rcv: recv() failed!\n");
+		// lol... from 2336f75
+		//if ( 0 < (retval = recv(sfd,buf,buflen,rcv_flags)))
+		//	throw socket_exception(__FILE__,__LINE__,"unix_stream_client::rcv: recv() failed!\n");
+
+		if ( 0 > (retval = recv(sfd,buf,buflen,rcv_flags)))
+			throw socket_exception(__FILE__,__LINE__,"unix_stream_client::rcv: recv() failed!\n");
 
 		return retval;
 	}

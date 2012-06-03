@@ -6,6 +6,8 @@
 # include <unistd.h>
 # include <string.h>
 
+using std::string;
+
 namespace libsocket
 {
 	class dgram_client_socket : public virtual socket
