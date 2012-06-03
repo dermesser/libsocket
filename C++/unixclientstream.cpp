@@ -47,7 +47,7 @@ namespace libsocket
 		unix_stream_client(void);
 		unix_stream_client(const char* path, int socket_flags=0);
 		unix_stream_client(const string& path, int socket_flags=0);
-		
+
 		// connect() == setup()
 		void connect(const char* path, int socket_flags=0);
 		void connect(const string& path, int socket_flags=0);
@@ -80,7 +80,7 @@ namespace libsocket
 		if ( sfd < 0 )
 			throw socket_exception(__FILE__,__LINE__,"unix_stream_client::unix_stream_client: Could not create and connect UNIX socket!\n");
 	}
-	
+
 	void unix_stream_client::connect(const string& path, int socket_flags)
 	{
 		sfd = create_unix_stream_socket(path.c_str(),socket_flags);

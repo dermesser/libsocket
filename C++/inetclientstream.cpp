@@ -45,9 +45,8 @@ namespace libsocket
 
 		inet_stream(void);
 		inet_stream(const char* dsthost, const char* dstport, int proto_osi3, int flags=0); // flags: socket()
-# if __cplusplus == 201103L
 		inet_stream(const string& dsthost, const string& dstport, int proto_osi3, int flags=0);
-# endif
+
 		// Real actions
 		void connect(const char* dsthost, const char* dstport, int proto_osi3, int flags=0); // flags: socket()
 		void shutdown(int method);
@@ -69,34 +68,23 @@ namespace libsocket
 		friend class inet_stream_server; // So it's possible for inet_stream_server::accept() to construct an instance with given fd
 	};
 
-	// Managing
-
 	inet_stream::inet_stream(void)
 	{
 	}
 
 	inet_stream::inet_stream(const char* dsthost, const char* dstport, int proto_osi3, int flags)
 	{
-		try
-		{
-			connect(dsthost,dstport,proto_osi3,flags);
-		} catch ( socket_exception(exc) )
-		{
-			throw socket_exception(__FILE__,__LINE__,"inet_stream::inet_stream() - Could not create socket\n");
-		}
+		connect(dsthost,dstport,proto_osi3,flags);
 	}
 
-	// C++11 part: Delegating Constructors. Known as working for gcc >= 4.7 and clang++ >= 3.0
-# if __cplusplus == 201103L
 	inet_stream::inet_stream(const string& dsthost, const string& dstport, int proto_osi3, int flags)
-	: inet_stream(dsthost.c_str(),dstport.c_str(),proto_osi3,flags)
 	{
+		connect(dsthost.c_str(),dstport.c_str(),proto_osi3,flags);
 	}
-# endif
 
 	void inet_stream::connect(const char* dsthost, const char* dstport, int proto_osi3, int flags)
 	{
-		if ( sfd != -1 ) // Socket is already connected
+		if ( sfd != -1 )
 			throw socket_exception(__FILE__,__LINE__,"inet_stream::connect() - Already connected!\n");
 
 		sfd = create_inet_stream_socket(dsthost,dstport,proto_osi3,flags);
