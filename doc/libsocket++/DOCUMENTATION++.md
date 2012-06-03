@@ -38,20 +38,25 @@ For example, if you have a program which serves as client for a UDP based applic
 
 ## Class Hierarchy
 
-Legend:
+Unfortunately, the class hierarchy is too complex to sketch it here completely. But I'll try it nevertheless:
 
-* indentation - inheritance level
-* (`a`,`b`) - (header file, source file)
+The base class is `socket`. It provides things like destroy() or the file descriptor field. These things may be used for every socket type.
+Three classes inherit the features of this class: `inet_socket`, `unix_socket` and `dgram_client_socket`. `inet_socket` provides the data fields
+for internet sockets: Host and port. If the inheriting class is a server class, this fields are the bind parameters. If it's a client class,
+this fields contain the parameters of the remote peer. `unix_socket` is the same, but for UNIX domain sockets. It contains a data field for the
+bind path (which is not used at unix stream clients). The third class is `dgram_client_socket`. It provides typical functions to be used with
+connected datagram sockets. These functions are the same for inet and unix sockets (rcv, send, and stream operators). _NOTE_: These three classes are
+virtual base classes of `socket`, because the dgram client classes inherit the features of socket via two ways!
 
-Now the actual class hierarchy:
+`inet_socket` is the base class of `inet_stream` (which should actually be called `inet_stream_client`), which provides everything you need
+for TCP clients. `inet_stream_server` is a brother and is used for TCP servers. Another brother is `inet_dgram` which is again a base class
+for the internet datagram sockets (UDP sockets). It provides common datagram functions like sendto and recvfrom and its childs are `inet_dgram_server`
+and `inet_dgram_client`. The latter is also a child of `dgram_client_socket` from which it inherits the connected datagram functions (recv, send).
 
-* Base class: `socket` - provides e.g. `sfd`, field for the file descriptor number (`socket.hpp`,`socket.cpp`)
-	* Derived class: `inet_socket` - provides e.g. `host` and `port` (`inetbase.hpp`,`inetbase.cpp`)
-		* Derived class: `inet_stream` - active (client) TCP socket (`inetclientstream.hpp`,`inetclientstream.cpp`)
-		* Derived class: `inet_stream_server` - passive (server) TCP socket (`inetserverstream.hpp`,`inetserverstream.cpp`)
-		* Derived class: `inet_dgram` - base class for inet dgram (UDP) sockets. Provides e.g. `rcvfrom() sndto()` (`inetdgram.hpp`,`inetdgram.cpp`)
-			* Derived class: `inet_dgram_client` - unbound UDP socket. Provides further: `rcv() snd() connect() deconnect()` and some others (`inetclientdgram.hpp`,`inetclientdgram.cpp`)
-			* Derived class: `inet_dgram_server` - bound UDP socket. No further functions except of the constructor (`inetserverdgram.hpp`,`inetserverdgram.cpp`
+On the unix side of this tree, it's the same. `unix_socket` is the father of `unix_stream_server` and `unix_stream_client`. Another child is 
+`unix_dgram`, providing UNIX domain datagram services, like the Unix-specific functions recvfrom and sendto. Its childs are `unix_dgram_client`
+(which is also a child of `dgram_client_socket`) and `unix_dgram_server`. The latter is similar to `unix_dgram_client`, but it does not have
+the recv and send functions.
 
 # libinetsocket++
 
@@ -60,11 +65,11 @@ libinetsocket++ is the wrapper around libinetsocket.
 ## Exception Handling
 Exception handling is done with the following class (declared in `inetbase.hpp`, defined in `inetbase.cpp`)
 
-	struct inet_exception
+	struct socket_exception
 	{
 		std::string mesg;
 
-		inet_exception(std::string,int,string);
+		socket_exception(std::string,int,string);
 	};
 
 An instantiation of this object is thrown in case of error. Almost every function
@@ -81,7 +86,7 @@ Example for error handling:
 
 	try {
 		sock << "test";
-	} catch (libsocket::inet_exception exc)
+	} catch (libsocket::socket_exception exc)
 	{
 		std::cerr << exc.mesg;
 	}
@@ -184,13 +189,10 @@ the number of read characters so you can check (`string.size() == 0`) if the ser
 with sending - either closed the socket on his side or shut it down for write access.
 
 ### Getters
-Declared in `inetclientstream.hpp`, defined in `inetclientstream.cpp`
+Declared in `inetbase.hpp`, defined in `inetbase.cpp`
 
-	int getfd(void) const;
 	std::string gethost(void) const;
 	std::string getport(void) const;
-
-`getfd()` returns the socket file descriptor.
 
 `gethost()` returns a C++ std::string containing the host to which the socket is connected.
 
@@ -227,6 +229,9 @@ Inherited from `socket` class. Destroy (close) socket.
 
 Return value 0 if successful, otherwise -1.
 
+You don't have to destroy the sockets explicitly. The sockets are also destroyed when
+the destructor of `socket` (virtual, of course) is called.
+
 ## `inet_dgram_client` Class: Internet UDP Sockets
 ### Constructors
 Declared in `inetclientdgram.hpp`, defined in `inetclientdgram.cpp`
@@ -240,7 +245,7 @@ it's mandatory to specify the address family at instantiation time. `proto_osi3`
 and finally `socket(2)`.
 
 The second form allows to specify a host and a port to which the UDP socket is connected.
-If an UDP socket is connected, calls to `snd()` and `rcv()` act like it is a stream socket:
+If an UDP socket is connected, calls to `snd()` and `rcv()` act like on a stream socket:
 The data is sent and received only to/from the host to which the socket is connected.
 
 ### Connect Functions
@@ -261,10 +266,10 @@ Declared in `socket.hpp`, defined in `socket.cpp`
 
 	int destroy(void);
 
-Try to destroy the socket and throw an exception if it failed.
+0: Success, -1: Error (the only errors at `close()` come if the file descriptor has been closed already)
 
 ### Send/Upload Functions
-Declared in `inetclientdgram.hpp`, `inetdgram.hpp`; defined in `inetdgram.cpp`, `inetclientdgram.cpp`
+Defined in `dgramclient.cpp`
 
 	ssize_t snd(const void* buf, size_t len, int flags=0); // flags: send()
 
@@ -272,6 +277,8 @@ Conventional send, *only available if socket is connected*.
 
 Send `len` bytes from `buf` (does not need to be `const`; in C++ an implicit conversion to const is allowed)
 to the connected peer. `flags` may be specified and take the flags described in `send(2)` (`MSG_...`).
+
+Defined in `inetdgram.cpp`
 
 	1: ssize_t sndto(const void* buf, size_t len, const char* host, const char* port, int sndto_flags=0);
 	
@@ -289,12 +296,14 @@ Usage like streams:
 	sock << "abc" << std::string("def");
 
 ### Receive/Download Functions
-Declared in `inetclientdgram.hpp`, `inetdgram.hpp`; defined in `inetdgram.cpp`, `inetclientdgram.cpp`
+Defined in `dgramclient.cpp`
 
 	ssize_t rcv(void* buf, size_t len, int flags=0);
 
 Conventional receive function: Receive `len` bytes from the socket and write them to `buf`. `flags` may take the
-flags described in `recv(2)` (`MSG_...`).
+flags described in `recv(2)` (`MSG_...`). Only available if socket is connected!
+
+Defined in `inetdgram.cpp`
 
 	1: ssize_t rcvfrom(void* buf, size_t len, char* host, size_t hostlen, char* port, size_t portlen, int rcvfrom_flags=0, bool numeric=false);
 
