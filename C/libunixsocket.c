@@ -1,4 +1,7 @@
+# ifndef _GNU_SOURCE
 # define _GNU_SOURCE // accept4()
+# endif
+
 # include <sys/socket.h>
 # include <stdlib.h>
 # include <sys/types.h>
