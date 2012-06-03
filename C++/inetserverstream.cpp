@@ -89,6 +89,9 @@ namespace libsocket
 
 	inet_stream* inet_stream_server::accept(int numeric)
 	{
+		if ( listening != true )
+			throw socket_exception(__FILE__,__LINE__,"inet_stream_server::accept() - stream server socket is not in listening state!\n");
+
 		char* src_host = new char[1024];
 		char* src_port = new char[32];
 
@@ -98,9 +101,7 @@ namespace libsocket
 		memset(src_host,0,1024);
 		memset(src_port,0,32);
 
-		if ( listening != true )
-			throw socket_exception(__FILE__,__LINE__,"inet_stream_server::accept() - stream server socket is not in listening state!\n");
-		if ( -1 == (client_sfd = accept_inet_stream_socket(sfd,src_host,1024,src_port,32,numeric)) )
+		if ( -1 == (client_sfd = accept_inet_stream_socket(sfd,src_host,1023,src_port,31,numeric)) )
 			throw socket_exception(__FILE__,__LINE__,"inet_stream_server::accept() - could not accept new connection on stream server socket!\n");
 
 		client->sfd = client_sfd;

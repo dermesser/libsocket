@@ -48,7 +48,7 @@ namespace libsocket
 
 		void deconnect(void);
 	};
-
+	//				Bind path, not connect!
 	void unix_dgram_client::_setup(const char* path, int flags)
 	{
 		sfd = create_unix_dgram_socket(path,flags);
