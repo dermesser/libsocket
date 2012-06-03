@@ -6,6 +6,7 @@
 # include "../headers++/socket.hpp"
 # include "../headers++/inetbase.hpp"
 # include "../headers++/exception.hpp"
+# include "../headers++/streamclient.hpp"
 
 # include <unistd.h>
 # include <sys/socket.h>
@@ -39,7 +40,7 @@ namespace libsocket
 
 /**************** inet_stream class (TCP inet sockets) *********/
 
-	class inet_stream : public inet_socket
+	class inet_stream : public inet_socket, public stream_client_socket
 	{
 		public:
 
@@ -50,20 +51,6 @@ namespace libsocket
 		// Real actions
 		void connect(const char* dsthost, const char* dstport, int proto_osi3, int flags=0); // flags: socket()
 		void shutdown(int method);
-
-		// I/O
-		// O
-		friend inet_stream& operator<<(inet_stream& sock, const char* str);
-		friend inet_stream& operator<<(inet_stream& sock, string& str);
-
-		ssize_t snd(const void* buf, size_t len, int flags=0); // flags: send()
-
-		// I
-		friend inet_stream& operator>>(inet_stream& sock, string& dest);
-
-		ssize_t rcv(void* buf, size_t len, int flags=0); // flags: recv()
-
-		// Other friends
 
 		friend class inet_stream_server; // So it's possible for inet_stream_server::accept() to construct an instance with given fd
 	};
@@ -104,92 +91,5 @@ namespace libsocket
 		{
 			throw socket_exception(__FILE__,__LINE__,"inet_stream::shutdown() - Could not shutdown socket\n");
 		}
-	}
-
-	// I/O
-
-	// I
-
-	ssize_t inet_stream::rcv(void* buf, size_t len, int flags)
-	{
-		ssize_t recvd;
-
-		if ( sfd == -1 )
-			throw socket_exception(__FILE__,__LINE__,"inet_stream::rcv() - Socket is not connected!\n");
-
-		if ( buf == NULL || len == 0 )
-			throw socket_exception(__FILE__,__LINE__,"inet_stream::rcv() - Buffer or length is null!\n");
-
-		if ( -1 == (recvd = recv(sfd,buf,len,flags)) )
-			throw socket_exception(__FILE__,__LINE__,"inet_stream::rcv() - Error while reading!\n");
-
-		return recvd;
-	}
-
-	inet_stream& operator>>(inet_stream& sock, string& dest)
-	{
-		ssize_t read_bytes;
-		char* buffer;
-
-		buffer = new char[dest.size()];
-
-		if ( sock.sfd == -1 )
-			throw socket_exception(__FILE__,__LINE__,">>(std::string) input: Socket not connected!\n");
-
-		if ( -1 == (read_bytes = read(sock.sfd,buffer,dest.size())) )
-			throw socket_exception(__FILE__,__LINE__,">>(std::string) input: Error while reading!\n");
-
-		if ( read_bytes < static_cast<ssize_t>(dest.size()) )
-			dest.resize(read_bytes); // So the client doesn't print content more than one time
-						 // and it can check if the string's length is 0 (end of transmission)
-
-		dest.assign(buffer,read_bytes);
-
-		delete buffer;
-
-		return sock;
-	}
-
-	// O
-
-	inet_stream& operator<<(inet_stream& sock, const char* str)
-	{
-		if ( sock.sfd == -1 )
-			throw socket_exception(__FILE__,__LINE__,"<<(const char*) output: Socket not connected!\n");
-		if ( str == NULL )
-			throw socket_exception(__FILE__,__LINE__,"<<(const char*) output: Null buffer given!\n");
-
-		size_t len = strlen(str);
-
-		if ( -1 == write(sock.sfd,str,len) )
-			throw socket_exception(__FILE__,__LINE__,"<<(const char*) output: Write failed!\n");
-
-		return sock;
-	}
-
-	inet_stream& operator<<(inet_stream& sock, string& str)
-	{
-		if ( sock.sfd == -1 )
-			throw socket_exception(__FILE__,__LINE__,"<<(std::string) output: Socket not connected!\n");
-
-		if ( -1 == write(sock.sfd,str.c_str(),str.size()) )
-			throw socket_exception(__FILE__,__LINE__,"<<(std::string) output: Write failed!\n");
-
-		return sock;
-	}
-
-	ssize_t inet_stream::snd(const void* buf, size_t len, int flags)
-	{
-		ssize_t snd_bytes;
-
-		if ( sfd == -1 )
-			throw socket_exception(__FILE__,__LINE__,"inet_stream::snd() - Socket not connected!\n");
-		if ( buf == NULL || len == 0 )
-			throw socket_exception(__FILE__,__LINE__,"inet_stream::snd() - Buffer or length is null!\n");
-
-		if ( -1 == (snd_bytes = send(sfd,buf,len,flags)) )
-			throw socket_exception(__FILE__,__LINE__,"inet_stream::snd() - Error while sending\n");
-
-		return snd_bytes;
 	}
 }

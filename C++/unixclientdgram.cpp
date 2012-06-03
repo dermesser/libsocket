@@ -68,7 +68,7 @@ namespace libsocket
 		_setup(path,flags); // bind to path
 	}
 
-	unix_dgram_client(const string& path, int flags)
+	unix_dgram_client::unix_dgram_client(const string& path, int flags)
 	{
 		_setup(path.c_str(),flags);
 	}

@@ -5,6 +5,7 @@
 # include <sys/types.h>
 # include <sys/socket.h>
 # include "inetbase.hpp"
+# include "streamclient.hpp"
 
 # define TCP 1
 # define UDP 2
@@ -46,7 +47,7 @@ namespace libsocket
 {
 	using std::string;
 
-	class inet_stream : public inet_socket
+	class inet_stream : public inet_socket, public stream_client_socket
 	{
 		public:
 
@@ -54,21 +55,8 @@ namespace libsocket
 		inet_stream(const char* dsthost, const char* dstport, int proto_osi3, int flags=0); // flags: socket()
 		inet_stream(const string& dsthost, const string& dstport, int proto_osi3, int flags=0);
 
-		// Real actions
 		void connect(const char* dsthost, const char* dstport, int proto_osi3, int flags=0); // flags: socket()
 		void shutdown(int method);
-
-		// I/O
-		// O
-		friend inet_stream& operator<<(inet_stream& sock, const char* str);
-		friend inet_stream& operator<<(inet_stream& sock, string& str);
-
-		ssize_t snd(const void* buf, size_t len, int flags=0); // flags: send()
-
-		// I
-		friend inet_stream& operator>>(inet_stream& sock, string& dest);
-
-		ssize_t rcv(void* buf, size_t len, int flags=0); // flags: recv()
 
 		friend class inet_stream_server;
 	};
