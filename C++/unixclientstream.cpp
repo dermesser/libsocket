@@ -46,9 +46,9 @@ namespace libsocket
 
 		unix_stream_client(void);
 		unix_stream_client(const char* path, int socket_flags=0);
-# if __cplusplus == 201103L
 		unix_stream_client(const string& path, int socket_flags=0);
-# endif
+		
+		// connect() == setup()
 		void connect(const char* path, int socket_flags=0);
 		void connect(const string& path, int socket_flags=0);
 
@@ -65,16 +65,13 @@ namespace libsocket
 
 	unix_stream_client::unix_stream_client(const char* path, int socket_flags)
 	{
-		sfd = create_unix_stream_socket(path,socket_flags);
-
-		if ( sfd < 0 )
-			throw socket_exception(__FILE__,__LINE__,"unix_stream_client::unix_stream_client: Could not create and connect UNIX socket!\n");
+		connect(path,socket_flags);
 	}
 
-# if __cplusplus == 201103L
 	unix_stream_client::unix_stream_client(const string& path, int socket_flags)
-		: unix_stream_client(path.c_str(),socket_flags) {}
-# endif
+	{
+		connect(path.c_str(),socket_flags);
+	}
 
 	void unix_stream_client::connect(const char* path, int socket_flags)
 	{
@@ -83,7 +80,7 @@ namespace libsocket
 		if ( sfd < 0 )
 			throw socket_exception(__FILE__,__LINE__,"unix_stream_client::unix_stream_client: Could not create and connect UNIX socket!\n");
 	}
-
+	
 	void unix_stream_client::connect(const string& path, int socket_flags)
 	{
 		sfd = create_unix_stream_socket(path.c_str(),socket_flags);
