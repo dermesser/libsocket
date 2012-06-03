@@ -35,6 +35,13 @@ POSSIBILITY OF SUCH DAMAGE.
 
 */
 
+/*
+ * DESCRIPTION FOR INETDGRAM.CPP
+ * 	The class inet_dgram provides that functions which
+ * 	are used for all UDP sockets: rcvfrom and sndto. These
+ * 	may be used for both client and server UDP sockets.
+ */
+
 namespace libsocket
 {
 	using std::string;

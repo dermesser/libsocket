@@ -35,6 +35,9 @@ POSSIBILITY OF SUCH DAMAGE.
  * 	class is a client, like inet_stream_client or inet_dgram_client (via inet_dgram),
  * 	this fields contain the remote peer. If the inheriting class is a server socket,
  * 	this fields contain the address and the port to which the server is bound.
+ *
+ * 	The getters, gethost() and getport() may be used for a
+ * 	server application to get the paramters of the remote peer.
 */
 
 namespace libsocket

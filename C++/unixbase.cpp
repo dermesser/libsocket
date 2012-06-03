@@ -27,6 +27,13 @@ POSSIBILITY OF SUCH DAMAGE.
 
 */
 
+/*
+ * DESCRIPTION FOR UNIXBASE.CPP
+ * 	Provides only the field bindpath for every UNIX socket classes.
+ * 	This is particularly used for the UNIX datagram sockets which
+ * 	may be bound, both client and server.
+ */
+
 namespace libsocket
 {
 	using std::string;

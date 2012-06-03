@@ -37,6 +37,16 @@ POSSIBILITY OF SUCH DAMAGE.
 
 */
 
+/*
+ * DESCRIPTION FOR INETCLIENTDGRAM.CPP
+ * 	This file provides the class inet_dgram_client which is used
+ * 	for internet domain UDP client sockets. You think, in UDP
+ * 	there is no difference between client and server? This is
+ * 	correct, but in libsocket, the difference is that the UDP
+ * 	client sockets may be connected and are not explicitly
+ * 	bound to somewhere.
+ */
+
 namespace libsocket
 {
 	using std::string;

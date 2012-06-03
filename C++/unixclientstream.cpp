@@ -34,6 +34,14 @@ POSSIBILITY OF SUCH DAMAGE.
 
 */
 
+/*
+ * DESCRIPTION FOR UNIXCLIENTSTREAM.CPP
+ * 	unix_stream_client is the client socket
+ * 	for UNIX domain SOCK_STREAM client sockets.
+ * 	You may create and connect the socket after
+ * 	instantiation using connect().
+ */
+
 namespace libsocket
 {
 	using std::string;

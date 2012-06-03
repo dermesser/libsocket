@@ -37,6 +37,15 @@ POSSIBILITY OF SUCH DAMAGE.
 
 */
 
+/*
+ * DESCRIPTION FOR INETSERVERSTREAM.CPP
+ * 	inet_stream_server provides the TCP server part of libsocket.
+ *	It's main function is accept() which returns a pointer to 
+ *	a dynamically allocated inet_stream (client socket) class which
+ *	provides the connection to the client. You may setup the socket
+ *	either with the second constructor or with setup()
+ */
+
 namespace libsocket
 {
 	using std::string;

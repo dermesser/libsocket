@@ -25,6 +25,16 @@ POSSIBILITY OF SUCH DAMAGE.
 
 */
 
+/*
+ * DESCRIPTION FOR UNIXSERVERSTREAM.CPP
+ *	Provides a UNIX domain STREAM server.
+ *	The path given at the constructors is the bind
+ *	path. accept() accepts a new connection and returns
+ *	(like inet_stream_server) a pointer to a dynamically allocated
+ *	instance of unix_stream_client which may be used to
+ *	communicate with the connected client.
+ */
+
 namespace libsocket
 {
 	using std::string;

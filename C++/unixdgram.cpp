@@ -26,6 +26,14 @@ POSSIBILITY OF SUCH DAMAGE.
 
 */
 
+/*
+ * DESCRIPTION FOR UNIXDGRAM.CPP
+ * 	Provides the basic I/O functions for every UNIX domain
+ * 	datagram socket. Every unix datagram socket class is
+ * 	derived from this class because sndto and rcvfrom may be
+ * 	called on every datagram socket.
+ */
+
 namespace libsocket
 {
 	class unix_dgram : public unix_socket

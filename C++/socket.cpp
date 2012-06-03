@@ -21,6 +21,14 @@ POSSIBILITY OF SUCH DAMAGE.
 
 */
 
+/*
+ * DESCRIPTION FOR SOCKET.CPP
+ * 	Provides the basic socket functionality, like a field
+ * 	for the file descriptor and the destructor respectively
+ * 	a close()-wrapper destroy(). This is the root of the
+ * 	class graph.
+ */
+
 namespace libsocket
 {
 	class socket

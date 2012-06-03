@@ -34,6 +34,16 @@ POSSIBILITY OF SUCH DAMAGE.
 
 */
 
+/*
+ * DESCRIPTION FOR INETCLIENTSTREAM.CPP
+ * 	inetclientstream.cpp provides the class inet_stream
+ * 	(which should actually be called inet_stream_client).
+ * 	This class is used to communicate with TCP servers,
+ * 	like HTTP-, SMTP-, POP3-, FTP-, telnet-Servers.
+ *
+ * 	The I/O abilities are inherited from stream_client_socket.
+ */
+
 namespace libsocket
 {
 	using std::string;
@@ -48,7 +58,7 @@ namespace libsocket
 		inet_stream(const char* dsthost, const char* dstport, int proto_osi3, int flags=0); // flags: socket()
 		inet_stream(const string& dsthost, const string& dstport, int proto_osi3, int flags=0);
 
-		// Real actions
+		// connect() == setup()
 		void connect(const char* dsthost, const char* dstport, int proto_osi3, int flags=0); // flags: socket()
 		void shutdown(int method);
 

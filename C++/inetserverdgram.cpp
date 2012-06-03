@@ -36,6 +36,14 @@ POSSIBILITY OF SUCH DAMAGE.
 
 */
 
+/*
+ * DESCRIPTION FOR INETSERVERDGRAM.CPP
+ * 	inet_dgram_server provides nothing more than a constructor
+ * 	which binds the UDP socket to the specified host. Everything
+ * 	other, e.g. the I/O functions like rcvfrom and sndto are
+ * 	inherited from inet_dgram.
+ */
+
 namespace libsocket
 {
 	using std::string;
