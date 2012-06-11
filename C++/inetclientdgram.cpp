@@ -106,10 +106,8 @@ namespace libsocket
 
 	void inet_dgram_client::deconnect(void)
 	{
-		if ( -1 == sfd )
-			throw socket_exception(__FILE__,__LINE__,"inet_dgram::deconnect() - Socket not connected!\n");
 		if ( -1 == (connect_inet_dgram_socket(sfd,0,0)) )
-			throw socket_exception(__FILE__,__LINE__,"inet_dgram::deconnect() - Could not deconnect!\n");
+			throw socket_exception(__FILE__,__LINE__,"inet_dgram::deconnect() - Could not disconnect!\n");
 
 		connected = false;
 		host.resize(0);
