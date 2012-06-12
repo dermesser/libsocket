@@ -65,7 +65,7 @@ namespace libsocket
 	};
 
 	unix_stream_client::unix_stream_client(void) : peer_path("") {}
-
+	// Server path!
 	unix_stream_client::unix_stream_client(const char* path, int socket_flags)
 	{
 		connect(path,socket_flags);
