@@ -36,6 +36,7 @@ namespace libsocket
 	{
 		private:
 		bool listening;
+		bool nonblock;
 
 		public:
 

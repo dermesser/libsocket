@@ -56,6 +56,7 @@ namespace libsocket
 	{
 		private:
 		bool listening;
+		bool nonblock;
 
 		public:
 
@@ -94,6 +95,9 @@ namespace libsocket
 		port = string(bindport);
 
 		listening = true;
+
+		if (flags & SOCK_NONBLOCK)
+			nonblock = true;
 	}
 
 	inet_stream* inet_stream_server::accept(int numeric)
@@ -111,7 +115,15 @@ namespace libsocket
 		memset(src_port,0,32);
 
 		if ( -1 == (client_sfd = accept_inet_stream_socket(sfd,src_host,1023,src_port,31,numeric)) )
-			throw socket_exception(__FILE__,__LINE__,"inet_stream_server::accept() - could not accept new connection on stream server socket!\n");
+		{
+			if ( nonblock == false )
+			{
+				throw socket_exception(__FILE__,__LINE__,"inet_stream_server::accept() - could not accept new connection on stream server socket!\n");
+			} else
+			{
+				return NULL; // Only return NULL, if the socket is nonblocking
+			}
+		}
 
 		client->sfd = client_sfd;
 		client->host = string(src_host);

@@ -212,7 +212,8 @@ Declared in `inetserverstream.hpp`, defined in `inetserverstream.cpp`
 
 Accept an incoming connection. `numeric` may be `NUMERIC` if you want to have the host and port as numbers.
 
-Returns a pointer to a dynamically allocated `inet_stream` object
+Returns a pointer to a dynamically allocated `inet_stream` object. Returns NULL if the server socket is marked as NONBLOCKing and
+there is not connection to accept.
 
 ### Destroy
 Declared in `socket.hpp`, defined in `socket.cpp`

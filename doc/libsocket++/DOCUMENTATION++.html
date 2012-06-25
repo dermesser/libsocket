@@ -247,7 +247,8 @@ binds the socket to <code>bindhost:bindport</code> using <code>proto_osi3</code>
 
 <p>Accept an incoming connection. <code>numeric</code> may be <code>NUMERIC</code> if you want to have the host and port as numbers.</p>
 
-<p>Returns a pointer to a dynamically allocated <code>inet_stream</code> object</p>
+<p>Returns a pointer to a dynamically allocated <code>inet_stream</code> object. Returns NULL if the server socket is marked as NONBLOCKing and
+there is not connection to accept.</p>
 
 <h3>Destroy</h3>
 
