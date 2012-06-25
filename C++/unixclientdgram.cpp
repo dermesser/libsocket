@@ -86,6 +86,8 @@ namespace libsocket
 	{
 		if ( connect_unix_dgram_socket(sfd,path) < 0 )
 			throw socket_exception(__FILE__,__LINE__,"unix_dgram_client::connect: Could not connect dgram socket!\n");
+
+		connected = true;
 	}
 
 	void unix_dgram_client::connect(const string& path)
@@ -97,5 +99,7 @@ namespace libsocket
 	{
 		if ( connect_unix_dgram_socket(sfd,0) < 0 )
 			throw socket_exception(__FILE__,__LINE__,"unix_dgram_client::deconnect: Could not disconnect dgram socket!\n");
+
+		connected = false;
 	}
 }
