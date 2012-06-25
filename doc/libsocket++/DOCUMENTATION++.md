@@ -144,7 +144,7 @@ Close the socket and destroy the connection.
 Return value 0 if successfull, otherwise -1.
 
 ### Output/Upload Functions
-Declared in `inetclientstream.hpp`, defined in `inetclientstream.cpp`
+Inherited from `stream_client_socket`
 
 	ssize_t snd(const void* buf, size_t len, int flags=0);
 
@@ -277,7 +277,6 @@ to the connected peer. `flags` may be specified and take the flags described in 
 Defined in `inetdgram.cpp`
 
 	1: ssize_t sndto(const void* buf, size_t len, const char* host, const char* port, int sndto_flags=0);
-
 	2: ssize_t sndto(const void* buf, size_t len, const std::string& host, const std::string& port, int sndto_flags=0)
 
 1, 2: Send `len` bytes from `buf` to `host`:`port`. `sndto_flags` may be specified and take the flags described
@@ -375,10 +374,10 @@ Defined in `streamclient.cpp`, inherited from `stream_client_socket`
 ### Stream operators
 Defined in `streamclient.cpp`, inherited from `stream_client_socket`
 
-		friend stream_client_socket& operator<<(stream_client_socket& sock, const char* str);
-		friend stream_client_socket& operator<<(stream_client_socket& sock, string& str);
+	friend stream_client_socket& operator<<(stream_client_socket& sock, const char* str);
+	friend stream_client_socket& operator<<(stream_client_socket& sock, string& str);
 
-		friend stream_client_socket& operator>>(stream_client_socket& sock, string& dest);
+	friend stream_client_socket& operator>>(stream_client_socket& sock, string& dest);
 
 Like the normal file stream operators. `unix_stream_client` is a child of `stream_client_socket´.
 
@@ -414,4 +413,63 @@ Defined in `unixserverstream.cpp`
 Accept a new connection on the socket. `flags` are passed to `accept4(2)`. Returns a pointer to a dynamically allocated
 `unix_stream_client` object. It's recommended, especially for long-running applications, to call `delete` on this pointer
 when it isn't needed anymore.
+
+##`unix_dgram_client`
+Defined in `unixclientdgram.cpp`
+
+	unix_dgram_client(int flags=0);
+	unix_dgram_client(const char* path, int flags=0);
+	unix_dgram_client(const string& path, int flags=0);
+
+Create a UNIX DGRAM socket. If you use the second or third constructor, bind it additionally to path.
+
+#`connect()`, `deconnect()`
+Defined in `unixclientdgram.cpp`
+
+	void connect(const char* path);
+	void connect(const string& path);
+
+Connect the DGRAM socket to the specified path. You may call `snd()` or `rcv()` on a UNIX DGRAM socket if it's connected.
+
+	void deconnect(void);
+
+Disconnect the DGRAM socket. (Connect it to NULL).
+
+##I/O
+Inherited from `dgram_client_socket`
+
+	friend dgram_client_socket& operator<<(dgram_client_socket& sock, const char* str);
+	friend dgram_client_socket& operator<<(dgram_client_socket& sock, string& str);
+	friend dgram_client_socket& operator>>(dgram_client_socket& sock, string& dest);
+
+	ssize_t snd(const void* buf, size_t len, int flags=0); // flags: send()
+	ssize_t rcv(void* buf, size_t len, int flags=0);
+
+Inherited from `unix_dgram`
+
+	ssize_t sndto(const void* buf, size_t length, const char* path, int sendto_flags=0);
+	ssize_t sndto(const void* buf, size_t length, const string& path, int sendto_flags=0);
+
+	ssize_t rcvfrom(void* buf, size_t length, char* source, size_t source_len, int recvfrom_flags=0);
+	ssize_t rcvfrom(void* buf, size_t length, string& source, int recvfrom_flags=0);
+
+
+##`unix_dgram_server`
+Defined in `unixserverdgram.cpp`
+
+	unix_dgram_server(void);
+	unix_dgram_server(const char* bindpath, int socket_flags=0);
+	unix_dgram_server(const string& bindpath, int socket_flags=0);
+
+`unix_dgram_server` is quite similar to `unix_dgram_client`, especially if bound. The important difference is that
+you may not call `connect()` on `unix_dgram_server`.
+
+##I/O
+Defined in `unixdgram.cpp`
+
+	ssize_t sndto(const void* buf, size_t length, const char* path, int sendto_flags=0);
+	ssize_t sndto(const void* buf, size_t length, const string& path, int sendto_flags=0);
+
+	ssize_t rcvfrom(void* buf, size_t length, char* source, size_t source_len, int recvfrom_flags=0);
+	ssize_t rcvfrom(void* buf, size_t length, string& source, int recvfrom_flags=0);
 

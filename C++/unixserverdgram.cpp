@@ -76,6 +76,8 @@ namespace libsocket
 
 		if ( sfd < 0 )
 			throw socket_exception(__FILE__,__LINE__,"unix_dgram_server::setup: Could not create server!\n");
+
+		bound = true;
 	}
 
 	void unix_dgram_server::setup(const string& bindpath, int socket_flags)

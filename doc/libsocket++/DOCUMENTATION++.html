@@ -167,7 +167,7 @@ in <code>inetsocket.hpp</code></p>
 
 <h3>Output/Upload Functions</h3>
 
-<p>Declared in <code>inetclientstream.hpp</code>, defined in <code>inetclientstream.cpp</code></p>
+<p>Inherited from <code>stream_client_socket</code></p>
 
 <pre><code>ssize_t snd(const void* buf, size_t len, int flags=0);
 </code></pre>
@@ -324,7 +324,6 @@ to the connected peer. <code>flags</code> may be specified and take the flags de
 <p>Defined in <code>inetdgram.cpp</code></p>
 
 <pre><code>1: ssize_t sndto(const void* buf, size_t len, const char* host, const char* port, int sndto_flags=0);
-
 2: ssize_t sndto(const void* buf, size_t len, const std::string&amp; host, const std::string&amp; port, int sndto_flags=0)
 </code></pre>
 
@@ -442,10 +441,10 @@ void connect(const string&amp; path, int socket_flags=0);
 
 <p>Defined in <code>streamclient.cpp</code>, inherited from <code>stream_client_socket</code></p>
 
-<pre><code>    friend stream_client_socket&amp; operator&lt;&lt;(stream_client_socket&amp; sock, const char* str);
-    friend stream_client_socket&amp; operator&lt;&lt;(stream_client_socket&amp; sock, string&amp; str);
+<pre><code>friend stream_client_socket&amp; operator&lt;&lt;(stream_client_socket&amp; sock, const char* str);
+friend stream_client_socket&amp; operator&lt;&lt;(stream_client_socket&amp; sock, string&amp; str);
 
-    friend stream_client_socket&amp; operator&gt;&gt;(stream_client_socket&amp; sock, string&amp; dest);
+friend stream_client_socket&amp; operator&gt;&gt;(stream_client_socket&amp; sock, string&amp; dest);
 </code></pre>
 
 <p>Like the normal file stream operators. <code>unix_stream_client</code> is a child of `stream<em>client</em>socket´.</p>
@@ -488,3 +487,73 @@ The server socket is bound to <code>path</code>, and <code>flags</code> are pass
 <p>Accept a new connection on the socket. <code>flags</code> are passed to <code>accept4(2)</code>. Returns a pointer to a dynamically allocated
 <code>unix_stream_client</code> object. It's recommended, especially for long-running applications, to call <code>delete</code> on this pointer
 when it isn't needed anymore.</p>
+
+<h2><code>unix_dgram_client</code></h2>
+
+<p>Defined in <code>unixclientdgram.cpp</code></p>
+
+<pre><code>unix_dgram_client(int flags=0);
+unix_dgram_client(const char* path, int flags=0);
+unix_dgram_client(const string&amp; path, int flags=0);
+</code></pre>
+
+<p>Create a UNIX DGRAM socket. If you use the second or third constructor, bind it additionally to path.</p>
+
+<h1><code>connect()</code>, <code>deconnect()</code></h1>
+
+<p>Defined in <code>unixclientdgram.cpp</code></p>
+
+<pre><code>void connect(const char* path);
+void connect(const string&amp; path);
+</code></pre>
+
+<p>Connect the DGRAM socket to the specified path. You may call <code>snd()</code> or <code>rcv()</code> on a UNIX DGRAM socket if it's connected.</p>
+
+<pre><code>void deconnect(void);
+</code></pre>
+
+<p>Disconnect the DGRAM socket. (Connect it to NULL).</p>
+
+<h2>I/O</h2>
+
+<p>Inherited from <code>dgram_client_socket</code></p>
+
+<pre><code>friend dgram_client_socket&amp; operator&lt;&lt;(dgram_client_socket&amp; sock, const char* str);
+friend dgram_client_socket&amp; operator&lt;&lt;(dgram_client_socket&amp; sock, string&amp; str);
+friend dgram_client_socket&amp; operator&gt;&gt;(dgram_client_socket&amp; sock, string&amp; dest);
+
+ssize_t snd(const void* buf, size_t len, int flags=0); // flags: send()
+ssize_t rcv(void* buf, size_t len, int flags=0);
+</code></pre>
+
+<p>Inherited from <code>unix_dgram</code></p>
+
+<pre><code>ssize_t sndto(const void* buf, size_t length, const char* path, int sendto_flags=0);
+ssize_t sndto(const void* buf, size_t length, const string&amp; path, int sendto_flags=0);
+
+ssize_t rcvfrom(void* buf, size_t length, char* source, size_t source_len, int recvfrom_flags=0);
+ssize_t rcvfrom(void* buf, size_t length, string&amp; source, int recvfrom_flags=0);
+</code></pre>
+
+<h2><code>unix_dgram_server</code></h2>
+
+<p>Defined in <code>unixserverdgram.cpp</code></p>
+
+<pre><code>unix_dgram_server(void);
+unix_dgram_server(const char* bindpath, int socket_flags=0);
+unix_dgram_server(const string&amp; bindpath, int socket_flags=0);
+</code></pre>
+
+<p><code>unix_dgram_server</code> is quite similar to <code>unix_dgram_client</code>, especially if bound. The important difference is that
+you may not call <code>connect()</code> on <code>unix_dgram_server</code>.</p>
+
+<h2>I/O</h2>
+
+<p>Defined in <code>unixdgram.cpp</code></p>
+
+<pre><code>ssize_t sndto(const void* buf, size_t length, const char* path, int sendto_flags=0);
+ssize_t sndto(const void* buf, size_t length, const string&amp; path, int sendto_flags=0);
+
+ssize_t rcvfrom(void* buf, size_t length, char* source, size_t source_len, int recvfrom_flags=0);
+ssize_t rcvfrom(void* buf, size_t length, string&amp; source, int recvfrom_flags=0);
+</code></pre>
