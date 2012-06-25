@@ -137,7 +137,7 @@ in `inetsocket.hpp`
 ### Destroy Functions
 Declared in `socket.hpp`, defined in `socket.cpp`
 
-	int destroy(void);
+	void destroy(void);
 
 Close the socket and destroy the connection.
 
