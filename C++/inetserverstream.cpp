@@ -94,6 +94,7 @@ namespace libsocket
 		port = string(bindport);
 
 		listening = true;
+		nonblock = false;
 
 		if (flags & SOCK_NONBLOCK)
 			nonblock = true;
