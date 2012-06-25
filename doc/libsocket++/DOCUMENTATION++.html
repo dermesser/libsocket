@@ -242,10 +242,11 @@ binds the socket to <code>bindhost:bindport</code> using <code>proto_osi3</code>
 
 <p>Declared in <code>inetserverstream.hpp</code>, defined in <code>inetserverstream.cpp</code></p>
 
-<pre><code>inet_stream* accept(int numeric=0);
+<pre><code>inet_stream* accept(int numeric=0,int accept_flags=0);
 </code></pre>
 
-<p>Accept an incoming connection. <code>numeric</code> may be <code>NUMERIC</code> if you want to have the host and port as numbers.</p>
+<p>Accept an incoming connection. <code>numeric</code> may be <code>NUMERIC</code> if you want to have the host and port as numbers.
+<code>accept_flags</code> are passed to <code>accept4()</code>.</p>
 
 <p>Returns a pointer to a dynamically allocated <code>inet_stream</code> object. Returns NULL if the server socket is marked as NONBLOCKing and
 there is not connection to accept.</p>

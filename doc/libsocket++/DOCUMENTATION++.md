@@ -208,9 +208,10 @@ binds the socket to `bindhost:bindport` using `proto_osi3` (`IPv4` or `IPv6` or 
 ### `accept()`
 Declared in `inetserverstream.hpp`, defined in `inetserverstream.cpp`
 
-	inet_stream* accept(int numeric=0);
+	inet_stream* accept(int numeric=0,int accept_flags=0);
 
 Accept an incoming connection. `numeric` may be `NUMERIC` if you want to have the host and port as numbers.
+`accept_flags` are passed to `accept4()`.
 
 Returns a pointer to a dynamically allocated `inet_stream` object. Returns NULL if the server socket is marked as NONBLOCKing and
 there is not connection to accept.

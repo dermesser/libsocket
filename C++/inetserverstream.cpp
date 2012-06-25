@@ -65,7 +65,7 @@ namespace libsocket
 
 		void setup(const char* bindhost, const char* bindport, int proto_osi3, int flags=0);
 
-		inet_stream* accept(int numeric=0);
+		inet_stream* accept(int numeric=0,int accept_flags=0);
 
 		string getbindhost(void);
 		string getbindport(void);
@@ -100,7 +100,7 @@ namespace libsocket
 			nonblock = true;
 	}
 
-	inet_stream* inet_stream_server::accept(int numeric)
+	inet_stream* inet_stream_server::accept(int numeric,int accept_flags)
 	{
 		if ( listening != true )
 			throw socket_exception(__FILE__,__LINE__,"inet_stream_server::accept() - stream server socket is not in listening state!\n");
@@ -114,7 +114,7 @@ namespace libsocket
 		memset(src_host,0,1024);
 		memset(src_port,0,32);
 
-		if ( -1 == (client_sfd = accept_inet_stream_socket(sfd,src_host,1023,src_port,31,numeric)) )
+		if ( -1 == (client_sfd = accept_inet_stream_socket(sfd,src_host,1023,src_port,31,numeric,accept_flags)) )
 		{
 			if ( nonblock == false )
 			{

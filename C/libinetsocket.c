@@ -1,3 +1,7 @@
+# ifndef _GNU_SOURCE
+# define _GNU_SOURCE
+# endif
+
 # include <stdlib.h>
 # include <stdio.h>
 # include <sys/socket.h>
@@ -495,8 +499,8 @@ int create_inet_server_socket(const char* bind_addr, const char* bind_port, char
 }
 
 // Accept connections on TCP sockets
-// 		   Socket    Src string      Src str len          Src service        Src service len         NUMERIC?
-int accept_inet_stream_socket(int sfd, char* src_host, size_t src_host_len, char* src_service, size_t src_service_len, int flags)
+//	 		       Socket    Src string      Src str len          Src service        Src service len         NUMERIC?
+int accept_inet_stream_socket(int sfd, char* src_host, size_t src_host_len, char* src_service, size_t src_service_len, int flags, int accept_flags)
 {
 	struct sockaddr_storage client_info;
 	int retval, client_sfd;
@@ -505,7 +509,7 @@ int accept_inet_stream_socket(int sfd, char* src_host, size_t src_host_len, char
 # endif
 	socklen_t addrlen = sizeof(struct sockaddr_storage);
 
-	if ( -1 == check_error((client_sfd = accept(sfd,(struct sockaddr*)&client_info,&addrlen)))) // blocks
+	if ( -1 == check_error((client_sfd = accept4(sfd,(struct sockaddr*)&client_info,&addrlen,accept_flags)))) // blocks
 		return -1;
 
 	if ( src_host_len > 0 || src_service_len > 0 ) // If one of the things is wanted. If you give a null pointer with a positive _len parameter, you won't get the address.

@@ -371,7 +371,7 @@ Returns a socket file descriptor on success, on error, -1 is returned.
 
 ### `accept_inet_stream_socket()`
 
-`int accept_inet_stream_socket(int sfd, char* src_host, size_t src_host_len, char* src_service, size_t src_service_len, int flags)`
+`int accept_inet_stream_socket(int sfd, char* src_host, size_t src_host_len, char* src_service, size_t src_service_len, int flags, int accept_flags)`
 
 Accept incoming connections on server sockets created with `create_inet_server_socket()` (above).
 
@@ -381,6 +381,7 @@ Accept incoming connections on server sockets created with `create_inet_server_s
 * `src_service`: Buffer to which the source port is written
 * `src_service_len`: Length of the previous buffer
 * `flags`: may be `NUMERIC`.
+* `accept_flags` are passed to `accept4()`.
 
 This function will block until there's an incoming connection.
 

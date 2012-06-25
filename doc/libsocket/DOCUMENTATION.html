@@ -416,7 +416,7 @@ of src/libinetsocket.c. Default is 128, the maximum value on Linux. This may dif
 
 <h3><code>accept_inet_stream_socket()</code></h3>
 
-<p><code>int accept_inet_stream_socket(int sfd, char* src_host, size_t src_host_len, char* src_service, size_t src_service_len, int flags)</code></p>
+<p><code>int accept_inet_stream_socket(int sfd, char* src_host, size_t src_host_len, char* src_service, size_t src_service_len, int flags, int accept_flags)</code></p>
 
 <p>Accept incoming connections on server sockets created with <code>create_inet_server_socket()</code> (above).</p>
 
@@ -427,6 +427,7 @@ of src/libinetsocket.c. Default is 128, the maximum value on Linux. This may dif
 <li><code>src_service</code>: Buffer to which the source port is written</li>
 <li><code>src_service_len</code>: Length of the previous buffer</li>
 <li><code>flags</code>: may be <code>NUMERIC</code>.</li>
+<li><code>accept_flags</code> are passed to <code>accept4()</code>.</li>
 </ul>
 
 <p>This function will block until there's an incoming connection.</p>
