@@ -423,7 +423,7 @@ Defined in `unixclientdgram.cpp`
 
 Create a UNIX DGRAM socket. If you use the second or third constructor, bind it additionally to path.
 
-#`connect()`, `deconnect()`
+###`connect()`, `deconnect()`
 Defined in `unixclientdgram.cpp`
 
 	void connect(const char* path);
@@ -435,7 +435,7 @@ Connect the DGRAM socket to the specified path. You may call `snd()` or `rcv()` 
 
 Disconnect the DGRAM socket. (Connect it to NULL).
 
-##I/O
+###I/O
 Inherited from `dgram_client_socket`
 
 	friend dgram_client_socket& operator<<(dgram_client_socket& sock, const char* str);
@@ -464,7 +464,7 @@ Defined in `unixserverdgram.cpp`
 `unix_dgram_server` is quite similar to `unix_dgram_client`, especially if bound. The important difference is that
 you may not call `connect()` on `unix_dgram_server`.
 
-##I/O
+###I/O
 Defined in `unixdgram.cpp`
 
 	ssize_t sndto(const void* buf, size_t length, const char* path, int sendto_flags=0);

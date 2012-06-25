@@ -499,7 +499,7 @@ unix_dgram_client(const string&amp; path, int flags=0);
 
 <p>Create a UNIX DGRAM socket. If you use the second or third constructor, bind it additionally to path.</p>
 
-<h1><code>connect()</code>, <code>deconnect()</code></h1>
+<h3><code>connect()</code>, <code>deconnect()</code></h3>
 
 <p>Defined in <code>unixclientdgram.cpp</code></p>
 
@@ -514,7 +514,7 @@ void connect(const string&amp; path);
 
 <p>Disconnect the DGRAM socket. (Connect it to NULL).</p>
 
-<h2>I/O</h2>
+<h3>I/O</h3>
 
 <p>Inherited from <code>dgram_client_socket</code></p>
 
@@ -547,7 +547,7 @@ unix_dgram_server(const string&amp; bindpath, int socket_flags=0);
 <p><code>unix_dgram_server</code> is quite similar to <code>unix_dgram_client</code>, especially if bound. The important difference is that
 you may not call <code>connect()</code> on <code>unix_dgram_server</code>.</p>
 
-<h2>I/O</h2>
+<h3>I/O</h3>
 
 <p>Defined in <code>unixdgram.cpp</code></p>
 
