@@ -133,13 +133,4 @@ namespace libsocket
 		return client;
 	}
 
-	string inet_stream_server::getbindhost(void)
-	{
-		return host;
-	}
-
-	string inet_stream_server::getbindport(void)
-	{
-		return port;
-	}
 }
