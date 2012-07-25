@@ -26,6 +26,9 @@ and call the compiler (eventually in a makefile) with the name of the C file:
 	$ gcc ownfile1.c ownfile2.c libsocket.o
 	# etc. pp.
 
+If you want to find out which files you have to link (specify on the command line when calling the compiler), take a look at
+/LINKAGE.
+
 ##FEATURES AND ADVANTAGES
 
 The libsocket library supports following things and protocols:

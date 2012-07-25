@@ -1,0 +1,83 @@
+*C++*
+
+Note: To understand the dependencies between the files, take a look at doc/libsocket++/classes.svg
+The descriptions of the classes are placed under the license at the beginning of every C++ source file.
+
+Legend:
+file.type (implemented class)
+
+All files ending with .cpp are located in C++/, files ending with .c may be found in C/.
+
+Of course, some schemes may be combined, e.g. if you have a program acting as both UDP server and client.
+
+For...
+* TCP Internet Server Programs:
+	- libinetsocket.c [socket functionality]
+	- socket.cpp (socket)
+	- exception.cpp (socket_exception)
+	- inetbase.cpp (inet_socket)
+	- inetserverstream.cpp (inet_stream_server)
+	- streamclient.cpp (stream_client_socket)
+	- inetclientstream.cpp (inet_stream) // inet_stream_server::accept() returns an inet_stream object
+
+* TCP Internet Client Programs:
+	- libinetsocket.c [socket functionality]
+	- socket.cpp (socket)
+	- exception.cpp (socket_exception)
+	- inetbase.cpp (inet_socket)
+	- streamclient.cpp (stream_client_socket)
+	- inetclientstream.cpp (inet_stream)
+
+* UDP Internet Server Programs:
+	- libinetsocket.c [socket functionality]
+	- socket.cpp (socket)
+	- exception.cpp (socket_exception)
+	- inetbase.cpp (inet_socket)
+	- inetdgram.cpp (inet_dgram)
+	- inetserverdgram.cpp (inet_dgram_client)
+
+* UDP Internet Client Programs:
+	- libinetsocket.c [socket functionality]
+	- socket.cpp (socket)
+	- exception.cpp (socket_exception)
+	- inetbase.cpp (inet_socket)
+	- inetdgram.cpp (inet_dgram)
+	- clientdgram.cpp (dgram_client_socket)
+	- inetclientdgram.cpp (inet_dgram_client)
+
+==================================================================================================
+
+* UNIX Stream Client Programs:
+	- libunixsocket.c [socket functionality]
+	- socket.cpp (socket)
+	- exception.cpp (socket_exception)
+	- unixbase.cpp (unix_socket)
+	- clientstream.cpp (stream_client_socket)
+	- unixclientstream.cpp (unix_stream_client)
+
+* UNIX Stream Server Programs:
+	- libunixsocket.c [socket functionality]
+	- socket.cpp (socket)
+	- exception.cpp (socket_exception)
+	- clientstream.cpp (stream_client_socket)
+	- unixbase.cpp (unix_socket)
+	- unixclientstream.cpp (unix_stream_client)
+	- unixserverstream.cpp
+
+* UNIX Dgram Client Programs:
+	- libunixsocket.c [socket functionality]
+	- socket.cpp (socket)
+	- exception.cpp (socket_exception)
+	- dgramclient.cpp (dgram_client_socket)
+	- unixdgram.cpp (unix_dgram)
+	- unixdgramclient.cpp (unix_dgram_client)
+
+* UNIX Dgram Server Programs:
+	- libunixsocket.c [socket functionality]
+	- socket.cpp (socket)
+	- exception.cpp (socket_exception)
+	- dgramclient.cpp (dgram_client_socket)
+	- unixdgram.cpp (unix_dgram)
+	- unixdgramclient.cpp (unix_dgram_client)
+	- unixdgramserver.cpp (unix_dgram_server)
+
