@@ -1,5 +1,5 @@
-# ifndef INETSERVERSOCKET
-# define INETSERVERSOCKET
+# ifndef INETSERVERDGRAM
+# define INETSERVERDGRAM
 
 # include "inetbase.hpp"
 # include "inetdgram.hpp"

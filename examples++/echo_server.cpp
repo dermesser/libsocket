@@ -1,6 +1,7 @@
 # include <iostream>
 # include "../headers++/inetserverdgram.hpp"
 # include "../headers++/exception.hpp"
+# include <cstring>
 
 // To be used with examples/echo_dgram_server.c
 
@@ -27,6 +28,8 @@ int main(void)
 			std::cout << from << ":" << fromport << " " << buf << std::endl;
 
 			srv.sndto(buf,9,from,fromport);
+
+			memset(buf,0,9);
 		}
 
 		srv.destroy();
