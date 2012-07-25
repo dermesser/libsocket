@@ -182,7 +182,7 @@ to the string. If less than `dest.size()` characters could be read, the string i
 the number of read characters so you can check (`string.size() == 0`) if the server is done
 with sending - either closed the socket on his side or shut it down for write access.
 
-### Getters
+## Getters
 Declared in `inetbase.hpp`, defined in `inetbase.cpp`
 
 	std::string gethost(void) const;
@@ -227,6 +227,16 @@ Return value 0 if successful, otherwise -1.
 
 You don't have to destroy the sockets explicitly. The sockets are also destroyed when
 the destructor of `socket` (virtual, of course) is called.
+
+### Getters
+Declared in `inetbase.hpp`, defined in `inetbase.cpp`
+
+	std::string gethost(void) const;
+	std::string getport(void) const;
+
+`gethost()` returns a C++ std::string containing the host to which the socket is bound.
+
+`getport()` returns a C++ std::string containing the port/service to which the socket is bound.
 
 ## `inet_dgram_client` Class: Internet UDP Sockets
 ### Constructors
@@ -318,6 +328,16 @@ Stream-like read from (connected!) socket: Reads at most `dest.size()` bytes fro
 to the string. If less than `dest.size()` characters could be read, the string is resized to
 the number of read characters. One read call normally returns one datagram
 
+### Getters
+Declared in `inetbase.hpp`, defined in `inetbase.cpp`
+
+	std::string gethost(void) const;
+	std::string getport(void) const;
+
+`gethost()` returns a C++ std::string containing the host to which the socket is connected (if it is connected!)
+
+`getport()` returns a C++ std::string containing the port/service to which the socket is connected (if it is!).
+
 ## `inet_dgram_server` - INET DGRAM server sockets
 Declared in `inetserverdgram.hpp`, defined in `inetserverdgram.hpp`.
 
@@ -331,6 +351,16 @@ Create and bind a DGRAM socket. The only difference to `inet_dgram_client` is th
 * `flags` is passed to `socket(2)`
 
 It is not possible to call `connect(), rcv(), snd()` on such sockets; the `rcvfrom(), sndto()` functions may be called, of course.
+
+### Getters
+Declared in `inetbase.hpp`, defined in `inetbase.cpp`
+
+	std::string gethost(void) const;
+	std::string getport(void) const;
+
+`gethost()` returns a C++ std::string containing the host to which the socket is bound.
+
+`getport()` returns a C++ std::string containing the port/service to which the socket is bound.
 
 # libunixsocket++
 

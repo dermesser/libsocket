@@ -211,7 +211,7 @@ to the string. If less than <code>dest.size()</code> characters could be read, t
 the number of read characters so you can check (<code>string.size() == 0</code>) if the server is done
 with sending - either closed the socket on his side or shut it down for write access.</p>
 
-<h3>Getters</h3>
+<h2>Getters</h2>
 
 <p>Declared in <code>inetbase.hpp</code>, defined in <code>inetbase.cpp</code></p>
 
@@ -264,6 +264,18 @@ there is not connection to accept.</p>
 
 <p>You don't have to destroy the sockets explicitly. The sockets are also destroyed when
 the destructor of <code>socket</code> (virtual, of course) is called.</p>
+
+<h3>Getters</h3>
+
+<p>Declared in <code>inetbase.hpp</code>, defined in <code>inetbase.cpp</code></p>
+
+<pre><code>std::string gethost(void) const;
+std::string getport(void) const;
+</code></pre>
+
+<p><code>gethost()</code> returns a C++ std::string containing the host to which the socket is bound.</p>
+
+<p><code>getport()</code> returns a C++ std::string containing the port/service to which the socket is bound.</p>
 
 <h2><code>inet_dgram_client</code> Class: Internet UDP Sockets</h2>
 
@@ -372,6 +384,18 @@ than an additional (internal) rDNS query.</p>
 to the string. If less than <code>dest.size()</code> characters could be read, the string is resized to
 the number of read characters. One read call normally returns one datagram</p>
 
+<h3>Getters</h3>
+
+<p>Declared in <code>inetbase.hpp</code>, defined in <code>inetbase.cpp</code></p>
+
+<pre><code>std::string gethost(void) const;
+std::string getport(void) const;
+</code></pre>
+
+<p><code>gethost()</code> returns a C++ std::string containing the host to which the socket is connected (if it is connected!)</p>
+
+<p><code>getport()</code> returns a C++ std::string containing the port/service to which the socket is connected (if it is!).</p>
+
 <h2><code>inet_dgram_server</code> - INET DGRAM server sockets</h2>
 
 <p>Declared in <code>inetserverdgram.hpp</code>, defined in <code>inetserverdgram.hpp</code>.</p>
@@ -389,6 +413,18 @@ the number of read characters. One read call normally returns one datagram</p>
 </ul>
 
 <p>It is not possible to call <code>connect(), rcv(), snd()</code> on such sockets; the <code>rcvfrom(), sndto()</code> functions may be called, of course.</p>
+
+<h3>Getters</h3>
+
+<p>Declared in <code>inetbase.hpp</code>, defined in <code>inetbase.cpp</code></p>
+
+<pre><code>std::string gethost(void) const;
+std::string getport(void) const;
+</code></pre>
+
+<p><code>gethost()</code> returns a C++ std::string containing the host to which the socket is bound.</p>
+
+<p><code>getport()</code> returns a C++ std::string containing the port/service to which the socket is bound.</p>
 
 <h1>libunixsocket++</h1>
 
