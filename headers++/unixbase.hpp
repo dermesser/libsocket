@@ -1,5 +1,5 @@
-# ifndef UNIXBASE
-# define UNIXBASE
+# ifndef _UNIXBASE_H
+# define _UNIXBASE_H
 # include <string>
 # include "../headers++/socket.hpp"
 

@@ -1,5 +1,5 @@
-# ifndef UNIXSERVERSTREAM
-# define UNIXSERVERSTREAM
+# ifndef _UNIXSERVERSTREAM_H
+# define _UNIXSERVERSTREAM_H
 
 # include <string>
 # include "unixbase.hpp"

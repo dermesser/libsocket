@@ -1,5 +1,5 @@
-# ifndef DGRAMCLIENT
-# define DGRAMCLIENT
+# ifndef _DGRAMCLIENT_H
+# define _DGRAMCLIENT_H
 
 # include "socket.hpp"
 # include <string>

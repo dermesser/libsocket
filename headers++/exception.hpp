@@ -1,5 +1,5 @@
-# ifndef SOCKET_EXCEPTION
-# define SOCKET_EXCEPTION
+# ifndef _EXCEPTION_H
+# define _EXCEPTION_H
 
 # include <string>
 

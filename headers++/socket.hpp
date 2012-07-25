@@ -1,5 +1,5 @@
-# ifndef SOCKET
-# define SOCKET
+# ifndef _SOCKET_H
+# define _SOCKET_H
 
 # include <sys/socket.h>
 # include <sys/types.h>

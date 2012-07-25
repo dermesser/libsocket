@@ -1,5 +1,5 @@
-# ifndef UNIXCLIENTSTREAM
-# define UNIXCLIENTSTREAM
+# ifndef _UNIXCLIENTSTREAM_H
+# define _UNIXCLIENTSTREAM_H
 
 # include <string>
 # include "streamclient.hpp"

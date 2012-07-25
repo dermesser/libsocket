@@ -1,5 +1,5 @@
-# ifndef INETDGRAM
-# define INETDGRAM
+# ifndef _INETDGRAM_H
+# define _INETDGRAM_H
 
 # include <iostream>
 # include <string>

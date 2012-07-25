@@ -1,5 +1,6 @@
-# ifndef INETBASE
-# define INETBASE
+# ifndef _INETBASE_H
+# define _INETBASE_H
+
 # include <string>
 # include "socket.hpp"
 # include "../headers/libinetsocket.h"
