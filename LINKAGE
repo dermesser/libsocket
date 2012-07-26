@@ -1,12 +1,22 @@
+*C*
+
+If you're using the C interface, you only have to link with C/libinetsocket.c respectively
+C/libunixsocket.c.
+
 *C++*
+
+This file can be used to determine which files must be specified on the compiler's command line
+to enable correct linkage. It's a great help because libsocket++ uses very much classes (more than
+15) and for every class an own file. You may practice this using the files in examples++/.
 
 Note: To understand the dependencies between the files, take a look at doc/libsocket++/classes.svg
 The descriptions of the classes are placed under the license at the beginning of every C++ source file.
 
 Legend:
 file.type (implemented class)
+file.type [commentary]
 
-All files ending with .cpp are located in C++/, files ending with .c may be found in C/.
+All files ending with .cpp are located in C++/, all files ending with .c may be found in C/.
 
 Of course, some schemes may be combined, e.g. if you have a program acting as both UDP server and client.
 
