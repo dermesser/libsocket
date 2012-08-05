@@ -31,7 +31,6 @@ int main(void)
 			write(1,buf,bytes);
 		}
 
-		//shutdown_usocket(cfd,WRITE);
 		destroy_unix_socket(cfd);
 	}
 

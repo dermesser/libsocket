@@ -16,8 +16,7 @@ int main(void)
 	char* string = "abcdefghijklmnopqrstuvwxyz";
 	char buf[26];
 
-
-	if ( -1 == (sfd = create_unix_dgram_socket("/tmp/client",SOCK_CLOEXEC)) )
+	if ( -1 == (sfd = create_unix_dgram_socket("/tmp/client",0)) )
 		return -1;
 
 	sendto_unix_dgram_socket(sfd,string,26,"/tmp/echosock",0);

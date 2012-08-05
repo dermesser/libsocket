@@ -17,7 +17,7 @@ int main(void)
 
 	memset(buf,0,sizeof(buf));
 
-	if ( -1 == (sfd = create_unix_stream_socket("/tmp/echosock",SOCK_CLOEXEC)) )
+	if ( -1 == (sfd = create_unix_stream_socket("/tmp/echosock",0)) )
 		return -1;
 
 	write(sfd,string,26);
