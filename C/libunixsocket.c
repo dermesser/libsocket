@@ -277,13 +277,13 @@ int accept_unix_stream_socket(int sfd, int flags)
 
 	if ( sfd < 0 )
 		return -1;
-
-	if ( flags != SOCK_NONBLOCK && flags != SOCK_CLOEXEC && flags != (SOCK_CLOEXEC|SOCK_NONBLOCK) && flags != 0 )
-		return -1;
-
+# ifdef __linux__
 	if ( -1 == check_error(cfd = accept4(sfd,0,0,flags)) )
 		return -1;
-
+# else
+	if ( -1 == check_error(cfd = accept(sfd,0,0)) )
+		return -1;
+# endif
 	return cfd;
 }
 
