@@ -509,8 +509,13 @@ int accept_inet_stream_socket(int sfd, char* src_host, size_t src_host_len, char
 # endif
 	socklen_t addrlen = sizeof(struct sockaddr_storage);
 
+# ifdef __linux__
 	if ( -1 == check_error((client_sfd = accept4(sfd,(struct sockaddr*)&client_info,&addrlen,accept_flags)))) // blocks
 		return -1;
+# else
+	if ( -1 == check_error((client_sfd = accept(sfd,(struct sockaddr*)&client_info,&addrlen)))) // blocks
+		return -1;
+# endif
 
 	if ( src_host_len > 0 || src_service_len > 0 ) // If one of the things is wanted. If you give a null pointer with a positive _len parameter, you won't get the address.
 	{
