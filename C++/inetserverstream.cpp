@@ -103,7 +103,7 @@ namespace libsocket
 	inet_stream* inet_stream_server::accept(int numeric,int accept_flags)
 	{
 		if ( listening != true )
-			throw socket_exception(__FILE__,__LINE__,"inet_stream_server::accept() - stream server socket is not in listening state!\n");
+			throw socket_exception(__FILE__,__LINE__,"inet_stream_server::accept() - stream server socket is not in listening state -- please call first setup()!\n");
 
 		char* src_host = new char[1024];
 		char* src_port = new char[32];
