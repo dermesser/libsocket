@@ -89,10 +89,10 @@ namespace libsocket
 	{
 		ssize_t read_bytes;
 		char* buffer;
-		
+
 		if ( sock.connected != true )
 			throw socket_exception(__FILE__,__LINE__,">>(dgram_client_socket, std::string) - Socket is not connected!\n");
-		
+
 		buffer = new char[dest.size()];
 
 		if ( -1 == (read_bytes = read(sock.sfd,buffer,dest.size())) )
