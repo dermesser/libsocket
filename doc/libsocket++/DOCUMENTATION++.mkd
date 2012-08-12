@@ -503,3 +503,50 @@ Defined in `unixdgram.cpp`
 	ssize_t rcvfrom(void* buf, size_t length, char* source, size_t source_len, int recvfrom_flags=0);
 	ssize_t rcvfrom(void* buf, size_t length, string& source, int recvfrom_flags=0);
 
+# Other Classes
+## `selectset` class
+
+	selectset(void)
+
+The `selectset` class makes the use of multiple sockets at once easy. It wraps the syscall select using a very C++ish way ;)
+
+	void add_fd(socket& sock, int method);
+
+First, add just any socket class derived from `socket` to the new set. Do this multiple times if you have more than one socket (which
+is likely). `method` is either `READ` or `WRITE`, so if you want to be notified if some socket is ready to be read from it, specify `READ`.
+`READ` must also be specified for server sockets.
+
+	std::pair<std::vector<socket*>, std::vector<socket*> > wait(long long microsecs=0);
+
+Then call `wait()`. The argument is a timeout in microseconds, defaulting to 0 (infinite). 
+And yes, I know, it's a gorgeous return type. Don't panic, there's a typedef in `select.hpp`:
+
+	namespace libsocket {
+		typedef std::pair<std::vector<libsocket::socket*>, std::vector<libsocket::socket*> > ready_socks;
+	}
+
+If you take a closer look at the return type, you'll notice that it is a `std::pair` consisting of two `std::vectors` consisting of pointers to
+the `socket` base class. The first vector contains pointers to all sockets which are ready for reading, the second vector
+contains pointers to all sockets ready for writing.
+
+A typical program snippet using this class could look like this example:
+
+	inet_stream sock1("spheniscida.de","80",IPv6);
+	inet_stream sock2("spheniscida.de","25",IPv6);
+
+	selectset socks;
+	socks.add_fd(sock1,WRITE);
+	socks.add_fd(sock2,READ);
+
+	ready_socks rs = socks.wait();
+
+	inet_stream* ready_http_sock = dynamic_cast<inet_stream*>(rs.second[0]);
+	inet_stream* ready_smtp_sock = dynamic_cast<inet_stream*>(rs.first[0]);
+
+	// Do something with the sockets...
+
+The `dynamic_cast` is necessary, because (you'll remember if you look at the return type) the vectors consist of `socket*`, so you
+have to perform a downcast to reenable all the `inet_stream` methods, like reading/writing etc.
+
+Some Meta-stuff: If you put a socket object into the class (via `add_fd()`), and you re-get it at the end using the described procedure, the
+object is still the same because the class uses references and pointers all the time.
