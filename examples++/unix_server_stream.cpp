@@ -29,7 +29,7 @@ int main(void)
 		*client << "Hello back from server!\n";
 
 		delete client;
-		
+
 		srv.destroy();
 
 	} catch (libsocket::socket_exception exc)

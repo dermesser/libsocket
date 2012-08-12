@@ -593,3 +593,57 @@ ssize_t sndto(const void* buf, size_t length, const string&amp; path, int sendto
 ssize_t rcvfrom(void* buf, size_t length, char* source, size_t source_len, int recvfrom_flags=0);
 ssize_t rcvfrom(void* buf, size_t length, string&amp; source, int recvfrom_flags=0);
 </code></pre>
+
+<h1>Other Classes</h1>
+
+<h2><code>selectset</code> class</h2>
+
+<pre><code>selectset(void)
+</code></pre>
+
+<p>The <code>selectset</code> class makes the use of multiple sockets at once easy. It wraps the syscall select using a very C++ish way ;)</p>
+
+<pre><code>void add_fd(socket&amp; sock, int method);
+</code></pre>
+
+<p>First, add just any socket class derived from <code>socket</code> to the new set. Do this multiple times if you have more than one socket (which
+is likely). <code>method</code> is either <code>READ</code> or <code>WRITE</code>, so if you want to be notified if some socket is ready to be read from it, specify <code>READ</code>.
+<code>READ</code> must also be specified for server sockets.</p>
+
+<pre><code>std::pair&lt;std::vector&lt;socket*&gt;, std::vector&lt;socket*&gt; &gt; wait(long long microsecs=0);
+</code></pre>
+
+<p>Then call <code>wait()</code>. The argument is a timeout in microseconds, defaulting to 0 (infinite). 
+And yes, I know, it's a gorgeous return type. Don't panic, there's a typedef in <code>select.hpp</code>:</p>
+
+<pre><code>namespace libsocket {
+    typedef std::pair&lt;std::vector&lt;libsocket::socket*&gt;, std::vector&lt;libsocket::socket*&gt; &gt; ready_socks;
+}
+</code></pre>
+
+<p>If you take a closer look at the return type, you'll notice that it is a <code>std::pair</code> consisting of two <code>std::vectors</code> consisting of pointers to
+the <code>socket</code> base class. The first vector contains pointers to all sockets which are ready for reading, the second vector
+contains pointers to all sockets ready for writing.</p>
+
+<p>A typical program snippet using this class could look like this example:</p>
+
+<pre><code>inet_stream sock1("spheniscida.de","80",IPv6);
+inet_stream sock2("spheniscida.de","25",IPv6);
+
+selectset socks;
+socks.add_fd(sock1,WRITE);
+socks.add_fd(sock2,READ);
+
+ready_socks rs = socks.wait();
+
+inet_stream* ready_http_sock = dynamic_cast&lt;inet_stream*&gt;(rs.second[0]);
+inet_stream* ready_smtp_sock = dynamic_cast&lt;inet_stream*&gt;(rs.first[0]);
+
+// Do something with the sockets...
+</code></pre>
+
+<p>The <code>dynamic_cast</code> is necessary, because (you'll remember if you look at the return type) the vectors consist of <code>socket*</code>, so you
+have to perform a downcast to reenable all the <code>inet_stream</code> methods, like reading/writing etc.</p>
+
+<p>Some Meta-stuff: If you put a socket object into the class (via <code>add_fd()</code>), and you re-get it at the end using the described procedure, the
+object is still the same because the class uses references and pointers all the time.</p>

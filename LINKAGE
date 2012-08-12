@@ -18,6 +18,11 @@ file.type [commentary]
 
 All files ending with .cpp are located in C++/, all files ending with .c may be found in C/.
 
+** SPECIAL CASES **
+
+If you program makes use of the selectset class, it must be linked against select.cpp.
+
+** GENERAL SCHEMES **
 Of course, some schemes may be combined, e.g. if you have a program acting as both UDP server and client.
 
 For...

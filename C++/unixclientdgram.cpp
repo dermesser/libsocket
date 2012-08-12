@@ -34,7 +34,7 @@ POSSIBILITY OF SUCH DAMAGE.
  * DESCRIPTION FOR UNIXCLIENTDGRAM.CPP
  * 	Client for UNIX domain datagram sockets.
  * 	An important difference to inet_dgram_client is that the
- * 	path given at the constructors is the /bind path/, not 
+ * 	path given at the constructors is the /bind path/, not
  * 	a socket to which the datagram is connected immediately
  * 	after creation.
  */
