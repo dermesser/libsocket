@@ -13,6 +13,11 @@ your C application against libsocket++, if you want to install only one library.
 To use libsocket, you also have to include headerfiles. Which headers you have to include
 depends on what your program should do. The header names are quite self-explaining:
 
+C:
+- libinetsocket.c (all inet-related stuff)
+- libunixsocket.c (all UNIX-related stuff)
+
+C++:
 - inetclientstream.hpp (TCP client)
 - inetserverstream.hpp (TCP server)
 - inetclientdgram.hpp (UDP client)
@@ -24,18 +29,28 @@ depends on what your program should do. The header names are quite self-explaini
 
 Include them using a directive like this (if you use the default location /usr/include/libsocket):
 
-# include <libsocket/inetclientstream.hpp>
+	# include <libsocket/inetclientstream.hpp>
+	//	(if you want to create a C++ TCP client)
+	# include <libsocket/libinetsocket.h>
+	//	(if you want to create a C internet socket application
 
-	(if you want to create a TCP client)
+The other header files which are used in the internal class hierarchy are included correctly
+so you only have to include the right "leaf" header file. You also may take a look at the
+class diagram in `doc/libsocket++/classes.svg`.
 
-Some more information can be found in README.md.
+Then link your program against the library:
+
+	$ gcc -o ~~~ -lsocket $OBJECTS
+	$ g++ -o ~~~ -lsocket++ $OBJECTS
+
+Some more information about building etc. can be found in README.md.
 
 #STATIC LINKAGE
 
 *C*
 
-If you're using the C interface, you only have to link with C/libinetsocket.c respectively
-C/libunixsocket.c.
+If you're using the C interface, you only have to compile your programs together with 
+C/libinetsocket.c respectively C/libunixsocket.c.
 
 *C++*
 
@@ -45,6 +60,8 @@ to enable correct linkage. It's a great help because libsocket++ uses very much 
 
 Note: To understand the dependencies between the files, take a look at doc/libsocket++/classes.svg
 The descriptions of the classes are placed under the license at the beginning of every C++ source file.
+
+Note II: Dynamic linkage is way easier!
 
 Legend:
 file.type (implemented class)

@@ -1,19 +1,18 @@
 .SUFFIXES: .cpp .c .o .so
 
-CC=gcc
-CPP=g++
-# _MIXED enables extern "C" linkage
-CPPFLAGS=-D_MIXED
-
-LIBPATH=/usr/lib
-
 OBJECTS=dgramclient.o inetbase.o inetclientstream.o inetserverdgram.o socket.o unixbase.o unixclientstream.o unixserverdgram.o \
 exception.o inetclientdgram.o inetdgram.o inetserverstream.o select.o streamclient.o unixclientdgram.o unixdgram.o unixserverstream.o
 
+LIBPATH=/usr/lib
+
 SHARED_OBJECT=libsocket++.so
 
+CC=gcc
+CPP=g++
+CPPFLAGS=
+
 .cpp.o:
-	$(CPP) $(CPPFLAGS) -fPIC -c $<
+	$(CPP) -D_MIXED $(CPPFLAGS) -fPIC -c $<
 
 # Build C++ object files
 obj: $(OBJECTS)

@@ -14,17 +14,7 @@ It's nice to mention libsocket in your product's Readme or advertisements anyway
 
 The recommended method to use libsocket is to link your program against the libsocket SO.
 Using this method is quite easy; you have to compile the dynamic libraries (libsocket and libsocket++)
-using the Makefile.
-
-If you want to install both libsocket and libsocket++, simply use this command:
-	# make install
-
-This installs the SOs libsocket.so and libsocket++.so to /usr/lib/ and the header files to
-/usr/include/libsocket. If you want to change this path, use this command:
-
-	# LIBPATH=/path/to/lib/ make -e install
-
-This command installs the libs to $LIBPATH.
+using the Makefile (see section "BUILDING")
 
 Linking your programs against the library is also easy; if $OBJECTS are your object files, then link them together using one of these
 commands:
@@ -39,8 +29,25 @@ along your program.
 
 ###Other stuff
 
-You may use other compilers than the GNU Compilers. The dynamic and static linking was tested successfully using
-clang/clang++ 3.0 and 3.1 on GNU/Linux.
+You may use other compilers than the GNU Compilers ($(CC), $(CPP)). The dynamic and static linking was tested successfully using
+clang/clang++ 3.0 and 3.1 on GNU/Linux and clang 3.1 on FreeBSD (and, of course, gcc on both platforms).
+
+##BUILDING
+
+If you want to install both libsocket and libsocket++, simply use this command:
+	# make install
+
+This installs the SOs libsocket.so and libsocket++.so to /usr/lib/ and the header files to
+/usr/include/libsocket. If you want to change this path, use this command:
+
+	# LIBPATH=/path/to/lib/ HEADERPATH=/path/to/headers/libsocket make -e install
+
+This command installs the libs to $LIBPATH and the header files to $HEADERPATH.
+
+If you do not like libsocket anymore, remove it using
+
+	# make deinstall
+If you specified non-default library or header paths, specify them again and use '-e'.
 
 ##FEATURES AND ADVANTAGES
 

@@ -1,6 +1,10 @@
 LIBPATH=/usr/lib
 HEADERPATH=/usr/include/libsocket
 
+CC=gcc
+CPP=g++
+CFLAGS=""
+
 all: libsocket libsocketpp
 
 libsocket:
@@ -23,3 +27,7 @@ clean:
 	rm *.so; \
 	cd C; make clean; \
 	cd ../C++; make clean
+
+deinstall:
+	rm $(LIBPATH)/libsocket.so $(LIBPATH)/libsocket++.so ; \
+	rm -r $(HEADERPATH)
