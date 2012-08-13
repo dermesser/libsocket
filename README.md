@@ -19,7 +19,8 @@ using the Makefile.
 If you want to install both libsocket and libsocket++, simply use this command:
 	# make install
 
-This installs the SOs libsocket.so and libsocket++.so to /usr/lib/. If you want to change this path, use this command:
+This installs the SOs libsocket.so and libsocket++.so to /usr/lib/ and the header files to
+/usr/include/libsocket. If you want to change this path, use this command:
 
 	# LIBPATH=/path/to/lib/ make -e install
 

@@ -10,8 +10,8 @@
 # include <sys/time.h>
 # include <sys/types.h>
 
-# include "../headers++/socket.hpp"
-# include "../headers++/exception.hpp"
+# include "../headers/socket.hpp"
+# include "../headers/exception.hpp"
 /*
 The committers of the libsocket project, all rights reserved
 (c) 2012, dermesser <lbo@spheniscida.de>

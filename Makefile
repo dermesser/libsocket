@@ -1,4 +1,5 @@
 LIBPATH=/usr/lib
+HEADERPATH=/usr/include/libsocket
 
 all: libsocket libsocketpp
 
@@ -10,9 +11,13 @@ libsocketpp:
 	cd C++; \
 	make so
 
-install:
+install: install-headers
 	cd C; make install; \
 	cd ../C++; make install
+
+install-headers:
+	mkdir -p $(HEADERPATH); \
+	cp headers/*.h* $(HEADERPATH)
 
 clean:
 	rm *.so; \

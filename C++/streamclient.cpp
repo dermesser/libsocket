@@ -1,7 +1,7 @@
 # include "../headers/libinetsocket.h"
-# include "../headers++/socket.hpp"
+# include "../headers/socket.hpp"
 # include <string>
-# include "../headers++/exception.hpp"
+# include "../headers/exception.hpp"
 # include <unistd.h>
 # include <string.h>
 /*

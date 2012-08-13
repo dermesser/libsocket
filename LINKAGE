@@ -10,6 +10,24 @@ Then, compile your programs using the -lsocket (for C libsocket) respectively -l
 (for C++ libsocket) switch. libsocket++ contains also all libsocket functions, so you may link
 your C application against libsocket++, if you want to install only one library.
 
+To use libsocket, you also have to include headerfiles. Which headers you have to include
+depends on what your program should do. The header names are quite self-explaining:
+
+- inetclientstream.hpp (TCP client)
+- inetserverstream.hpp (TCP server)
+- inetclientdgram.hpp (UDP client)
+- inetserverdgram.hpp (UDP server)
+- unixclientstream.hpp (UNIX STREAM client)
+- unixserverstream.hpp (UNIX STREAM server)
+- unixclientdgram.hpp (UNIX DGRAM client)
+- unixserverdgram.hpp (UNIX DGRAM server)
+
+Include them using a directive like this (if you use the default location /usr/include/libsocket):
+
+# include <libsocket/inetclientstream.hpp>
+
+	(if you want to create a TCP client)
+
 Some more information can be found in README.md.
 
 #STATIC LINKAGE

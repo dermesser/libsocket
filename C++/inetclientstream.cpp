@@ -3,10 +3,10 @@
 # include <string.h>
 
 # include "../headers/libinetsocket.h"
-# include "../headers++/socket.hpp"
-# include "../headers++/inetbase.hpp"
-# include "../headers++/exception.hpp"
-# include "../headers++/streamclient.hpp"
+# include "../headers/socket.hpp"
+# include "../headers/inetbase.hpp"
+# include "../headers/exception.hpp"
+# include "../headers/streamclient.hpp"
 
 # include <unistd.h>
 # include <sys/socket.h>

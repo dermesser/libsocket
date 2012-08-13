@@ -9,7 +9,7 @@ OBJECTS=libinetsocket.o libunixsocket.o
 SHARED_OBJECT=libsocket.so
 
 .c.o:
-	$(CC) -fPIC -c $<
+	$(CC) -DVERBOSE -fPIC -c $<
 
 so: $(OBJECTS)
 	$(CC) -shared -o ../$(SHARED_OBJECT) $(OBJECTS)

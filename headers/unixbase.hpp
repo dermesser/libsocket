@@ -2,9 +2,9 @@
 # define _UNIXBASE_H
 # include <string>
 
-# include "../headers++/socket.hpp"
+# include "socket.hpp"
 
-# include "../headers/libunixsocket.h"
+# include "libunixsocket.h"
 
 /*
 The committers of the libsocket project, all rights reserved
