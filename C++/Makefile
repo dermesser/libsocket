@@ -29,7 +29,8 @@ so: obj libsocket
 
 # Install SO
 install: so
-	install ../$(SHARED_OBJECT) $(LIBPATH)
+	install ../$(SHARED_OBJECT) $(LIBPATH) ; \
+	ldconfig
 
 # Clean this directory and the libsocket directory
 clean:

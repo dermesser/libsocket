@@ -15,7 +15,8 @@ so: $(OBJECTS)
 	$(CC) -shared -o ../$(SHARED_OBJECT) $(OBJECTS)
 
 install: so
-	install ../$(SHARED_OBJECT) $(LIBPATH)
+	install ../$(SHARED_OBJECT) $(LIBPATH) ; \
+	ldconfig
 
 obj: $(OBJECTS)
 
