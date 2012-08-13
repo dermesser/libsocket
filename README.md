@@ -1,33 +1,45 @@
 #README for libsocket
 
-##LICENSE
+##LICENSE and USE
 
-It's recommended to compile libsocket statically into your program (by placing the .c and .h files in your source tree).
+###Static Linkage
+
+It's possible to compile libsocket statically into your program (by placing the .c[pp] and .h[pp] files in your source tree).
 You don't have to mind legal issues because libsocket is licensed by a slightly modified 2-clause BSD license which permits
 any use, as long as you include the license text in your product (so it's clear that libsocket is licensed by this License)
 and the notice that *we* wrote libsocket (as described in the license)
 It's nice to mention libsocket in your product's Readme or advertisements anyway, of course :)
 
-##USE
+###Dynamic Linkage
 
-libsocket is built for little programs whose author(s) are too lazy to build own algorithms and functions for socket (UNIX
-and Internet Domain (TCP/UDP)) communication.
+The recommended method to use libsocket is to link your program against the libsocket SO.
+Using this method is quite easy; you have to compile the dynamic libraries (libsocket and libsocket++)
+using the Makefile.
 
-As you should know as experienced C programmer, it's quite easy to use this library.
-Simply add the line into the source files where the library is used:
+If you want to install both libsocket and libsocket++, simply use this command:
+	# make install
 
-	# include "path/to/lib{inet,unix}socket.h"
+This installs the SOs libsocket.so and libsocket++.so to /usr/lib/. If you want to change this path, use this command:
 
-and call the compiler (eventually in a makefile) with the name of the C file:
+	# LIBPATH=/path/to/lib/ make -e install
 
-	$ gcc lib{inet,unix}socket.c ownfile1.c ownfile2.c
-	# or
-	$ gcc -c libsocket.c
-	$ gcc ownfile1.c ownfile2.c libsocket.o
-	# etc. pp.
+This command installs the libs to $LIBPATH.
 
-If you want to find out which files you have to link (specify on the command line when calling the compiler), take a look at
-/LINKAGE.
+Linking your programs against the library is also easy; if $OBJECTS are your object files, then link them together using one of these
+commands:
+
+	$ gcc -o yourprog -lsocket $OBJECTS
+	$ g++ -o yourprog -lsocket++ $OBJECTS
+
+You only need to link against one library, even when using C++, because libsocket++ contains all necessary functions.
+
+If you distribute your program in binary form, it's possible to distribute library binaries along your program and install them
+along your program.
+
+###Other stuff
+
+You may use other compilers than the GNU Compilers. The dynamic and static linking was tested successfully using
+clang/clang++ 3.0 and 3.1 on GNU/Linux.
 
 ##FEATURES AND ADVANTAGES
 

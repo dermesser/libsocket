@@ -1,3 +1,18 @@
+#DYNAMIC LINKAGE
+
+ *** RECOMMENDED ***
+
+First, build and install the libraries using `make install` in the source tree root.
+You also may distribute the binary libraries with your program (the license allows this) and install them to
+the library directory (e.g. /usr/lib).
+
+Then, compile your programs using the -lsocket (for C libsocket) respectively -lsocket++
+(for C++ libsocket) switch. Done! :)
+
+Some more information can be found in README.md.
+
+#STATIC LINKAGE
+
 *C*
 
 If you're using the C interface, you only have to link with C/libinetsocket.c respectively
