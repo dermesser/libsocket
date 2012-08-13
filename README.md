@@ -36,6 +36,11 @@ You only need to link against one library, even when using C++, because libsocke
 If you distribute your program in binary form, it's possible to distribute library binaries along your program and install them
 along your program.
 
+###Other stuff
+
+You may use other compilers than the GNU Compilers. The dynamic and static linking was tested successfully using
+clang/clang++ 3.0 and 3.1 on GNU/Linux.
+
 ##FEATURES AND ADVANTAGES
 
 The libsocket library supports following things and protocols:
