@@ -21,7 +21,7 @@ obj: $(OBJECTS)
 # Build C object files (libsocket)
 libsocket:
 	cd ../C/;  \
-	make
+	make obj
 
 # Build Shared Object
 so: obj libsocket
