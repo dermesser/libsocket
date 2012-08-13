@@ -33,6 +33,9 @@ commands:
 
 You only need to link against one library, even when using C++, because libsocket++ contains all necessary functions.
 
+If you distribute your program in binary form, it's possible to distribute library binaries along your program and install them
+along your program.
+
 ##FEATURES AND ADVANTAGES
 
 The libsocket library supports following things and protocols:
