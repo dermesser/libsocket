@@ -18,6 +18,8 @@ namespace libsocket
 		friend stream_client_socket& operator<<(stream_client_socket& sock, const char* str);
 		friend stream_client_socket& operator<<(stream_client_socket& sock, string& str);
 		friend stream_client_socket& operator>>(stream_client_socket& sock, string& dest);
+
+		void shutdown(int method=WRITE);
 	};
 }
 # endif

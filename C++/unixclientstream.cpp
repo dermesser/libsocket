@@ -61,7 +61,6 @@ namespace libsocket
 		void connect(const char* path, int socket_flags=0);
 		void connect(const string& path, int socket_flags=0);
 
-		void shutdown(int method=WRITE);
 	};
 
 	unix_stream_client::unix_stream_client(void) : peer_path("") {}
@@ -90,13 +89,5 @@ namespace libsocket
 	void unix_stream_client::connect(const string& path, int socket_flags)
 	{
 		connect(path.c_str(),socket_flags);
-	}
-
-	void unix_stream_client::shutdown(int method)
-	{
-		int ret = shutdown_unix_stream_socket(sfd,method);
-
-		if ( ret < 0 )
-			throw socket_exception(__FILE__,__LINE__,"unix_stream_client::shutdown: Could not shut the socket down!\n");
 	}
 }

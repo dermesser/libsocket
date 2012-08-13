@@ -60,7 +60,6 @@ namespace libsocket
 
 		// connect() == setup()
 		void connect(const char* dsthost, const char* dstport, int proto_osi3, int flags=0); // flags: socket()
-		void shutdown(int method);
 
 		friend class inet_stream_server; // So it's possible for inet_stream_server::accept() to construct an instance with given fd
 	};
@@ -92,14 +91,5 @@ namespace libsocket
 		host = dsthost;
 		port = dstport;
 		proto = proto_osi3;
-	}
-
-
-	void inet_stream::shutdown(int method)
-	{
-		if ( 0 > shutdown_inet_stream_socket(sfd,method))
-		{
-			throw socket_exception(__FILE__,__LINE__,"inet_stream::shutdown() - Could not shutdown socket\n");
-		}
 	}
 }

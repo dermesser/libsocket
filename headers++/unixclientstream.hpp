@@ -47,7 +47,6 @@ namespace libsocket
 		void connect(const char* path, int socket_flags=0);
 		void connect(const string& path, int socket_flags=0);
 
-		void shutdown(int method=WRITE);
 		friend class unix_stream_server;
 	};
 }
