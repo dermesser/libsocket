@@ -95,9 +95,10 @@ namespace libsocket
 
 		listening = true;
 		nonblock = false;
-
+# ifdef __linux__
 		if (flags & SOCK_NONBLOCK)
 			nonblock = true;
+# endif
 	}
 
 	inet_stream* inet_stream_server::accept(int numeric,int accept_flags)
