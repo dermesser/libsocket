@@ -4,21 +4,10 @@
 # include <string>
 # include <sys/types.h>
 # include <sys/socket.h>
+
 # include "inetbase.hpp"
 # include "streamclient.hpp"
 
-# define TCP 1
-# define UDP 2
-
-# define IPv4 3
-# define IPv6 4
-
-# define BOTH 5 // what fits best (TCP/UDP or IPv4/6)
-
-# define READ 1
-# define WRITE 2
-
-# define NUMERIC 1
 
 // Quite simple oo wrapper around libINETSTREAMCLIENT
 /*
@@ -56,7 +45,6 @@ namespace libsocket
 		inet_stream(const string& dsthost, const string& dstport, int proto_osi3, int flags=0);
 
 		void connect(const char* dsthost, const char* dstport, int proto_osi3, int flags=0); // flags: socket()
-		void shutdown(int method);
 
 		friend class inet_stream_server;
 	};

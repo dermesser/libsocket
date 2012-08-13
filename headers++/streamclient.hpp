@@ -4,6 +4,9 @@
 # include <string>
 # include "socket.hpp"
 
+# define READ 1
+# define WRITE 2
+
 using std::string;
 
 namespace libsocket

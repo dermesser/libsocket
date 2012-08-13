@@ -2,6 +2,7 @@
 # define _UNIXDGRAM_H
 
 # include "unixbase.hpp"
+
 /*
 The committers of the libsocket project, all rights reserved
 (c) 2012, dermesser <lbo@spheniscida.de>

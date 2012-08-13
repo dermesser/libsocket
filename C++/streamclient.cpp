@@ -1,3 +1,4 @@
+# include "../headers/libinetsocket.h"
 # include "../headers++/socket.hpp"
 # include <string>
 # include "../headers++/exception.hpp"
@@ -24,6 +25,9 @@ OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
 POSSIBILITY OF SUCH DAMAGE.
 
 */
+
+# define READ 1
+# define WRITE 2
 
 /*
  * DESCRIPTION FOR STREAMCLIENT.CPP

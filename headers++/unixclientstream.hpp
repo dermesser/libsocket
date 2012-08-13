@@ -2,11 +2,10 @@
 # define _UNIXCLIENTSTREAM_H
 
 # include <string>
+
 # include "streamclient.hpp"
 # include "unixbase.hpp"
 
-# define READ  1
-# define WRITE 2
 /*
 The committers of the libsocket project, all rights reserved
 (c) 2012, dermesser <lbo@spheniscida.de>

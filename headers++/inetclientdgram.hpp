@@ -4,23 +4,9 @@
 # include <string>
 # include <sys/types.h>
 # include <sys/socket.h>
-# include "socket.hpp"
-# include "inetbase.hpp"
+
 # include "inetdgram.hpp"
 # include "dgramclient.hpp"
-
-# define TCP 1
-# define UDP 2
-
-# define IPv4 3
-# define IPv6 4
-
-# define BOTH 5 // what fits best (TCP/UDP or IPv4/6)
-
-# define READ 1
-# define WRITE 2
-
-# define NUMERIC 1
 
 /*
 The committers of the libsocket project, all rights reserved

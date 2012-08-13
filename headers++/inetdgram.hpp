@@ -5,7 +5,6 @@
 # include <string>
 # include <string.h>
 
-# include "socket.hpp"
 # include "inetbase.hpp"
 
 # include <unistd.h>
