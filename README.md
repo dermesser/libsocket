@@ -93,9 +93,21 @@ simple-http (https://github.com/dermesser/Simple-HTTP-client) uses almost 70 lin
 
 ##PLATFORMS
 
-libsocket is developed on Linux 3.x with gcc, but every file was successfully tested with clang (from llvm 3.0) and works with it.
+libsocket is developed on Linux 3.x with gcc, but every file was successfully tested with clang (from llvm 3.0, 3.1) and works with it.
 
-Unfortunately, libinetsocket won't work on OpenBSD anymore after the rewrite. On Linux, everything's fine.
+libsocket works, both statically and dynamically linked, on these platform combinations:
+
+- GCC 4.7, GNU/Linux (tested on Debian and Fedora)
+- GCC 4.6, GNU/Linux (tested on Debian)
+- clang/clang++ 3.0, GNU/Linux (tested on Debian)
+- clang/clang++ 3.1, GNU/Linux (tested on Debian)
+- gcc version 4.2.1 20070831 patched, FreeBSD 9.0
+- clang/clang++ 3.1 portbld, FreeBSD 9.0
+
+libsocket does not work (AFAIK) on OpenBSD, because there are some source level incompatibilities.
+
+The inet server part does not work properly on FreeBSD; calls to `getnameinfo()` fail with `Non-recoverable failure in name resolution`.
+This makes the use of C++ inet server parts impossible, excepted the situation when using a patched version which does not use `getnameinfo()`.
 
 ##REWRITE
 
