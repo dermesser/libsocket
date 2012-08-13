@@ -279,6 +279,10 @@ ssize_t recvfrom_inet_dgram_socket(int sfd, void* buffer, size_t size, char* src
 			numeric = NI_NUMERICHOST | NI_NUMERICSERV;
 		}
 
+# ifdef __FreeBSD__
+                numeric |=  NI_DGRAM; // Avoid getnameinfo errors
+# endif
+
 		if ( 0 != (retval = getnameinfo((struct sockaddr*)&client,sizeof(struct sockaddr_storage),src_host,src_host_len,src_service,src_service_len,numeric)) ) // Write information to the provided memory
 		{
 # ifdef VERBOSE
