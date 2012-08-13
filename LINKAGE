@@ -7,7 +7,8 @@ You also may distribute the binary libraries with your program (the license allo
 the library directory (e.g. /usr/lib).
 
 Then, compile your programs using the -lsocket (for C libsocket) respectively -lsocket++
-(for C++ libsocket) switch. Done! :)
+(for C++ libsocket) switch. libsocket++ contains also all libsocket functions, so you may link
+your C application against libsocket++, if you want to install only one library.
 
 Some more information can be found in README.md.
 
