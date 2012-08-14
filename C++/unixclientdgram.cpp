@@ -62,6 +62,8 @@ namespace libsocket
 	{
 		sfd = create_unix_dgram_socket(path,flags);
 
+		_path.assign(path);
+
 		if ( sfd < 0 )
 			throw socket_exception(__FILE__,__LINE__,"unix_dgram_client::unix_dgram_client: Could not create unix dgram client socket!\n");
 
@@ -99,6 +101,8 @@ namespace libsocket
 	{
 		if ( connect_unix_dgram_socket(sfd,0) < 0 )
 			throw socket_exception(__FILE__,__LINE__,"unix_dgram_client::deconnect: Could not disconnect dgram socket!\n");
+
+		_path.clear();
 
 		connected = false;
 	}

@@ -48,9 +48,6 @@ namespace libsocket
 
 	class unix_stream_client : public unix_socket, public stream_client_socket
 	{
-		private:
-		string peer_path;
-
 		public:
 
 		unix_stream_client(void);
@@ -63,7 +60,7 @@ namespace libsocket
 
 	};
 
-	unix_stream_client::unix_stream_client(void) : peer_path("") {}
+	unix_stream_client::unix_stream_client(void) {}
 	// Server path!
 	unix_stream_client::unix_stream_client(const char* path, int socket_flags)
 	{
@@ -81,6 +78,8 @@ namespace libsocket
 			throw socket_exception(__FILE__,__LINE__,"unix_stream_client::connect: Already connected!\n");
 
 		sfd = create_unix_stream_socket(path,socket_flags);
+
+		_path.assign(path);
 
 		if ( sfd < 0 )
 			throw socket_exception(__FILE__,__LINE__,"unix_stream_client::unix_stream_client: Could not create and connect UNIX socket!\n");

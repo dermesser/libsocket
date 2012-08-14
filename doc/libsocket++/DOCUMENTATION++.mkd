@@ -439,6 +439,13 @@ the string is resized to the new length, 0 if the peer shut its socket down or c
 
 *SO RESIZE YOUR STRINGS BEFORE DOWNLOADING DATA!*
 
+### Getters
+Defined in `unixbase.cpp`, inherited from `unix_socket`
+
+	string get_path(void);
+
+Get the peer socket path (to which the socket is connected).
+
 ##`unix_stream_server`
 Defined in `unixserverstream.cpp`
 
@@ -465,6 +472,13 @@ Defined in `unixserverstream.cpp`
 Accept a new connection on the socket. `flags` are passed to `accept4(2)`. Returns a pointer to a dynamically allocated
 `unix_stream_client` object. It's recommended, especially for long-running applications, to call `delete` on this pointer
 when it isn't needed anymore.
+
+### Getters
+Defined in `unixbase.cpp`, inherited from `unix_socket`
+
+	string get_path(void);
+
+Get the socket path (to which the socket is bound).
 
 ##`unix_dgram_client`
 Defined in `unixclientdgram.cpp`
@@ -507,6 +521,13 @@ Inherited from `unix_dgram`
 	ssize_t rcvfrom(void* buf, size_t length, std::string& source, int recvfrom_flags=0);
 	ssize_t rcvfrom(std::string& buf, std::string& source, int recvfrom_flags=0);
 
+### Getters
+Defined in `unixbase.cpp`, inherited from `unix_socket`
+
+	string get_path(void);
+
+Get the peer socket path (to which the socket is connected, if it's connected).
+If the socket is not connected, an empty string is returned.
 
 ##`unix_dgram_server`
 Defined in `unixserverdgram.cpp`
@@ -528,6 +549,13 @@ Defined in `unixdgram.cpp`
 	ssize_t rcvfrom(void* buf, size_t length, char* source, size_t source_len, int recvfrom_flags=0);
 	ssize_t rcvfrom(void* buf, size_t length, std::string& source, int recvfrom_flags=0);
 	ssize_t rcvfrom(string& buf, string& source, int recvfrom_flags=0);
+
+### Getters
+Defined in `unixbase.cpp`, inherited from `unix_socket`
+
+	string get_path(void);
+
+Get the socket path (to which the socket is bound).
 
 # Other Classes
 ## `selectset` class

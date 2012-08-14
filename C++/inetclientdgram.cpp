@@ -135,7 +135,7 @@ namespace libsocket
 			throw socket_exception(__FILE__,__LINE__,"inet_dgram::deconnect() - Could not disconnect!\n");
 
 		connected = false;
-		host.resize(0);
-		port.resize(0);
+		host.clear();
+		port.clear();
 	}
 }

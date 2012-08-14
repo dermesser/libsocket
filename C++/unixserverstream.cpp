@@ -82,6 +82,8 @@ namespace libsocket
 
 		sfd = create_unix_server_socket(path,STREAM,flags);
 
+		_path.assign(path);
+
 		if ( sfd < 0 )
 			throw socket_exception(__FILE__,__LINE__,"unix_stream_server::setup: Error at creating UNIX stream server socket!\n");
 
@@ -90,17 +92,7 @@ namespace libsocket
 
 	void unix_stream_server::setup(const string& path, int flags)
 	{
-		if ( path.empty() )
-			throw socket_exception(__FILE__,__LINE__,"unix_stream_server::setup: Path is NULL!\n");
-		if ( listening == true )
-			throw socket_exception(__FILE__,__LINE__,"unix_stream_server::setup: Server socket already created!\n");
-
-		sfd = create_unix_server_socket(path.c_str(),STREAM,flags);
-
-		if ( sfd < 0 )
-			throw socket_exception(__FILE__,__LINE__,"unix_stream_server::setup: Error at creating UNIX stream server socket!\n");
-
-		listening = true;
+		setup(path.c_str(),flags);
 	}
 
 	unix_stream_client* unix_stream_server::accept(int flags)

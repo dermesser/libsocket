@@ -42,13 +42,15 @@ For example, if you have a program which serves as client for a UDP based applic
 <pre><code>$ g++ -o client client.cpp /path/to/libsocket/C/libinetsocket.c /path/to/libsocket/C++/{socket,inetbase,inetdgram,inetclientdgram}.cpp
 </code></pre>
 
+<p><strong>NOTE</strong>: <em>It's way better to use the shared object/dynamic libraries. Please look at README.md and LINKAGE for ways how to use libsocket as dynamic library.</em></p>
+
 <h2>Class Hierarchy and names</h2>
 
 <p>The class hierarchy is very complex. You may take a look at it by viewing <code>classes.svg</code> in this directory.</p>
 
 <p>To understand the library, you also have to understand the names.</p>
 
-<p>The classes have names which are built like this: <code>&lt;domain&gt;_&lt;protocol&gt;_&lt;role&gt;</code>: E.g. <code>unix_stream_server</code> or <code>inet_dgram_client</code>.
+<p>The classes have names which are made of three components: <code>&lt;domain&gt;_&lt;protocol&gt;_&lt;role&gt;</code>: E.g. <code>unix_stream_server</code> or <code>inet_dgram_client</code>.
 One exception: The TCP internet client class is called <code>inet_stream</code> (for historical reasons; in addition, every library needs an
 inconsistence ;)</p>
 
@@ -73,12 +75,10 @@ objects from this classes although it's possible (they aren't abstract).</p>
 may raise an exception containing a std::string looking like this:</p>
 
 <pre><code>../C++/inetclientstream.cpp:167: &lt;&lt;(std::string) output: Socket not connected!
-    (1)         (2)     (3)          (4)
+            (1)             (2)       (3)                       (4)
 </code></pre>
 
-<p>It contains information about the file (1), the line (2), the function throwing the exception (3)
-and information about the cause for the exception (4) - here, the socket was already closed when calling
-the .destroy() routine.</p>
+<p>It contains information about the file (1), the line (2), the function throwing the exception (3) and information about the cause for the exception (4) - here, a program tried to write to a TCP connection which did not exist at that time.</p>
 
 <p>Example for error handling:</p>
 
@@ -116,19 +116,16 @@ and <em>must</em> be connected before use using <code>connect()</code>.</p>
 <li><code>host</code>: Destination host; if you have the host as <code>std::string</code>, use its routine <code>std::string::c_str()</code> to get
 the C string</li>
 <li><code>port</code>: Destination port (TCP, of course); conversion from string like above.</li>
-<li><code>proto_osi3</code>: <code>IPv4</code>, <code>IPv6</code> or <code>BOTH</code> (<code>BOTH</code> lets the library choose; pp macros; defined in header file <code>inetsocket.hpp</code>)</li>
-<li><code>flags</code>: Default 0, can be <code>SOCK_NONBLOCK</code> or <code>SOCK_CLOEXEC</code> (see: <code>socket(2)</code>; on other platforms than Linux
-has to be 0 to avoid errors)</li>
+<li><code>proto_osi3</code>: <code>IPv4</code>, <code>IPv6</code> or <code>BOTH</code> (<code>BOTH</code> lets the library choose; pp macros; defined in header file <code>inetbase.hpp</code>)</li>
+<li><code>flags</code>: Default 0, can be <code>SOCK_NONBLOCK</code> or <code>SOCK_CLOEXEC</code> (see: <code>socket(2)</code>; it must be 0 on other platforms than Linux to avoid errors)</li>
 </ul>
-
-<p>3: This constructor is only available when using a C++11-compliant compiler; it delegates the constructor. Otherwise, you have
-to use constructor 2.</p>
 
 <h3><code>connect()</code></h3>
 
 <p>Declared in <code>inetclientstream.hpp</code>, defined in <code>inetclientstream.cpp</code></p>
 
 <pre><code>void connect(const char* host, const char* port, int proto_osi3, int flags=0);
+void connect(const string&amp; dsthost, const string&amp; dstport, int proto_osi3, int flags);
 </code></pre>
 
 <p>Connects the socket. Throws an exception if the socket is already connected.</p>
@@ -144,7 +141,7 @@ has to be 0 to avoid errors)</li>
 
 <h3><code>shutdown()</code></h3>
 
-<p>Declared in <code>inetclientstream.hpp</code>, defined in <code>inetclientstream.cpp</code></p>
+<p>Declared in <code>clientstream.hpp</code>, defined in <code>clientstream.cpp</code></p>
 
 <pre><code>void shutdown(int method);
 </code></pre>
@@ -167,7 +164,7 @@ in <code>inetsocket.hpp</code></p>
 
 <h3>Output/Upload Functions</h3>
 
-<p>Inherited from <code>stream_client_socket</code></p>
+<p>Inherited from <code>stream_client_socket</code> (<code>streamclient.cpp</code>)</p>
 
 <pre><code>ssize_t snd(const void* buf, size_t len, int flags=0);
 </code></pre>
@@ -322,7 +319,7 @@ functions like <code>snd()</code> or <code>rcv()</code> may not be used anymore.
 
 <h3>Send/Upload Functions</h3>
 
-<p>Defined in <code>dgramclient.cpp</code></p>
+<p>Defined in <code>dgramclient.cpp</code> (Inherited from <code>dgram_client_socket</code>)</p>
 
 <pre><code>ssize_t snd(const void* buf, size_t len, int flags=0); // flags: send()
 </code></pre>
@@ -332,7 +329,7 @@ functions like <code>snd()</code> or <code>rcv()</code> may not be used anymore.
 <p>Send <code>len</code> bytes from <code>buf</code> (does not need to be <code>const</code>; in C++ an implicit conversion to const is allowed)
 to the connected peer. <code>flags</code> may be specified and take the flags described in <code>send(2)</code> (<code>MSG_...</code>).</p>
 
-<p>Defined in <code>inetdgram.cpp</code></p>
+<p>Defined in <code>inetdgram.cpp</code>, inherited from <code>inet_dgram</code></p>
 
 <pre><code>1: ssize_t sndto(const void* buf, size_t len, const char* host, const char* port, int sndto_flags=0);
 2: ssize_t sndto(const void* buf, size_t len, const std::string&amp; host, const std::string&amp; port, int sndto_flags=0)
@@ -343,8 +340,8 @@ to the connected peer. <code>flags</code> may be specified and take the flags de
 in <code>sendto(2)</code> (<code>MSG_...</code>).
 3: Send <code>buf</code> to <code>dsthost:dstport</code>.</p>
 
-<pre><code>friend inet_dgram_client&amp; operator&lt;&lt;(inet_dgram_client&amp; sock, const char* str);
-friend inet_dgram_client&amp; operator&lt;&lt;(inet_dgram_client&amp; sock, std::string&amp; str);
+<pre><code>friend dgram_client_socket&amp; operator&lt;&lt;(dgram_client_socket&amp; sock, const char* str);
+friend dgram_client_socket&amp; operator&lt;&lt;(dgram_client_socket&amp; sock, std::string&amp; str);
 </code></pre>
 
 <p>Only for connected sockets. Send either a std::string or a (NULL terminated!!!) C string to the connected peer.
@@ -363,7 +360,7 @@ Usage like streams:</p>
 <p>Conventional receive function: Receive <code>len</code> bytes from the socket and write them to <code>buf</code>. <code>flags</code> may take the
 flags described in <code>recv(2)</code> (<code>MSG_...</code>). Only available if socket is connected!</p>
 
-<p>Defined in <code>inetdgram.cpp</code></p>
+<p>Defined in <code>inetdgram.cpp</code>, inherited from <code>inet_dgram</code></p>
 
 <pre><code>1: ssize_t rcvfrom(void* buf, size_t len, char* host, size_t hostlen, char* port, size_t portlen, int rcvfrom_flags=0, bool numeric=false);
 2: ssize_t rcvfrom(void* buf, size_t len, std::string&amp; srchost, std::string&amp; srcport, int rcvfrom_flags=0, bool numeric=false);
@@ -380,7 +377,7 @@ than an additional (internal) rDNS query.</p>
 
 <p>3: Same as form 2, but place the data to <code>buf</code>. This method receives at most <code>buf.size()</code> bytes.</p>
 
-<pre><code>friend inet_dgram_client&amp; operator&gt;&gt;(inet_dgram_client&amp; sock, std::string&amp; dest);
+<pre><code>friend dgram_client_socket&amp; operator&gt;&gt;(dgram_client_socket&amp; sock, std::string&amp; dest);
 </code></pre>
 
 <p>Stream-like read from (connected!) socket: Reads at most <code>dest.size()</code> bytes from socket and puts them to the string. If less than <code>dest.size()</code> characters could be read, the string is resized to
@@ -416,6 +413,30 @@ inet_dgram_server(const std::string&amp; host, const std::string&amp; port, int 
 </ul>
 
 <p>It is not possible to call <code>connect(), rcv(), snd()</code> on such sockets; the <code>rcvfrom(), sndto()</code> functions may be called, of course.</p>
+
+<h3>Send/Upload</h3>
+
+<p>Defined in <code>inetdgram.cpp</code>, inherited from <code>inet_dgram</code></p>
+
+<pre><code>1: ssize_t sndto(const void* buf, size_t len, const char* host, const char* port, int sndto_flags=0);
+2: ssize_t sndto(const void* buf, size_t len, const std::string&amp; host, const std::string&amp; port, int sndto_flags=0)
+3: ssize_t sndto(const std::string&amp; buf, const std::string&amp; dsthost, const std::string&amp; dstport, int sndto_flags=0);
+</code></pre>
+
+<p>Send the data in <code>buf</code> to <code>host:port</code>.</p>
+
+<h3>Receive/Download</h3>
+
+<p>Defined in <code>inetdgram.cpp</code>, inherited from <code>inet_dgram</code></p>
+
+<pre><code>1: ssize_t rcvfrom(void* buf, size_t len, char* host, size_t hostlen, char* port, size_t portlen, int rcvfrom_flags=0, bool numeric=false);
+2: ssize_t rcvfrom(void* buf, size_t len, std::string&amp; srchost, std::string&amp; srcport, int rcvfrom_flags=0, bool numeric=false);
+3: ssize_t rcvfrom(std::string&amp; buf, std::string&amp; srchost, std::string&amp; srcport, int rcvfrom_flags=0, bool numeric=false);
+</code></pre>
+
+<p>1, 2: Receive at most <code>len</code> bytes from the socket and place them in <code>buf</code>. The source host is placed in <code>host</code>, which is at least <code>hostlen</code> bytes long, the source port gets written to <code>port</code>, which is at least <code>portlen</code> bytes long. <code>recvfrom_flags</code> can take the flags described in <code>recvfrom(2)</code>, <code>numeric</code> is considered as <code>false</code>, but if you specify it as <code>true</code>, source host and source port are expressed in numerical form. This is recommended because it's faster than an additional (internal) rDNS query.</p>
+
+<p>3: Receive at most <code>buf.size()</code> bytes and place them to <code>buf</code>. <code>buf</code> is resized to the number of received bytes if the function received less than <code>buf.size()</code> bytes.</p>
 
 <h3>Getters</h3>
 
@@ -494,6 +515,15 @@ the string is resized to the new length, 0 if the peer shut its socket down or c
 
 <p><em>SO RESIZE YOUR STRINGS BEFORE DOWNLOADING DATA!</em></p>
 
+<h3>Getters</h3>
+
+<p>Defined in <code>unixbase.cpp</code>, inherited from <code>unix_socket</code></p>
+
+<pre><code>string get_path(void);
+</code></pre>
+
+<p>Get the peer socket path (to which the socket is connected).</p>
+
 <h2><code>unix_stream_server</code></h2>
 
 <p>Defined in <code>unixserverstream.cpp</code></p>
@@ -526,6 +556,15 @@ The server socket is bound to <code>path</code>, and <code>flags</code> are pass
 <p>Accept a new connection on the socket. <code>flags</code> are passed to <code>accept4(2)</code>. Returns a pointer to a dynamically allocated
 <code>unix_stream_client</code> object. It's recommended, especially for long-running applications, to call <code>delete</code> on this pointer
 when it isn't needed anymore.</p>
+
+<h3>Getters</h3>
+
+<p>Defined in <code>unixbase.cpp</code>, inherited from <code>unix_socket</code></p>
+
+<pre><code>string get_path(void);
+</code></pre>
+
+<p>Get the socket path (to which the socket is bound).</p>
 
 <h2><code>unix_dgram_client</code></h2>
 
@@ -576,6 +615,16 @@ ssize_t rcvfrom(void* buf, size_t length, std::string&amp; source, int recvfrom_
 ssize_t rcvfrom(std::string&amp; buf, std::string&amp; source, int recvfrom_flags=0);
 </code></pre>
 
+<h3>Getters</h3>
+
+<p>Defined in <code>unixbase.cpp</code>, inherited from <code>unix_socket</code></p>
+
+<pre><code>string get_path(void);
+</code></pre>
+
+<p>Get the peer socket path (to which the socket is connected, if it's connected).
+If the socket is not connected, an empty string is returned.</p>
+
 <h2><code>unix_dgram_server</code></h2>
 
 <p>Defined in <code>unixserverdgram.cpp</code></p>
@@ -600,6 +649,15 @@ ssize_t rcvfrom(void* buf, size_t length, char* source, size_t source_len, int r
 ssize_t rcvfrom(void* buf, size_t length, std::string&amp; source, int recvfrom_flags=0);
 ssize_t rcvfrom(string&amp; buf, string&amp; source, int recvfrom_flags=0);
 </code></pre>
+
+<h3>Getters</h3>
+
+<p>Defined in <code>unixbase.cpp</code>, inherited from <code>unix_socket</code></p>
+
+<pre><code>string get_path(void);
+</code></pre>
+
+<p>Get the socket path (to which the socket is bound).</p>
 
 <h1>Other Classes</h1>
 

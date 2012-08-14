@@ -41,11 +41,18 @@ namespace libsocket
 	class unix_socket : public virtual socket
 	{
 		private:
-		string bindpath;
+		string _path;
 
 		public:
 		unix_socket();
+
+		string get_path(void);
 	};
 
 	unix_socket::unix_socket(void) : bindpath("") {}
+
+	string unix_socket::get_path(void)
+	{
+		return _path;
+	}
 }
