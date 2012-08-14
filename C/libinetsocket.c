@@ -98,9 +98,6 @@ int create_inet_stream_socket(const char* host, const char* service, char proto_
 	const char* errstring;
 # endif
 
-	//if ( flags != SOCK_NONBLOCK && flags != SOCK_CLOEXEC && flags != (SOCK_CLOEXEC|SOCK_NONBLOCK) && flags != 0 )
-	//	return -1;
-
 	if ( host == 0 || service == 0 )
 		return -1;
 

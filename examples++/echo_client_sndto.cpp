@@ -18,7 +18,9 @@ int main(void)
 	from2.resize(64);
 
 	string text = "Hello, Server!";
-	char buf[32];
+	string buf;
+
+	buf.resize(32);
 
 	libsocket::inet_dgram_client sock(IPv4);
 
@@ -32,11 +34,9 @@ int main(void)
 	try {
 		for ( int i = 0; i < 20; i++ )
 		{
-			memset(buf,0,32);
+			sock.sndto(text,host,port);
 
-			sock.sndto(text.c_str(),text.size(),host,port);
-
-			sock.rcvfrom(buf,31,from1,from2);
+			sock.rcvfrom(buf,from1,from2);
 
 			std::cout << "Answer from " << from1 << ":" << from2 << " - " << buf << std::endl;
 

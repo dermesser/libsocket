@@ -116,24 +116,17 @@ namespace libsocket
 	{
 		ssize_t bytes;
 
-		char* from_host = new char[1024]; // Let's say, that's enough
-		char* from_port = new char[32];
 		char* cbuf = new char[buf.size()];
 
-		memset(from_host,0,1024);
-		memset(from_port,0,32);
 		memset(cbuf,0,buf.size());
 
-		bytes = rcvfrom(cbuf,static_cast<size_t>(buf.size()),srchost,srcport,rcvfrom_flags,numeric);
+		bytes = rcvfrom(cbuf,static_cast<size_t>(buf.size()),srchost,srcport,rcvfrom_flags,numeric); // calling inet_dgram::rcvfrom(void*, size_t, string&, string&, int, bool)
 
-		srchost.resize(strlen(from_host));
-		srcport.resize(strlen(from_port));
+		buf.resize(bytes);
 
-		srchost = from_host;
-		srcport = from_port;
+		buf = cbuf;
 
-		delete[] from_host;
-		delete[] from_port;
+		delete[] cbuf;
 
 		return bytes;
 	}

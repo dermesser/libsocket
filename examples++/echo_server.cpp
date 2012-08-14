@@ -12,22 +12,21 @@ int main(void)
 	string host = "localhost";
 	string port = "1234";
 
-	char buf[32];
-
 	string from;
 	string fromport;
+	string buf;
+
+	buf.resize(32);
 
 	try {
 		libsocket::inet_dgram_server srv(host.c_str(),port.c_str(),BOTH);
 		for (;;)
 		{
-			memset(buf,0,32);
+			srv.rcvfrom(buf,from,fromport);
 
-			srv.rcvfrom(buf,31,from,fromport);
+			std::cout << "Datagram from " << from << ":" << fromport << " " << buf << std::endl;
 
-			std::cout << from << ":" << fromport << " " << buf << std::endl;
-
-			srv.sndto(buf,strlen(buf),from,fromport);
+			srv.sndto("Hello back from the server!",27,from,fromport);
 		}
 
 		srv.destroy();
