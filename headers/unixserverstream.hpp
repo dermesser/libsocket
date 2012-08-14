@@ -22,6 +22,7 @@ namespace libsocket
 		unix_stream_server(const string& path, int flags=0);
 
 		void setup(const char* path, int flags=0);
+		void setup(const string& path, int flags=0);
 
 		unix_stream_client* accept(int flags=0);
 	};

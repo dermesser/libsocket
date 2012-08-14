@@ -45,6 +45,7 @@ namespace libsocket
 		inet_stream(const string& dsthost, const string& dstport, int proto_osi3, int flags=0);
 
 		void connect(const char* dsthost, const char* dstport, int proto_osi3, int flags=0); // flags: socket()
+		void connect(const string& dsthost, const string& dstport, int proto_osi3, int flags);
 
 		friend class inet_stream_server;
 	};

@@ -61,8 +61,10 @@ namespace libsocket
 
 		inet_stream_server(void);
 		inet_stream_server(const char* bindhost, const char* bindport, int proto_osi3, int flags=0);
+		inet_stream_server(const string& bindhost, const string& bindport, int proto_osi3, int flags=0);
 
 		void setup(const char* bindhost, const char* bindport, int proto_osi3, int flags=0);
+		void setup(const string& bindhost, const string& bindport, int proto_osi3, int flags=0);
 
 		inet_stream* accept(int numeric=0,int accept_flags=0);
 
@@ -81,6 +83,13 @@ namespace libsocket
 		setup(bindhost,bindport,proto_osi3,flags);
 	}
 
+	inet_stream_server::inet_stream_server(const string& bindhost, const string& bindport, int proto_osi3, int flags)
+	{
+		listening = false;
+
+		setup(bindhost,bindport,proto_osi3,flags);
+	}
+
 	void inet_stream_server::setup(const char* bindhost, const char* bindport, int proto_osi3, int flags)
 	{
 		if ( listening == true )
@@ -88,6 +97,26 @@ namespace libsocket
 		if ( bindhost == 0 || bindport == 0 )
 			throw socket_exception(__FILE__,__LINE__,"inet_stream_server::inet_stream_server() - at least one bind argument invalid!\n");
 		if ( -1 == (sfd = create_inet_server_socket(bindhost,bindport,TCP,proto_osi3,flags)) )
+			throw socket_exception(__FILE__,__LINE__,"inet_stream_server::inet_stream_server() - could not create server socket!\n");
+
+		host = string(bindhost);
+		port = string(bindport);
+
+		listening = true;
+		nonblock = false;
+# ifdef __linux__
+		if (flags & SOCK_NONBLOCK)
+			nonblock = true;
+# endif
+	}
+
+	void inet_stream_server::setup(const string& bindhost, const string& bindport, int proto_osi3, int flags)
+	{
+		if ( listening == true )
+			throw socket_exception(__FILE__,__LINE__,"inet_stream_server::inet_stream_server() - already bound and listening!\n");
+		if ( bindhost.empty() || bindport.empty() )
+			throw socket_exception(__FILE__,__LINE__,"inet_stream_server::inet_stream_server() - at least one bind argument invalid!\n");
+		if ( -1 == (sfd = create_inet_server_socket(bindhost.c_str(),bindport.c_str(),TCP,proto_osi3,flags)) )
 			throw socket_exception(__FILE__,__LINE__,"inet_stream_server::inet_stream_server() - could not create server socket!\n");
 
 		host = string(bindhost);

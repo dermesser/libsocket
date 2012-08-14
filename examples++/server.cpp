@@ -21,7 +21,7 @@ int main(void)
 	string answ;
 
 	try {
-		inet_stream_server srv(host.c_str(),port.c_str(),IPv6);
+		inet_stream_server srv(host,port,IPv6);
 		inet_stream* cl1;
 
 		selectset set1;

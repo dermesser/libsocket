@@ -60,6 +60,7 @@ namespace libsocket
 
 		// connect() == setup()
 		void connect(const char* dsthost, const char* dstport, int proto_osi3, int flags=0); // flags: socket()
+		void connect(const string& dsthost, const string& dstport, int proto_osi3, int flags);
 
 		friend class inet_stream_server; // So it's possible for inet_stream_server::accept() to construct an instance with given fd
 	};
@@ -84,6 +85,21 @@ namespace libsocket
 			throw socket_exception(__FILE__,__LINE__,"inet_stream::connect() - Already connected!\n");
 
 		sfd = create_inet_stream_socket(dsthost,dstport,proto_osi3,flags);
+
+		if ( sfd < 0 )
+			throw socket_exception(__FILE__,__LINE__,"inet_stream::connect() - Could not create socket\n");
+
+		host = dsthost;
+		port = dstport;
+		proto = proto_osi3;
+	}
+
+	void inet_stream::connect(const string& dsthost, const string& dstport, int proto_osi3, int flags)
+	{
+		if ( sfd != -1 )
+			throw socket_exception(__FILE__,__LINE__,"inet_stream::connect() - Already connected!\n");
+
+		sfd = create_inet_stream_socket(dsthost.c_str(),dstport.c_str(),proto_osi3,flags);
 
 		if ( sfd < 0 )
 			throw socket_exception(__FILE__,__LINE__,"inet_stream::connect() - Could not create socket\n");

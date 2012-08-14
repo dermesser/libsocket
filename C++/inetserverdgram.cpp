@@ -58,6 +58,7 @@ namespace libsocket
 		public:
 
 		inet_dgram_server(const char* host, const char* port, int proto_osi3, int flags=0);
+		inet_dgram_server(const string& host, const string& port, int proto_osi3, int flags=0);
 	};
 
 	inet_dgram_server::inet_dgram_server(const char* bhost, const char* bport, int proto_osi3, int flags)
@@ -73,5 +74,19 @@ namespace libsocket
 		host = string(bhost);
 		port = string(bport);
 
+	}
+
+	inet_dgram_server::inet_dgram_server(const string& bhost, const string& bport, int proto_osi3, int flags)
+	{
+		bound = false;
+
+		if ( -1 == (sfd = create_inet_server_socket(bhost.c_str(),bport.c_str(),UDP,proto_osi3,flags)) )
+			throw socket_exception(__FILE__,__LINE__,"inet_dgram_server::inet_dgram_server() - could not create server socket!\n");
+
+		proto = proto_osi3;
+		bound = true;
+
+		host = string(bhost);
+		port = string(bport);
 	}
 }
