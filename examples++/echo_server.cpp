@@ -19,7 +19,7 @@ int main(void)
 	buf.resize(32);
 
 	try {
-		libsocket::inet_dgram_server srv(host.c_str(),port.c_str(),BOTH);
+		libsocket::inet_dgram_server srv(host,port,BOTH);
 		for (;;)
 		{
 			srv.rcvfrom(buf,from,fromport);
