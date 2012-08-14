@@ -89,12 +89,11 @@ namespace libsocket
 	dgram_client_socket& operator>>(dgram_client_socket& sock, string& dest)
 	{
 		ssize_t read_bytes;
-		char* buffer;
 
 		if ( sock.connected != true )
 			throw socket_exception(__FILE__,__LINE__,">>(dgram_client_socket, std::string) - Socket is not connected!\n");
 
-		buffer = new char[dest.size()];
+		char* buffer = new char[dest.size()];
 
 		if ( -1 == (read_bytes = read(sock.sfd,buffer,dest.size())) )
 			throw socket_exception(__FILE__,__LINE__,">>(dgram_client_socket, std::string) input: Error while reading!\n");
