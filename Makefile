@@ -9,15 +9,15 @@ all: libsocket libsocketpp
 
 libsocket:
 	cd C; \
-	make so
+	$(MAKE) so
 
 libsocketpp:
 	cd C++; \
-	make so
+	$(MAKE) so
 
 install: install-headers
-	cd C; make install; \
-	cd ../C++; make install
+	cd C; $(MAKE) install; \
+	cd ../C++; $(MAKE) install
 
 install-headers:
 	mkdir -p $(HEADERPATH); \
@@ -25,8 +25,8 @@ install-headers:
 
 clean:
 	rm *.so; \
-	cd C; make clean; \
-	cd ../C++; make clean
+	cd C; $(MAKE) clean; \
+	cd ../C++; $(MAKE) clean
 
 deinstall:
 	rm $(LIBPATH)/libsocket.so $(LIBPATH)/libsocket++.so ; \

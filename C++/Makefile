@@ -20,7 +20,7 @@ obj: $(OBJECTS)
 # Build C object files (libsocket)
 libsocket:
 	cd ../C/;  \
-	make obj
+	$(MAKE) obj
 
 # Build Shared Object
 so: obj libsocket
@@ -35,4 +35,4 @@ install: so
 clean:
 	rm -f *.o ; \
 	cd ../C/ ; \
-	make clean
+	$(MAKE) clean
