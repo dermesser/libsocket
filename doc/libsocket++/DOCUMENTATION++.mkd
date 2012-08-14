@@ -58,7 +58,7 @@ Defined in `exception.cpp`, has to be included from `exception.hpp`
 	{
 		std::string mesg;
 
-		socket_exception(std::string,int,string);
+		socket_exception(std::string,int,std::string);
 	};
 
 An instantiation of this object is thrown in case of error. Almost every function
@@ -93,7 +93,7 @@ Please note that the name is _not_ `inet_stream_client`!
 
 	1: inet_stream(void);
 	2: inet_stream(const char* host, const char* port, int proto_osi3, int flags=0);
-	3: inet_stream(const string& dsthost, const string& dstport, int proto_osi3, int flags=0);
+	3: inet_stream(const std::string& dsthost, const std::string& dstport, int proto_osi3, int flags=0);
 
 1: Only initializes the most important things. The socket remains unconnected
 and _must_ be connected before use using `connect()`.
@@ -154,7 +154,7 @@ The flags available may be found in `send(2)` (the flags beginning with with `MS
 Returns the number of sent bytes or throws an exception if an error occurred.
 
 	friend inet_stream& operator<<(inet_stream& sock, const char* str);
-	friend inet_stream& operator<<(inet_stream& sock, string& str);
+	friend inet_stream& operator<<(inet_stream& sock, std::string& str);
 
 Now, it gets interesting: The class `inet_stream` imitates the behaviour of
 the standard C++ streams (`ostream`, `ofstream` etc.). You may write to the
@@ -177,12 +177,9 @@ Conventional receive function: Receive `len` bytes from socket and write them to
 
 	friend inet_stream& operator>>(inet_stream& sock, std::string& dest);
 
-Stream-like read from socket: Reads at most `dest.size()` bytes from socket and puts them
-to the string. If less than `dest.size()` characters could be read, the string is resized to
-the number of read characters so you can check (`string.size() == 0`) if the server is done
-with sending - either closed the socket on his side or shut it down for write access.
+Stream-like read from socket: Reads at most `dest.size()` bytes from socket and puts them to the string. If less than `dest.size()` characters could be read, the string is resized to the number of read characters so you can check (`string.empty()`) if the server is done with sending - either closed the socket on his side or shut it down for write access.
 
-## Getters
+### Getters
 Declared in `inetbase.hpp`, defined in `inetbase.cpp`
 
 	std::string gethost(void) const;
@@ -197,6 +194,7 @@ Declared in `inetserverstream.hpp`, defined in `inetserverstream.cpp`
 
 	inet_stream_server(void);
 	inet_stream_server(const char* bindhost, const char* bindport, int proto_osi3, int flags=0);
+	inet_stream_server(const std::string& bindhost, const std::string& bindport, int proto_osi3, int flags=0);
 
 Create an internet tcp server (passive) socket.
 
@@ -213,8 +211,7 @@ Declared in `inetserverstream.hpp`, defined in `inetserverstream.cpp`
 Accept an incoming connection. `numeric` may be `NUMERIC` if you want to have the host and port as numbers.
 `accept_flags` are passed to `accept4()`.
 
-Returns a pointer to a dynamically allocated `inet_stream` object. Returns NULL if the server socket is marked as NONBLOCKing and
-there is not connection to accept.
+Returns a pointer to a dynamically allocated `inet_stream` object. Returns NULL if the server socket is marked as NONBLOCKing and there is not connection to accept.
 
 ### Destroy
 Declared in `socket.hpp`, defined in `socket.cpp`
@@ -244,6 +241,7 @@ Declared in `inetclientdgram.hpp`, defined in `inetclientdgram.cpp`
 
 	inet_dgram_client(int proto_osi3, int flags=0); // Flags: socket()
 	inet_dgram_client(const char* host, const char* port, int proto_osi3, int flags=0); // Flags: socket()
+	inet_dgram_client(const std::string& dsthost, const std::string& dstport, int proto_osi3, int flags=0);
 
 Because the UDP socket can be connected multiple times and send data to various hosts,
 it's mandatory to specify the address family at instantiation time. `proto_osi3` may be
@@ -258,6 +256,7 @@ The data is sent and received only to/from the host to which the socket is conne
 Declared in `inetclientdgram.hpp`, defined in `inetclientdgram.cpp`
 
 	void connect(const char* host, const char* port);
+	void connect(const std::string& dsthost, const std::string& dstport);
 
 (Re)connects the socket to the specified host/port. If you want to change the address family, you have to create
 another socket.
@@ -288,14 +287,16 @@ Defined in `inetdgram.cpp`
 
 	1: ssize_t sndto(const void* buf, size_t len, const char* host, const char* port, int sndto_flags=0);
 	2: ssize_t sndto(const void* buf, size_t len, const std::string& host, const std::string& port, int sndto_flags=0)
+	3: ssize_t sndto(const std::string& buf, const std::string& dsthost, const std::string& dstport, int sndto_flags=0);
 
 1, 2: Send `len` bytes from `buf` to `host`:`port`. `sndto_flags` may be specified and take the flags described
 in `sendto(2)` (`MSG_...`).
+3: Send `buf` to `dsthost:dstport`.
 
 	friend inet_dgram_client& operator<<(inet_dgram_client& sock, const char* str);
 	friend inet_dgram_client& operator<<(inet_dgram_client& sock, std::string& str);
 
-Only for connected sockets. Send either a string or a C string to the connected peer.
+Only for connected sockets. Send either a std::string or a (NULL terminated!!!) C string to the connected peer.
 Usage like streams:
 
 	sock << "abc" << std::string("def");
@@ -311,8 +312,8 @@ flags described in `recv(2)` (`MSG_...`). Only available if socket is connected!
 Defined in `inetdgram.cpp`
 
 	1: ssize_t rcvfrom(void* buf, size_t len, char* host, size_t hostlen, char* port, size_t portlen, int rcvfrom_flags=0, bool numeric=false);
-
 	2: ssize_t rcvfrom(void* buf, size_t len, std::string& srchost, std::string& srcport, int rcvfrom_flags=0, bool numeric=false);
+	3: ssize_t rcvfrom(std::string& buf, std::string& srchost, std::string& srcport, int rcvfrom_flags=0, bool numeric=false);
 
 1: Receive `len` bytes from the socket and place them in `buf`. The source host is placed in `host`, which is at least
 `hostlen` bytes long, the source port gets written to `port`, which is at least `portlen` bytes long. `recvfrom_flags`
@@ -322,11 +323,12 @@ than an additional (internal) rDNS query.
 
 2: Same as form 1, but use strings. The strings are resized to the appropriate length of host and port.
 
+3: Same as form 2, but place the data to `buf`. This method receives at most `buf.size()` bytes.
+
 	friend inet_dgram_client& operator>>(inet_dgram_client& sock, std::string& dest);
 
-Stream-like read from (connected!) socket: Reads at most `dest.size()` bytes from socket and puts them
-to the string. If less than `dest.size()` characters could be read, the string is resized to
-the number of read characters. One read call normally returns one datagram
+Stream-like read from (connected!) socket: Reads at most `dest.size()` bytes from socket and puts them to the string. If less than `dest.size()` characters could be read, the string is resized to
+the number of read characters.
 
 ### Getters
 Declared in `inetbase.hpp`, defined in `inetbase.cpp`
@@ -342,8 +344,9 @@ Declared in `inetbase.hpp`, defined in `inetbase.cpp`
 Declared in `inetserverdgram.hpp`, defined in `inetserverdgram.hpp`.
 
 	inet_dgram_server(const char* host, const char* port, int proto_osi3, int flags=0);
+	inet_dgram_server(const std::string& host, const std::string& port, int proto_osi3, int flags=0);
 
-Create and bind a DGRAM socket. The only difference to `inet_dgram_client` is that this socket is explicitly bound to somewhere.
+Create and bind a DGRAM socket to `host:port`. The only difference to `inet_dgram_client` is that this socket is explicitly bound to somewhere and that you may not connect this socket.
 
 * `host` to bind to
 * `port` to bind to
@@ -364,14 +367,14 @@ Declared in `inetbase.hpp`, defined in `inetbase.cpp`
 
 # libunixsocket++
 
-libunixsocket++ is the UNIX domain socket part of libsocket++. The class tree is described above.
+libunixsocket++ is the UNIX domain socket part of libsocket++. The class tree is described above and in `classes.svg`.
 
 ##`unix_stream_client`
 Defined in `unixclientstream.cpp`
 
 	unix_stream_client(void);
 	unix_stream_client(const char* path, int socket_flags=0);
-	unix_stream_client(const string& path, int socket_flags=0);
+	unix_stream_client(const std::string& path, int socket_flags=0);
 
 Create a new unix domain stream client socket. The second and the third form connect the socket immediately to `path`.
 If you use the first form, you have to `connect()` your socket before using it. `socket_flags` are flags for the
@@ -381,7 +384,7 @@ If you use the first form, you have to `connect()` your socket before using it. 
 Defined in `unixclientstream.cpp`
 
 	void connect(const char* path, int socket_flags=0);
-	void connect(const string& path, int socket_flags=0);
+	void connect(const std::string& path, int socket_flags=0);
 
 Connect the socket to `path`. `socket_flags` are given to `socket(2)`.
 
@@ -405,9 +408,9 @@ Defined in `streamclient.cpp`, inherited from `stream_client_socket`
 Defined in `streamclient.cpp`, inherited from `stream_client_socket`
 
 	friend stream_client_socket& operator<<(stream_client_socket& sock, const char* str);
-	friend stream_client_socket& operator<<(stream_client_socket& sock, string& str);
+	friend stream_client_socket& operator<<(stream_client_socket& sock, std::string& str);
 
-	friend stream_client_socket& operator>>(stream_client_socket& sock, string& dest);
+	friend stream_client_socket& operator>>(stream_client_socket& sock, std::string& dest);
 
 Like the normal file stream operators. `unix_stream_client` is a child of `stream_client_socket´.
 
@@ -420,9 +423,9 @@ the string is resized to the new length, 0 if the peer shut its socket down or c
 ##`unix_stream_server`
 Defined in `unixserverstream.cpp`
 
-		unix_stream_server(void);
-		unix_stream_server(const char* path, int flags=0);
-		unix_stream_server(const string& path, int flags=0);
+	unix_stream_server(void);
+	unix_stream_server(const char* path, int flags=0);
+	unix_stream_server(const std::string& path, int flags=0);
 
 Create a unix domain SOCK_STREAM server socket which is bound to `path`. `flags` are passed to `socket(2)`.
 If you use the `void` constructor, you have to `setup()` your socket before using it.
@@ -449,7 +452,7 @@ Defined in `unixclientdgram.cpp`
 
 	unix_dgram_client(int flags=0);
 	unix_dgram_client(const char* path, int flags=0);
-	unix_dgram_client(const string& path, int flags=0);
+	unix_dgram_client(const std::string& path, int flags=0);
 
 Create a UNIX DGRAM socket. If you use the second or third constructor, bind it additionally to path.
 
@@ -457,7 +460,7 @@ Create a UNIX DGRAM socket. If you use the second or third constructor, bind it 
 Defined in `unixclientdgram.cpp`
 
 	void connect(const char* path);
-	void connect(const string& path);
+	void connect(const std::string& path);
 
 Connect the DGRAM socket to the specified path. You may call `snd()` or `rcv()` on a UNIX DGRAM socket if it's connected.
 
@@ -469,8 +472,8 @@ Disconnect the DGRAM socket. (Connect it to NULL).
 Inherited from `dgram_client_socket`
 
 	friend dgram_client_socket& operator<<(dgram_client_socket& sock, const char* str);
-	friend dgram_client_socket& operator<<(dgram_client_socket& sock, string& str);
-	friend dgram_client_socket& operator>>(dgram_client_socket& sock, string& dest);
+	friend dgram_client_socket& operator<<(dgram_client_socket& sock, std::string& str);
+	friend dgram_client_socket& operator>>(dgram_client_socket& sock, std::string& dest);
 
 	ssize_t snd(const void* buf, size_t len, int flags=0); // flags: send()
 	ssize_t rcv(void* buf, size_t len, int flags=0);
@@ -478,10 +481,12 @@ Inherited from `dgram_client_socket`
 Inherited from `unix_dgram`
 
 	ssize_t sndto(const void* buf, size_t length, const char* path, int sendto_flags=0);
-	ssize_t sndto(const void* buf, size_t length, const string& path, int sendto_flags=0);
+	ssize_t sndto(const void* buf, size_t length, const std::string& path, int sendto_flags=0);
+	ssize_t sndto(const std::string& buf, const std::string& path, int sendto_flags=0);
 
 	ssize_t rcvfrom(void* buf, size_t length, char* source, size_t source_len, int recvfrom_flags=0);
-	ssize_t rcvfrom(void* buf, size_t length, string& source, int recvfrom_flags=0);
+	ssize_t rcvfrom(void* buf, size_t length, std::string& source, int recvfrom_flags=0);
+	ssize_t rcvfrom(std::string& buf, std::string& source, int recvfrom_flags=0);
 
 
 ##`unix_dgram_server`
@@ -489,7 +494,7 @@ Defined in `unixserverdgram.cpp`
 
 	unix_dgram_server(void);
 	unix_dgram_server(const char* bindpath, int socket_flags=0);
-	unix_dgram_server(const string& bindpath, int socket_flags=0);
+	unix_dgram_server(const std::string& bindpath, int socket_flags=0);
 
 `unix_dgram_server` is quite similar to `unix_dgram_client`, especially if bound. The important difference is that
 you may not call `connect()` on `unix_dgram_server`.
@@ -498,10 +503,12 @@ you may not call `connect()` on `unix_dgram_server`.
 Defined in `unixdgram.cpp`
 
 	ssize_t sndto(const void* buf, size_t length, const char* path, int sendto_flags=0);
-	ssize_t sndto(const void* buf, size_t length, const string& path, int sendto_flags=0);
+	ssize_t sndto(const void* buf, size_t length, const std::string& path, int sendto_flags=0);
+	ssize_t sndto(const string& buf, const string& path, int sendto_flags=0);
 
 	ssize_t rcvfrom(void* buf, size_t length, char* source, size_t source_len, int recvfrom_flags=0);
-	ssize_t rcvfrom(void* buf, size_t length, string& source, int recvfrom_flags=0);
+	ssize_t rcvfrom(void* buf, size_t length, std::string& source, int recvfrom_flags=0);
+	ssize_t rcvfrom(string& buf, string& source, int recvfrom_flags=0);
 
 # Other Classes
 ## `selectset` class
@@ -518,7 +525,7 @@ is likely). `method` is either `READ` or `WRITE`, so if you want to be notified 
 
 	std::pair<std::vector<socket*>, std::vector<socket*> > wait(long long microsecs=0);
 
-Then call `wait()`. The argument is a timeout in microseconds, defaulting to 0 (infinite). 
+Then call `wait()`. The argument is a timeout in microseconds after that the function returns, defaulting to 0 (infinite).
 And yes, I know, it's a gorgeous return type. Don't panic, there's a typedef in `select.hpp`:
 
 	namespace libsocket {
