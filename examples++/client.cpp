@@ -18,7 +18,7 @@ int main(void)
 	try {
 		libsocket::inet_stream sock(host,port,IPv6);
 
-		sock.rcv(answer);
+		sock >> answer;
 
 		std::cout << answer;
 
