@@ -135,6 +135,9 @@ namespace libsocket
 
 		n = select(highestfd(filedescriptors)+1,&readset,&writeset,NULL,timeout);
 
+
+		std::pair<std::vector<socket*>, std::vector<socket*> > rwfds;
+
 		if ( n < 0 )
 		{
 			std::string err(strerror(errno));
@@ -143,9 +146,14 @@ namespace libsocket
 			//full_err += err;
 
 			throw socket_exception(__FILE__,__LINE__,full_err + err);
-		}
 
-		std::pair<std::vector<socket*>, std::vector<socket*> > rwfds;
+		} else if ( n == 0 ) // time is over, no filedescriptor is ready
+		{
+			rwfds.first.resize(0);
+			rwfds.second.resize(0);
+
+			return rwfds;
+		}
 
 		std::vector<int>::iterator end = filedescriptors.end();
 
