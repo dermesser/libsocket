@@ -1,7 +1,7 @@
 # include <iostream>
 # include <string>
-# include "../headers++/inetclientstream.hpp"
-# include "../headers++/exception.hpp"
+# include "../headers/inetclientstream.hpp"
+# include "../headers/exception.hpp"
 
 int main(void)
 {

@@ -1,6 +1,6 @@
 # include <iostream>
 # include <string>
-# include <string.h>
+# include <cstring>
 
 # include "../headers/libinetsocket.h"
 # include "../headers/socket.hpp"
@@ -61,10 +61,13 @@ namespace libsocket
 		inet_dgram_client(int proto_osi3,int flags=0); // Flags: socket()
 		// Create socket and connect it
 		inet_dgram_client(const char* dsthost, const char* dstport, int proto_osi3, int flags=0); // Flags: socket()
+		inet_dgram_client(const string& dsthost, const string& dstport, int proto_osi3, int flags=0);
 
 		// actions
 		// connect/reconnect
 		void connect(const char* dsthost, const char* dstport);
+		void connect(const string& dsthost, const string& dstport);
+
 		void deconnect(void);
 
 		// I/Os from dgram_socket and inet_dgram
@@ -93,12 +96,34 @@ namespace libsocket
 		}
 	}
 
+	inet_dgram_client::inet_dgram_client(const string& dsthost, const string& dstport, int proto_osi3, int flags)
+	{
+		if ( -1 == (sfd = create_inet_dgram_socket(proto_osi3,flags)) )
+			throw socket_exception(__FILE__,__LINE__,"inet_dgram::inet_dgram() - Could not create inet dgram socket!\n");
+
+		try {
+			connect(dsthost,dstport);
+		} catch (socket_exception exc)
+		{
+			throw socket_exception(__FILE__,__LINE__,"inet_dgram::inet_dgram() - Could not connect dgram socket\n");
+		}
+	}
+
 	void inet_dgram_client::connect(const char* dsthost, const char* dstport)
 	{
 		if ( -1 == (connect_inet_dgram_socket(sfd,dsthost,dstport)) )
 			throw socket_exception(__FILE__,__LINE__,"inet_dgram::connect() - Could not connect dgram socket!\n");
 
-		std::cerr << "connecting...\n";
+		host = dsthost;
+		port = dstport;
+		connected = true;
+	}
+
+	void inet_dgram_client::connect(const string& dsthost, const string& dstport)
+	{
+		if ( -1 == (connect_inet_dgram_socket(sfd,dsthost.c_str(),dstport.c_str())) )
+			throw socket_exception(__FILE__,__LINE__,"inet_dgram::connect() - Could not connect dgram socket!\n");
+
 		host = dsthost;
 		port = dstport;
 		connected = true;

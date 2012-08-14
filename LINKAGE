@@ -27,6 +27,8 @@ C++:
 - unixclientdgram.hpp (UNIX DGRAM client)
 - unixserverdgram.hpp (UNIX DGRAM server)
 
+- exception.hpp (always needed when using libsocket::socket_exception)
+
 Include them using a directive like this (if you use the default location /usr/include/libsocket):
 
 	# include <libsocket/inetclientstream.hpp>

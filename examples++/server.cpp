@@ -1,12 +1,12 @@
 # include <iostream>
 # include <string>
-# include "../headers++/inetserverstream.hpp"
-# include "../headers++/exception.hpp"
+# include "../headers/inetserverstream.hpp"
+# include "../headers/exception.hpp"
 # include <unistd.h>
 # include <stdio.h>
 # include <utility>
-# include "../headers++/socket.hpp"
-# include "../headers++/select.hpp"
+# include "../headers/socket.hpp"
+# include "../headers/select.hpp"
 
 int main(void)
 {
