@@ -36,13 +36,16 @@ For example, if you have a program which serves as client for a UDP based applic
 
 	$ g++ -o client client.cpp /path/to/libsocket/C/libinetsocket.c /path/to/libsocket/C++/{socket,inetbase,inetdgram,inetclientdgram}.cpp
 
+**NOTE**: *It's way better to use the shared object/dynamic libraries. Please look at README.md and LINKAGE for ways how to use libsocket as dynamic library.*
+
+
 ## Class Hierarchy and names
 
 The class hierarchy is very complex. You may take a look at it by viewing `classes.svg` in this directory.
 
 To understand the library, you also have to understand the names.
 
-The classes have names which are built like this: `<domain>_<protocol>_<role>`: E.g. `unix_stream_server` or `inet_dgram_client`.
+The classes have names which are made of three components: `<domain>_<protocol>_<role>`: E.g. `unix_stream_server` or `inet_dgram_client`.
 One exception: The TCP internet client class is called `inet_stream` (for historical reasons; in addition, every library needs an
 inconsistence ;)
 
@@ -65,11 +68,9 @@ An instantiation of this object is thrown in case of error. Almost every functio
 may raise an exception containing a std::string looking like this:
 
 	../C++/inetclientstream.cpp:167: <<(std::string) output: Socket not connected!
-		(1)	  	    (2)		(3)		     (4)
+	            (1)             (2)       (3)                       (4)
 
-It contains information about the file (1), the line (2), the function throwing the exception (3)
-and information about the cause for the exception (4) - here, the socket was already closed when calling
-the .destroy() routine.
+It contains information about the file (1), the line (2), the function throwing the exception (3) and information about the cause for the exception (4) - here, a program tried to write to a TCP connection which did not exist at that time.
 
 Example for error handling:
 
@@ -103,17 +104,14 @@ and _must_ be connected before use using `connect()`.
 - `host`: Destination host; if you have the host as `std::string`, use its routine `std::string::c_str()` to get
 the C string
 - `port`: Destination port (TCP, of course); conversion from string like above.
-- `proto_osi3`: `IPv4`, `IPv6` or `BOTH` (`BOTH` lets the library choose; pp macros; defined in header file `inetsocket.hpp`)
-- `flags`: Default 0, can be `SOCK_NONBLOCK` or `SOCK_CLOEXEC` (see: `socket(2)`; on other platforms than Linux
-has to be 0 to avoid errors)
-
-3: This constructor is only available when using a C++11-compliant compiler; it delegates the constructor. Otherwise, you have
-to use constructor 2.
+- `proto_osi3`: `IPv4`, `IPv6` or `BOTH` (`BOTH` lets the library choose; pp macros; defined in header file `inetbase.hpp`)
+- `flags`: Default 0, can be `SOCK_NONBLOCK` or `SOCK_CLOEXEC` (see: `socket(2)`; it must be 0 on other platforms than Linux to avoid errors)
 
 ### `connect()`
 Declared in `inetclientstream.hpp`, defined in `inetclientstream.cpp`
 
 	void connect(const char* host, const char* port, int proto_osi3, int flags=0);
+	void connect(const string& dsthost, const string& dstport, int proto_osi3, int flags);
 
 Connects the socket. Throws an exception if the socket is already connected.
 
@@ -125,7 +123,7 @@ the C string
 has to be 0 to avoid errors)
 
 ### `shutdown()`
-Declared in `inetclientstream.hpp`, defined in `inetclientstream.cpp`
+Declared in `clientstream.hpp`, defined in `clientstream.cpp`
 
 	void shutdown(int method);
 
@@ -144,7 +142,7 @@ Close the socket and destroy the connection.
 Return value 0 if successfull, otherwise -1.
 
 ### Output/Upload Functions
-Inherited from `stream_client_socket`
+Inherited from `stream_client_socket` (`streamclient.cpp`)
 
 	ssize_t snd(const void* buf, size_t len, int flags=0);
 
@@ -274,7 +272,7 @@ Declared in `socket.hpp`, defined in `socket.cpp`
 0: Success, -1: Error (the only errors at `close()` come if the file descriptor has been closed already)
 
 ### Send/Upload Functions
-Defined in `dgramclient.cpp`
+Defined in `dgramclient.cpp` (Inherited from `dgram_client_socket`)
 
 	ssize_t snd(const void* buf, size_t len, int flags=0); // flags: send()
 
@@ -283,7 +281,7 @@ Conventional send, *only available if socket is connected*.
 Send `len` bytes from `buf` (does not need to be `const`; in C++ an implicit conversion to const is allowed)
 to the connected peer. `flags` may be specified and take the flags described in `send(2)` (`MSG_...`).
 
-Defined in `inetdgram.cpp`
+Defined in `inetdgram.cpp`, inherited from `inet_dgram`
 
 	1: ssize_t sndto(const void* buf, size_t len, const char* host, const char* port, int sndto_flags=0);
 	2: ssize_t sndto(const void* buf, size_t len, const std::string& host, const std::string& port, int sndto_flags=0)
@@ -293,8 +291,8 @@ Defined in `inetdgram.cpp`
 in `sendto(2)` (`MSG_...`).
 3: Send `buf` to `dsthost:dstport`.
 
-	friend inet_dgram_client& operator<<(inet_dgram_client& sock, const char* str);
-	friend inet_dgram_client& operator<<(inet_dgram_client& sock, std::string& str);
+	friend dgram_client_socket& operator<<(dgram_client_socket& sock, const char* str);
+	friend dgram_client_socket& operator<<(dgram_client_socket& sock, std::string& str);
 
 Only for connected sockets. Send either a std::string or a (NULL terminated!!!) C string to the connected peer.
 Usage like streams:
@@ -309,7 +307,7 @@ Defined in `dgramclient.cpp`
 Conventional receive function: Receive `len` bytes from the socket and write them to `buf`. `flags` may take the
 flags described in `recv(2)` (`MSG_...`). Only available if socket is connected!
 
-Defined in `inetdgram.cpp`
+Defined in `inetdgram.cpp`, inherited from `inet_dgram`
 
 	1: ssize_t rcvfrom(void* buf, size_t len, char* host, size_t hostlen, char* port, size_t portlen, int rcvfrom_flags=0, bool numeric=false);
 	2: ssize_t rcvfrom(void* buf, size_t len, std::string& srchost, std::string& srcport, int rcvfrom_flags=0, bool numeric=false);
@@ -325,7 +323,7 @@ than an additional (internal) rDNS query.
 
 3: Same as form 2, but place the data to `buf`. This method receives at most `buf.size()` bytes.
 
-	friend inet_dgram_client& operator>>(inet_dgram_client& sock, std::string& dest);
+	friend dgram_client_socket& operator>>(dgram_client_socket& sock, std::string& dest);
 
 Stream-like read from (connected!) socket: Reads at most `dest.size()` bytes from socket and puts them to the string. If less than `dest.size()` characters could be read, the string is resized to
 the number of read characters.
@@ -354,6 +352,27 @@ Create and bind a DGRAM socket to `host:port`. The only difference to `inet_dgra
 * `flags` is passed to `socket(2)`
 
 It is not possible to call `connect(), rcv(), snd()` on such sockets; the `rcvfrom(), sndto()` functions may be called, of course.
+
+### Send/Upload
+
+Defined in `inetdgram.cpp`, inherited from `inet_dgram`
+
+	1: ssize_t sndto(const void* buf, size_t len, const char* host, const char* port, int sndto_flags=0);
+	2: ssize_t sndto(const void* buf, size_t len, const std::string& host, const std::string& port, int sndto_flags=0)
+	3: ssize_t sndto(const std::string& buf, const std::string& dsthost, const std::string& dstport, int sndto_flags=0);
+
+Send the data in `buf` to `host:port`.
+
+### Receive/Download
+Defined in `inetdgram.cpp`, inherited from `inet_dgram`
+
+	1: ssize_t rcvfrom(void* buf, size_t len, char* host, size_t hostlen, char* port, size_t portlen, int rcvfrom_flags=0, bool numeric=false);
+	2: ssize_t rcvfrom(void* buf, size_t len, std::string& srchost, std::string& srcport, int rcvfrom_flags=0, bool numeric=false);
+	3: ssize_t rcvfrom(std::string& buf, std::string& srchost, std::string& srcport, int rcvfrom_flags=0, bool numeric=false);
+
+1, 2: Receive at most `len` bytes from the socket and place them in `buf`. The source host is placed in `host`, which is at least `hostlen` bytes long, the source port gets written to `port`, which is at least `portlen` bytes long. `recvfrom_flags` can take the flags described in `recvfrom(2)`, `numeric` is considered as `false`, but if you specify it as `true`, source host and source port are expressed in numerical form. This is recommended because it's faster than an additional (internal) rDNS query.
+
+3: Receive at most `buf.size()` bytes and place them to `buf`. `buf` is resized to the number of received bytes if the function received less than `buf.size()` bytes.
 
 ### Getters
 Declared in `inetbase.hpp`, defined in `inetbase.cpp`
