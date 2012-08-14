@@ -57,9 +57,13 @@ namespace libsocket
 		ssize_t sndto(const void* buf, size_t len, const char* dsthost, const char* dstport, int sndto_flags=0); // flags: sendto()
 		ssize_t sndto(const void* buf, size_t len, const string& dsthost, const string& dstport, int sndto_flags=0);
 
+		ssize_t sndto(const string& buf, const string& dsthost, const string& dstport, int sndto_flags=0);
+
 		// I
 		ssize_t rcvfrom(void* buf, size_t len, char* srchost, size_t hostlen, char* srcport, size_t portlen, int rcvfrom_flags=0, bool numeric=false);
 		ssize_t rcvfrom(void* buf, size_t len, string& srchost, string& srcport, int rcvfrom_flags=0, bool numeric=false);
+
+		ssize_t rcvfrom(string& buf, string& srchost, string& srcport, int rcvfrom_flags=0, bool numeric=false);
 
 		// Getters
 	};
@@ -87,22 +91,49 @@ namespace libsocket
 	{
 		ssize_t bytes;
 
-		char* host = new char[1024]; // Let's say, that's enough
-		char* port = new char[64];
+		char* from_host = new char[1024]; // Let's say, that's enough
+		char* from_port = new char[32];
 
-		memset(host,0,1024);
-		memset(port,0,64);
+		memset(from_host,0,1024);
+		memset(from_port,0,32);
+		memset(buf,0,len);
 
-		bytes = rcvfrom(buf,len,host,1024,port,64,rcvfrom_flags,numeric);
+		bytes = rcvfrom(buf,len,from_host,1024,from_port,64,rcvfrom_flags,numeric);
 
-		srchost.resize(strlen(host));
-		srcport.resize(strlen(port));
+		srchost.resize(strlen(from_host));
+		srcport.resize(strlen(from_port));
 
-		srchost = host;
-		srcport = port;
+		srchost = from_host;
+		srcport = from_port;
 
-		delete[] host;
-		delete[] port;
+		delete[] from_host;
+		delete[] from_port;
+
+		return bytes;
+	}
+
+	ssize_t inet_dgram::rcvfrom(string& buf, string& srchost, string& srcport, int rcvfrom_flags, bool numeric)
+	{
+		ssize_t bytes;
+
+		char* from_host = new char[1024]; // Let's say, that's enough
+		char* from_port = new char[32];
+		char* cbuf = new char[buf.size()];
+
+		memset(from_host,0,1024);
+		memset(from_port,0,32);
+		memset(cbuf,0,buf.size());
+
+		bytes = rcvfrom(cbuf,static_cast<size_t>(buf.size()),srchost,srcport,rcvfrom_flags,numeric);
+
+		srchost.resize(strlen(from_host));
+		srcport.resize(strlen(from_port));
+
+		srchost = from_host;
+		srcport = from_port;
+
+		delete[] from_host;
+		delete[] from_port;
 
 		return bytes;
 	}
@@ -127,6 +158,15 @@ namespace libsocket
 		ssize_t bytes;
 
 		bytes = sndto(buf,len,dsthost.c_str(),dstport.c_str(),sndto_flags);
+
+		return bytes;
+	}
+
+	ssize_t inet_dgram::sndto(const string& buf, const string& dsthost, const string& dstport, int sndto_flags)
+	{
+		ssize_t bytes;
+
+		bytes = sndto(buf.c_str(),buf.size(),dsthost.c_str(),dstport.c_str(),sndto_flags);
 
 		return bytes;
 	}

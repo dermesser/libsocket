@@ -75,6 +75,8 @@ namespace libsocket
 
 		buffer = new char[dest.size()];
 
+		memset(buffer,0,dest.size());
+
 		if ( sock.sfd == -1 )
 			throw socket_exception(__FILE__,__LINE__,">>(std::string) input: Socket not connected!\n");
 
@@ -87,7 +89,7 @@ namespace libsocket
 
 		dest.assign(buffer,read_bytes);
 
-		delete buffer;
+		delete[] buffer;
 
 		return sock;
 	}

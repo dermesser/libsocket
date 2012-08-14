@@ -88,7 +88,7 @@ namespace libsocket
 
 	void unix_stream_server::setup(const string& path, int flags)
 	{
-		if ( path == NULL )
+		if ( path.empty() )
 			throw socket_exception(__FILE__,__LINE__,"unix_stream_server::setup: Path is NULL!\n");
 		if ( listening == true )
 			throw socket_exception(__FILE__,__LINE__,"unix_stream_server::setup: Server socket already created!\n");

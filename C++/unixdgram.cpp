@@ -43,8 +43,12 @@ namespace libsocket
 		ssize_t sndto(const void* buf, size_t length, const char* path, int sendto_flags=0);
 		ssize_t sndto(const void* buf, size_t length, const string& path, int sendto_flags=0);
 
+		ssize_t sndto(const string& buf, const string& path, int sendto_flags=0);
+
 		ssize_t rcvfrom(void* buf, size_t length, char* source, size_t source_len, int recvfrom_flags=0);
 		ssize_t rcvfrom(void* buf, size_t length, string& source, int recvfrom_flags=0);
+
+		ssize_t rcvfrom(string& buf, string& source, int recvfrom_flags=0);
 
 	};
 
@@ -64,9 +68,13 @@ namespace libsocket
 
 	ssize_t unix_dgram::sndto(const void* buf, size_t length, const string& path, int sendto_flags)
 	{
-		return sndto(buf,length,path.c_str(),sendto_flags);
+		return sndto(buf,length,path.c_str(),sendto_flags); // calling sndto(const void*,size_t,const char*, int)
 	}
 
+	ssize_t unix_dgram::sndto(const string& buf, const string& path, int sendto_flags)
+	{
+		return sndto(static_cast<const void*>(buf.c_str()),buf.size(),path.c_str(),sendto_flags); // calling sndto(const void*,size_t,const char*, int)
+	}
 
 	ssize_t unix_dgram::rcvfrom(void* buf, size_t length, char* source, size_t source_len, int recvfrom_flags)
 	{
@@ -105,6 +113,39 @@ namespace libsocket
 		source.resize(source_cstr_len);
 
 		source = source_cstr;
+
+		return bytes;
+	}
+
+	ssize_t unix_dgram::rcvfrom(string& buf, string& source, int recvfrom_flags)
+	{
+		if ( buf.empty() )
+			throw socket_exception(__FILE__,__LINE__,"unix_dgram::rcvfrom: Buffer is empty!\n");
+
+		ssize_t bytes;
+
+		char* source_cstr = new char[512]; // AFAIK, the address field in struct sockaddr_un is only 108 bytes...
+		char* cbuf = new char[buf.size()];
+
+		size_t source_cstr_len;
+
+		memset(source_cstr,0,512);
+
+		bytes = recvfrom_unix_dgram_socket(sfd,cbuf,buf.size(),source_cstr,512,recvfrom_flags);
+
+		if ( bytes < 0 )
+			throw socket_exception(__FILE__,__LINE__,"unix_dgram::rcvfrom: Could not receive data from peer!\n");
+
+		source_cstr_len = strlen(source_cstr);
+
+		source.resize(source_cstr_len);
+		buf.resize(bytes);
+
+		buf.assign(cbuf,buf.size());
+		source.assign(source_cstr,source_cstr_len);
+
+		delete[] source_cstr;
+		delete[] cbuf;
 
 		return bytes;
 	}

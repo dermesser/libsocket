@@ -11,14 +11,14 @@ int main(void)
 
 	string host = "::1";
 	string port = "1235";
-	char answer[7];
+	string answer;
 
-	answer[6] = 0;
+	answer.resize(32);
 
 	try {
 		libsocket::inet_stream sock(host,port,IPv6);
 
-		sock.rcv(answer,6);
+		sock.rcv(answer);
 
 		std::cout << answer;
 

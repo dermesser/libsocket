@@ -58,6 +58,7 @@ namespace libsocket
 		friend dgram_client_socket& operator<<(dgram_client_socket& sock, const char* str);
 		friend dgram_client_socket& operator<<(dgram_client_socket& sock, string& str);
 
+		// No snd(const std::string&, int), for this we have the stream operators
 		ssize_t snd(const void* buf, size_t len, int flags=0); // flags: send()
 
 		// I
