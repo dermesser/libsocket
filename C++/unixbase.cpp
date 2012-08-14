@@ -49,7 +49,7 @@ namespace libsocket
 		string get_path(void);
 	};
 
-	unix_socket::unix_socket(void) : bindpath("") {}
+	unix_socket::unix_socket(void) : _path("") {}
 
 	string unix_socket::get_path(void)
 	{
