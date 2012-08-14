@@ -40,7 +40,7 @@ namespace libsocket
 
 	class unix_socket : public virtual socket
 	{
-		private:
+		protected:
 		string _path;
 
 		public:

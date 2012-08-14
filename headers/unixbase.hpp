@@ -34,8 +34,8 @@ namespace libsocket
 
 	class unix_socket : public virtual socket
 	{
-		private:
-		string bindpath;
+		protected:
+		string _path;
 
 		public:
 		unix_socket();
