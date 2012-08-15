@@ -31,6 +31,10 @@ POSSIBILITY OF SUCH DAMAGE.
 
 */
 
+
+# define READ 1
+# define WRITE 2
+
 namespace libsocket
 {
 	class selectset
@@ -56,4 +60,5 @@ namespace libsocket
 	typedef std::pair<std::vector<libsocket::socket*>, std::vector<libsocket::socket*> > ready_socks;
 
 }
+
 #endif

@@ -72,21 +72,20 @@ namespace libsocket
 		string getbindport(void);
 	};
 
-	inet_stream_server::inet_stream_server(void) : listening(false)
+	inet_stream_server::inet_stream_server(void)
+		: listening(false), nonblock(false)
 	{
 	}
 
 	inet_stream_server::inet_stream_server(const char* bindhost, const char* bindport, int proto_osi3, int flags)
+		: listening(false), nonblock(false)
 	{
-		listening = false;
-
 		setup(bindhost,bindport,proto_osi3,flags);
 	}
 
 	inet_stream_server::inet_stream_server(const string& bindhost, const string& bindport, int proto_osi3, int flags)
+		: listening(false), nonblock(false)
 	{
-		listening = false;
-
 		setup(bindhost,bindport,proto_osi3,flags);
 	}
 

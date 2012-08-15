@@ -9,6 +9,7 @@ SHARED_OBJECT=libsocket++.so
 
 CC=gcc
 CPP=g++
+# CPPFLAGS for C++/*.cpp files
 CPPFLAGS=
 
 .cpp.o:

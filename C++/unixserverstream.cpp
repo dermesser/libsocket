@@ -62,14 +62,14 @@ namespace libsocket
 	}
 
 	unix_stream_server::unix_stream_server(const char* path, int flags)
+		: listening(false)
 	{
-		listening = false;
 		setup(path,flags);
 	}
 
 	unix_stream_server::unix_stream_server(const string& path, int flags)
+		: listening(false)
 	{
-		listening = false;
 		setup(path,flags);
 	}
 

@@ -52,19 +52,7 @@ POSSIBILITY OF SUCH DAMAGE.
 
 namespace libsocket
 {
-	int highestfd(std::vector<int> v)
-	{
-		std::vector<int>::iterator end = v.end();
-		int highestfd = 0;
-
-		for ( std::vector<int>::iterator cur = v.begin(); cur != end; cur++ )
-		{
-			if ( *cur > highestfd )
-				highestfd = *cur;
-		}
-
-		return highestfd;
-	}
+	int highestfd(std::vector<int>);
 
 	class selectset
 	{
@@ -132,20 +120,15 @@ namespace libsocket
 			_timeout.tv_usec = microsecs;
 		}
 
-
 		n = select(highestfd(filedescriptors)+1,&readset,&writeset,NULL,timeout);
-
 
 		std::pair<std::vector<socket*>, std::vector<socket*> > rwfds;
 
 		if ( n < 0 )
 		{
 			std::string err(strerror(errno));
-			std::string full_err("selectset::wait(): Error at select(): ");
 
-			//full_err += err;
-
-			throw socket_exception(__FILE__,__LINE__,full_err + err);
+			throw socket_exception(__FILE__,__LINE__,"selectset::wait(): Error at select(): " + err);
 
 		} else if ( n == 0 ) // time is over, no filedescriptor is ready
 		{
@@ -168,4 +151,21 @@ namespace libsocket
 
 		return rwfds;
 	}
+
+	/***** UTIL *****/
+
+	int highestfd(std::vector<int> v)
+	{
+		std::vector<int>::iterator end = v.end();
+		int highestfd = 0;
+
+		for ( std::vector<int>::iterator cur = v.begin(); cur != end; cur++ )
+		{
+			if ( *cur > highestfd )
+				highestfd = *cur;
+		}
+
+		return highestfd;
+	}
+
 }

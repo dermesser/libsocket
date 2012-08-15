@@ -31,7 +31,7 @@ namespace libsocket
 
 		// Getters
 
-		bool getconn(void);
+		bool getconn(void) const;
 	};
 
 }

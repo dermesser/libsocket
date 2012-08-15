@@ -3,7 +3,7 @@ HEADERPATH=/usr/include/libsocket
 
 CC=gcc
 CPP=g++
-CFLAGS=""
+CFLAGS=
 
 all: libsocket libsocketpp
 
