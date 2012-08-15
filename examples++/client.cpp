@@ -3,6 +3,9 @@
 # include "../headers/inetclientstream.hpp"
 # include "../headers/exception.hpp"
 
+# include <unistd.h>
+# include <stdlib.h>
+
 int main(void)
 {
 	using std::string;
@@ -17,6 +20,10 @@ int main(void)
 
 	try {
 		libsocket::inet_stream sock(host,port,IPv6);
+
+		// You may close a socket and re-connect() it:
+		sock.destroy();
+		sock.connect(host,port,IPv6);
 
 		sock >> answer;
 

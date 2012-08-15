@@ -43,6 +43,10 @@ namespace libsocket
 		inet_dgram_client(const char* dsthost, const char* dstport, int proto_osi3, int flags=0); // Flags: socket()
 		inet_dgram_client(const string& dsthost, const string& dstport, int proto_osi3, int flags=0);
 
+		void setup(int proto_osi3, int flags=0);
+		void setup(const char* dsthost, const char* dstport, int proto_osi3, int flags=0);
+		void setup(const string& dsthost, const string& dstport, int proto_osi3, int flags=0);
+
 		// actions
 		// connect/reconnect
 		void connect(const char* dsthost, const char* dstport);

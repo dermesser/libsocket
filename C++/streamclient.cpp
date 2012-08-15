@@ -40,7 +40,14 @@ namespace libsocket
 {
 	class stream_client_socket : public virtual socket
 	{
+		protected:
+
+		bool shut_rd;
+		bool shut_wr;
+
 		public:
+
+		stream_client_socket();
 
 		ssize_t snd(const void* buf, size_t len, int flags=0); // flags: send()
 		ssize_t rcv(void* buf, size_t len, int flags=0); // flags: recv()
@@ -52,9 +59,16 @@ namespace libsocket
 		void shutdown(int method=WRITE);
 	};
 
+	stream_client_socket::stream_client_socket()
+		: shut_rd(false), shut_wr(false)
+	{}
+
 	ssize_t stream_client_socket::rcv(void* buf, size_t len, int flags)
 	{
 		ssize_t recvd;
+
+		if ( shut_rd == true )
+			throw socket_exception(__FILE__,__LINE__,"stream_client_socket::rcv() - Socket has already been shut down!\n");
 
 		if ( sfd == -1 )
 			throw socket_exception(__FILE__,__LINE__,"stream_client_socket::rcv() - Socket is not connected!\n");
@@ -72,6 +86,9 @@ namespace libsocket
 	{
 		ssize_t read_bytes;
 		char* buffer;
+
+		if ( sock.shut_rd == true )
+			throw socket_exception(__FILE__,__LINE__,"stream_client_socket::operator>>(std::string) - Socket has already been shut down!\n");
 
 		buffer = new char[dest.size()];
 
@@ -98,6 +115,8 @@ namespace libsocket
 
 	stream_client_socket& operator<<(stream_client_socket& sock, const char* str)
 	{
+		if ( sock.shut_wr == true )
+			throw socket_exception(__FILE__,__LINE__,"stream_client_socket::operator<<(const char*) - Socket has already been shut down!\n");
 		if ( sock.sfd == -1 )
 			throw socket_exception(__FILE__,__LINE__,"<<(const char*) output: Socket not connected!\n");
 		if ( str == NULL )
@@ -113,6 +132,8 @@ namespace libsocket
 
 	stream_client_socket& operator<<(stream_client_socket& sock, string& str)
 	{
+		if ( sock.shut_wr == true )
+			throw socket_exception(__FILE__,__LINE__,"stream_client_socket::operator<<(std::string) - Socket has already been shut down!\n");
 		if ( sock.sfd == -1 )
 			throw socket_exception(__FILE__,__LINE__,"<<(std::string) output: Socket not connected!\n");
 
@@ -126,6 +147,8 @@ namespace libsocket
 	{
 		ssize_t snd_bytes;
 
+		if ( shut_wr == true )
+			throw socket_exception(__FILE__,__LINE__,"stream_client_socket::snd() - Socket has already been shut down!\n");
 		if ( sfd == -1 )
 			throw socket_exception(__FILE__,__LINE__,"stream_client_socket::snd() - Socket not connected!\n");
 		if ( buf == NULL || len == 0 )
@@ -139,9 +162,21 @@ namespace libsocket
 
 	void stream_client_socket::shutdown(int method)
 	{
+		if ( method & (READ|WRITE) && shut_rd == true && shut_wr == true )
+			return;
+		if ( method & READ && shut_rd == true )
+			return;
+		if ( method & WRITE && shut_wr == true )
+			return;
+
 		if ( 0 > shutdown_inet_stream_socket(sfd,method)) // It's equal whether we use this or its brother from libunixsocket
 		{
 			throw socket_exception(__FILE__,__LINE__,"stream_client_socket::shutdown() - Could not shutdown socket\n");
 		}
+
+		if ( method & READ )
+			shut_rd = true;
+		if ( method & WRITE )
+			shut_wr = true;
 	}
 }

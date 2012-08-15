@@ -63,6 +63,10 @@ namespace libsocket
 		inet_dgram_client(const char* dsthost, const char* dstport, int proto_osi3, int flags=0); // Flags: socket()
 		inet_dgram_client(const string& dsthost, const string& dstport, int proto_osi3, int flags=0);
 
+		void setup(int proto_osi3, int flags=0);
+		void setup(const char* dsthost, const char* dstport, int proto_osi3, int flags=0);
+		void setup(const string& dsthost, const string& dstport, int proto_osi3, int flags=0);
+
 		// actions
 		// connect/reconnect
 		void connect(const char* dsthost, const char* dstport);
@@ -73,46 +77,55 @@ namespace libsocket
 		// I/Os from dgram_socket and inet_dgram
 	};
 
-	// Managing
+	// Constructors
 
-	inet_dgram_client::inet_dgram_client(int proto_osi3, int flags)
+	inet_dgram_client::inet_dgram_client(int proto_osi3,int flags)
 	{
-		if ( -1 == (sfd = create_inet_dgram_socket(proto_osi3,flags)) )
-			throw socket_exception(__FILE__,__LINE__,"inet_dgram::inet_dgram() - Could not create inet dgram socket!\n");
-
-		proto = proto_osi3;
+		setup(proto_osi3,flags);
 	}
 
 	inet_dgram_client::inet_dgram_client(const char* dsthost, const char* dstport, int proto_osi3, int flags)
 	{
-		if ( -1 == (sfd = create_inet_dgram_socket(proto_osi3,flags)) )
-			throw socket_exception(__FILE__,__LINE__,"inet_dgram::inet_dgram() - Could not create inet dgram socket!\n");
-
-		try {
-			connect(dsthost,dstport);
-		} catch (socket_exception exc)
-		{
-			throw socket_exception(__FILE__,__LINE__,"inet_dgram::inet_dgram() - Could not connect dgram socket\n");
-		}
+		setup(dsthost,dstport,proto_osi3,flags);
 	}
 
 	inet_dgram_client::inet_dgram_client(const string& dsthost, const string& dstport, int proto_osi3, int flags)
 	{
+		setup(dsthost,dstport,proto_osi3,flags);
+	}
+
+	// Managing
+
+	void inet_dgram_client::setup(int proto_osi3, int flags)
+	{
 		if ( -1 == (sfd = create_inet_dgram_socket(proto_osi3,flags)) )
-			throw socket_exception(__FILE__,__LINE__,"inet_dgram::inet_dgram() - Could not create inet dgram socket!\n");
+			throw socket_exception(__FILE__,__LINE__,"inet_dgram_client::inet_dgram_client() - Could not create inet dgram socket!\n");
+	}
+
+	void inet_dgram_client::setup(const char* dsthost, const char* dstport, int proto_osi3, int flags)
+	{
+		if ( -1 == (sfd = create_inet_dgram_socket(proto_osi3,flags)) )
+			throw socket_exception(__FILE__,__LINE__,"inet_dgram_client::inet_dgram_client() - Could not create inet dgram socket!\n");
 
 		try {
 			connect(dsthost,dstport);
 		} catch (socket_exception exc)
 		{
-			throw socket_exception(__FILE__,__LINE__,"inet_dgram::inet_dgram() - Could not connect dgram socket\n");
+			throw socket_exception(__FILE__,__LINE__,"inet_dgram_client::inet_dgram_client() - Could not connect dgram socket\n");
 		}
+	}
+
+	void inet_dgram_client::setup(const string& dsthost, const string& dstport, int proto_osi3, int flags)
+	{
+		setup(dsthost.c_str(),dstport.c_str(),proto_osi3,flags);
 	}
 
 	void inet_dgram_client::connect(const char* dsthost, const char* dstport)
 	{
+		if ( sfd == -1 )
+			throw socket_exception(__FILE__,__LINE__,"inet_dgram_client::connect() - Socket has already been closed!\n");
 		if ( -1 == (connect_inet_dgram_socket(sfd,dsthost,dstport)) )
-			throw socket_exception(__FILE__,__LINE__,"inet_dgram::connect() - Could not connect dgram socket!\n");
+			throw socket_exception(__FILE__,__LINE__,"inet_dgram_client::connect() - Could not connect dgram socket!\n");
 
 		host = dsthost;
 		port = dstport;
@@ -121,8 +134,10 @@ namespace libsocket
 
 	void inet_dgram_client::connect(const string& dsthost, const string& dstport)
 	{
+		if ( sfd == -1 )
+			throw socket_exception(__FILE__,__LINE__,"inet_dgram_client::connect() - Socket has already been closed!\n");
 		if ( -1 == (connect_inet_dgram_socket(sfd,dsthost.c_str(),dstport.c_str())) )
-			throw socket_exception(__FILE__,__LINE__,"inet_dgram::connect() - Could not connect dgram socket!\n");
+			throw socket_exception(__FILE__,__LINE__,"inet_dgram_client::connect() - Could not connect dgram socket!\n");
 
 		host = dsthost;
 		port = dstport;
@@ -132,7 +147,7 @@ namespace libsocket
 	void inet_dgram_client::deconnect(void)
 	{
 		if ( -1 == (connect_inet_dgram_socket(sfd,0,0)) )
-			throw socket_exception(__FILE__,__LINE__,"inet_dgram::deconnect() - Could not disconnect!\n");
+			throw socket_exception(__FILE__,__LINE__,"inet_dgram_client::deconnect() - Could not disconnect!\n");
 
 		connected = false;
 		host.clear();

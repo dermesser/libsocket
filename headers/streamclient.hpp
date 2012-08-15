@@ -13,7 +13,14 @@ namespace libsocket
 {
 	class stream_client_socket : public virtual socket
 	{
+		protected:
+
+		bool shut_rd;
+		bool shut_wr;
+
 		public:
+
+		stream_client_socket();
 
 		ssize_t snd(const void* buf, size_t len, int flags=0); // flags: send()
 		ssize_t rcv(void* buf, size_t len, int flags=0); // flags: recv()

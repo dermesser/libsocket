@@ -102,9 +102,9 @@ This function creates, connects and returns a inet stream socket (TCP socket) wh
 
 * `host`: Destination host
 * `service`: Destination host's port
-* `proto_osi3`: OSI layer 3 protocol: either `IPv4` or `IPv6` (defined in `libinetsocket.h`). 
-* `flags` **is only available on Linux >= 2.6.27 - elsewise, specify 0 to avoid errors** 
-and allows to manipulate the `socket()` call. 
+* `proto_osi3`: OSI layer 3 protocol: either `IPv4` or `IPv6` (defined in `libinetsocket.h`).
+* `flags` **is only available on Linux >= 2.6.27 - elsewise, specify 0 to avoid errors**
+and allows to manipulate the `socket()` call.
 
 Returns on success the socket file descriptor number, on error -1.
 
@@ -132,7 +132,7 @@ To send and receive data from the freshly created socket, please use `read(2)` a
 Returns an integer describing a DGRAM (UDP) socket.
 
 * `proto_osi3` is `IPv4` (`AF_INET`) or `IPv6` (`AF_INET6`).
-* `flags` may be the flags specified in `socket(2)`, i.e. `SOCK_NONBLOCK` and/or `SOCK_CLOEXEC`. 
+* `flags` may be the flags specified in `socket(2)`, i.e. `SOCK_NONBLOCK` and/or `SOCK_CLOEXEC`.
 More than one flags may be ORed. **This argument is only available on Linux >= 2.6.27!**
 
 Like the function before, this function also has different prototypes on different platforms.
@@ -160,7 +160,7 @@ you got from `create_inet_dgram_socket()`. *The usage with STREAM sockets is not
 * `service` is the port on the remote host. Like in `host`, you may specify the port either as number ("123") or as service string
 ("ntp", "http", "gopher").
 * `sendto_flags` is available on all platforms. The value given here goes directly to the internal `sendto()` call. The
-flags which may be specified differ between the platforms. 
+flags which may be specified differ between the platforms.
 
 Returns the number of bytes sent, on error -1.
 
@@ -306,13 +306,13 @@ OpenBSD's `recvfrom(2)` says this about recvfrom()'s flags:
 ### `connect_inet_dgram_socket()`
 `int connect_inet_dgram_socket(int sfd, char* host, char* service)`
 
-Calling `connect(2)` on DGRAM sockets is possible - you do it with this function. 
+Calling `connect(2)` on DGRAM sockets is possible - you do it with this function.
 If you do it, subsequent calls to `read(2)` and `write(2)`
 will receive and send data only to the host and service you connected to. Sending/receiving to/from other hosts
-is still possible with `{recvfrom,sendto}_inet_dgram_socket()`. You may see an example covering this as explained here in 
+is still possible with `{recvfrom,sendto}_inet_dgram_socket()`. You may see an example covering this as explained here in
 `examples/echo_dgram_connected_client.c`.
 
-* `sfd` is the file descriptor 
+* `sfd` is the file descriptor
 * `host` and `service` are the target address parameters, like in `create_inet_stream_socket()`.
 
 You may call this function multiple times on one socket to reconnect it.
@@ -336,7 +336,7 @@ Returns 0 on success, -1 on error.
 ### `shutdown_inet_stream_socket()`
 `int shutdown_inet_stream_socket(int sfd, int method)`
 
-Calls `shutdown(2)` on `sfd`. 
+Calls `shutdown(2)` on `sfd`.
 
 * `sfd`: Socket file descriptor
 * `method` is either `READ`, `WRITE` or the ORed combination `READ|WRITE`.
@@ -446,7 +446,7 @@ Returns 0 upon success, -1 on error.
 ### `create_unix_server_socket()`
 `int create_unix_server_socket(const char* path, int socktype, int flags)`
 
-Creates a new UNIX server (passive) socket. 
+Creates a new UNIX server (passive) socket.
 
 * `path`: Path to which the new socket is bound to.
 * `socktype`: `STREAM` or `DGRAM` (symbolic constants from header files)

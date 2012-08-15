@@ -35,7 +35,6 @@ namespace libsocket
 	class inet_stream_server : public inet_socket
 	{
 		private:
-		bool listening;
 		bool nonblock;
 
 		public:

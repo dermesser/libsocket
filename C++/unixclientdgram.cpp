@@ -43,8 +43,6 @@ namespace libsocket
 {
 	class unix_dgram_client : public unix_dgram, public dgram_client_socket
 	{
-		private:
-		void _setup(const char* path, int flags=0);
 
 		public:
 
@@ -52,14 +50,18 @@ namespace libsocket
 		unix_dgram_client(const char* path, int flags=0);
 		unix_dgram_client(const string& path, int flags=0);
 
+		void setup(const char* path, int flags=0);
+
 		void connect(const char* path);
 		void connect(const string& path);
 
 		void deconnect(void);
 	};
 	//				Bind path, not connect!
-	void unix_dgram_client::_setup(const char* path, int flags)
+	void unix_dgram_client::setup(const char* path, int flags)
 	{
+		if ( sfd != -1 )
+			throw socket_exception(__FILE__,__LINE__,"unix_dgram_client::unix_dgram_client: Socket is already set up!\n");
 		sfd = create_unix_dgram_socket(path,flags);
 
 		_path.assign(path);
@@ -71,21 +73,23 @@ namespace libsocket
 
 	unix_dgram_client::unix_dgram_client(int flags)
 	{
-		_setup(0,flags); // bind to nowhere
+		setup(0,flags); // bind to nowhere
 	}
 
 	unix_dgram_client::unix_dgram_client(const char* path, int flags)
 	{
-		_setup(path,flags); // bind to path
+		setup(path,flags); // bind to path
 	}
 
 	unix_dgram_client::unix_dgram_client(const string& path, int flags)
 	{
-		_setup(path.c_str(),flags);
+		setup(path.c_str(),flags);
 	}
 
 	void unix_dgram_client::connect(const char* path)
 	{
+		if ( sfd == -1 )
+			throw socket_exception(__FILE__,__LINE__,"unix_dgram_client::connect() - Socket has already been closed!\n");
 		if ( connect_unix_dgram_socket(sfd,path) < 0 )
 			throw socket_exception(__FILE__,__LINE__,"unix_dgram_client::connect: Could not connect dgram socket!\n");
 

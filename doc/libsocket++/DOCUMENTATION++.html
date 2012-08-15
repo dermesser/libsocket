@@ -157,7 +157,7 @@ has to be 0 to avoid errors)</li>
 <pre><code>void destroy(void);
 </code></pre>
 
-<p>Close the socket and destroy the connection.</p>
+<p>Closes the socket and destroys the connection. After a call to <code>destroy()</code>, you may connect the socket object again using <code>connect()</code>.</p>
 
 <p>Return value 0 if successfull, otherwise -1. This function is actually <code>noexcept</code>, but not declared as such to avoid problems with non-C++11-Compilers. (If you need one: GCC and LLVM/clang both support widely C++11)</p>
 
@@ -229,10 +229,17 @@ inet_stream_server(const std::string&amp; bindhost, const std::string&amp; bindp
 
 <p>Create an internet tcp server (passive) socket.</p>
 
-<p>If you use the first constructor, you have to <code>setup()</code> the socket before using it. The latter constructor
-binds the socket to <code>bindhost:bindport</code> using <code>proto_osi3</code> (<code>IPv4</code> or <code>IPv6</code> or <code>BOTH</code>).</p>
+<p>If you use the first constructor, you have to <code>setup()</code> the socket before using it. The latter constructors binds the socket to <code>bindhost:bindport</code> using <code>proto_osi3</code> (<code>IPv4</code> or <code>IPv6</code> or <code>BOTH</code>).</p>
 
 <p><code>flags</code> are supplied to the internal <code>socket(2)</code> call.</p>
+
+<h3><code>setup()</code></h3>
+
+<pre><code>void setup(const char* bindhost, const char* bindport, int proto_osi3, int flags=0);
+void setup(const std::string&amp; bindhost, const std::string&amp; bindport, int proto_osi3, int flags=0);
+</code></pre>
+
+<p>If you used the <code>void</code>-Constructor, you have to setup the server socket to bind it, set it in listening state etc. Setup is done with this function (which is quite similar to the constructors). You may use this function also if you <code>close()</code>d the socket and want to reuse it.</p>
 
 <h3><code>accept()</code></h3>
 
@@ -253,7 +260,7 @@ binds the socket to <code>bindhost:bindport</code> using <code>proto_osi3</code>
 <pre><code>int destroy(void);
 </code></pre>
 
-<p>Inherited from <code>socket</code> class. Destroy (close) socket.</p>
+<p>Closes the socket and destroys the connection. After a call to <code>destroy()</code>, you may re-bind the server socket object again using <code>setup()</code>.</p>
 
 <p>Return value 0 if successful, otherwise -1.</p>
 

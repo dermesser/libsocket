@@ -41,9 +41,6 @@ namespace libsocket
 
 	class unix_stream_server : public unix_socket
 	{
-		private:
-		bool listening;
-
 		public:
 
 		unix_stream_server(void);
@@ -57,28 +54,25 @@ namespace libsocket
 	};
 
 	unix_stream_server::unix_stream_server(void)
-		: listening(false)
 	{
 	}
 
 	unix_stream_server::unix_stream_server(const char* path, int flags)
-		: listening(false)
 	{
 		setup(path,flags);
 	}
 
 	unix_stream_server::unix_stream_server(const string& path, int flags)
-		: listening(false)
 	{
 		setup(path,flags);
 	}
 
 	void unix_stream_server::setup(const char* path, int flags)
 	{
+		if ( sfd != -1 )
+			throw socket_exception(__FILE__,__LINE__,"unix_stream_server::setup: Socket already set up!\n");
 		if ( path == NULL )
 			throw socket_exception(__FILE__,__LINE__,"unix_stream_server::setup: Path is NULL!\n");
-		if ( listening == true )
-			throw socket_exception(__FILE__,__LINE__,"unix_stream_server::setup: Server socket already created!\n");
 
 		sfd = create_unix_server_socket(path,STREAM,flags);
 
@@ -86,8 +80,6 @@ namespace libsocket
 
 		if ( sfd < 0 )
 			throw socket_exception(__FILE__,__LINE__,"unix_stream_server::setup: Error at creating UNIX stream server socket!\n");
-
-		listening = true;
 	}
 
 	void unix_stream_server::setup(const string& path, int flags)
@@ -97,7 +89,7 @@ namespace libsocket
 
 	unix_stream_client* unix_stream_server::accept(int flags)
 	{
-		if (listening != true)
+		if ( sfd == -1 )
 			throw socket_exception(__FILE__,__LINE__,"unix_stream_server::accept: Socket not set up yet!\n");
 
 		unix_stream_client* client = new unix_stream_client;

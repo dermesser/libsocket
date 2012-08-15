@@ -83,6 +83,10 @@ namespace libsocket
 
 		if ( sfd < 0 )
 			throw socket_exception(__FILE__,__LINE__,"unix_stream_client::unix_stream_client: Could not create and connect UNIX socket!\n");
+
+		// New file descriptor, therefore reset shutdown flags
+		shut_rd = false;
+		shut_wr = false;
 	}
 
 	void unix_stream_client::connect(const string& path, int socket_flags)

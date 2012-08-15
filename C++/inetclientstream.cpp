@@ -92,20 +92,14 @@ namespace libsocket
 		host = dsthost;
 		port = dstport;
 		proto = proto_osi3;
+
+		// New file descriptor, therefore reset shutdown flags
+		shut_rd = false;
+		shut_wr = false;
 	}
 
 	void inet_stream::connect(const string& dsthost, const string& dstport, int proto_osi3, int flags)
 	{
-		if ( sfd != -1 )
-			throw socket_exception(__FILE__,__LINE__,"inet_stream::connect() - Already connected!\n");
-
-		sfd = create_inet_stream_socket(dsthost.c_str(),dstport.c_str(),proto_osi3,flags);
-
-		if ( sfd < 0 )
-			throw socket_exception(__FILE__,__LINE__,"inet_stream::connect() - Could not create socket\n");
-
-		host = dsthost;
-		port = dstport;
-		proto = proto_osi3;
+		connect(dsthost.c_str(),dstport.c_str(),proto_osi3,flags);
 	}
 }

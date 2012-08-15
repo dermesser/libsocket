@@ -54,7 +54,6 @@ namespace libsocket
 	class inet_stream_server : public inet_socket
 	{
 		private:
-		bool listening;
 		bool nonblock;
 
 		public:
@@ -73,25 +72,25 @@ namespace libsocket
 	};
 
 	inet_stream_server::inet_stream_server(void)
-		: listening(false), nonblock(false)
+		: nonblock(false)
 	{
 	}
 
 	inet_stream_server::inet_stream_server(const char* bindhost, const char* bindport, int proto_osi3, int flags)
-		: listening(false), nonblock(false)
+		: nonblock(false)
 	{
 		setup(bindhost,bindport,proto_osi3,flags);
 	}
 
 	inet_stream_server::inet_stream_server(const string& bindhost, const string& bindport, int proto_osi3, int flags)
-		: listening(false), nonblock(false)
+		: nonblock(false)
 	{
 		setup(bindhost,bindport,proto_osi3,flags);
 	}
 
 	void inet_stream_server::setup(const char* bindhost, const char* bindport, int proto_osi3, int flags)
 	{
-		if ( listening == true )
+		if ( sfd != -1 )
 			throw socket_exception(__FILE__,__LINE__,"inet_stream_server::inet_stream_server() - already bound and listening!\n");
 		if ( bindhost == 0 || bindport == 0 )
 			throw socket_exception(__FILE__,__LINE__,"inet_stream_server::inet_stream_server() - at least one bind argument invalid!\n");
@@ -101,7 +100,6 @@ namespace libsocket
 		host = string(bindhost);
 		port = string(bindport);
 
-		listening = true;
 		nonblock = false;
 # ifdef __linux__
 		if (flags & SOCK_NONBLOCK)
@@ -111,7 +109,7 @@ namespace libsocket
 
 	void inet_stream_server::setup(const string& bindhost, const string& bindport, int proto_osi3, int flags)
 	{
-		if ( listening == true )
+		if ( sfd != -1 )
 			throw socket_exception(__FILE__,__LINE__,"inet_stream_server::inet_stream_server() - already bound and listening!\n");
 		if ( bindhost.empty() || bindport.empty() )
 			throw socket_exception(__FILE__,__LINE__,"inet_stream_server::inet_stream_server() - at least one bind argument invalid!\n");
@@ -121,7 +119,6 @@ namespace libsocket
 		host = string(bindhost);
 		port = string(bindport);
 
-		listening = true;
 		nonblock = false;
 # ifdef __linux__
 		if (flags & SOCK_NONBLOCK)
@@ -131,7 +128,7 @@ namespace libsocket
 
 	inet_stream* inet_stream_server::accept(int numeric,int accept_flags)
 	{
-		if ( listening != true )
+		if ( sfd < 0 )
 			throw socket_exception(__FILE__,__LINE__,"inet_stream_server::accept() - stream server socket is not in listening state -- please call first setup()!\n");
 
 		char* src_host = new char[1024];
