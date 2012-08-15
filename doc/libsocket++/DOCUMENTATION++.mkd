@@ -123,26 +123,25 @@ the C string
 has to be 0 to avoid errors)
 
 ### `shutdown()`
-Declared in `clientstream.hpp`, defined in `clientstream.cpp`
+Declared in `streamclient.hpp`, defined in `streamclient.cpp`, inherited from `stream_client_socket`
 
 	void shutdown(int method);
 
-Shuts the socket down (`shutdown(2)`).
+Shuts the socket down (`shutdown(2)`). If you shut it down using the method `WRITE`, the peer receives an `EOF` on his socket and you may not write to the socket anymore. If you shut it down using `READ`, you may not read anymore from the socket.
 
-`method` is `READ`, `WRITE`, or the ORed combination, `READ|WRITE`. `READ` and `WRITE` are defined
-in `inetsocket.hpp`
+`method` is `READ`, `WRITE`, or the ORed combination, `READ|WRITE`. `READ` and `WRITE` are defined in `streamclient.hpp`
 
 ### Destroy Functions
-Declared in `socket.hpp`, defined in `socket.cpp`
+Declared in `socket.hpp`, defined in `socket.cpp`, inherited from `socket`
 
 	void destroy(void);
 
 Close the socket and destroy the connection.
 
-Return value 0 if successfull, otherwise -1.
+Return value 0 if successfull, otherwise -1. This function is actually `noexcept`, but not declared as such to avoid problems with non-C++11-Compilers. (If you need one: GCC and LLVM/clang both support widely C++11)
 
 ### Output/Upload Functions
-Inherited from `stream_client_socket` (`streamclient.cpp`)
+Inherited from `stream_client_socket` (defined in `streamclient.cpp`)
 
 	ssize_t snd(const void* buf, size_t len, int flags=0);
 
@@ -166,7 +165,7 @@ As you can see at the return value, you may cascade it (from `examples++/http.c`
 Throws exceptions e.g. if the socket is not connected or `write(2)` returned -1.
 
 ### Input/Download Functions
-Declared in `inetclientstream.hpp`, defined in `inetclientstream.cpp`
+Inherited from `stream_client_socket` (defined in `streamclient.cpp`)
 
 	ssize_t rcv(void* buf, size_t len, int flags=0);
 
@@ -186,6 +185,8 @@ Declared in `inetbase.hpp`, defined in `inetbase.cpp`
 `gethost()` returns a C++ std::string containing the host to which the socket is connected.
 
 `getport()` returns a C++ std::string containing the port/service to which the socket is connected.
+
+<!-- If you really want to know it, there's also the getter `int getfd() const` which returns the file descriptor -->
 
 ## `inet_stream_server` - TCP Internet server
 Declared in `inetserverstream.hpp`, defined in `inetserverstream.cpp`
@@ -300,7 +301,7 @@ Usage like streams:
 	sock << "abc" << std::string("def");
 
 ### Receive/Download Functions
-Defined in `dgramclient.cpp`
+Defined in `dgramclient.cpp` (inherited from `dgram_client_socket`)
 
 	ssize_t rcv(void* buf, size_t len, int flags=0);
 
@@ -329,7 +330,7 @@ Stream-like read from (connected!) socket: Reads at most `dest.size()` bytes fro
 the number of read characters.
 
 ### Getters
-Declared in `inetbase.hpp`, defined in `inetbase.cpp`
+Declared in `inetbase.hpp`, defined in `inetbase.cpp`, inherited from `inet_socket`
 
 	std::string gethost(void) const;
 	std::string getport(void) const;
@@ -337,6 +338,12 @@ Declared in `inetbase.hpp`, defined in `inetbase.cpp`
 `gethost()` returns a C++ std::string containing the host to which the socket is connected (if it is connected!)
 
 `getport()` returns a C++ std::string containing the port/service to which the socket is connected (if it is!).
+
+Defined in `dgramclient.cpp`, inherited from `dgram_client_socket`
+
+	bool getconn(void) const;
+
+`getconn()` returns a boolean value which specifies if the socket is connected (true) or not (false).
 
 ## `inet_dgram_server` - INET DGRAM server sockets
 Declared in `inetserverdgram.hpp`, defined in `inetserverdgram.hpp`.
@@ -354,7 +361,6 @@ Create and bind a DGRAM socket to `host:port`. The only difference to `inet_dgra
 It is not possible to call `connect(), rcv(), snd()` on such sockets; the `rcvfrom(), sndto()` functions may be called, of course.
 
 ### Send/Upload
-
 Defined in `inetdgram.cpp`, inherited from `inet_dgram`
 
 	1: ssize_t sndto(const void* buf, size_t len, const char* host, const char* port, int sndto_flags=0);
@@ -408,11 +414,13 @@ Defined in `unixclientstream.cpp`
 Connect the socket to `path`. `socket_flags` are given to `socket(2)`.
 
 ### `shutdown()`
-Defined in `unixclientstream.cpp`
+Defined in `streamclient.cpp`, inherited from `stream_client_socket`
 
 	void shutdown(int method=WRITE);
 
-Shut the socket down. `method` is `READ`, `WRITE` or `READ|WRITE` and specifies how the socket should be shut down.
+Shuts the socket down (`shutdown(2)`). If you shut it down using the method `WRITE`, the peer receives an `EOF` on his socket and you may not write to the socket anymore. If you shut it down using `READ`, you may not read anymore from the socket.
+
+Using `READ|WRITE` (bitwise OR) shuts the socket completely down.
 
 ### `snd() rcv()`
 Defined in `streamclient.cpp`, inherited from `stream_client_socket`
@@ -502,7 +510,7 @@ Connect the DGRAM socket to the specified path. You may call `snd()` or `rcv()` 
 Disconnect the DGRAM socket. (Connect it to NULL).
 
 ###I/O
-Inherited from `dgram_client_socket`
+Inherited from `dgram_client_socket` (`dgramclient.cpp`)
 
 	friend dgram_client_socket& operator<<(dgram_client_socket& sock, const char* str);
 	friend dgram_client_socket& operator<<(dgram_client_socket& sock, std::string& str);
@@ -511,7 +519,7 @@ Inherited from `dgram_client_socket`
 	ssize_t snd(const void* buf, size_t len, int flags=0); // flags: send()
 	ssize_t rcv(void* buf, size_t len, int flags=0);
 
-Inherited from `unix_dgram`
+Inherited from `unix_dgram` (`unixdgram.cpp`)
 
 	ssize_t sndto(const void* buf, size_t length, const char* path, int sendto_flags=0);
 	ssize_t sndto(const void* buf, size_t length, const std::string& path, int sendto_flags=0);
@@ -528,6 +536,12 @@ Defined in `unixbase.cpp`, inherited from `unix_socket`
 
 Get the peer socket path (to which the socket is connected, if it's connected).
 If the socket is not connected, an empty string is returned.
+
+Defined in `dgramclient.cpp`, inherited from `dgram_client_socket`
+
+	bool getconn(void)
+
+`getconn()` returns a boolean value which specifies if the socket is connected (true) or not (false).
 
 ##`unix_dgram_server`
 Defined in `unixserverdgram.cpp`
@@ -579,9 +593,7 @@ And yes, I know, it's a gorgeous return type. Don't panic, there's a typedef in 
 		typedef std::pair<std::vector<libsocket::socket*>, std::vector<libsocket::socket*> > ready_socks;
 	}
 
-If you take a closer look at the return type, you'll notice that it is a `std::pair` consisting of two `std::vectors` consisting of pointers to
-the `socket` base class. The first vector contains pointers to all sockets which are ready for reading, the second vector
-contains pointers to all sockets ready for writing.
+If you take a closer look at the return type, you'll notice that it is a `std::pair` consisting of two `std::vectors` consisting of pointers to the `socket` base class. The first vector contains pointers to all sockets which are ready for reading, the second vector contains pointers to all sockets ready for writing.
 
 A typical program snippet using this class could look like this example:
 

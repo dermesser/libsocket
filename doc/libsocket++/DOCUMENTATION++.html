@@ -141,30 +141,29 @@ has to be 0 to avoid errors)</li>
 
 <h3><code>shutdown()</code></h3>
 
-<p>Declared in <code>clientstream.hpp</code>, defined in <code>clientstream.cpp</code></p>
+<p>Declared in <code>streamclient.hpp</code>, defined in <code>streamclient.cpp</code>, inherited from <code>stream_client_socket</code></p>
 
 <pre><code>void shutdown(int method);
 </code></pre>
 
-<p>Shuts the socket down (<code>shutdown(2)</code>).</p>
+<p>Shuts the socket down (<code>shutdown(2)</code>). If you shut it down using the method <code>WRITE</code>, the peer receives an <code>EOF</code> on his socket and you may not write to the socket anymore. If you shut it down using <code>READ</code>, you may not read anymore from the socket.</p>
 
-<p><code>method</code> is <code>READ</code>, <code>WRITE</code>, or the ORed combination, <code>READ|WRITE</code>. <code>READ</code> and <code>WRITE</code> are defined
-in <code>inetsocket.hpp</code></p>
+<p><code>method</code> is <code>READ</code>, <code>WRITE</code>, or the ORed combination, <code>READ|WRITE</code>. <code>READ</code> and <code>WRITE</code> are defined in <code>streamclient.hpp</code></p>
 
 <h3>Destroy Functions</h3>
 
-<p>Declared in <code>socket.hpp</code>, defined in <code>socket.cpp</code></p>
+<p>Declared in <code>socket.hpp</code>, defined in <code>socket.cpp</code>, inherited from <code>socket</code></p>
 
 <pre><code>void destroy(void);
 </code></pre>
 
 <p>Close the socket and destroy the connection.</p>
 
-<p>Return value 0 if successfull, otherwise -1.</p>
+<p>Return value 0 if successfull, otherwise -1. This function is actually <code>noexcept</code>, but not declared as such to avoid problems with non-C++11-Compilers. (If you need one: GCC and LLVM/clang both support widely C++11)</p>
 
 <h3>Output/Upload Functions</h3>
 
-<p>Inherited from <code>stream_client_socket</code> (<code>streamclient.cpp</code>)</p>
+<p>Inherited from <code>stream_client_socket</code> (defined in <code>streamclient.cpp</code>)</p>
 
 <pre><code>ssize_t snd(const void* buf, size_t len, int flags=0);
 </code></pre>
@@ -192,7 +191,7 @@ C strings (<code>const char*</code>, you may also use <code>char*</code>) and C+
 
 <h3>Input/Download Functions</h3>
 
-<p>Declared in <code>inetclientstream.hpp</code>, defined in <code>inetclientstream.cpp</code></p>
+<p>Inherited from <code>stream_client_socket</code> (defined in <code>streamclient.cpp</code>)</p>
 
 <pre><code>ssize_t rcv(void* buf, size_t len, int flags=0);
 </code></pre>
@@ -216,6 +215,8 @@ std::string getport(void) const;
 <p><code>gethost()</code> returns a C++ std::string containing the host to which the socket is connected.</p>
 
 <p><code>getport()</code> returns a C++ std::string containing the port/service to which the socket is connected.</p>
+
+<!-- If you really want to know it, there's also the getter `int getfd() const` which returns the file descriptor -->
 
 <h2><code>inet_stream_server</code> - TCP Internet server</h2>
 
@@ -352,7 +353,7 @@ Usage like streams:</p>
 
 <h3>Receive/Download Functions</h3>
 
-<p>Defined in <code>dgramclient.cpp</code></p>
+<p>Defined in <code>dgramclient.cpp</code> (inherited from <code>dgram_client_socket</code>)</p>
 
 <pre><code>ssize_t rcv(void* buf, size_t len, int flags=0);
 </code></pre>
@@ -385,7 +386,7 @@ the number of read characters.</p>
 
 <h3>Getters</h3>
 
-<p>Declared in <code>inetbase.hpp</code>, defined in <code>inetbase.cpp</code></p>
+<p>Declared in <code>inetbase.hpp</code>, defined in <code>inetbase.cpp</code>, inherited from <code>inet_socket</code></p>
 
 <pre><code>std::string gethost(void) const;
 std::string getport(void) const;
@@ -394,6 +395,13 @@ std::string getport(void) const;
 <p><code>gethost()</code> returns a C++ std::string containing the host to which the socket is connected (if it is connected!)</p>
 
 <p><code>getport()</code> returns a C++ std::string containing the port/service to which the socket is connected (if it is!).</p>
+
+<p>Defined in <code>dgramclient.cpp</code>, inherited from <code>dgram_client_socket</code></p>
+
+<pre><code>bool getconn(void) const;
+</code></pre>
+
+<p><code>getconn()</code> returns a boolean value which specifies if the socket is connected (true) or not (false).</p>
 
 <h2><code>inet_dgram_server</code> - INET DGRAM server sockets</h2>
 
@@ -479,12 +487,14 @@ void connect(const std::string&amp; path, int socket_flags=0);
 
 <h3><code>shutdown()</code></h3>
 
-<p>Defined in <code>unixclientstream.cpp</code></p>
+<p>Defined in <code>streamclient.cpp</code>, inherited from <code>stream_client_socket</code></p>
 
 <pre><code>void shutdown(int method=WRITE);
 </code></pre>
 
-<p>Shut the socket down. <code>method</code> is <code>READ</code>, <code>WRITE</code> or <code>READ|WRITE</code> and specifies how the socket should be shut down.</p>
+<p>Shuts the socket down (<code>shutdown(2)</code>). If you shut it down using the method <code>WRITE</code>, the peer receives an <code>EOF</code> on his socket and you may not write to the socket anymore. If you shut it down using <code>READ</code>, you may not read anymore from the socket.</p>
+
+<p>Using <code>READ|WRITE</code> (bitwise OR) shuts the socket completely down.</p>
 
 <h3><code>snd() rcv()</code></h3>
 
@@ -594,7 +604,7 @@ void connect(const std::string&amp; path);
 
 <h3>I/O</h3>
 
-<p>Inherited from <code>dgram_client_socket</code></p>
+<p>Inherited from <code>dgram_client_socket</code> (<code>dgramclient.cpp</code>)</p>
 
 <pre><code>friend dgram_client_socket&amp; operator&lt;&lt;(dgram_client_socket&amp; sock, const char* str);
 friend dgram_client_socket&amp; operator&lt;&lt;(dgram_client_socket&amp; sock, std::string&amp; str);
@@ -604,7 +614,7 @@ ssize_t snd(const void* buf, size_t len, int flags=0); // flags: send()
 ssize_t rcv(void* buf, size_t len, int flags=0);
 </code></pre>
 
-<p>Inherited from <code>unix_dgram</code></p>
+<p>Inherited from <code>unix_dgram</code> (<code>unixdgram.cpp</code>)</p>
 
 <pre><code>ssize_t sndto(const void* buf, size_t length, const char* path, int sendto_flags=0);
 ssize_t sndto(const void* buf, size_t length, const std::string&amp; path, int sendto_flags=0);
@@ -624,6 +634,13 @@ ssize_t rcvfrom(std::string&amp; buf, std::string&amp; source, int recvfrom_flag
 
 <p>Get the peer socket path (to which the socket is connected, if it's connected).
 If the socket is not connected, an empty string is returned.</p>
+
+<p>Defined in <code>dgramclient.cpp</code>, inherited from <code>dgram_client_socket</code></p>
+
+<pre><code>bool getconn(void)
+</code></pre>
+
+<p><code>getconn()</code> returns a boolean value which specifies if the socket is connected (true) or not (false).</p>
 
 <h2><code>unix_dgram_server</code></h2>
 
@@ -686,9 +703,7 @@ And yes, I know, it's a gorgeous return type. Don't panic, there's a typedef in 
 }
 </code></pre>
 
-<p>If you take a closer look at the return type, you'll notice that it is a <code>std::pair</code> consisting of two <code>std::vectors</code> consisting of pointers to
-the <code>socket</code> base class. The first vector contains pointers to all sockets which are ready for reading, the second vector
-contains pointers to all sockets ready for writing.</p>
+<p>If you take a closer look at the return type, you'll notice that it is a <code>std::pair</code> consisting of two <code>std::vectors</code> consisting of pointers to the <code>socket</code> base class. The first vector contains pointers to all sockets which are ready for reading, the second vector contains pointers to all sockets ready for writing.</p>
 
 <p>A typical program snippet using this class could look like this example:</p>
 
