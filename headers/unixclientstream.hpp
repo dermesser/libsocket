@@ -34,9 +34,6 @@ namespace libsocket
 
 	class unix_stream_client : public unix_socket, public stream_client_socket
 	{
-		private:
-		string peer_path;
-
 		public:
 
 		unix_stream_client(void);

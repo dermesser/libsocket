@@ -58,6 +58,7 @@ namespace libsocket
 		void connect(const char* path, int socket_flags=0);
 		void connect(const string& path, int socket_flags=0);
 
+		friend class unix_stream_server;
 	};
 
 	unix_stream_client::unix_stream_client(void) {}

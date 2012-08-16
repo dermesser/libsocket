@@ -39,6 +39,8 @@ namespace libsocket
 
 		public:
 		unix_socket();
+
+		string get_path(void);
 	};
 }
 # endif

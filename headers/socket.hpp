@@ -34,7 +34,9 @@ namespace libsocket
 
 		public:
 
-		virtual ~socket();
+		socket();
+
+		~socket();
 
 		virtual int destroy(void);
 

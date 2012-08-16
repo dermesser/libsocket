@@ -39,9 +39,9 @@ namespace libsocket
 		public:
 
 		socket();
-		virtual ~socket();
+		~socket();
 
-	 	virtual int destroy(void);
+		virtual int destroy(void);
 
 		int getfd(void) const;
 	};
