@@ -10,9 +10,10 @@
 */
 
 /*
- * This example is a little echo server processing only one request. It may be used with telnet.
+ * This example is a little echo server processing infinite requests.
  * If it receives a string, it writes the string back to the client and to stdout.
- *
+ * This server uses UDP and listens on 0.0.0.0:1234. It is used with echo_dgram_client.c
+ * or echo_dgram_connect_client.c.
 */
 
 int main(void)

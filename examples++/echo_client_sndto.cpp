@@ -4,6 +4,10 @@
 # include "../headers/exception.hpp"
 # include <cstring>
 
+/*
+ * Sends and receives messages using the sndto() and rcvfrom functions.
+ */
+
 int main(void)
 {
 	using std::string;

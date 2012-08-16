@@ -3,6 +3,11 @@
 # include <unistd.h>
 # include "../headers/libinetsocket.h"
 
+/*
+ * Accept one (1) connection from a transmission_client
+ * and print the received message.
+ */
+
 int main(void)
 {
 	int cfd, sfd = create_inet_server_socket("::","55555",TCP,IPv6,0);

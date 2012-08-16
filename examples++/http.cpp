@@ -2,6 +2,9 @@
 # include <string>
 # include "../headers/inetclientstream.hpp"
 
+// HTTP client demonstrating the use of stream operators
+// on STREAM sockets
+
 int main(void)
 {
 	using std::string;

@@ -2,6 +2,8 @@
 # include <string>
 # include "../headers/inetclientstream.hpp"
 
+// HTTP client demonstrating the use of snd and rcv on STREAM sockets
+
 int main(void)
 {
 	using std::string;

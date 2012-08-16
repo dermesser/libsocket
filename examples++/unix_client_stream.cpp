@@ -4,6 +4,8 @@
 # include <iostream>
 # include <string.h>
 
+// Builds a connection to /tmp/unixsocket and sends/receives data using it.
+
 int main(void)
 {
 	using libsocket::unix_stream_client;

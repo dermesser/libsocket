@@ -8,6 +8,14 @@
 # include "../headers/socket.hpp"
 # include "../headers/select.hpp"
 
+/*
+ * This server is a bit more complicated than
+ * you will need later. It uses the selectset class
+ * to demonstrate its usage.
+ * When a client connects, it first sends a message and
+ * receives then the client's answer.
+ */
+
 int main(void)
 {
 	using std::string;

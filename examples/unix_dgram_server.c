@@ -6,7 +6,7 @@
 /*
  * This example is part of libsocket/libunixsocket
  * It may be used with the other part, unix_dgram_client.c
- * It receives up to 127 bytes from a client and prints it on stdout
+ * It receives up to 127 bytes from a client and prints it on stdout.
  *
 */
 

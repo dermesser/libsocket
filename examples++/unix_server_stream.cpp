@@ -5,6 +5,8 @@
 # include <iostream>
 # include <string.h>
 
+// Accepts a connection, prints the received message and responds with another message.
+
 int main(void)
 {
 	using std::string;
@@ -23,6 +25,10 @@ int main(void)
 		client = srv.accept();
 
 		client->rcv(answer,127);
+		// Alternatively:
+		//string xyz;
+		//xyz.resize(127);
+		//*client >> xyz;
 
 		std::cout << answer;
 

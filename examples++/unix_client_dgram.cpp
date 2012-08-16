@@ -3,6 +3,8 @@
 # include "../headers/exception.hpp"
 # include "../headers/unixclientdgram.hpp"
 
+// Sends a little log message via DGRAM to the syslogd
+
 int main(void)
 {
 	std::string sock = "/dev/log";

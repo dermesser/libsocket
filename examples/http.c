@@ -6,8 +6,11 @@
 
 /*
  * This example is part of libsocket/libinetsocket
- * It may be used with the most HTTP servers
- *
+ * It may be used with the most HTTP servers. 
+ * 
+ * This is a almost complete HTTP client, simply
+ * writing the data to stdout. There's no more code
+ * with libsocket!
 */
 
 int main(void)

@@ -3,7 +3,8 @@
 # include "../headers/exception.hpp"
 # include <cstring>
 
-// To be used with examples/echo_dgram_server.c
+// Server for echo_client_*.cpp
+// simply receives a message and sends an answer.
 
 int main(void)
 {

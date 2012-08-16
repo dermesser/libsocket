@@ -6,6 +6,13 @@
 # include <unistd.h>
 # include <stdlib.h>
 
+/*
+ * This program connects to host:port (usually localhost),
+ * closes the socket, reopens it with the same parameters
+ * (to show what you may do with sockets... ;), receives
+ * a message from the server and sends a message back.
+*/
+
 int main(void)
 {
 	using std::string;

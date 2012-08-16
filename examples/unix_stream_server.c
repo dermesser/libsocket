@@ -6,6 +6,8 @@
  * This example is part of libsocket/libunixsocket
  * It may be used with the other part, unix_stream_client.c
  *
+ * The server accepts a connection, reads 15 bytes and writes them
+ * first back to the client and then to stdout.
 */
 
 int main(void)

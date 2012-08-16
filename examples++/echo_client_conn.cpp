@@ -3,6 +3,10 @@
 # include "../headers/inetclientdgram.hpp"
 # include "../headers/exception.hpp"
 
+/*
+ * Sends and receives messages via connected UDP sockets
+ */
+
 int main(void)
 {
 	using std::string;

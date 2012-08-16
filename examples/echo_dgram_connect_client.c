@@ -6,6 +6,8 @@
 
 /*
  * This example is part of libsocket/libinetsocket
+ * It works similar to echo_dgram_client.c, but uses
+ * connected datagram sockets.
  * 
 */
 

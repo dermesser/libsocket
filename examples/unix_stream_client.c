@@ -5,8 +5,9 @@
 
 /*
  * This example is part of libsocket/libunixsocket
- * It may be used with the other part, unix_stream_client.c
- *
+ * It may be used with the other part, unix_stream_server.c
+ * This example simply sends a string to the echo server
+ * and tries to receive the answer and print it.
 */
 
 int main(void)

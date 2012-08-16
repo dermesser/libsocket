@@ -6,7 +6,10 @@
 
 /*
  * This example is part of libsocket/libinetsocket
- * 
+ *
+ * It sends a UDP packet containing the message 'abcde' to
+ * localhost:1234 (usually an echo_dgram_server.c instance) 
+ *
 */
 
 int main(void)
