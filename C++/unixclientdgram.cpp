@@ -64,7 +64,8 @@ namespace libsocket
 			throw socket_exception(__FILE__,__LINE__,"unix_dgram_client::unix_dgram_client: Socket is already set up!\n");
 		sfd = create_unix_dgram_socket(path,flags);
 
-		_path.assign(path);
+		if ( path )
+			_path.assign(path);
 
 		if ( sfd < 0 )
 			throw socket_exception(__FILE__,__LINE__,"unix_dgram_client::unix_dgram_client: Could not create unix dgram client socket!\n");
