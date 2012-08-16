@@ -20,12 +20,17 @@ or use some things or the whole namespace:
 	using libsocket::inet_stream;
 
 ## Usage in Your Application
+### Dynamic
 
+Build and install the library files using the Makefile and the documentation in README.md. Then link your program against libsocket using the instructions in LINKAGE.
+
+### Static
 Compile the files (like mentioned in DOCUMENTATION.md) like every other:
 
 	$ g++ -c */*.cpp
 	$ g++ *.o
 or
+
 	$ g++ */*.cpp
 
 Please note that libsocket++ is only an object-oriented wrapper around libsocket and not independant; you always have to compile
@@ -35,9 +40,6 @@ To reduce the size of the executables, it is recommended to compile your code on
 For example, if you have a program which serves as client for a UDP based application:
 
 	$ g++ -o client client.cpp /path/to/libsocket/C/libinetsocket.c /path/to/libsocket/C++/{socket,inetbase,inetdgram,inetclientdgram}.cpp
-
-**NOTE**: *It's way better to use the shared object/dynamic libraries. Please look at README.md and LINKAGE for ways how to use libsocket as dynamic library.*
-
 
 ## Class Hierarchy and names
 
@@ -83,11 +85,10 @@ Example for error handling:
 
 # libinetsocket++
 
-libinetsocket++ is the wrapper around libinetsocket.
+libinetsocket++ is the wrapper around (C) libinetsocket.
 
 
 ## `inet_stream` Class: Internet TCP Client Stream Sockets
-### Constructors
 Declared in `inetclientstream.hpp`, defined in `inetclientstream.cpp`
 
 Please note that the name is _not_ `inet_stream_client`!
@@ -113,7 +114,7 @@ Declared in `inetclientstream.hpp`, defined in `inetclientstream.cpp`
 	void connect(const char* host, const char* port, int proto_osi3, int flags=0);
 	void connect(const string& dsthost, const string& dstport, int proto_osi3, int flags);
 
-Connects the socket. Throws an exception if the socket is already connected.
+Connects the socket. Throws an exception if the socket is already connected. May be called after a `destroy()` call to re-connect the socket.
 
 - `host`: Destination host; if you have the host as `std::string`, use its routine `std::string::c_str()` to get
 the C string
@@ -121,6 +122,8 @@ the C string
 - `proto_osi3`: `IPv4` or `IPv6` (pp macros; defined in header file `inetsocket.hpp`)
 - `flags`: Default 0, can be `SOCK_NONBLOCK` or `SOCK_CLOEXEC` (see: `socket(2)`; on other platforms than Linux
 has to be 0 to avoid errors)
+
+*Note: This function does actually more than only connect the socket. Because of some internal requirements (the void constructor, libinetsocket design), this function also *creates* the socket.*
 
 ### `shutdown()`
 Declared in `streamclient.hpp`, defined in `streamclient.cpp`, inherited from `stream_client_socket`

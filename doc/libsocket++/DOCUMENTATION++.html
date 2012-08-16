@@ -24,14 +24,22 @@ and maintain it twice, libsocket++ calls the functions from libsocket.</p>
 
 <h2>Usage in Your Application</h2>
 
+<h3>Dynamic</h3>
+
+<p>Build and install the library files using the Makefile and the documentation in README.md. Then link your program against libsocket using the instructions in LINKAGE.</p>
+
+<h3>Static</h3>
+
 <p>Compile the files (like mentioned in DOCUMENTATION.md) like every other:</p>
 
 <pre><code>$ g++ -c */*.cpp
 $ g++ *.o
 </code></pre>
 
-<p>or
-    $ g++ <em>/</em>.cpp</p>
+<p>or</p>
+
+<pre><code>$ g++ */*.cpp
+</code></pre>
 
 <p>Please note that libsocket++ is only an object-oriented wrapper around libsocket and not independant; you always have to compile
 C/libinetsocket.c, too.</p>
@@ -41,8 +49,6 @@ For example, if you have a program which serves as client for a UDP based applic
 
 <pre><code>$ g++ -o client client.cpp /path/to/libsocket/C/libinetsocket.c /path/to/libsocket/C++/{socket,inetbase,inetdgram,inetclientdgram}.cpp
 </code></pre>
-
-<p><strong>NOTE</strong>: <em>It's way better to use the shared object/dynamic libraries. Please look at README.md and LINKAGE for ways how to use libsocket as dynamic library.</em></p>
 
 <h2>Class Hierarchy and names</h2>
 
@@ -92,11 +98,9 @@ may raise an exception containing a std::string looking like this:</p>
 
 <h1>libinetsocket++</h1>
 
-<p>libinetsocket++ is the wrapper around libinetsocket.</p>
+<p>libinetsocket++ is the wrapper around (C) libinetsocket.</p>
 
 <h2><code>inet_stream</code> Class: Internet TCP Client Stream Sockets</h2>
-
-<h3>Constructors</h3>
 
 <p>Declared in <code>inetclientstream.hpp</code>, defined in <code>inetclientstream.cpp</code></p>
 
@@ -128,7 +132,7 @@ the C string</li>
 void connect(const string&amp; dsthost, const string&amp; dstport, int proto_osi3, int flags);
 </code></pre>
 
-<p>Connects the socket. Throws an exception if the socket is already connected.</p>
+<p>Connects the socket. Throws an exception if the socket is already connected. May be called after a <code>destroy()</code> call to re-connect the socket.</p>
 
 <ul>
 <li><code>host</code>: Destination host; if you have the host as <code>std::string</code>, use its routine <code>std::string::c_str()</code> to get
@@ -138,6 +142,8 @@ the C string</li>
 <li><code>flags</code>: Default 0, can be <code>SOCK_NONBLOCK</code> or <code>SOCK_CLOEXEC</code> (see: <code>socket(2)</code>; on other platforms than Linux
 has to be 0 to avoid errors)</li>
 </ul>
+
+<p><em>Note: This function does actually more than only connect the socket. Because of some internal requirements (the void constructor, libinetsocket design), this function also *creates</em> the socket.*</p>
 
 <h3><code>shutdown()</code></h3>
 
@@ -154,7 +160,7 @@ has to be 0 to avoid errors)</li>
 
 <p>Declared in <code>socket.hpp</code>, defined in <code>socket.cpp</code>, inherited from <code>socket</code></p>
 
-<pre><code>void destroy(void);
+<pre><code>int destroy(void);
 </code></pre>
 
 <p>Closes the socket and destroys the connection. After a call to <code>destroy()</code>, you may connect the socket object again using <code>connect()</code>.</p>
@@ -299,6 +305,15 @@ and finally <code>socket(2)</code>.</p>
 If an UDP socket is connected, calls to <code>snd()</code> and <code>rcv()</code> act like on a stream socket:
 The data is sent and received only to/from the host to which the socket is connected.</p>
 
+<h3>Setup functions</h3>
+
+<pre><code>void setup(int proto_osi3, int flags=0);
+void setup(const char* dsthost, const char* dstport, int proto_osi3, int flags=0);
+void setup(const string&amp; dsthost, const string&amp; dstport, int proto_osi3, int flags=0);
+</code></pre>
+
+<p>Work like the constructors and only if the socket has been closed before.</p>
+
 <h3>Connect Functions</h3>
 
 <p>Declared in <code>inetclientdgram.hpp</code>, defined in <code>inetclientdgram.cpp</code></p>
@@ -323,7 +338,7 @@ functions like <code>snd()</code> or <code>rcv()</code> may not be used anymore.
 <pre><code>int destroy(void);
 </code></pre>
 
-<p>0: Success, -1: Error (the only errors at <code>close()</code> come if the file descriptor has been closed already)</p>
+<p>0: Success, -1: Error (the only errors at <code>close()</code> come if the file descriptor has been closed already). After <code>close()</code>, you may call <code>setup()</code> to re-set-up the socket instance.</p>
 
 <h3>Send/Upload Functions</h3>
 
@@ -429,6 +444,16 @@ inet_dgram_server(const std::string&amp; host, const std::string&amp; port, int 
 
 <p>It is not possible to call <code>connect(), rcv(), snd()</code> on such sockets; the <code>rcvfrom(), sndto()</code> functions may be called, of course.</p>
 
+<h3>Setup functions</h3>
+
+<p>Defined in <code>inetserverdgram.cpp</code></p>
+
+<pre><code>void setup(const char* host, const char* port, int proto_osi3, int flags=0);
+void setup(const string&amp; host, const string&amp; port, int proto_osi3, int flags=0);
+</code></pre>
+
+<p>(Re-)Set up the socket (arguments are the same as in the constructors).</p>
+
 <h3>Send/Upload</h3>
 
 <p>Defined in <code>inetdgram.cpp</code>, inherited from <code>inet_dgram</code></p>
@@ -465,6 +490,15 @@ std::string getport(void) const;
 
 <p><code>getport()</code> returns a C++ std::string containing the port/service to which the socket is bound.</p>
 
+<h3>Destroy Functions</h3>
+
+<p>Declared in <code>socket.hpp</code>, defined in <code>socket.cpp</code></p>
+
+<pre><code>int destroy(void);
+</code></pre>
+
+<p>0: Success, -1: Error (the only errors at <code>close()</code> occur if the file descriptor has been closed already). After <code>destroy()</code>, it's possible to "re-activate" the socket by calling <code>setup()</code>.</p>
+
 <h1>libunixsocket++</h1>
 
 <p>libunixsocket++ is the UNIX domain socket part of libsocket++. The class tree is described above and in <code>classes.svg</code>.</p>
@@ -479,8 +513,7 @@ unix_stream_client(const std::string&amp; path, int socket_flags=0);
 </code></pre>
 
 <p>Create a new unix domain stream client socket. The second and the third form connect the socket immediately to <code>path</code>.
-If you use the first form, you have to <code>connect()</code> your socket before using it. <code>socket_flags</code> are flags for the
-<code>socket(2)</code> syscall.</p>
+If you use the first form, you have to <code>connect()</code> your socket before using it. <code>socket_flags</code> are flags for the <code>socket(2)</code> syscall.</p>
 
 <h3><code>connect()</code></h3>
 
@@ -490,7 +523,7 @@ If you use the first form, you have to <code>connect()</code> your socket before
 void connect(const std::string&amp; path, int socket_flags=0);
 </code></pre>
 
-<p>Connect the socket to <code>path</code>. <code>socket_flags</code> are given to <code>socket(2)</code>.</p>
+<p>Connect the socket to <code>path</code>. <code>socket_flags</code> are given to <code>socket(2)</code>. You may use this only on unconnected sockets, i.e. a socket constructed with the non-argument constructor or a socket on which you called before <code>destroy()</code>.</p>
 
 <h3><code>shutdown()</code></h3>
 
@@ -541,6 +574,13 @@ the string is resized to the new length, 0 if the peer shut its socket down or c
 
 <p>Get the peer socket path (to which the socket is connected).</p>
 
+<h3>Destroy</h3>
+
+<pre><code>int destroy(void);
+</code></pre>
+
+<p>Call <code>close()</code> on the underlying file descriptor. If you call now <code>connect()</code> on the socket, you may exchange data again.</p>
+
 <h2><code>unix_stream_server</code></h2>
 
 <p>Defined in <code>unixserverstream.cpp</code></p>
@@ -583,6 +623,13 @@ when it isn't needed anymore.</p>
 
 <p>Get the socket path (to which the socket is bound).</p>
 
+<h3>Destroy</h3>
+
+<pre><code>int destroy(void);
+</code></pre>
+
+<p>Call <code>close()</code> on the underlying file descriptor. You may work with the socket again after calling <code>setup()</code>.</p>
+
 <h2><code>unix_dgram_client</code></h2>
 
 <p>Defined in <code>unixclientdgram.cpp</code></p>
@@ -593,6 +640,15 @@ unix_dgram_client(const std::string&amp; path, int flags=0);
 </code></pre>
 
 <p>Create a UNIX DGRAM socket. If you use the second or third constructor, bind it additionally to path.</p>
+
+<h3>Setup</h3>
+
+<p>Defined in <code>unixclientdgram.cpp</code></p>
+
+<pre><code>void setup(const char* path, int flags=0);
+</code></pre>
+
+<p>Sets up the socket like the constructor, but only if it is not set up yet.</p>
 
 <h3><code>connect()</code>, <code>deconnect()</code></h3>
 
@@ -649,6 +705,13 @@ If the socket is not connected, an empty string is returned.</p>
 
 <p><code>getconn()</code> returns a boolean value which specifies if the socket is connected (true) or not (false).</p>
 
+<h3>Destroy</h3>
+
+<pre><code>int destroy(void);
+</code></pre>
+
+<p>Call <code>close()</code> on the underlying file descriptor. You may work with the socket again after calling <code>setup()</code>.</p>
+
 <h2><code>unix_dgram_server</code></h2>
 
 <p>Defined in <code>unixserverdgram.cpp</code></p>
@@ -660,6 +723,16 @@ unix_dgram_server(const std::string&amp; bindpath, int socket_flags=0);
 
 <p><code>unix_dgram_server</code> is quite similar to <code>unix_dgram_client</code>, especially if bound. The important difference is that
 you may not call <code>connect()</code> on <code>unix_dgram_server</code>.</p>
+
+<h3>Setup</h3>
+
+<p>Defined in <code>unixserverdgram.cpp</code></p>
+
+<pre><code>void setup(const char* bindpath, int socket_flags=0);
+void setup(const string&amp; bindpath, int socket_flags=0);
+</code></pre>
+
+<p>Works like the constructors, but only if the socket is not set up yet.</p>
 
 <h3>I/O</h3>
 
@@ -682,6 +755,13 @@ ssize_t rcvfrom(string&amp; buf, string&amp; source, int recvfrom_flags=0);
 </code></pre>
 
 <p>Get the socket path (to which the socket is bound).</p>
+
+<h3>Destroy</h3>
+
+<pre><code>int destroy(void);
+</code></pre>
+
+<p>Call <code>close()</code> on the underlying file descriptor. You may work with the socket again after calling <code>setup()</code>.</p>
 
 <h1>Other Classes</h1>
 
