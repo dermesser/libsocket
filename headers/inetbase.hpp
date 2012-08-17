@@ -42,9 +42,9 @@ namespace libsocket
 	class inet_socket : public virtual socket
 	{
 		protected:
-		int proto;
 		string host;
 		string port;
+		int proto;
 
 		public:
 

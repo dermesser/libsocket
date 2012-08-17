@@ -56,7 +56,6 @@ namespace libsocket
 
 		if ( -1 == sfd )
 			throw socket_exception(__FILE__,__LINE__,"inet_dgram::rcvfrom() - Socket already closed!\n");
-
 		if ( -1 == (bytes = recvfrom_inet_dgram_socket(sfd,buf,len,hostbuf,hostbuflen,portbuf,portbuflen,rcvfrom_flags,num)) )
 			throw socket_exception(__FILE__,__LINE__,"inet_dgram::rcvfrom() - recvfrom() failed!\n");
 
@@ -75,13 +74,13 @@ namespace libsocket
 		memset(from_port,0,32);
 		memset(buf,0,len);
 
-		bytes = rcvfrom(buf,len,from_host,1024,from_port,64,rcvfrom_flags,numeric);
+		bytes = rcvfrom(buf,len,from_host,1024,from_port,32,rcvfrom_flags,numeric);
 
 		srchost.resize(strlen(from_host));
 		srcport.resize(strlen(from_port));
 
-		srchost = from_host;
-		srcport = from_port;
+		srchost.assign(from_host);
+		srcport.assign(from_port);
 
 		delete[] from_host;
 		delete[] from_port;
@@ -101,7 +100,7 @@ namespace libsocket
 
 		buf.resize(bytes);
 
-		buf = cbuf;
+		buf.assign(cbuf);
 
 		delete[] cbuf;
 

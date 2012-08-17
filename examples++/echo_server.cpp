@@ -13,6 +13,7 @@ int main(void)
 	string host = "localhost";
 	string port = "1234";
 
+	string answer("Hello back from the server!");
 	string from;
 	string fromport;
 	string buf;
@@ -27,7 +28,7 @@ int main(void)
 
 			std::cout << "Datagram from " << from << ":" << fromport << " " << buf << std::endl;
 
-			srv.sndto("Hello back from the server!",27,from,fromport);
+			srv.sndto(answer,from,fromport);
 		}
 
 		srv.destroy();

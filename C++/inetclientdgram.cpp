@@ -72,6 +72,7 @@ namespace libsocket
 	{
 		if ( -1 == (sfd = create_inet_dgram_socket(proto_osi3,flags)) )
 			throw socket_exception(__FILE__,__LINE__,"inet_dgram_client::inet_dgram_client() - Could not create inet dgram socket!\n");
+		proto = proto_osi3;
 	}
 
 	void inet_dgram_client::setup(const char* dsthost, const char* dstport, int proto_osi3, int flags)
@@ -85,6 +86,8 @@ namespace libsocket
 		{
 			throw socket_exception(__FILE__,__LINE__,"inet_dgram_client::inet_dgram_client() - Could not connect dgram socket\n");
 		}
+
+		proto = proto_osi3;
 	}
 
 	void inet_dgram_client::setup(const string& dsthost, const string& dstport, int proto_osi3, int flags)

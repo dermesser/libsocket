@@ -29,24 +29,15 @@ int main(void)
 	libsocket::inet_dgram_client sock(IPv4);
 
 	try {
-		std::cout << sock.gethost();
-	} catch (libsocket::socket_exception exc)
-	{
-		std::cerr << exc.mesg;
-	}
-
-	try {
 		for ( int i = 0; i < 20; i++ )
 		{
 			sock.sndto(text,host,port);
 
 			sock.rcvfrom(buf,from1,from2);
 
-			std::cout << "Answer from " << from1 << ":" << from2 << " - " << buf << std::endl;
+			std::cout << "Answer from " << from1 << ":" << from2 << " - " << buf << " - " << buf.size() << std::endl;
 
 			std::cout.flush();
-
-			sock.deconnect();
 		}
 	} catch ( libsocket::socket_exception exc )
 	{
