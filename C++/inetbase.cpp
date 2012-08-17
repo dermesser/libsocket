@@ -1,5 +1,4 @@
 # include <string>
-# include "../headers/socket.hpp"
 # include <stdio.h>
 /*
 The committers of the libsocket project, all rights reserved
@@ -40,23 +39,12 @@ POSSIBILITY OF SUCH DAMAGE.
  * 	server application to get the paramters of the remote peer.
 */
 
+# include "../headers/socket.hpp"
+# include "../headers/inetbase.hpp"
+
 namespace libsocket
 {
 	using std::string;
-
-	class inet_socket : public virtual socket
-	{
-		protected:
-		int proto;
-		string host;
-		string port;
-
-		public:
-		inet_socket();
-
-		string gethost(void) const;
-		string getport(void) const;
-	};
 
 	inet_socket::inet_socket() : host(""), port("") {}
 

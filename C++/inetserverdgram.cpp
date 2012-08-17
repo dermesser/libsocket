@@ -1,9 +1,3 @@
-# include "../headers/libinetsocket.h"
-# include "../headers/socket.hpp"
-# include "../headers/inetbase.hpp"
-# include "../headers/inetdgram.hpp"
-# include "../headers/exception.hpp"
-
 # include <string.h>
 # include <string>
 
@@ -44,21 +38,13 @@ POSSIBILITY OF SUCH DAMAGE.
  * 	inherited from inet_dgram.
  */
 
+# include "../headers/libinetsocket.h"
+# include "../headers/exception.hpp"
+# include "../headers/inetserverdgram.hpp"
+
 namespace libsocket
 {
 	using std::string;
-
-/****************** DGRAM *******************/
-	class inet_dgram_server : public inet_dgram
-	{
-		public:
-
-		inet_dgram_server(const char* host, const char* port, int proto_osi3, int flags=0);
-		inet_dgram_server(const string& host, const string& port, int proto_osi3, int flags=0);
-
-		void setup(const char* host, const char* port, int proto_osi3, int flags=0);
-		void setup(const string& host, const string& port, int proto_osi3, int flags=0);
-	};
 
 	inet_dgram_server::inet_dgram_server(const char* host, const char* port, int proto_osi3, int flags)
 	{

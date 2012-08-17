@@ -1,9 +1,3 @@
-# include "../headers/libinetsocket.h"
-# include "../headers/socket.hpp"
-# include "../headers/inetbase.hpp"
-# include "../headers/inetclientstream.hpp"
-# include "../headers/exception.hpp"
-
 # include <string.h>
 # include <string>
 
@@ -45,31 +39,14 @@ POSSIBILITY OF SUCH DAMAGE.
  *	either with the second constructor or with setup()
  */
 
+# include "../headers/libinetsocket.h"
+# include "../headers/inetclientstream.hpp"
+# include "../headers/exception.hpp"
+# include "../headers/inetserverstream.hpp"
+
 namespace libsocket
 {
 	using std::string;
-
-/***************** STREAM ******************/
-
-	class inet_stream_server : public inet_socket
-	{
-		private:
-		bool nonblock;
-
-		public:
-
-		inet_stream_server(void);
-		inet_stream_server(const char* bindhost, const char* bindport, int proto_osi3, int flags=0);
-		inet_stream_server(const string& bindhost, const string& bindport, int proto_osi3, int flags=0);
-
-		void setup(const char* bindhost, const char* bindport, int proto_osi3, int flags=0);
-		void setup(const string& bindhost, const string& bindport, int proto_osi3, int flags=0);
-
-		inet_stream* accept(int numeric=0,int accept_flags=0);
-
-		string getbindhost(void);
-		string getbindport(void);
-	};
 
 	inet_stream_server::inet_stream_server(void)
 		: nonblock(false)

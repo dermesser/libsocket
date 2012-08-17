@@ -1,7 +1,3 @@
-# include "../headers/libunixsocket.h"
-# include "../headers/exception.hpp"
-# include "../headers/unixbase.hpp"
-# include "../headers/unixclientstream.hpp"
 # include <string>
 /*
 The committers of the libsocket project, all rights reserved
@@ -35,23 +31,13 @@ POSSIBILITY OF SUCH DAMAGE.
  *	communicate with the connected client.
  */
 
+# include "../headers/libunixsocket.h"
+# include "../headers/exception.hpp"
+# include "../headers/unixserverstream.hpp"
+
 namespace libsocket
 {
 	using std::string;
-
-	class unix_stream_server : public unix_socket
-	{
-		public:
-
-		unix_stream_server(void);
-		unix_stream_server(const char* path, int flags=0);
-		unix_stream_server(const string& path, int flags=0);
-
-		void setup(const char* path, int flags=0);
-		void setup(const string& path, int flags=0);
-
-		unix_stream_client* accept(int flags=0);
-	};
 
 	unix_stream_server::unix_stream_server(void)
 	{

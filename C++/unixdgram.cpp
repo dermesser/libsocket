@@ -1,6 +1,3 @@
-# include "../headers/libunixsocket.h"
-# include "../headers/exception.hpp"
-# include "../headers/unixbase.hpp"
 # include <string>
 # include <unistd.h>
 # include <string.h>
@@ -34,24 +31,12 @@ POSSIBILITY OF SUCH DAMAGE.
  * 	called on every datagram socket.
  */
 
+# include "../headers/libunixsocket.h"
+# include "../headers/exception.hpp"
+# include "../headers/unixdgram.hpp"
+
 namespace libsocket
 {
-	class unix_dgram : public unix_socket
-	{
-		public:
-
-		ssize_t sndto(const void* buf, size_t length, const char* path, int sendto_flags=0);
-		ssize_t sndto(const void* buf, size_t length, const string& path, int sendto_flags=0);
-
-		ssize_t sndto(const string& buf, const string& path, int sendto_flags=0);
-
-		ssize_t rcvfrom(void* buf, size_t length, char* source, size_t source_len, int recvfrom_flags=0);
-		ssize_t rcvfrom(void* buf, size_t length, string& source, int recvfrom_flags=0);
-
-		ssize_t rcvfrom(string& buf, string& source, int recvfrom_flags=0);
-
-	};
-
 	// Main sendto function
 	ssize_t unix_dgram::sndto(const void* buf, size_t length, const char* path, int sendto_flags)
 	{

@@ -1,5 +1,3 @@
-# include "../headers/exception.hpp"
-# include "../headers/socket.hpp"
 # include <string>
 # include <unistd.h>
 # include <string.h>
@@ -42,34 +40,13 @@ POSSIBILITY OF SUCH DAMAGE.
  * 	descriptor is -1 or not.
 */
 
+# include "../headers/exception.hpp"
+# include "../headers/socket.hpp"
+# include "../headers/dgramclient.hpp"
+
 namespace libsocket
 {
 	using std::string;
-
-	class dgram_client_socket : public virtual socket
-	{
-		protected:
-		bool connected;
-
-		public:
-
-		dgram_client_socket(void);
-
-		friend dgram_client_socket& operator<<(dgram_client_socket& sock, const char* str);
-		friend dgram_client_socket& operator<<(dgram_client_socket& sock, string& str);
-
-		// No snd(const std::string&, int), for this we have the stream operators
-		ssize_t snd(const void* buf, size_t len, int flags=0); // flags: send()
-
-		// I
-		friend dgram_client_socket& operator>>(dgram_client_socket& sock, string& dest);
-
-		ssize_t rcv(void* buf, size_t len, int flags=0);
-
-		// Getters
-
-		bool getconn(void) const;
-	};
 
 	dgram_client_socket::dgram_client_socket(void)
 		: connected(false)

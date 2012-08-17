@@ -1,7 +1,4 @@
-# include "../headers/libinetsocket.h"
-# include "../headers/socket.hpp"
 # include <string>
-# include "../headers/exception.hpp"
 # include <unistd.h>
 # include <string.h>
 /*
@@ -36,29 +33,12 @@ POSSIBILITY OF SUCH DAMAGE.
  * 	stream-based sockets (TCP and UNIX-SOCK_STREAM).
  */
 
+# include "../headers/libinetsocket.h"
+# include "../headers/exception.hpp"
+# include "../headers/streamclient.hpp"
+
 namespace libsocket
 {
-	class stream_client_socket : public virtual socket
-	{
-		protected:
-
-		bool shut_rd;
-		bool shut_wr;
-
-		public:
-
-		stream_client_socket();
-
-		ssize_t snd(const void* buf, size_t len, int flags=0); // flags: send()
-		ssize_t rcv(void* buf, size_t len, int flags=0); // flags: recv()
-
-		friend stream_client_socket& operator<<(stream_client_socket& sock, const char* str);
-		friend stream_client_socket& operator<<(stream_client_socket& sock, string& str);
-		friend stream_client_socket& operator>>(stream_client_socket& sock, string& dest);
-
-		void shutdown(int method=WRITE);
-	};
-
 	stream_client_socket::stream_client_socket()
 		: shut_rd(false), shut_wr(false)
 	{}

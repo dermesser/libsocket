@@ -1,9 +1,3 @@
-# include "../headers/exception.hpp"
-# include "../headers/socket.hpp"
-# include "../headers/unixbase.hpp"
-# include "../headers/unixdgram.hpp"
-# include "../headers/dgramclient.hpp"
-# include "../headers/libunixsocket.h"
 # include <string>
 
 using std::string;
@@ -39,24 +33,12 @@ POSSIBILITY OF SUCH DAMAGE.
  * 	after creation.
  */
 
+# include "../headers/exception.hpp"
+# include "../headers/libunixsocket.h"
+# include "../headers/unixclientdgram.hpp"
+
 namespace libsocket
 {
-	class unix_dgram_client : public unix_dgram, public dgram_client_socket
-	{
-
-		public:
-
-		unix_dgram_client(int flags=0);
-		unix_dgram_client(const char* path, int flags=0);
-		unix_dgram_client(const string& path, int flags=0);
-
-		void setup(const char* path, int flags=0);
-
-		void connect(const char* path);
-		void connect(const string& path);
-
-		void deconnect(void);
-	};
 	//				Bind path, not connect!
 	void unix_dgram_client::setup(const char* path, int flags)
 	{

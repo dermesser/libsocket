@@ -10,8 +10,6 @@
 # include <sys/time.h>
 # include <sys/types.h>
 
-# include "../headers/socket.hpp"
-# include "../headers/exception.hpp"
 /*
 The committers of the libsocket project, all rights reserved
 (c) 2012, dermesser <lbo@spheniscida.de>
@@ -50,29 +48,12 @@ POSSIBILITY OF SUCH DAMAGE.
  * 	the second containing the sockets ready for writing.
  */
 
+# include "../headers/exception.hpp"
+# include "../headers/select.hpp"
+
 namespace libsocket
 {
 	int highestfd(std::vector<int>);
-
-	class selectset
-	{
-		private:
-		std::vector<int> filedescriptors;
-		std::map<int,socket*> fdsockmap;
-
-		bool set_up;
-
-		fd_set readset;
-		fd_set writeset;
-
-		public:
-
-		selectset();
-
-		void add_fd(socket& sock, int method);
-
-		std::pair<std::vector<socket*>, std::vector<socket*> > wait(long long microsecs=0);
-	};
 
 	selectset::selectset()
 		: filedescriptors(0), set_up(false)

@@ -1,5 +1,4 @@
 # include <iostream>
-# include "../headers/socket.hpp"
 # include <string>
 # include <stdio.h>
 
@@ -34,20 +33,11 @@ POSSIBILITY OF SUCH DAMAGE.
  * 	may be bound, both client and server.
  */
 
+# include "../headers/unixbase.hpp"
+
 namespace libsocket
 {
 	using std::string;
-
-	class unix_socket : public virtual socket
-	{
-		protected:
-		string _path;
-
-		public:
-		unix_socket();
-
-		string get_path(void);
-	};
 
 	unix_socket::unix_socket(void) : _path("") {}
 

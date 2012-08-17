@@ -2,13 +2,6 @@
 # include <string>
 # include <cstring>
 
-# include "../headers/libinetsocket.h"
-# include "../headers/socket.hpp"
-# include "../headers/inetbase.hpp"
-# include "../headers/inetdgram.hpp"
-# include "../headers/exception.hpp"
-# include "../headers/dgramclient.hpp"
-
 # include <unistd.h>
 # include <sys/socket.h>
 # include <sys/types.h>
@@ -47,35 +40,14 @@ POSSIBILITY OF SUCH DAMAGE.
  * 	bound to somewhere.
  */
 
+
+# include "../headers/libinetsocket.h"
+# include "../headers/exception.hpp"
+# include "../headers/inetclientdgram.hpp"
+
 namespace libsocket
 {
 	using std::string;
-
-/************** inet_dgram class (inet UDP sockets) ************/
-
-	class inet_dgram_client : public inet_dgram, public dgram_client_socket
-	{
-		public:
-
-		// Only create socket
-		inet_dgram_client(int proto_osi3,int flags=0); // Flags: socket()
-		// Create socket and connect it
-		inet_dgram_client(const char* dsthost, const char* dstport, int proto_osi3, int flags=0); // Flags: socket()
-		inet_dgram_client(const string& dsthost, const string& dstport, int proto_osi3, int flags=0);
-
-		void setup(int proto_osi3, int flags=0);
-		void setup(const char* dsthost, const char* dstport, int proto_osi3, int flags=0);
-		void setup(const string& dsthost, const string& dstport, int proto_osi3, int flags=0);
-
-		// actions
-		// connect/reconnect
-		void connect(const char* dsthost, const char* dstport);
-		void connect(const string& dsthost, const string& dstport);
-
-		void deconnect(void);
-
-		// I/Os from dgram_socket and inet_dgram
-	};
 
 	// Constructors
 

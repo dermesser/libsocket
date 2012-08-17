@@ -38,16 +38,11 @@ POSSIBILITY OF SUCH DAMAGE.
  *	the error occurred.
 */
 
+# include "../headers/exception.hpp"
+
 namespace libsocket
 {
 	using std::string;
-
-	struct socket_exception
-	{
-		string mesg;
-
-		socket_exception(string,int,string);
-	};
 
 	socket_exception::socket_exception(string f, int l, string m)
 	{
