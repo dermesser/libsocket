@@ -11,7 +11,7 @@ CPP=g++
 CFLAGS=
 
 .c.o:
-	$(CC) -fPIC -c $<
+	$(CC) $(CFLAGS) -fPIC -c $<
 
 so: $(OBJECTS)
 	$(CC) -shared -o ../$(SHARED_OBJECT) $(OBJECTS)
