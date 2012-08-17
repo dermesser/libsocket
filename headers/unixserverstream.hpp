@@ -12,9 +12,6 @@ namespace libsocket
 
 	class unix_stream_server : public unix_socket
 	{
-		private:
-		bool listening;
-
 		public:
 
 		unix_stream_server(void);
