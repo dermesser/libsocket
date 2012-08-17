@@ -6,8 +6,8 @@
 
 /*
  * This example is part of libsocket/libinetsocket
- * It may be used with the most HTTP servers. 
- * 
+ * It may be used with the most HTTP servers.
+ *
  * This is a almost complete HTTP client, simply
  * writing the data to stdout. There's no more code
  * with libsocket!
@@ -15,23 +15,47 @@
 
 int main(void)
 {
-	int sfd, bytes;
+	int sfd, bytes, ret;
 	char request[128], buf[32];
 
 	buf[31] = 0;
 
-	sfd = create_inet_stream_socket("lbo.spheniscida.de", "80", IPv4,0);
+	ret = sfd = create_inet_stream_socket("lbo.spheniscida.de", "80", IPv4,0);
+
+	if ( ret < 0 )
+	{
+		perror(0);
+		exit(1);
+	}
 
 	sprintf(request,"GET / HTTP/1.1\nHost: lbo.spheniscida.de\n\n");
 
-	write(sfd,request,strlen(request));
+	ret = write(sfd,request,strlen(request));
 
-	shutdown_inet_stream_socket(sfd,WRITE);
+	if ( ret < 0 )
+	{
+		perror(0);
+		exit(1);
+	}
+
+	ret = shutdown_inet_stream_socket(sfd,WRITE);
+
+	if ( ret < 0 )
+	{
+		perror(0);
+		exit(1);
+	}
 
 	while ( 0 < (bytes = read(sfd,buf,31)) )
 		write(1,buf,bytes);
 
-	destroy_inet_socket(sfd);
+	ret = destroy_inet_socket(sfd);
+
+	if ( ret < 0 )
+	{
+		perror(0);
+		exit(1);
+	}
 
 	return 0;
 }

@@ -1,4 +1,5 @@
 # include <stdio.h>
+# include <stdlib.h>
 # include <unistd.h>
 # include "../headers/libunixsocket.h"
 
@@ -12,20 +13,28 @@
 
 int main(void)
 {
-	int sfd, cfd, bytes;
+	int sfd, cfd, bytes, ret;
 	char buf[16];
 
 	buf[15] = 0;
 
-	if ( -1 == (sfd = create_unix_server_socket("/tmp/echosock",STREAM,0)) )
-		return -1;
+	ret = sfd = create_unix_server_socket("/tmp/echosock",STREAM,0);
+
+	if ( ret < 0 )
+	{
+		perror(0);
+		exit(1);
+	}
 
 	for ( ;; )
 	{
-		cfd = accept_unix_stream_socket(sfd,0);
+		ret = cfd = accept_unix_stream_socket(sfd,0);
 
-		if ( cfd == -1 )
-			return -1;
+		if ( ret < 0 )
+		{
+			perror(0);
+			exit(1);
+		}
 
 		while ( 0 < ( bytes = read(cfd,buf,15) ) )
 		{
@@ -33,10 +42,23 @@ int main(void)
 			write(1,buf,bytes);
 		}
 
-		destroy_unix_socket(cfd);
+		ret = destroy_unix_socket(cfd);
+
+		if ( ret < 0 )
+		{
+			perror(0);
+			exit(1);
+		}
+
 	}
 
-	destroy_unix_socket(sfd);
+	ret = destroy_unix_socket(sfd);
+
+	if ( ret < 0 )
+	{
+		perror(0);
+		exit(1);
+	}
 
 	return 0;
 }

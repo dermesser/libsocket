@@ -10,12 +10,33 @@
 
 int main(void)
 {
-	int sfd = create_inet_stream_socket("::1","55555",IPv6,0);
+	int ret;
+	int sfd;
 	char* buf = "abcde";
 
-	write(sfd,buf,5);
+	ret = sfd = create_inet_stream_socket("::1","55555",IPv6,0);
 
-	destroy_inet_socket(sfd);
+	if ( ret < 0 )
+	{
+		perror(0);
+		exit(1);
+	}
+
+	ret = write(sfd,buf,5);
+
+	if ( ret < 0 )
+	{
+		perror(0);
+		exit(1);
+	}
+
+	ret = destroy_inet_socket(sfd);
+
+	if ( ret < 0 )
+	{
+		perror(0);
+		exit(1);
+	}
 
 	return 0;
 }

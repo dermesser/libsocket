@@ -33,7 +33,7 @@ int main(void)
 		srv.destroy();
 	} catch (libsocket::socket_exception exc)
 	{
-		std::cout << exc.mesg;
+		std::cerr << exc.mesg;
 	}
 
 

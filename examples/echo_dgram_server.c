@@ -18,7 +18,7 @@
 
 int main(void)
 {
-	int sfd, bytes;
+	int sfd, bytes, ret;
 	char src_host[128], src_service[7], buf[16];
 
 	src_host[127] = 0;
@@ -28,7 +28,7 @@ int main(void)
 
 	if ( -1 == sfd )
 	{
-		printf("couldn't create server\n");
+		perror("couldn't create server\n");
 		exit(1);
 	}
 
@@ -37,15 +37,33 @@ int main(void)
 	while ( 1 )
 	{
 		memset(buf,0,16);
-		bytes = recvfrom_inet_dgram_socket(sfd,buf,15,src_host,127,src_service,6,0,NUMERIC);
+		ret = bytes = recvfrom_inet_dgram_socket(sfd,buf,15,src_host,127,src_service,6,0,NUMERIC);
 
-		sendto_inet_dgram_socket(sfd,buf,bytes,src_host,src_service,0);
+		if ( ret < 0 )
+		{
+			perror(0);
+			exit(1);
+		}
+
+		ret = sendto_inet_dgram_socket(sfd,buf,bytes,src_host,src_service,0);
+
+		if ( ret < 0 )
+		{
+			perror(0);
+			exit(1);
+		}
 
 		printf("Connection from %s port %s: %s (%i)\n",src_host,src_service,buf,bytes);
 		printf("Connection processed\n");
 	}
 
-	destroy_inet_socket(sfd);
+	ret = destroy_inet_socket(sfd);
+
+	if ( ret < 0 )
+	{
+		perror(0);
+		exit(1);
+	}
 
 	return 0;
 }

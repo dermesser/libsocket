@@ -1,6 +1,7 @@
 # include <string.h>
 # include <stdio.h>
 # include <unistd.h>
+# include <stdlib.h>
 # include "../headers/libunixsocket.h"
 
 /*
@@ -12,20 +13,49 @@
 
 int main(void)
 {
-	int sfd;
+	int sfd, ret;
 	char* string = "abcdefghijklmnopqrstuvwxyz";
 	char buf[26];
 
-	if ( -1 == (sfd = create_unix_dgram_socket("/tmp/client",0)) )
-		return -1;
+	ret = sfd = create_unix_dgram_socket("/tmp/client",0);
 
-	sendto_unix_dgram_socket(sfd,string,26,"/tmp/echosock",0);
+	if ( ret < 0 )
+	{
+		perror(0);
+		exit(1);
+	}
 
-	recvfrom_unix_dgram_socket(sfd,buf,26,0,0,0);
+	ret = sendto_unix_dgram_socket(sfd,string,26,"/tmp/echosock",0);
 
-	write(1,buf,26);
+	if ( ret < 0 )
+	{
+		perror(0);
+		exit(1);
+	}
 
-	destroy_unix_socket(sfd);
+	ret = recvfrom_unix_dgram_socket(sfd,buf,26,0,0,0);
+
+	if ( ret < 0 )
+	{
+		perror(0);
+		exit(1);
+	}
+
+	ret = write(1,buf,26);
+
+	if ( ret < 0 )
+	{
+		perror(0);
+		exit(1);
+	}
+
+	ret = destroy_unix_socket(sfd);
+
+	if ( ret < 0 )
+	{
+		perror(0);
+		exit(1);
+	}
 
 	return 0;
 }
