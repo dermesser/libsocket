@@ -1,6 +1,3 @@
-# include "../headers/libunixsocket.h"
-# include "../headers/exception.hpp"
-# include "../headers/unixdgram.hpp"
 
 # include <sys/types.h>
 # include <sys/socket.h>
@@ -34,6 +31,8 @@ POSSIBILITY OF SUCH DAMAGE.
  * 	a not connect()-able unix_dgram_client class.
  */
 
+# include "../headers/libunixsocket.h"
+# include "../headers/exception.hpp"
 # include "../headers/unixserverdgram.hpp"
 
 namespace libsocket

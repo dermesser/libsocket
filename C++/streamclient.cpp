@@ -1,7 +1,4 @@
-# include "../headers/libinetsocket.h"
-# include "../headers/socket.hpp"
 # include <string>
-# include "../headers/exception.hpp"
 # include <unistd.h>
 # include <string.h>
 /*
@@ -36,6 +33,8 @@ POSSIBILITY OF SUCH DAMAGE.
  * 	stream-based sockets (TCP and UNIX-SOCK_STREAM).
  */
 
+# include "../headers/libinetsocket.h"
+# include "../headers/exception.hpp"
 # include "../headers/streamclient.hpp"
 
 namespace libsocket

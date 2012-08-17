@@ -1,6 +1,3 @@
-# include "../headers/libunixsocket.h"
-# include "../headers/exception.hpp"
-# include "../headers/unixbase.hpp"
 # include <string>
 # include <unistd.h>
 # include <string.h>
@@ -34,6 +31,8 @@ POSSIBILITY OF SUCH DAMAGE.
  * 	called on every datagram socket.
  */
 
+# include "../headers/libunixsocket.h"
+# include "../headers/exception.hpp"
 # include "../headers/unixdgram.hpp"
 
 namespace libsocket

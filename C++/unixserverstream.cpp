@@ -1,7 +1,3 @@
-# include "../headers/libunixsocket.h"
-# include "../headers/exception.hpp"
-# include "../headers/unixbase.hpp"
-# include "../headers/unixclientstream.hpp"
 # include <string>
 /*
 The committers of the libsocket project, all rights reserved
@@ -35,6 +31,8 @@ POSSIBILITY OF SUCH DAMAGE.
  *	communicate with the connected client.
  */
 
+# include "../headers/libunixsocket.h"
+# include "../headers/exception.hpp"
 # include "../headers/unixserverstream.hpp"
 
 namespace libsocket

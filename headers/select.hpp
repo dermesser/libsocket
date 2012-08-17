@@ -31,6 +31,7 @@ POSSIBILITY OF SUCH DAMAGE.
 
 */
 
+# include "socket.hpp"
 
 # define READ 1
 # define WRITE 2

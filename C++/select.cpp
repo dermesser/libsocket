@@ -10,8 +10,6 @@
 # include <sys/time.h>
 # include <sys/types.h>
 
-# include "../headers/socket.hpp"
-# include "../headers/exception.hpp"
 /*
 The committers of the libsocket project, all rights reserved
 (c) 2012, dermesser <lbo@spheniscida.de>
@@ -50,6 +48,7 @@ POSSIBILITY OF SUCH DAMAGE.
  * 	the second containing the sockets ready for writing.
  */
 
+# include "../headers/exception.hpp"
 # include "../headers/select.hpp"
 
 namespace libsocket

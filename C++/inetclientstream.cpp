@@ -2,12 +2,6 @@
 # include <string>
 # include <string.h>
 
-# include "../headers/libinetsocket.h"
-# include "../headers/socket.hpp"
-# include "../headers/inetbase.hpp"
-# include "../headers/exception.hpp"
-# include "../headers/streamclient.hpp"
-
 # include <unistd.h>
 # include <sys/socket.h>
 # include <sys/types.h>
@@ -44,6 +38,8 @@ POSSIBILITY OF SUCH DAMAGE.
  * 	The I/O abilities are inherited from stream_client_socket.
  */
 
+# include "../headers/libinetsocket.h"
+# include "../headers/exception.hpp"
 # include "../headers/inetclientstream.hpp"
 
 namespace libsocket

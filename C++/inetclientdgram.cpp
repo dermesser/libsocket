@@ -2,13 +2,6 @@
 # include <string>
 # include <cstring>
 
-# include "../headers/libinetsocket.h"
-# include "../headers/socket.hpp"
-# include "../headers/inetbase.hpp"
-# include "../headers/inetdgram.hpp"
-# include "../headers/exception.hpp"
-# include "../headers/dgramclient.hpp"
-
 # include <unistd.h>
 # include <sys/socket.h>
 # include <sys/types.h>
@@ -47,6 +40,9 @@ POSSIBILITY OF SUCH DAMAGE.
  * 	bound to somewhere.
  */
 
+
+# include "../headers/libinetsocket.h"
+# include "../headers/exception.hpp"
 # include "../headers/inetclientdgram.hpp"
 
 namespace libsocket

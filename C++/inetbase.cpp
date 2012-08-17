@@ -1,5 +1,4 @@
 # include <string>
-# include "../headers/socket.hpp"
 # include <stdio.h>
 /*
 The committers of the libsocket project, all rights reserved
@@ -40,6 +39,7 @@ POSSIBILITY OF SUCH DAMAGE.
  * 	server application to get the paramters of the remote peer.
 */
 
+# include "../headers/socket.hpp"
 # include "../headers/inetbase.hpp"
 
 namespace libsocket

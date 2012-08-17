@@ -1,9 +1,3 @@
-# include "../headers/exception.hpp"
-# include "../headers/socket.hpp"
-# include "../headers/unixbase.hpp"
-# include "../headers/unixdgram.hpp"
-# include "../headers/dgramclient.hpp"
-# include "../headers/libunixsocket.h"
 # include <string>
 
 using std::string;
@@ -39,6 +33,8 @@ POSSIBILITY OF SUCH DAMAGE.
  * 	after creation.
  */
 
+# include "../headers/exception.hpp"
+# include "../headers/libunixsocket.h"
 # include "../headers/unixclientdgram.hpp"
 
 namespace libsocket

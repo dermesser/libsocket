@@ -2,11 +2,6 @@
 # include <string>
 # include <string.h>
 
-# include "../headers/libinetsocket.h"
-# include "../headers/socket.hpp"
-# include "../headers/inetbase.hpp"
-# include "../headers/exception.hpp"
-
 # include <unistd.h>
 # include <sys/socket.h>
 # include <sys/types.h>
@@ -42,6 +37,8 @@ POSSIBILITY OF SUCH DAMAGE.
  * 	may be used for both client and server UDP sockets.
  */
 
+# include "../headers/libinetsocket.h"
+# include "../headers/exception.hpp"
 # include "../headers/inetdgram.hpp"
 
 namespace libsocket

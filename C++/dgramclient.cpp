@@ -1,5 +1,3 @@
-# include "../headers/exception.hpp"
-# include "../headers/socket.hpp"
 # include <string>
 # include <unistd.h>
 # include <string.h>
@@ -42,6 +40,8 @@ POSSIBILITY OF SUCH DAMAGE.
  * 	descriptor is -1 or not.
 */
 
+# include "../headers/exception.hpp"
+# include "../headers/socket.hpp"
 # include "../headers/dgramclient.hpp"
 
 namespace libsocket

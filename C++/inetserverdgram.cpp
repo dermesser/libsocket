@@ -1,9 +1,3 @@
-# include "../headers/libinetsocket.h"
-# include "../headers/socket.hpp"
-# include "../headers/inetbase.hpp"
-# include "../headers/inetdgram.hpp"
-# include "../headers/exception.hpp"
-
 # include <string.h>
 # include <string>
 
@@ -44,6 +38,8 @@ POSSIBILITY OF SUCH DAMAGE.
  * 	inherited from inet_dgram.
  */
 
+# include "../headers/libinetsocket.h"
+# include "../headers/exception.hpp"
 # include "../headers/inetserverdgram.hpp"
 
 namespace libsocket

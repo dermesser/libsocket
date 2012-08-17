@@ -1,8 +1,3 @@
-# include "../headers/libunixsocket.h"
-# include "../headers/unixbase.hpp"
-# include "../headers/socket.hpp"
-# include "../headers/exception.hpp"
-# include "../headers/streamclient.hpp"
 # include <string>
 # include <string.h>
 
@@ -42,6 +37,8 @@ POSSIBILITY OF SUCH DAMAGE.
  * 	instantiation using connect().
  */
 
+# include "../headers/libunixsocket.h"
+# include "../headers/exception.hpp"
 # include "../headers/unixclientstream.hpp"
 
 namespace libsocket
