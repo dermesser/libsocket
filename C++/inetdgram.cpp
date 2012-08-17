@@ -56,6 +56,7 @@ namespace libsocket
 
 		if ( -1 == sfd )
 			throw socket_exception(__FILE__,__LINE__,"inet_dgram::rcvfrom() - Socket already closed!\n");
+
 		if ( -1 == (bytes = recvfrom_inet_dgram_socket(sfd,buf,len,hostbuf,hostbuflen,portbuf,portbuflen,rcvfrom_flags,num)) )
 			throw socket_exception(__FILE__,__LINE__,"inet_dgram::rcvfrom() - recvfrom() failed!\n");
 

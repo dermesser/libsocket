@@ -261,6 +261,8 @@ ssize_t recvfrom_inet_dgram_socket(int sfd, void* buffer, size_t size, char* src
 	if ( buffer == 0 || size == 0)
 		return -1;
 
+	memset(buffer,0,size);
+
 	socklen_t addrlen = sizeof(struct sockaddr_storage);
 
 	if ( -1 == check_error(bytes = recvfrom(sfd,buffer,size,recvfrom_flags,(struct sockaddr*)&client,&addrlen)))
