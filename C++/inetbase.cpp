@@ -39,7 +39,6 @@ POSSIBILITY OF SUCH DAMAGE.
  * 	server application to get the paramters of the remote peer.
 */
 
-# include "../headers/socket.hpp"
 # include "../headers/inetbase.hpp"
 
 namespace libsocket

@@ -41,7 +41,6 @@ POSSIBILITY OF SUCH DAMAGE.
 */
 
 # include "../headers/exception.hpp"
-# include "../headers/socket.hpp"
 # include "../headers/dgramclient.hpp"
 
 namespace libsocket
