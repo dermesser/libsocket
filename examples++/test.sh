@@ -55,17 +55,29 @@ g++ -I$HEADERPATH -L$LIBPATH -o http2 -lsocket++ http_2.cpp
 rm http1 http2
 
 ### UNIX dgram client (log client)
-
 echo "Testing UNIX dgram client (log client)..."
 
-g++ -I$HEADERPATH -L$LIBPATH -o cl -lsocket++ unix_client_dgram.cpp
+g++ -I$HEADERPATH -L$LIBPATH -o cl -lsocket++ unix_dgram_syslogclient.cpp
 
 ./cl > /dev/null
 
 rm cl
 
-# UNIX stream server/client
+### UNIX dgram client/server
+echo "Testing UNIX dgram client/server..."
 
+g++ -I$HEADERPATH -L$LIBPATH -o srv -lsocket++ unix_dgram_server.cpp
+g++ -I$HEADERPATH -L$LIBPATH -o cl -lsocket++ unix_dgram_client.cpp
+
+./srv > /dev/null &
+sleep 1
+./cl > /dev/null
+
+kill %1
+
+rm cl srv
+
+### UNIX stream server/client
 echo "Testing UNIX STREAM client/server..."
 
 g++ -I$HEADERPATH -L$LIBPATH -o srv -lsocket++ unix_server_stream.cpp
