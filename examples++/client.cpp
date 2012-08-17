@@ -41,7 +41,7 @@ int main(void)
 		sock.destroy();
 	} catch (libsocket::socket_exception exc)
 	{
-		std::cout << exc.mesg;
+		std::cerr << exc.mesg;
 	}
 
 	return 0;

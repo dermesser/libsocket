@@ -1,6 +1,7 @@
 # include <iostream>
 # include <string>
 # include "../headers/inetclientstream.hpp"
+# include "../headers/exception.hpp"
 
 // HTTP client demonstrating the use of snd and rcv on STREAM sockets
 
@@ -15,14 +16,19 @@ int main(void)
 
 	char* buf = new char[10000];
 
-	libsocket::inet_stream sock(host.c_str(),port.c_str(),IPv4);
+	try {
+		libsocket::inet_stream sock(host.c_str(),port.c_str(),IPv4);
 
-	sock.snd("GET / HTTP/1.0\n\n",16);
+		sock.snd("GET / HTTP/1.0\n\n",16);
 
-	sock.shutdown(WRITE);
+		sock.shutdown(WRITE);
 
-	while ( 0 != (len=sock.rcv(buf,10000)) )
-		std::cout << string(buf,len); // Write only as many characters as we read
+		while ( 0 != (len=sock.rcv(buf,10000)) )
+			std::cout << string(buf,len); // Write only as many characters as we read
+	} catch (libsocket::socket_exception exc)
+	{
+		std::cerr << exc.mesg;
+	}
 
 	return 0;
 }

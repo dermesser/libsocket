@@ -10,11 +10,16 @@ int main(void)
 	std::string sock = "/dev/log";
 	std::string logmsg = "Hello, syslogd! :)";
 
-	libsocket::unix_dgram_client logcl;
+	try {
+		libsocket::unix_dgram_client logcl;
 
 	logcl.sndto(logmsg,sock);
 
 	logcl.destroy();
+	} catch (libsocket::socket_exception exc)
+	{
+		std::cerr << exc.mesg;
+	}
 
 	return 0;
 }
