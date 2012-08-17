@@ -44,26 +44,11 @@ POSSIBILITY OF SUCH DAMAGE.
  * 	The I/O abilities are inherited from stream_client_socket.
  */
 
+# include "../headers/inetclientstream.hpp"
+
 namespace libsocket
 {
 	using std::string;
-
-/**************** inet_stream class (TCP inet sockets) *********/
-
-	class inet_stream : public inet_socket, public stream_client_socket
-	{
-		public:
-
-		inet_stream(void);
-		inet_stream(const char* dsthost, const char* dstport, int proto_osi3, int flags=0); // flags: socket()
-		inet_stream(const string& dsthost, const string& dstport, int proto_osi3, int flags=0);
-
-		// connect() == setup()
-		void connect(const char* dsthost, const char* dstport, int proto_osi3, int flags=0); // flags: socket()
-		void connect(const string& dsthost, const string& dstport, int proto_osi3, int flags);
-
-		friend class inet_stream_server; // So it's possible for inet_stream_server::accept() to construct an instance with given fd
-	};
 
 	inet_stream::inet_stream(void)
 	{

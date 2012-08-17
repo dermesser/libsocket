@@ -42,24 +42,11 @@ POSSIBILITY OF SUCH DAMAGE.
  * 	instantiation using connect().
  */
 
+# include "../headers/unixclientstream.hpp"
+
 namespace libsocket
 {
 	using std::string;
-
-	class unix_stream_client : public unix_socket, public stream_client_socket
-	{
-		public:
-
-		unix_stream_client(void);
-		unix_stream_client(const char* path, int socket_flags=0);
-		unix_stream_client(const string& path, int socket_flags=0);
-
-		// connect() == setup()
-		void connect(const char* path, int socket_flags=0);
-		void connect(const string& path, int socket_flags=0);
-
-		friend class unix_stream_server;
-	};
 
 	unix_stream_client::unix_stream_client(void) {}
 	// Server path!

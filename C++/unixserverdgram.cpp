@@ -34,24 +34,11 @@ POSSIBILITY OF SUCH DAMAGE.
  * 	a not connect()-able unix_dgram_client class.
  */
 
-using std::string;
+# include "../headers/unixserverdgram.hpp"
 
 namespace libsocket
 {
-	class unix_dgram_server : public unix_dgram
-	{
-		private:
-		bool bound;
-
-		public:
-
-		unix_dgram_server(void);
-		unix_dgram_server(const char* bindpath, int socket_flags=0);
-		unix_dgram_server(const string& bindpath, int socket_flags=0);
-
-		void setup(const char* bindpath, int socket_flags=0);
-		void setup(const string& bindpath, int socket_flags=0);
-	};
+	using std::string;
 
 	unix_dgram_server::unix_dgram_server(void)
 		: bound(false)
