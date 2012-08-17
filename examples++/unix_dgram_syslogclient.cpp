@@ -13,9 +13,9 @@ int main(void)
 	try {
 		libsocket::unix_dgram_client logcl;
 
-	logcl.sndto(logmsg,sock);
+		logcl.sndto(logmsg,sock);
 
-	logcl.destroy();
+		logcl.destroy();
 	} catch (libsocket::socket_exception exc)
 	{
 		std::cerr << exc.mesg;

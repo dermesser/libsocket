@@ -83,12 +83,12 @@ namespace libsocket
 
 		ssize_t bytes;
 
-		char* source_cstr = new char[512]; // AFAIK, the address field in struct sockaddr_un is only 108 bytes...
+		char* source_cstr = new char[512]; // AFAIK, the address field in struct sockaddr_un is only 108 bytes long...
 		size_t source_cstr_len;
 
 		memset(source_cstr,0,512);
 
-		bytes = recvfrom_unix_dgram_socket(sfd,buf,length,source_cstr,512,recvfrom_flags);
+		bytes = recvfrom_unix_dgram_socket(sfd,buf,length,source_cstr,511,recvfrom_flags);
 
 		if ( bytes < 0 )
 			throw socket_exception(__FILE__,__LINE__,"unix_dgram::rcvfrom: Could not receive data from peer!\n");
@@ -116,7 +116,7 @@ namespace libsocket
 
 		memset(source_cstr,0,512);
 
-		bytes = recvfrom_unix_dgram_socket(sfd,cbuf,buf.size(),source_cstr,512,recvfrom_flags);
+		bytes = recvfrom_unix_dgram_socket(sfd,cbuf,buf.size(),source_cstr,511,recvfrom_flags);
 
 		if ( bytes < 0 )
 			throw socket_exception(__FILE__,__LINE__,"unix_dgram::rcvfrom: Could not receive data from peer!\n");
@@ -126,7 +126,7 @@ namespace libsocket
 		source.resize(source_cstr_len);
 		buf.resize(bytes);
 
-		buf.assign(cbuf,buf.size());
+		buf.assign(cbuf,bytes);
 		source.assign(source_cstr,source_cstr_len);
 
 		delete[] source_cstr;

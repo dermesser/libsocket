@@ -62,10 +62,10 @@ namespace libsocket
 
 		sfd = create_unix_server_socket(path,STREAM,flags);
 
-		_path.assign(path);
-
 		if ( sfd < 0 )
 			throw socket_exception(__FILE__,__LINE__,"unix_stream_server::setup: Error at creating UNIX stream server socket!\n");
+		
+		_path.assign(path);
 	}
 
 	void unix_stream_server::setup(const string& path, int flags)
@@ -75,12 +75,14 @@ namespace libsocket
 
 	unix_stream_client* unix_stream_server::accept(int flags)
 	{
+		int cfd;
+
 		if ( sfd == -1 )
 			throw socket_exception(__FILE__,__LINE__,"unix_stream_server::accept: Socket not set up yet!\n");
 
 		unix_stream_client* client = new unix_stream_client;
 
-		int cfd = accept_unix_stream_socket(sfd,flags);
+		cfd = accept_unix_stream_socket(sfd,flags);
 
 		if ( cfd < 0 )
 			throw socket_exception(__FILE__,__LINE__,"unix_stream_server::accept: Error at accepting new connection!\n");
@@ -89,5 +91,4 @@ namespace libsocket
 
 		return client;
 	}
-
 }

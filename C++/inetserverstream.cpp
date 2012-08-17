@@ -111,11 +111,11 @@ namespace libsocket
 		char* src_host = new char[1024];
 		char* src_port = new char[32];
 
-		int client_sfd;
-		inet_stream* client = new inet_stream;
-
 		memset(src_host,0,1024);
 		memset(src_port,0,32);
+
+		int client_sfd;
+		inet_stream* client = new inet_stream;
 
 		if ( -1 == (client_sfd = accept_inet_stream_socket(sfd,src_host,1023,src_port,31,numeric,accept_flags)) )
 		{
@@ -124,7 +124,7 @@ namespace libsocket
 				throw socket_exception(__FILE__,__LINE__,"inet_stream_server::accept() - could not accept new connection on stream server socket!\n");
 			} else
 			{
-				return NULL; // Only return NULL, if the socket is nonblocking
+				return NULL; // Only return NULL but don't throw an exception if the socket is nonblocking
 			}
 		}
 

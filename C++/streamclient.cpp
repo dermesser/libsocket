@@ -142,11 +142,12 @@ namespace libsocket
 
 	void stream_client_socket::shutdown(int method)
 	{
-		if ( method & (READ|WRITE) && shut_rd == true && shut_wr == true )
+		// Already shut down using this method...
+		if ( (method & (READ|WRITE)) && (shut_rd == true) && (shut_wr == true) )
 			return;
-		if ( method & READ && shut_rd == true )
+		if ( (method & READ) && (shut_rd == true) )
 			return;
-		if ( method & WRITE && shut_wr == true )
+		if ( (method & WRITE) && (shut_wr == true) )
 			return;
 
 		if ( 0 > shutdown_inet_stream_socket(sfd,method)) // It's equal whether we use this or its brother from libunixsocket

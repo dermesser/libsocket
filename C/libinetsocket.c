@@ -262,6 +262,8 @@ ssize_t recvfrom_inet_dgram_socket(int sfd, void* buffer, size_t size, char* src
 		return -1;
 
 	memset(buffer,0,size);
+	memset(src_host,0,src_host_len);
+	memset(src_service,0,src_service_len);
 
 	socklen_t addrlen = sizeof(struct sockaddr_storage);
 

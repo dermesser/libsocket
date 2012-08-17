@@ -75,7 +75,7 @@ namespace libsocket
 		memset(from_port,0,32);
 		memset(buf,0,len);
 
-		bytes = rcvfrom(buf,len,from_host,1024,from_port,32,rcvfrom_flags,numeric);
+		bytes = rcvfrom(buf,len,from_host,1023,from_port,31,rcvfrom_flags,numeric);
 
 		srchost.resize(strlen(from_host));
 		srcport.resize(strlen(from_port));

@@ -295,6 +295,7 @@ ssize_t recvfrom_unix_dgram_socket(int sfd, void* buf, size_t size, char* from, 
 	struct sockaddr_un saddr;
 
 	memset(buf,0,size);
+	memset(from,0,from_size);
 
 	if ( -1 == check_error(bytes = recvfrom(sfd,buf,size,recvfrom_flags,(struct sockaddr*)&saddr,&socksize)) )
 		return -1;

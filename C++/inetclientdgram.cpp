@@ -40,7 +40,6 @@ POSSIBILITY OF SUCH DAMAGE.
  * 	bound to somewhere.
  */
 
-
 # include "../headers/libinetsocket.h"
 # include "../headers/exception.hpp"
 # include "../headers/inetclientdgram.hpp"
@@ -80,12 +79,7 @@ namespace libsocket
 		if ( -1 == (sfd = create_inet_dgram_socket(proto_osi3,flags)) )
 			throw socket_exception(__FILE__,__LINE__,"inet_dgram_client::inet_dgram_client() - Could not create inet dgram socket!\n");
 
-		try {
-			connect(dsthost,dstport);
-		} catch (socket_exception exc)
-		{
-			throw socket_exception(__FILE__,__LINE__,"inet_dgram_client::inet_dgram_client() - Could not connect dgram socket\n");
-		}
+		inet_dgram_client::connect(dsthost,dstport);
 
 		proto = proto_osi3;
 	}
