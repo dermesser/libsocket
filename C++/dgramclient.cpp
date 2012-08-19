@@ -58,6 +58,8 @@ namespace libsocket
 		if ( connected != true )
 			throw socket_exception(__FILE__,__LINE__,"dgram_client_socket::rcv() - Socket is not connected!\n");
 
+		memset(buf,0,len);
+
 		if ( -1 == (bytes = recv(sfd,buf,len,flags)) )
 			throw socket_exception(__FILE__,__LINE__,"dgram_client_socket::rcv() - recv() failed!\n");
 
@@ -72,6 +74,8 @@ namespace libsocket
 			throw socket_exception(__FILE__,__LINE__,">>(dgram_client_socket, std::string) - Socket is not connected!\n");
 
 		char* buffer = new char[dest.size()];
+
+		memset(buffer,0,dest.size());
 
 		if ( -1 == (read_bytes = read(sock.sfd,buffer,dest.size())) )
 			throw socket_exception(__FILE__,__LINE__,">>(dgram_client_socket, std::string) input: Error while reading!\n");

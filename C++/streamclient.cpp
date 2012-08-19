@@ -56,6 +56,8 @@ namespace libsocket
 		if ( buf == NULL || len == 0 )
 			throw socket_exception(__FILE__,__LINE__,"stream_client_socket::rcv() - Buffer or length is null!\n");
 
+		memset(buf,0,len);
+
 		if ( -1 == (recvd = recv(sfd,buf,len,flags)) )
 			throw socket_exception(__FILE__,__LINE__,"stream_client_socket::rcv() - Error while reading!\n");
 

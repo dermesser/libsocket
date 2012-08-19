@@ -101,7 +101,7 @@ namespace libsocket
 
 		buf.resize(bytes);
 
-		buf.assign(cbuf);
+		buf.assign(cbuf,bytes);
 
 		delete[] cbuf;
 
