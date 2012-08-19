@@ -166,8 +166,6 @@ int create_inet_dgram_socket(char proto_osi3, int flags)
 {
 	int sfd;
 
-	// The problem: We don't know anything about future sendto() calls and the destination
-	// The argument given here must also be given at the sendto() and recvfrom calls
 	if (proto_osi3 != IPv4 && proto_osi3 != IPv6)
 	{
 # ifdef VERBOSE
@@ -199,7 +197,8 @@ ssize_t sendto_inet_dgram_socket(int sfd, const void* buf, size_t size,const cha
 {
 	struct sockaddr_storage oldsock;
 	struct addrinfo *result, *result_check, hint;
-	int oldsocklen = sizeof(struct sockaddr_storage), return_value;
+	size_t oldsocklen = sizeof(struct sockaddr_storage);
+	int return_value;
 # ifdef VERBOSE
 	const char* errstring;
 # endif
@@ -385,17 +384,17 @@ int shutdown_inet_stream_socket(int sfd, int method)
 	if ( sfd < 0 )
 		return -1;
 
-	if ( method != READ && method != WRITE && method != (READ|WRITE) )
+	if ( (method != READ) && (method != WRITE) && (method != (READ|WRITE)) )
 		return -1;
 
-	if ( method & READ ) // READ is set (0001 && 0001 => 0001)
+	if ( method & READ ) // READ is set (0001 && 0001 => 0001 => true)
 	{
 		if ( -1 == check_error(shutdown(sfd,SHUT_RD)))
 			return -1;
 
 	}
 
-	if ( method & WRITE ) // WRITE is set (0010 && 0010 => 0010)
+	if ( method & WRITE ) // WRITE is set (0010 && 0010 => 0010 => true)
 	{
 		if ( -1 == check_error(shutdown(sfd,SHUT_WR)))
 			return -1;
@@ -408,6 +407,7 @@ int shutdown_inet_stream_socket(int sfd, int method)
  * Server part
  *
 */
+
 //		              Bind address	   Port			  TCP/UDP	   IPv4/6
 int create_inet_server_socket(const char* bind_addr, const char* bind_port, char proto_osi4, char proto_osi3, int flags)
 {
@@ -482,7 +482,6 @@ int create_inet_server_socket(const char* bind_addr, const char* bind_port, char
 
 		if ( retval == 0 ) // If we came until here, there wasn't an error anywhere. It is safe to cancel the loop here
 			break;
-
 	}
 
 	if ( result_check == NULL )
@@ -511,6 +510,7 @@ int accept_inet_stream_socket(int sfd, char* src_host, size_t src_host_len, char
 # endif
 	socklen_t addrlen = sizeof(struct sockaddr_storage);
 
+	// Portable behavior
 # ifdef __linux__
 	if ( -1 == check_error((client_sfd = accept4(sfd,(struct sockaddr*)&client_info,&addrlen,accept_flags)))) // blocks
 		return -1;
@@ -541,4 +541,3 @@ int accept_inet_stream_socket(int sfd, char* src_host, size_t src_host_len, char
 
 	return client_sfd;
 }
-

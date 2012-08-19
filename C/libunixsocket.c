@@ -77,7 +77,7 @@ int create_unix_stream_socket(const char* path, int flags)
 	struct sockaddr_un saddr;
 	int sfd;
 
-	if ( path == 0 )
+	if ( path == NULL )
 		return -1;
 
 	if ( -1 == check_error(sfd = socket(AF_UNIX,SOCK_STREAM|flags,0)) )
@@ -88,7 +88,7 @@ int create_unix_stream_socket(const char* path, int flags)
 	if ( strlen(path) > (sizeof(saddr.sun_path)-1) )
 	{
 # ifdef VERBOSE
-		write(2,"UNIX destination socket path too long\n",14);
+		write(2,"UNIX socket destination path too long\n",38);
 # endif
 		return -1;
 	}
@@ -112,7 +112,7 @@ int create_unix_dgram_socket(const char* bind_path, int flags)
 
 	memset(&saddr,0,sizeof(struct sockaddr_un));
 
-	if ( bind_path != 0 )
+	if ( bind_path != NULL )
 	{
 		if ( (retval = unlink(bind_path)) == -1 && errno != ENOENT ) // If there's another error than "doesn't exist"
 		{
@@ -123,7 +123,7 @@ int create_unix_dgram_socket(const char* bind_path, int flags)
 		if ( strlen(bind_path) > (sizeof(saddr.sun_path)-1) )
 		{
 # ifdef VERBOSE
-			write(2,"UNIX socket path too long\n",14);
+			write(2,"UNIX socket path too long\n",26);
 # endif
 			return -1;
 		}
@@ -137,7 +137,6 @@ int create_unix_dgram_socket(const char* bind_path, int flags)
 	return sfd;
 }
 
-
 // Reconnect a datagram UNIX domain socket - works only for DGRAM sockets!
 //		      Socket   New path
 int connect_unix_dgram_socket(int sfd, const char* path)
@@ -148,7 +147,7 @@ int connect_unix_dgram_socket(int sfd, const char* path)
 	if ( sfd < 0 )
 		return -1;
 
-	if ( path == 0 )
+	if ( path == NULL )
 	{
 		memset(&deconnect,0,sizeof(struct sockaddr));
 
@@ -189,6 +188,7 @@ int destroy_unix_socket(int sfd)
 
 	if ( -1 == check_error(close(sfd)))
 		return -1;
+
 	return 0;
 }
 
@@ -220,7 +220,7 @@ int create_unix_server_socket(const char* path, int socktype, int flags)
 	struct sockaddr_un saddr;
 	int sfd, type, retval;
 
-	if ( path == 0 )
+	if ( path == NULL )
 		return -1;
 
 	if ( strlen(path) > (sizeof(saddr.sun_path)-1) )
@@ -300,7 +300,7 @@ ssize_t recvfrom_unix_dgram_socket(int sfd, void* buf, size_t size, char* from, 
 	if ( -1 == check_error(bytes = recvfrom(sfd,buf,size,recvfrom_flags,(struct sockaddr*)&saddr,&socksize)) )
 		return -1;
 
-	if ( from != 0 && from_size > 0 )
+	if ( from != NULL && from_size > 0 )
 		strncpy(from,saddr.sun_path,from_size);
 
 	return bytes;
