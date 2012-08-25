@@ -622,7 +622,7 @@ int accept_inet_stream_socket(int sfd, char* src_host, size_t src_host_len, char
 			sport = ntohs(((struct sockaddr_in6*)&client_info)->sin6_port);
 		}
 
-		if ( NULL == (he = gethostbyaddr(addrptr,addrlen,oldsockaddr.ss_family) ) )
+		if ( NULL == (he = gethostbyaddr(addrptr,in_addrlen,oldsockaddr.ss_family) ) )
 		{
 			check_error(-1);
 			return -1;
