@@ -1,25 +1,14 @@
 # Documentation for libsocket
 ## Introduction/Explanations
 
-libsocket is a library written in C and designed to simplify the usage of `AF_INET/AF_INET6` (internet domain) and `AF_UNIX` (unix domain) sockets. With many specialized functions in the API, it's hard to do things wrong. And with the excellent error processing with optional verbosity, it's also quite easy to debug your applications.
+libsocket is a library written in C for the purpose of simplifying the usage of `AF_INET/AF_INET6` (internet domain) and `AF_UNIX` (unix domain) sockets. With many specialized functions in the API, it's hard to do things really wrong. And with the excellent error processing with optional verbosity on `stderr`, it's also quite easy to debug your applications.
 
 libsocket is targeted at advanced/experienced/professional C-on-Linux programmers which don't like the traditional BSD sockets API.
 libsocket is not targeted at programmers which do their first experiences with C or sockets! To understand the library, you **must** have experience with the underlying syscalls.
 
 libsocket is the name for the whole project. libinetsocket is the part for `INET` sockets, libunixsocket for `UNIX` sockets.
 
-The names of the procedures (in the following also called 'functions' or 'API calls', syscalls are called 'syscall')
-follow a simple scheme to simplify the usage:
-
-	<action>_<domain>_<protocol>_socket()
-
-e.g.
-
-	create_inet_stream_socket()
-
-It's important to know this because then you may keep the names better in mind.
-
-If there's something in the text looking like
+Sometimes, there are expressions in the text looking like this:
 
 	getaddrinfo(3)
 	socket(2)
@@ -33,7 +22,7 @@ This are "links" to manpages. They can be reached by the following commands:
 
 Note: The manpage extracts come from the manpages delivered with Debian (Linux manpages), usually created by the man-pages project, while the OpenBSD manpage extracts come from http://www.openbsd.org/cgi-bin/man.cgi
 
-## Compile time configuration
+### Compile time configuration
 
 If the macro `VERBOSE` is defined, libsocket prints verbose error messages on STDERR device. The error messages come from functions like `strerror` or `gai_strerror`. This is **VERY** useful when there are problems in your program or the library itself. Typically, you specify it in the compile command:
 
@@ -44,6 +33,11 @@ Usually, you'll use this option during development, but disable it when you fini
 ### Usage of flags
 
 The usage of the flags for some functions is described for every function. If you don't need any flags (you think), you may specify `0` for every flag argument without errors.
+
+### Return values
+
+If you don't enable the `VERBOSE` macro, the library knows another way to notify you if there was an error: The return value. If anything went wrong, the return value is always `-1`. **Every** function behaves this way, so it's
+strongly recommended to check the return values of the API functions.
 
 ### libinetsocket
 

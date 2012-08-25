@@ -8,7 +8,7 @@
  * This example is part of libsocket/libunixsocket
  * It may be used with the other part, unix_dgram_server.c
  * It should send the content of the string via a DGRAM UNIX socket
- * to a unix_dgram_server, listening at /tmp/echosock.
+ * to a unix_dgram_server listening at /tmp/echosock.
 */
 
 int main(void)

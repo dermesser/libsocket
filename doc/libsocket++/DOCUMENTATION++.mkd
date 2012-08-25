@@ -1,8 +1,8 @@
 # DOCUMENTATION for libsocket++
 
-## Introduction and Information for Devs
+## Introduction and General Information for Devs
 
-libsocket++ is a object-oriented wrapper around libsocket. To avoid writing the code twice
+libsocket++ is an object-oriented wrapper around libsocket. To avoid writing the code twice
 and maintain it twice, libsocket++ calls the functions from libsocket.
 
 ### Practical Usage
