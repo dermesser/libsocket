@@ -68,6 +68,12 @@
 
 # define NUMERIC 1
 
+
+# ifdef __FreeBSD__
+	# define _TRADITIONAL_RDNS
+# endif
+
+
 static inline signed int check_error(int return_value)
 {
 # ifdef VERBOSE
@@ -249,8 +255,22 @@ ssize_t sendto_inet_dgram_socket(int sfd, const void* buf, size_t size,const cha
 ssize_t recvfrom_inet_dgram_socket(int sfd, void* buffer, size_t size, char* src_host, size_t src_host_len, char* src_service, size_t src_service_len, int recvfrom_flags, int numeric)
 {
 	struct sockaddr_storage client;
+
+# ifdef _TRADITIONAL_RDNS
+	struct sockaddr_storage oldsockaddr;
+	socklen_t oldsockaddrlen = sizeof(struct sockaddr_storage);
+	struct hostent* he;
+	void* addrptr;
+	size_t addrlen;
+	uint16_t sport = 0;
+# endif
+
 	ssize_t bytes;
+
+# ifndef _TRADITIONAL_RDNS
 	int retval;
+# endif
+
 # ifdef VERBOSE
 	const char* errstr;
 # endif
@@ -264,9 +284,9 @@ ssize_t recvfrom_inet_dgram_socket(int sfd, void* buffer, size_t size, char* src
 	memset(src_host,0,src_host_len);
 	memset(src_service,0,src_service_len);
 
-	socklen_t addrlen = sizeof(struct sockaddr_storage);
+	socklen_t stor_addrlen = sizeof(struct sockaddr_storage);
 
-	if ( -1 == check_error(bytes = recvfrom(sfd,buffer,size,recvfrom_flags,(struct sockaddr*)&client,&addrlen)))
+	if ( -1 == check_error(bytes = recvfrom(sfd,buffer,size,recvfrom_flags,(struct sockaddr*)&client,&stor_addrlen)))
 		return -1;
 
 	if ( src_host_len > 0 || src_service_len > 0 ) // If one of the things is wanted. If you give a null pointer with a positive _len parameter, you won't get the address.
@@ -276,10 +296,8 @@ ssize_t recvfrom_inet_dgram_socket(int sfd, void* buffer, size_t size, char* src
 			numeric = NI_NUMERICHOST | NI_NUMERICSERV;
 		}
 
-# ifdef __FreeBSD__
-		numeric |=  NI_DGRAM; // Avoid getnameinfo errors
-# endif
-
+// getnameinfo() doesn't work on FreeBSD (here)
+# ifndef _TRADITIONAL_RDNS
 		if ( 0 != (retval = getnameinfo((struct sockaddr*)&client,sizeof(struct sockaddr_storage),src_host,src_host_len,src_service,src_service_len,numeric)) ) // Write information to the provided memory
 		{
 # ifdef VERBOSE
@@ -288,6 +306,37 @@ ssize_t recvfrom_inet_dgram_socket(int sfd, void* buffer, size_t size, char* src
 # endif
 			return -1;
 		}
+# endif
+
+// so use traditional methods
+# ifdef _TRADITIONAL_RDNS
+		if ( -1 == check_error(getsockname(sfd,(struct sockaddr*)&oldsockaddr,&oldsockaddrlen)) )
+			return -1;
+
+		if ( oldsockaddrlen > sizeof(struct sockaddr_storage) ) // If getsockname truncated the struct
+			return -1;
+
+		if ( oldsockaddr.ss_family == AF_INET )
+		{
+			addrptr = &(((struct sockaddr_in*)&client)->sin_addr);
+			addrlen = sizeof(struct in_addr);
+			sport = ntohs(((struct sockaddr_in*)&client)->sin_port);
+		} else if ( oldsockaddr.ss_family == AF_INET6 )
+		{
+			addrptr = &(((struct sockaddr_in6*)&client)->sin6_addr);
+			addrlen = sizeof(struct in6_addr);
+			sport = ntohs(((struct sockaddr_in6*)&client)->sin6_port);
+		}
+
+		if ( NULL == (he = gethostbyaddr(addrptr,addrlen,oldsockaddr.ss_family) ) )
+		{
+			check_error(-1);
+			return -1;
+		}
+
+		strncpy(src_host,he->h_name,src_host_len);
+		snprintf(src_service,src_service_len,"%u",sport);
+# endif
 	}
 
 	return bytes;
@@ -504,7 +553,21 @@ int create_inet_server_socket(const char* bind_addr, const char* bind_port, char
 int accept_inet_stream_socket(int sfd, char* src_host, size_t src_host_len, char* src_service, size_t src_service_len, int flags, int accept_flags)
 {
 	struct sockaddr_storage client_info;
-	int retval, client_sfd;
+	int client_sfd;
+
+# ifndef _TRADITIONAL_RDNS
+	int retval;
+# endif
+
+# ifdef _TRADITIONAL_RDNS
+	struct sockaddr_storage oldsockaddr;
+	socklen_t oldsockaddrlen = sizeof(struct sockaddr_storage);
+	struct hostent* he;
+	void* addrptr;
+	size_t in_addrlen;
+	uint16_t sport = 0;
+# endif
+
 # ifdef VERBOSE
 	const char* errstr;
 # endif
@@ -529,6 +592,7 @@ int accept_inet_stream_socket(int sfd, char* src_host, size_t src_host_len, char
 			flags = 0; // To prevent errors: Unknown flags are ignored
 		}
 
+# ifndef _TRADITIONAL_RDNS
 		if ( 0 != (retval = getnameinfo((struct sockaddr*)&client_info,sizeof(struct sockaddr_storage),src_host,src_host_len,src_service,src_service_len,flags)) ) // Write information to the provided memory
 		{
 # ifdef VERBOSE
@@ -537,6 +601,36 @@ int accept_inet_stream_socket(int sfd, char* src_host, size_t src_host_len, char
 # endif
 			return -1;
 		}
+# endif
+
+# ifdef _TRADITIONAL_RDNS
+		if ( -1 == check_error(getsockname(sfd,(struct sockaddr*)&oldsockaddr,&oldsockaddrlen)) )
+			return -1;
+
+		if ( oldsockaddrlen > sizeof(struct sockaddr_storage) ) // If getsockname truncated the struct
+			return -1;
+
+		if ( oldsockaddr.ss_family == AF_INET )
+		{
+			addrptr = &(((struct sockaddr_in*)&client_info)->sin_addr);
+			in_addrlen = sizeof(struct in_addr);
+			sport = ntohs(((struct sockaddr_in*)&client_info)->sin_port);
+		} else if ( oldsockaddr.ss_family == AF_INET6 )
+		{
+			addrptr = &(((struct sockaddr_in6*)&client_info)->sin6_addr);
+			in_addrlen = sizeof(struct in6_addr);
+			sport = ntohs(((struct sockaddr_in6*)&client_info)->sin6_port);
+		}
+
+		if ( NULL == (he = gethostbyaddr(addrptr,addrlen,oldsockaddr.ss_family) ) )
+		{
+			check_error(-1);
+			return -1;
+		}
+
+		strncpy(src_host,he->h_name,src_host_len);
+		snprintf(src_service,src_service_len,"%u",sport);
+# endif
 	}
 
 	return client_sfd;

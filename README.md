@@ -70,9 +70,7 @@ libsocket works, both statically and dynamically linked, on these platform combi
 
 libsocket does not work (AFAIK) on OpenBSD, because there are some source level incompatibilities.
 
-The inet server part does not work properly on FreeBSD; calls to `getnameinfo()` fail with `Non-recoverable failure in name resolution` or do not return a correct name. A workaround or reason for this behavior is not known.
-This makes the use of C++ inet server parts impossible, excepted the situation when using a patched version which does not use `getnameinfo()`.
-
+The inet TCP server part and the recvfrom equivalent work on FreeBSD using deprecated gethostbyaddr calls because getnameinfo doesn't work.
 ##LICENSE and USE
 
 ###Static Linkage
