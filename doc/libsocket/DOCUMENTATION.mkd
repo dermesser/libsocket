@@ -24,11 +24,15 @@ Note: The manpage extracts come from the manpages delivered with Debian (Linux m
 
 ### Compile time configuration
 
-If the macro `VERBOSE` is defined, libsocket prints verbose error messages on STDERR device. The error messages come from functions like `strerror` or `gai_strerror`. This is **VERY** useful when there are problems in your program or the library itself. Typically, you specify it in the compile command:
+If the macro `VERBOSE` is defined, libsocket prints verbose error messages on STDERR device. The error messages come from functions like `strerror` or `gai_strerror`. This is **VERY** useful when there are problems in your program or the library itself. Typically, you specify it in the Makefile (the variable already exists):
 
-	gcc -DVERBOSE ...
+	...
+	CCFLAGS=-DVERBOSE
+	...
 
 Usually, you'll use this option during development, but disable it when you finished the application. If you use the shared library, specify `-DVERBOSE` in the make variable `CFLAGS`  in `C/Makefile`.
+
+Another compile-time option is `_TRADITIONAL_RDNS`. It's also a macro (like `VERBOSE`) and specifies if the library should use `getnameinfo()` or `gethostbyaddr()` for rDNS queries. The latter possibility may be sensible e.g. on FreeBSD systems or on other systems were getnameinfo is not an option.
 
 ### Usage of flags
 
@@ -192,11 +196,11 @@ FreeBSD has this flags available (`sendto(2)`):
 
 	The flags argument may include one or more of the following:
 
-     #define MSG_OOB	     0x00001 /* process out-of-band data */
-     #define MSG_DONTROUTE   0x00004 /* bypass routing, use direct interface */
-     #define MSG_EOR	     0x00008 /* data completes record */
-     #define MSG_EOF	     0x00100 /* data completes transaction */
-     #define MSG_NOSIGNAL    0x20000 /* do not generate SIGPIPE on EOF */
+	 #define MSG_OOB	     0x00001 /* process out-of-band data */
+	 #define MSG_DONTROUTE   0x00004 /* bypass routing, use direct interface */
+	 #define MSG_EOR	     0x00008 /* data completes record */
+	 #define MSG_EOF	     0x00100 /* data completes transaction */
+	 #define MSG_NOSIGNAL    0x20000 /* do not generate SIGPIPE on EOF */
 
 If it is not possible to send data at the moment, this call blocks excepted you specified `SOCK_NONBLOCK` when creating the socket.
 
