@@ -356,15 +356,17 @@ int connect_inet_dgram_socket(int sfd, const char* host, const char* service)
 	if ( sfd < 0 )
 		return -1;
 
-	if ( host == 0 )
+	if ( host == NULL )
 	{
+// This does not work on FreeBSD systems. We pretend to disconnect the socket although we don't do so. This is not very severe for the application
+# ifndef __FreeBSD__
 		memset(&deconnect,0,sizeof(struct sockaddr));
 
 		deconnect.sa_family = AF_UNSPEC;
 
 		if ( check_error(connect(sfd,&deconnect,sizeof(struct sockaddr))) )
 			return -1;
-
+# endif
 		return 0;
 	}
 
