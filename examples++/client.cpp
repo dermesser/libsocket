@@ -28,10 +28,6 @@ int main(void)
 	try {
 		libsocket::inet_stream sock(host,port,IPv6);
 
-		// You may close a socket and re-connect() it:
-		sock.destroy();
-		sock.connect(host,port,IPv6);
-
 		sock >> answer;
 
 		std::cout << answer;
