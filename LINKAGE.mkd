@@ -52,7 +52,7 @@ Some more information about building etc. can be found in README.md.
 
 *C*
 
-If you're using the C interface, you only have to compile your programs together with 
+If you're using the C interface, you only have to compile your programs together with
 C/libinetsocket.c respectively C/libunixsocket.c.
 
 *C++*

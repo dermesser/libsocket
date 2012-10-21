@@ -298,12 +298,12 @@ inet_dgram_client(const std::string&amp; dsthost, const std::string&amp; dstport
 
 <p>Because the UDP socket can be connected multiple times and send data to various hosts,
 it's mandatory to specify the address family at instantiation time. <code>proto_osi3</code> may be
-<code>IPv4</code> or <code>IPv6</code>; this information is used to create a socket with <code>create_inet_dgram_client_socket()</code>
-and finally <code>socket(2)</code>.</p>
+<code>IPv4</code> or <code>IPv6</code> or this information is used to create a socket with <code>create_inet_dgram_client_socket()</code> which uses <code>socket(2)</code>.</p>
 
 <p>The second form allows to specify a host and a port to which the UDP socket is connected.
 If an UDP socket is connected, calls to <code>snd()</code> and <code>rcv()</code> act like on a stream socket:
-The data is sent and received only to/from the host to which the socket is connected.</p>
+The data is sent and received only to/from the host to which the socket is connected.
+Here, <code>proto_osi3</code> may be <code>IPv4</code>, <code>IPv6</code> or <code>BOTH</code> (in the latter case, <code>get_address_family()</code> is used to obtain the address family); </p>
 
 <h3>Setup functions</h3>
 

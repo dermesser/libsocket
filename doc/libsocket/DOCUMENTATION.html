@@ -436,6 +436,21 @@ is solved and <code>write(2)/read(2)</code> is not possible anymore. Of course, 
 
 <p>Returns a stream file descriptor connected to the connecting client. On error, -1 is returned.</p>
 
+<h3>Other functions</h3>
+
+<h4><code>get_address_family()</code></h4>
+
+<p><code>int get_address_family(const char* host)</code></p>
+
+<p>Returns the libsocket address family for the given <code>host</code>. The address family is either
+<code>IPv4</code> or <code>IPv6</code> (defined in libinetsocket header file).</p>
+
+<p>This function is very useful when creating a UDP socket for a certain destination (<code>host</code>); without this function
+it would be impossible to obtain the address family to use for such a socket (UDP sockets do not have the <code>BOTH</code>
+address family available)</p>
+
+<p>Thanks also to github user andreas-erbsen.</p>
+
 <h2>libunixsocket</h2>
 
 <p>As mentioned in the introduction, libunixsocket is Linux-specific. Until now, it did not run on other Unixes than Linux.</p>

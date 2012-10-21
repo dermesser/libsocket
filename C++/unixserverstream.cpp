@@ -64,7 +64,7 @@ namespace libsocket
 
 		if ( sfd < 0 )
 			throw socket_exception(__FILE__,__LINE__,"unix_stream_server::setup: Error at creating UNIX stream server socket!\n");
-		
+
 		_path.assign(path);
 	}
 

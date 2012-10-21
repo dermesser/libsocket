@@ -253,12 +253,12 @@ Declared in `inetclientdgram.hpp`, defined in `inetclientdgram.cpp`
 
 Because the UDP socket can be connected multiple times and send data to various hosts,
 it's mandatory to specify the address family at instantiation time. `proto_osi3` may be
-`IPv4` or `IPv6`; this information is used to create a socket with `create_inet_dgram_client_socket()`
-and finally `socket(2)`.
+`IPv4` or `IPv6` or this information is used to create a socket with `create_inet_dgram_client_socket()` which uses `socket(2)`.
 
 The second form allows to specify a host and a port to which the UDP socket is connected.
 If an UDP socket is connected, calls to `snd()` and `rcv()` act like on a stream socket:
 The data is sent and received only to/from the host to which the socket is connected.
+Here, `proto_osi3` may be `IPv4`, `IPv6` or `BOTH` (in the latter case, `get_address_family()` is used to obtain the address family);
 
 ###Setup functions
 

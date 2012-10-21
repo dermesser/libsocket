@@ -73,7 +73,6 @@
 	# define _TRADITIONAL_RDNS
 # endif
 
-
 static inline signed int check_error(int return_value)
 {
 # ifdef VERBOSE
@@ -212,7 +211,7 @@ ssize_t sendto_inet_dgram_socket(int sfd, const void* buf, size_t size,const cha
 	if ( sfd < 0 )
 		return -1;
 
-	if ( buf == NULL || size == 0) 
+	if ( buf == NULL || size == 0)
 		return -1;
 
 	if ( host == NULL || service == NULL )
@@ -543,7 +542,7 @@ int create_inet_server_socket(const char* bind_addr, const char* bind_port, char
 		return -1;
 	}
 
-	// We do now have a working socket connection to our target on which we may call accept()
+	// We do now have a working socket on which we may call accept()
 
 	freeaddrinfo(result);
 
@@ -636,4 +635,46 @@ int accept_inet_stream_socket(int sfd, char* src_host, size_t src_host_len, char
 	}
 
 	return client_sfd;
+}
+
+int get_address_family(const char* hostname)
+{
+	int return_value;
+	struct addrinfo hint, *result;
+# ifdef VERBOSE
+	const char* errstring;
+# endif
+	int af;
+
+	if ( hostname == NULL )
+		return -1;
+
+	memset(&hint,0,sizeof hint);
+
+	hint.ai_family = AF_UNSPEC;
+
+	if ( 0 != (return_value = getaddrinfo(hostname,"0",&hint,&result)))
+	{
+# ifdef VERBOSE
+		errstring = gai_strerror(return_value);
+		write(2,errstring,strlen(errstring));
+# endif
+		return -1;
+	}
+
+	if ( result == NULL )
+		return -1;
+
+	if ( result->ai_family == AF_INET )
+	{
+		af = IPv4;
+	} else if ( result->ai_family == AF_INET6 )
+	{
+		af = IPv6;
+	} else
+	{
+		af = -1;
+	}
+
+	return af;
 }

@@ -76,6 +76,10 @@ namespace libsocket
 
 	void inet_dgram_client::setup(const char* dsthost, const char* dstport, int proto_osi3, int flags)
 	{
+		// Retrieve address family
+		if (proto_osi3 == BOTH)
+			proto_osi3 = get_address_family(dsthost);
+
 		if ( -1 == (sfd = create_inet_dgram_socket(proto_osi3,flags)) )
 			throw socket_exception(__FILE__,__LINE__,"inet_dgram_client::inet_dgram_client() - Could not create inet dgram socket!\n");
 
@@ -94,7 +98,7 @@ namespace libsocket
 		if ( sfd == -1 )
 			throw socket_exception(__FILE__,__LINE__,"inet_dgram_client::connect() - Socket has already been closed!\n");
 		if ( -1 == (connect_inet_dgram_socket(sfd,dsthost,dstport)) )
-			throw socket_exception(__FILE__,__LINE__,"inet_dgram_client::connect() - Could not connect dgram socket!\n");
+			throw socket_exception(__FILE__,__LINE__,"inet_dgram_client::connect() - Could not connect dgram socket! (Maybe this socket has a wrong address family?)\n");
 
 		host = dsthost;
 		port = dstport;
@@ -106,7 +110,7 @@ namespace libsocket
 		if ( sfd == -1 )
 			throw socket_exception(__FILE__,__LINE__,"inet_dgram_client::connect() - Socket has already been closed!\n");
 		if ( -1 == (connect_inet_dgram_socket(sfd,dsthost.c_str(),dstport.c_str())) )
-			throw socket_exception(__FILE__,__LINE__,"inet_dgram_client::connect() - Could not connect dgram socket!\n");
+			throw socket_exception(__FILE__,__LINE__,"inet_dgram_client::connect() - Could not connect dgram socket! (Maybe this socket has a wrong address family?)\n");
 
 		host = dsthost;
 		port = dstport;
