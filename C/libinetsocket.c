@@ -104,7 +104,7 @@ int create_inet_stream_socket(const char* host, const char* service, char proto_
 	const char* errstring;
 # endif
 
-	if ( host == 0 || service == 0 )
+	if ( host == NULL || service == NULL )
 		return -1;
 
 	memset(&hint,0,sizeof hint);
@@ -212,10 +212,10 @@ ssize_t sendto_inet_dgram_socket(int sfd, const void* buf, size_t size,const cha
 	if ( sfd < 0 )
 		return -1;
 
-	if ( buf == 0 || size == 0)
+	if ( buf == NULL || size == NULL)
 		return -1;
 
-	if ( host == 0 || service == 0 )
+	if ( host == NULL || service == NULL )
 		return -1;
 
 	if ( -1 == check_error(getsockname(sfd,(struct sockaddr*)&oldsock,(socklen_t*)&oldsocklen)) )
@@ -277,7 +277,7 @@ ssize_t recvfrom_inet_dgram_socket(int sfd, void* buffer, size_t size, char* src
 	if ( sfd < 0 )
 		return -1;
 
-	if ( buffer == 0 || size == 0)
+	if ( buffer == NULL || size == NULL)
 		return -1;
 
 	memset(buffer,0,size);
@@ -471,7 +471,7 @@ int create_inet_server_socket(const char* bind_addr, const char* bind_port, char
 	//if ( flags != SOCK_NONBLOCK && flags != SOCK_CLOEXEC && flags != (SOCK_CLOEXEC|SOCK_NONBLOCK) && flags != 0 )
 	//	return -1;
 
-	if ( bind_addr == 0 || bind_port == 0 )
+	if ( bind_addr == NULL || bind_port == NULL )
 		return -1;
 
 	switch ( proto_osi4 )
