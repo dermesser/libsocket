@@ -542,7 +542,7 @@ int create_inet_server_socket(const char* bind_addr, const char* bind_port, char
 		return -1;
 	}
 
-	// We do now have a working socket connection to our target on which we may call accept()
+	// We do now have a working socket on which we may call accept()
 
 	freeaddrinfo(result);
 

@@ -58,7 +58,7 @@ namespace libsocket
 
 	void inet_dgram_server::setup(const char* bhost, const char* bport, int proto_osi3, int flags)
 	{
-		sfd = -1;
+		// No separate call to get_address_family()
 
 		if ( -1 == (sfd = create_inet_server_socket(bhost,bport,UDP,proto_osi3,flags)) )
 			throw socket_exception(__FILE__,__LINE__,"inet_dgram_server::inet_dgram_server() - could not create server socket!\n");

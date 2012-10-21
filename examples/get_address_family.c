@@ -19,7 +19,7 @@ int main(int argc, char** argv)
 
 	switch ( af )
 	{
-		case IPv4: 
+		case IPv4:
 			printf("Supports IPv4\n");
 			break;
 		case IPv6:

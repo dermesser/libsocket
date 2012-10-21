@@ -388,6 +388,21 @@ This function will block until there's an incoming connection.
 
 Returns a stream file descriptor connected to the connecting client. On error, -1 is returned.
 
+### Other functions
+
+#### `get_address_family()`
+
+`int get_address_family(const char* host)`
+
+Returns the libsocket address family for the given `host`. The address family is either
+`IPv4` or `IPv6` (defined in libinetsocket header file).
+
+This function is very useful when creating a UDP socket for a certain destination (`host`); without this function
+it would be impossible to obtain the address family to use for such a socket (UDP sockets do not have the `BOTH`
+address family available)
+
+Thanks also to github user andreas-erbsen.
+
 ## libunixsocket
 As mentioned in the introduction, libunixsocket is Linux-specific. Until now, it did not run on other Unixes than Linux.
 
@@ -494,3 +509,4 @@ Sends a message to another socket.
 * `sendto_flags`: Combination of flags, as described at `sendto_inet_dgram_socket()`.
 
 Returns number of sent bytes or -1.
+
