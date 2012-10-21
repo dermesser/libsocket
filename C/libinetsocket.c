@@ -212,7 +212,7 @@ ssize_t sendto_inet_dgram_socket(int sfd, const void* buf, size_t size,const cha
 	if ( sfd < 0 )
 		return -1;
 
-	if ( buf == NULL || size == NULL)
+	if ( buf == NULL || size == 0) 
 		return -1;
 
 	if ( host == NULL || service == NULL )
@@ -277,7 +277,7 @@ ssize_t recvfrom_inet_dgram_socket(int sfd, void* buffer, size_t size, char* src
 	if ( sfd < 0 )
 		return -1;
 
-	if ( buffer == NULL || size == NULL)
+	if ( buffer == NULL || size == 0)
 		return -1;
 
 	memset(buffer,0,size);
