@@ -55,6 +55,7 @@ extern int destroy_inet_socket(int sfd);
 extern int shutdown_inet_stream_socket(int sfd, int method);
 extern int create_inet_server_socket(const char* bind_addr, const char* bind_port, char proto_osi4, char proto_osi3, int flags);
 extern int accept_inet_stream_socket(int sfd, char* src_host, size_t src_host_len, char* src_service, size_t src_service_len, int flags,int accept_flags);
+extern int get_address_family(const char* hostname);
 
 # ifdef __cplusplus
 # ifdef _MIXED
