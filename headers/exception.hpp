@@ -8,6 +8,7 @@ namespace libsocket
 {
 	struct socket_exception
 	{
+		int err;
 		string mesg;
 
 		socket_exception(string,int,string);

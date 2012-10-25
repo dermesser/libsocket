@@ -61,7 +61,8 @@ Defined in `exception.cpp`, has to be included from `exception.hpp`
 
 	struct socket_exception
 	{
-		std::string mesg;
+		int err; // errno at throw time (usually set by a crashing syscall in the underlying libsocket)
+		std::string mesg; // Error message from libsocket++
 
 		socket_exception(std::string,int,std::string);
 	};
@@ -80,7 +81,7 @@ Example for error handling:
 		sock << "test";
 	} catch (libsocket::socket_exception exc)
 	{
-		std::cerr << exc.mesg;
+		std::cerr << exc.mesg << " errno code: " << exc.err;
 	}
 
 # libinetsocket++
