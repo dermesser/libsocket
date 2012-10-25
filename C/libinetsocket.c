@@ -69,6 +69,16 @@
 # define NUMERIC 1
 
 
+# ifdef VERBOSE
+	#define debug_write(str,l)                \
+	do {                                      \
+		int __verbose_errno_save = errno; \
+		write(2,str,l);	                  \
+		errno = __verbose_errno_save;     \
+	} while (0)
+# endif
+
+
 # ifdef __FreeBSD__
 	# define _TRADITIONAL_RDNS
 # endif
@@ -82,7 +92,7 @@ static inline signed int check_error(int return_value)
 	{
 # ifdef VERBOSE
 		errbuf = strerror(errno);
-		write(2,errbuf,strlen(errbuf));
+		debug_write(errbuf,strlen(errbuf));
 # endif
 		return -1;
 	}
@@ -131,7 +141,7 @@ int create_inet_stream_socket(const char* host, const char* service, char proto_
 	{
 # ifdef VERBOSE
 		errstring = gai_strerror(return_value);
-		write(2,errstring,strlen(errstring));
+		debug_write(errstring,strlen(errstring));
 # endif
 		return -1;
 	}
@@ -156,7 +166,7 @@ int create_inet_stream_socket(const char* host, const char* service, char proto_
 	if ( result_check == NULL ) // Have we?
 	{
 # ifdef VERBOSE
-		write(2,"Could not connect to any address!\n",34);
+		debug_write("Could not connect to any address!\n",34);
 # endif
 		return -1;
 	}
@@ -174,7 +184,7 @@ int create_inet_dgram_socket(char proto_osi3, int flags)
 	if (proto_osi3 != IPv4 && proto_osi3 != IPv6)
 	{
 # ifdef VERBOSE
-		write(2,"create_inet_dgram_socket: osi3 argument invalid when using DGRAM sockets\n",48);
+		debug_write("create_inet_dgram_socket: osi3 argument invalid when using DGRAM sockets\n",48);
 # endif
 		return -1;
 	}
@@ -229,7 +239,7 @@ ssize_t sendto_inet_dgram_socket(int sfd, const void* buf, size_t size,const cha
 	{
 # ifdef VERBOSE
 		errstring = gai_strerror(return_value);
-		write(2,errstring,strlen(errstring));
+		debug_write(errstring,strlen(errstring));
 # endif
 		return -1;
 	}
@@ -301,7 +311,7 @@ ssize_t recvfrom_inet_dgram_socket(int sfd, void* buffer, size_t size, char* src
 		{
 # ifdef VERBOSE
 			errstr = gai_strerror(retval);
-			write(2,errstr,strlen(errstr));
+			debug_write(errstr,strlen(errstr));
 # endif
 			return -1;
 		}
@@ -384,7 +394,7 @@ int connect_inet_dgram_socket(int sfd, const char* host, const char* service)
 	{
 # ifdef VERBOSE
 		errstring = gai_strerror(return_value);
-		write(2,errstring,strlen(errstring));
+		debug_write(errstring,strlen(errstring));
 # endif
 		return -1;
 	}
@@ -407,7 +417,7 @@ int connect_inet_dgram_socket(int sfd, const char* host, const char* service)
 	if ( result_check == NULL ) // or not?
 	{
 # ifdef VERBOSE
-		write(2,"Could not connect to any address!\n",34);
+		debug_write("Could not connect to any address!\n",34);
 # endif
 		return -1;
 	}
@@ -509,7 +519,7 @@ int create_inet_server_socket(const char* bind_addr, const char* bind_port, char
 	{
 # ifdef VERBOSE
 		errstr = gai_strerror(retval);
-		write(2,errstr,strlen(errstr));
+		debug_write(errstr,strlen(errstr));
 # endif
 		return -1;
 	}
@@ -537,7 +547,7 @@ int create_inet_server_socket(const char* bind_addr, const char* bind_port, char
 	if ( result_check == NULL )
 	{
 # ifdef VERBOSE
-		write(2,"Could not bind to any address!\n",34);
+		debug_write("Could not bind to any address!\n",34);
 # endif
 		return -1;
 	}
@@ -598,7 +608,7 @@ int accept_inet_stream_socket(int sfd, char* src_host, size_t src_host_len, char
 		{
 # ifdef VERBOSE
 			errstr = gai_strerror(retval);
-			write(2,errstr,strlen(errstr));
+			debug_write(errstr,strlen(errstr));
 # endif
 			return -1;
 		}
@@ -657,7 +667,7 @@ int get_address_family(const char* hostname)
 	{
 # ifdef VERBOSE
 		errstring = gai_strerror(return_value);
-		write(2,errstring,strlen(errstring));
+		debug_write(errstring,strlen(errstring));
 # endif
 		return -1;
 	}
@@ -678,3 +688,5 @@ int get_address_family(const char* hostname)
 
 	return af;
 }
+
+#undef debug_write

@@ -55,6 +55,15 @@
 # define READ  1
 # define WRITE 2
 
+# ifdef VERBOSE
+	#define debug_write(str,l)                \
+	do {                                      \
+		int __verbose_errno_save = errno; \
+		write(2,str,l);	                  \
+		errno = __verbose_errno_save;     \
+	} while (0)
+# endif
+
 static inline signed int check_error(int return_value)
 {
 # ifdef VERBOSE
@@ -64,7 +73,7 @@ static inline signed int check_error(int return_value)
 	{
 # ifdef VERBOSE
 		errbuf = strerror(errno);
-		write(2,errbuf,strlen(errbuf));
+		debug_write(errbuf,strlen(errbuf));
 # endif
 		return -1;
 	}
@@ -88,7 +97,7 @@ int create_unix_stream_socket(const char* path, int flags)
 	if ( strlen(path) > (sizeof(saddr.sun_path)-1) )
 	{
 # ifdef VERBOSE
-		write(2,"UNIX socket destination path too long\n",38);
+		debug_write("UNIX socket destination path too long\n",38);
 # endif
 		return -1;
 	}
@@ -123,7 +132,7 @@ int create_unix_dgram_socket(const char* bind_path, int flags)
 		if ( strlen(bind_path) > (sizeof(saddr.sun_path)-1) )
 		{
 # ifdef VERBOSE
-			write(2,"UNIX socket path too long\n",26);
+			debug_write("UNIX socket path too long\n",26);
 # endif
 			return -1;
 		}
@@ -166,7 +175,7 @@ int connect_unix_dgram_socket(int sfd, const char* path)
 	if ( strlen(path) > sizeof(new_addr.sun_path)-1 )
 	{
 # ifdef VERBOSE
-		write(2,"Path too long\n",14);
+		debug_write("Path too long\n",14);
 # endif
 		return -1;
 	}
@@ -226,7 +235,7 @@ int create_unix_server_socket(const char* path, int socktype, int flags)
 	if ( strlen(path) > (sizeof(saddr.sun_path)-1) )
 	{
 # ifdef VERBOSE
-		write(2,"Path too long\n",14);
+		debug_write("Path too long\n",14);
 # endif
 		return -1;
 	}
@@ -315,7 +324,7 @@ ssize_t sendto_unix_dgram_socket(int sfd, const void* buf, size_t size, const ch
 	if ( strlen(path) > sizeof(saddr.sun_path)-1 )
 	{
 # ifdef VERBOSE
-		write(2,"UNIX destination socket path too long\n",14);
+		debug_write("UNIX destination socket path too long\n",14);
 # endif
 		return -1;
 	}
@@ -330,3 +339,5 @@ ssize_t sendto_unix_dgram_socket(int sfd, const void* buf, size_t size, const ch
 
 	return bytes;
 }
+
+#undef debug_write
