@@ -120,7 +120,7 @@ and <em>must</em> be connected before use using <code>connect()</code>.</p>
 <li><code>host</code>: Destination host; if you have the host as <code>std::string</code>, use its routine <code>std::string::c_str()</code> to get
 the C string</li>
 <li><code>port</code>: Destination port (TCP, of course); conversion from string like above.</li>
-<li><code>proto_osi3</code>: <code>IPv4</code>, <code>IPv6</code> or <code>BOTH</code> (<code>BOTH</code> lets the library choose; pp macros; defined in header file <code>inetbase.hpp</code>)</li>
+<li><code>proto_osi3</code>: <code>LIBSOCKET_IPv4</code>, <code>LIBSOCKET_IPv6</code> or <code>LIBSOCKET_BOTH</code> (<code>LIBSOCKET_BOTH</code> lets the library choose (decision based on DNS response; cpp macros; defined in header file <code>inetbase.hpp</code>)</li>
 <li><code>flags</code>: Default 0, can be <code>SOCK_NONBLOCK</code> or <code>SOCK_CLOEXEC</code> (see: <code>socket(2)</code>; it must be 0 on other platforms than Linux to avoid errors)</li>
 </ul>
 
@@ -138,7 +138,7 @@ void connect(const string&amp; dsthost, const string&amp; dstport, int proto_osi
 <li><code>host</code>: Destination host; if you have the host as <code>std::string</code>, use its routine <code>std::string::c_str()</code> to get
 the C string</li>
 <li><code>port</code>: Destination port (TCP, of course); conversion from string like above.</li>
-<li><code>proto_osi3</code>: <code>IPv4</code> or <code>IPv6</code> (pp macros; defined in header file <code>inetsocket.hpp</code>)</li>
+<li><code>proto_osi3</code>: <code>LIBSOCKET_IPv4</code> or <code>LIBSOCKET_IPv6</code> (pp macros; defined in header file <code>inetsocket.hpp</code>)</li>
 <li><code>flags</code>: Default 0, can be <code>SOCK_NONBLOCK</code> or <code>SOCK_CLOEXEC</code> (see: <code>socket(2)</code>; on other platforms than Linux
 has to be 0 to avoid errors)</li>
 </ul>
@@ -152,9 +152,9 @@ has to be 0 to avoid errors)</li>
 <pre><code>void shutdown(int method);
 </code></pre>
 
-<p>Shuts the socket down (<code>shutdown(2)</code>). If you shut it down using the method <code>WRITE</code>, the peer receives an <code>EOF</code> on his socket and you may not write to the socket anymore. If you shut it down using <code>READ</code>, you may not read anymore from the socket.</p>
+<p>Shuts the socket down (<code>shutdown(2)</code>). If you shut it down using the method <code>LIBSOCKET_WRITE</code>, the peer receives an <code>EOF</code> on his socket and you may not write to the socket anymore. If you shut it down using <code>LIBSOCKET_READ</code>, you may not read anymore from the socket.</p>
 
-<p><code>method</code> is <code>READ</code>, <code>WRITE</code>, or the ORed combination, <code>READ|WRITE</code>. <code>READ</code> and <code>WRITE</code> are defined in <code>streamclient.hpp</code></p>
+<p><code>method</code> is <code>LIBSOCKET_READ</code>, <code>LIBSOCKET_WRITE</code>, or the ORed combination, <code>LIBSOCKET_READ|LIBSOCKET_WRITE</code>. <code>LIBSOCKET_READ</code> and <code>LIBSOCKET_WRITE</code> are defined in <code>streamclient.hpp</code></p>
 
 <h3>Destroy Functions</h3>
 
@@ -529,12 +529,12 @@ void connect(const std::string&amp; path, int socket_flags=0);
 
 <p>Defined in <code>streamclient.cpp</code>, inherited from <code>stream_client_socket</code></p>
 
-<pre><code>void shutdown(int method=WRITE);
+<pre><code>void shutdown(int method=LIBSOCKET_WRITE);
 </code></pre>
 
-<p>Shuts the socket down (<code>shutdown(2)</code>). If you shut it down using the method <code>WRITE</code>, the peer receives an <code>EOF</code> on his socket and you may not write to the socket anymore. If you shut it down using <code>READ</code>, you may not read anymore from the socket.</p>
+<p>Shuts the socket down (<code>shutdown(2)</code>). If you shut it down using the method <code>LIBSOCKET_WRITE</code>, the peer receives an <code>EOF</code> on his socket and you may not write to the socket anymore. If you shut it down using <code>LIBSOCKET_READ</code>, you may not read anymore from the socket.</p>
 
-<p>Using <code>READ|WRITE</code> (bitwise OR) shuts the socket completely down.</p>
+<p>Using <code>LIBSOCKET_READ|LIBSOCKET_WRITE</code> (bitwise OR) shuts the socket completely down.</p>
 
 <h3><code>snd() rcv()</code></h3>
 
@@ -776,8 +776,8 @@ ssize_t rcvfrom(string&amp; buf, string&amp; source, int recvfrom_flags=0);
 </code></pre>
 
 <p>First, add just any socket class derived from <code>socket</code> to the new set. Do this multiple times if you have more than one socket (which
-is likely). <code>method</code> is either <code>READ</code> or <code>WRITE</code>, so if you want to be notified if some socket is ready to be read from it, specify <code>READ</code>.
-<code>READ</code> must also be specified for server sockets.</p>
+is likely). <code>method</code> is either <code>LIBSOCKET_READ</code> or <code>LIBSOCKET_WRITE</code>, so if you want to be notified if some socket is ready to be read from it, specify <code>LIBSOCKET_READ</code>.
+<code>LIBSOCKET_READ</code> must also be specified for server sockets.</p>
 
 <pre><code>std::pair&lt;std::vector&lt;socket*&gt;, std::vector&lt;socket*&gt; &gt; wait(long long microsecs=0);
 </code></pre>
@@ -798,8 +798,8 @@ And yes, I know, it's a gorgeous return type. Don't panic, there's a typedef in 
 inet_stream sock2("spheniscida.de","25",IPv6);
 
 selectset socks;
-socks.add_fd(sock1,WRITE);
-socks.add_fd(sock2,READ);
+socks.add_fd(sock1,LIBSOCKET_WRITE);
+socks.add_fd(sock2,LIBSOCKET_READ);
 
 ready_socks rs = socks.wait();
 

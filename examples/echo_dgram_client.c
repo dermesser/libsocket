@@ -18,7 +18,7 @@ int main(void)
 	char buf[16];
 	int ret;
 
-	sfd = create_inet_dgram_socket(IPv4,0);
+	sfd = create_inet_dgram_socket(LIBSOCKET_IPv4,0);
 
 	if ( sfd < 0 )
 	{
@@ -36,7 +36,7 @@ int main(void)
 
 	//sleep(2);
 
-	ret = recvfrom_inet_dgram_socket(sfd,buf,5,0,0,0,0,0,NUMERIC);
+	ret = recvfrom_inet_dgram_socket(sfd,buf,5,0,0,0,0,0,LIBSOCKET_NUMERIC);
 
 	if ( ret < 0 )
 	{

@@ -29,11 +29,11 @@ int main(void)
 	string answ;
 
 	try {
-		inet_stream_server srv(host,port,IPv6);
+		inet_stream_server srv(host,port,LIBSOCKET_IPv6);
 		inet_stream* cl1;
 
 		selectset set1;
-		set1.add_fd(srv,READ);
+		set1.add_fd(srv,LIBSOCKET_READ);
 
 		for ( ;; )
 		{
@@ -44,7 +44,7 @@ int main(void)
 
 			readypair = set1.wait(); // Wait for a connection and place the pair to the var
 
-			inet_stream_server* ready_srv = dynamic_cast<inet_stream_server*>(readypair.first.back()); // Get the last fd of the read vector (.first) of the pair and cast the socket* to inet_stream_server*
+			inet_stream_server* ready_srv = dynamic_cast<inet_stream_server*>(readypair.first.back()); // Get the last fd of the LIBSOCKET_READ vector (.first) of the pair and cast the socket* to inet_stream_server*
 
 			readypair.first.pop_back(); // delete the fd
 

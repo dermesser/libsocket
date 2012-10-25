@@ -20,7 +20,7 @@ int main(void)
 
 	buf[31] = 0;
 
-	ret = sfd = create_inet_stream_socket("lbo.spheniscida.de", "80", IPv4,0);
+	ret = sfd = create_inet_stream_socket("lbo.spheniscida.de", "80", LIBSOCKET_IPv4,0);
 
 	if ( ret < 0 )
 	{
@@ -38,7 +38,7 @@ int main(void)
 		exit(1);
 	}
 
-	ret = shutdown_inet_stream_socket(sfd,WRITE);
+	ret = shutdown_inet_stream_socket(sfd,LIBSOCKET_WRITE);
 
 	if ( ret < 0 )
 	{

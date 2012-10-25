@@ -5,8 +5,6 @@
 # include <sys/socket.h>
 # include <sys/types.h>
 
-# define READ  1
-# define WRITE 2
 /*
 The committers of the libsocket project, all rights reserved
 (c) 2012, dermesser <lbo@spheniscida.de>

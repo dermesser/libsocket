@@ -18,7 +18,7 @@ int main(void)
 
 	answer.resize(32);
 
-	libsocket::inet_dgram_client sock(IPv4);
+	libsocket::inet_dgram_client sock(LIBSOCKET_IPv4);
 
 	try {
 		std::cout << sock.gethost();

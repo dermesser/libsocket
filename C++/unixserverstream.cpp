@@ -60,7 +60,7 @@ namespace libsocket
 		if ( path == NULL )
 			throw socket_exception(__FILE__,__LINE__,"unix_stream_server::setup: Path is NULL!\n");
 
-		sfd = create_unix_server_socket(path,STREAM,flags);
+		sfd = create_unix_server_socket(path,LIBSOCKET_STREAM,flags);
 
 		if ( sfd < 0 )
 			throw socket_exception(__FILE__,__LINE__,"unix_stream_server::setup: Error at creating UNIX stream server socket!\n");

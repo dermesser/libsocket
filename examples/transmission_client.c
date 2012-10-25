@@ -14,7 +14,7 @@ int main(void)
 	int sfd;
 	char* buf = "abcde";
 
-	ret = sfd = create_inet_stream_socket("::1","55555",IPv6,0);
+	ret = sfd = create_inet_stream_socket("::1","55555",LIBSOCKET_IPv6,0);
 
 	if ( ret < 0 )
 	{

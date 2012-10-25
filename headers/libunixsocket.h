@@ -29,11 +29,11 @@
 
 // Macro definitions
 
-# define STREAM 1
-# define DGRAM  2
+# define LIBSOCKET_STREAM 1
+# define LIBSOCKET_DGRAM  2
 
-# define READ  1
-# define WRITE 2
+# define LIBSOCKET_READ  1
+# define LIBSOCKET_WRITE 2
 
 # ifdef __cplusplus
 # ifdef _MIXED

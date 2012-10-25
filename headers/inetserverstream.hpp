@@ -4,10 +4,6 @@
 # include "inetbase.hpp"
 # include "inetclientstream.hpp"
 
-# define IPv4 3
-# define IPv6 4
-
-# define BOTH 5 // what fits best (TCP/UDP or IPv4/6)
 /*
 The committers of the libsocket project, all rights reserved
 (c) 2012, dermesser <lbo@spheniscida.de>

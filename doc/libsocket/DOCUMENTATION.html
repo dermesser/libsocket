@@ -27,16 +27,16 @@ $ man 2 socket
 
 <h3>Compile time configuration</h3>
 
-<p>If the macro <code>VERBOSE</code> is defined, libsocket prints verbose error messages on STDERR device. The error messages come from functions like <code>strerror</code> or <code>gai_strerror</code>. This is <strong>VERY</strong> useful when there are problems in your program or the library itself. Typically, you specify it in the Makefile (the variable already exists):</p>
+<p>If the macro <code>LIBSOCKET_VERBOSE</code> is defined, libsocket prints verbose error messages on STDERR device. The error messages come from functions like <code>strerror</code> or <code>gai_strerror</code>. This is <strong>VERY</strong> useful when there are problems in your program or the library itself. Typically, you specify it in the Makefile (the variable already exists):</p>
 
 <pre><code>...
-CCFLAGS=-DVERBOSE
+CCFLAGS=-DLIBSOCKET_VERBOSE
 ...
 </code></pre>
 
 <p>Usually, you'll use this option during development, but disable it when you finished the application. If you use the shared library, specify <code>-DVERBOSE</code> in the make variable <code>CFLAGS</code>  in <code>C/Makefile</code>.</p>
 
-<p>Another compile-time option is <code>_TRADITIONAL_RDNS</code>. It's also a macro (like <code>VERBOSE</code>) and specifies if the library should use <code>getnameinfo()</code> or <code>gethostbyaddr()</code> for rDNS queries. The latter possibility may be sensible e.g. on FreeBSD systems or on other systems were getnameinfo is not an option.</p>
+<p>Another compile-time option is <code>_TRADITIONAL_RDNS</code>. It's also a macro (like <code>LIBSOCKET_VERBOSE</code>) and specifies if the library should use <code>getnameinfo()</code> or <code>gethostbyaddr()</code> for rDNS queries. The latter possibility may be sensible e.g. on FreeBSD systems or on other systems were getnameinfo is not an option.</p>
 
 <h3>Usage of flags</h3>
 
@@ -44,7 +44,7 @@ CCFLAGS=-DVERBOSE
 
 <h3>Return values</h3>
 
-<p>If you don't enable the <code>VERBOSE</code> macro, the library knows another way to notify you if there was an error: The return value. If anything went wrong, the return value is always <code>-1</code>. <strong>Every</strong> function behaves this way, so it's
+<p>If you don't enable the <code>LIBSOCKET_VERBOSE</code> macro, the library knows another way to notify you if there was an error: The return value. If anything went wrong, the return value is always <code>-1</code>. <strong>Every</strong> function behaves this way, so it's
 strongly recommended to check the return values of the API functions.</p>
 
 <h3>libinetsocket</h3>
@@ -140,7 +140,7 @@ return -1.</p>
 <p>Returns an integer describing a DGRAM (UDP) socket.</p>
 
 <ul>
-<li><code>proto_osi3</code> is <code>IPv4</code> (<code>AF_INET</code>) or <code>IPv6</code> (<code>AF_INET6</code>).</li>
+<li><code>proto_osi3</code> is <code>LIBSOCKET_IPv4</code> (<code>AF_INET</code>) or <code>LIBSOCKET_IPv6</code> (<code>AF_INET6</code>).</li>
 <li><code>flags</code> may be the flags specified in <code>socket(2)</code>, i.e. <code>SOCK_NONBLOCK</code> and/or <code>SOCK_CLOEXEC</code>. More than one flags may be ORed. <strong>This argument is only sensible on Linux >= 2.6.27!</strong></li>
 </ul>
 
@@ -246,7 +246,7 @@ you got from <code>create_inet_dgram_socket()</code>. <em>The usage with STREAM 
 <li><code>src_service</code>: Buffer to which the source port is written. May be 0, then the source port is discarded.</li>
 <li><code>src_service_len</code>: Length of <code>src_service</code> buffer</li>
 <li><code>recvfrom_flags</code> is a ORed combination of the flags below (Linux)</li>
-<li><code>numeric</code>: May be <code>NUMERIC</code> (defined in header files, then source port and host are given back numeric.</li>
+<li><code>numeric</code>: May be <code>LIBSOCKET_NUMERIC</code> (defined in header files, then source port and host are given back numeric.</li>
 </ul>
 
 <p>Returns the number of bytes received, or -1 if an error occurred.</p>
@@ -383,15 +383,15 @@ is solved and <code>write(2)/read(2)</code> is not possible anymore. Of course, 
 
 <ul>
 <li><code>sfd</code>: Socket file descriptor</li>
-<li><code>method</code> is either <code>READ</code>, <code>WRITE</code> or the ORed combination <code>READ|WRITE</code>.</li>
+<li><code>method</code> is either <code>LIBSOCKET_READ</code>, <code>LIBSOCKET_WRITE</code> or the ORed combination <code>LIBSOCKET_READ|LIBSOCKET_WRITE</code>.</li>
 </ul>
 
 <p>Calling <code>shutdown_inet_stream_socket()</code> on a socket has the following effects:</p>
 
 <ul>
-<li>if <code>method</code> is <code>READ</code>: Disallow subsequent calls to <code>read()</code></li>
-<li>if <code>method</code> is <code>WRITE</code>: Disallow subsequent calls to <code>write()</code> and send an EOF-like signal to the remote host</li>
-<li>if <code>method</code> is <code>READ|WRITE</code>: Combination of the two actions before.</li>
+<li>if <code>method</code> is <code>LIBSOCKET_READ</code>: Disallow subsequent calls to <code>read()</code></li>
+<li>if <code>method</code> is <code>LIBSOCKET_WRITE</code>: Disallow subsequent calls to <code>write()</code> and send an EOF-like signal to the remote host</li>
+<li>if <code>method</code> is <code>LIBSOCKET_READ|LIBSOCKET_WRITE</code>: Combination of the two actions before.</li>
 </ul>
 
 <p>Returns 0 upon success, -1 on error.</p>
@@ -407,12 +407,12 @@ is solved and <code>write(2)/read(2)</code> is not possible anymore. Of course, 
 <ul>
 <li><code>bind_addr</code>: The address to which the socket is bound to. E.g.: "127.0.0.1" for localhost, "0.0.0.0" for all available addresses</li>
 <li><code>bind_port</code>: The port to bind to.</li>
-<li><code>proto_osi4</code>: <code>UDP</code> or <code>TCP</code> (defined in headers)</li>
-<li><code>proto_osi3</code>: <code>IPv4</code> or <code>IPv6</code>.</li>
+<li><code>proto_osi4</code>: <code>LIBSOCKET_UDP</code> or <code>LIBSOCKET_TCP</code> (defined in headers)</li>
+<li><code>proto_osi3</code>: <code>LIBSOCKET_IPv4</code> or <code>LIBSOCKET_IPv6</code>.</li>
 <li><code>flags</code>: <code>SOCK_NONBLOCK</code> or <code>SOCK_CLOEXEC</code> (like in <code>create_inet_stream_socket()</code> etc, on non-linux systems, specify it as 0)</li>
 </ul>
 
-<p>Internals: The <code>backlog</code> argument of <code>listen(2)</code> when using TCP sockets is set to <code>BACKLOG</code>, defined at the beginning of src/libinetsocket.c. Default is 128, the maximum value on Linux. This may differ on other platforms.</p>
+<p>Internals: The <code>backlog</code> argument of <code>listen(2)</code> when using TCP sockets is set to <code>LIBSOCKET_BACKLOG</code>, defined at the beginning of src/libinetsocket.c. Default is 128, the maximum value on Linux. This may differ on other platforms.</p>
 
 <p>Returns a valid socket file descriptor on success, on error, -1 is returned.</p>
 
@@ -428,7 +428,7 @@ is solved and <code>write(2)/read(2)</code> is not possible anymore. Of course, 
 <li><code>src_host_len</code>: Length of the previous buffer</li>
 <li><code>src_service</code>: Buffer to which the source port is written</li>
 <li><code>src_service_len</code>: Length of the previous buffer</li>
-<li><code>flags</code>: may be <code>NUMERIC</code>.</li>
+<li><code>flags</code>: may be <code>LIBSOCKET_NUMERIC</code>.</li>
 <li><code>accept_flags</code> are passed to <code>accept4()</code>.</li>
 </ul>
 
@@ -443,7 +443,7 @@ is solved and <code>write(2)/read(2)</code> is not possible anymore. Of course, 
 <p><code>int get_address_family(const char* host)</code></p>
 
 <p>Returns the libsocket address family for the given <code>host</code>. The address family is either
-<code>IPv4</code> or <code>IPv6</code> (defined in libinetsocket header file).</p>
+<code>LIBSOCKET_IPv4</code> or <code>LIBSOCKET_IPv6</code> (defined in libinetsocket header file).</p>
 
 <p>This function is very useful when creating a UDP socket for a certain destination (<code>host</code>); without this function
 it would be impossible to obtain the address family to use for such a socket (UDP sockets do not have the <code>BOTH</code>
@@ -512,15 +512,15 @@ address family available)</p>
 
 <ul>
 <li><code>sfd</code>: Socket file descriptor</li>
-<li><code>method</code>: <code>READ</code>/<code>WRITE</code>/<code>READ|WRITE</code></li>
+<li><code>method</code>: <code>LIBSOCKET_READ</code>/<code>LIBSOCKET_WRITE</code>/<code>LIBSOCKET_READ|LIBSOCKET_WRITE</code></li>
 </ul>
 
 <p>Calling <code>shutdown_inet_stream_socket()</code> on a socket has the following effects:</p>
 
 <ul>
-<li>if <code>method</code> is <code>READ</code>: Disallow subsequent calls to <code>read()</code></li>
-<li>if <code>method</code> is <code>WRITE</code>: Disallow subsequent calls to <code>write()</code> and send an EOF-like signal to the remote host</li>
-<li>if <code>method</code> is <code>READ|WRITE</code>: Combination of the two actions before.</li>
+<li>if <code>method</code> is <code>LIBSOCKET_READ</code>: Disallow subsequent calls to <code>read()</code></li>
+<li>if <code>method</code> is <code>LIBSOCKET_WRITE</code>: Disallow subsequent calls to <code>write()</code> and send an EOF-like signal to the remote host</li>
+<li>if <code>method</code> is <code>LIBSOCKET_READ|LIBSOCKET_WRITE</code>: Combination of the two actions before.</li>
 </ul>
 
 <p>Returns 0 upon success, -1 on error.</p>
@@ -533,7 +533,7 @@ address family available)</p>
 
 <ul>
 <li><code>path</code>: Path to which the new socket is bound to.</li>
-<li><code>socktype</code>: <code>STREAM</code> or <code>DGRAM</code> (symbolic constants from header files)</li>
+<li><code>socktype</code>: <code>LIBSOCKET_STREAM</code> or <code>LIBSOCKET_DGRAM</code> (symbolic constants from header files)</li>
 <li><code>flags</code>: Flags for <code>socket(2)</code>: <code>SOCK_NONBLOCK</code> or <code>SOCK_CLOEXEC</code></li>
 </ul>
 

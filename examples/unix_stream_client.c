@@ -35,7 +35,7 @@ int main(void)
 		exit(1);
 	}
 
-	ret = shutdown_unix_stream_socket(sfd,WRITE); // Send EOF
+	ret = shutdown_unix_stream_socket(sfd,LIBSOCKET_WRITE); // Send EOF
 
 	if ( ret < 0 )
 	{
