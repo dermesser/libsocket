@@ -1,5 +1,7 @@
 # include <string>
 # include <stdio.h>
+# include <errno.h>
+
 /*
 The committers of the libsocket project, all rights reserved
 (c) 2012, dermesser <lbo@spheniscida.de>
@@ -50,7 +52,10 @@ namespace libsocket
 
 		line[4] = 0;
 
-		sprintf(line,"%i",l);
+		// Saving errno here should be safe
+		err = errno;
+
+		sprintf(line,"%i",l); // Yes, there are C++ stringstreams, but it's simpler ;)
 
 		m.insert(0,": ");
 		m.insert(0,line);

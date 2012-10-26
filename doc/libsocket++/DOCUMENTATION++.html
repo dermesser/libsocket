@@ -71,7 +71,8 @@ objects from this classes although it's possible (they aren't abstract).</p>
 
 <pre><code>struct socket_exception
 {
-    std::string mesg;
+    int err; // errno at throw time (usually set by a crashing syscall in the underlying libsocket)
+    std::string mesg; // Error message from libsocket++
 
     socket_exception(std::string,int,std::string);
 };
@@ -92,7 +93,7 @@ may raise an exception containing a std::string looking like this:</p>
     sock &lt;&lt; "test";
 } catch (libsocket::socket_exception exc)
 {
-    std::cerr &lt;&lt; exc.mesg;
+    std::cerr &lt;&lt; exc.mesg &lt;&lt; " errno code: " &lt;&lt; exc.err;
 }
 </code></pre>
 
@@ -303,7 +304,7 @@ it's mandatory to specify the address family at instantiation time. <code>proto_
 <p>The second form allows to specify a host and a port to which the UDP socket is connected.
 If an UDP socket is connected, calls to <code>snd()</code> and <code>rcv()</code> act like on a stream socket:
 The data is sent and received only to/from the host to which the socket is connected.
-Here, <code>proto_osi3</code> may be <code>IPv4</code>, <code>IPv6</code> or <code>BOTH</code> (in the latter case, <code>get_address_family()</code> is used to obtain the address family); </p>
+Here, <code>proto_osi3</code> may be <code>IPv4</code>, <code>IPv6</code> or <code>BOTH</code> (in the latter case, <code>get_address_family()</code> is used to obtain the address family);</p>
 
 <h3>Setup functions</h3>
 
