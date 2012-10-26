@@ -33,8 +33,8 @@ POSSIBILITY OF SUCH DAMAGE.
 
 # include "socket.hpp"
 
-# define READ 1
-# define WRITE 2
+# define LIBSOCKET_READ 1
+# define LIBSOCKET_WRITE 2
 
 namespace libsocket
 {

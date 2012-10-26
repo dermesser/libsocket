@@ -77,7 +77,7 @@ namespace libsocket
 	void inet_dgram_client::setup(const char* dsthost, const char* dstport, int proto_osi3, int flags)
 	{
 		// Retrieve address family
-		if (proto_osi3 == BOTH)
+		if (proto_osi3 == LIBSOCKET_BOTH)
 			proto_osi3 = get_address_family(dsthost);
 
 		if ( -1 == (sfd = create_inet_dgram_socket(proto_osi3,flags)) )

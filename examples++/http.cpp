@@ -19,11 +19,11 @@ int main(void)
 		string request1("GET / HTTP/1.1\n");
 		string request2("Host: spheniscida.de\n\n");
 
-		libsocket::inet_stream sock(host.c_str(),port.c_str(),IPv4,0);
+		libsocket::inet_stream sock(host.c_str(),port.c_str(),LIBSOCKET_IPv4,0);
 
 		sock << request1 << request2;
 
-		sock.shutdown(WRITE);
+		sock.shutdown(LIBSOCKET_WRITE);
 
 		answer.resize(2000);
 

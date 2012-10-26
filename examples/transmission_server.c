@@ -13,7 +13,7 @@ int main(void)
 	int cfd, sfd, ret;
 	char* buf = calloc(16,1);
 
-	ret = sfd = create_inet_server_socket("::","55555",TCP,IPv6,0);
+	ret = sfd = create_inet_server_socket("::","55555",LIBSOCKET_TCP,LIBSOCKET_IPv6,0);
 
 	if ( ret < 0 )
 	{

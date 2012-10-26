@@ -18,7 +18,7 @@ int main(void)
 
 	buf[15] = 0;
 
-	ret = sfd = create_unix_server_socket("/tmp/echosock",STREAM,0);
+	ret = sfd = create_unix_server_socket("/tmp/echosock",LIBSOCKET_STREAM,0);
 
 	if ( ret < 0 )
 	{

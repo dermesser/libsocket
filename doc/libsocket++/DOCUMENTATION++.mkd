@@ -106,7 +106,7 @@ and _must_ be connected before use using `connect()`.
 - `host`: Destination host; if you have the host as `std::string`, use its routine `std::string::c_str()` to get
 the C string
 - `port`: Destination port (TCP, of course); conversion from string like above.
-- `proto_osi3`: `IPv4`, `IPv6` or `BOTH` (`BOTH` lets the library choose; pp macros; defined in header file `inetbase.hpp`)
+- `proto_osi3`: `LIBSOCKET_IPv4`, `LIBSOCKET_IPv6` or `LIBSOCKET_BOTH` (`LIBSOCKET_BOTH` lets the library choose (decision based on DNS response; cpp macros; defined in header file `inetbase.hpp`)
 - `flags`: Default 0, can be `SOCK_NONBLOCK` or `SOCK_CLOEXEC` (see: `socket(2)`; it must be 0 on other platforms than Linux to avoid errors)
 
 ### `connect()`
@@ -120,7 +120,7 @@ Connects the socket. Throws an exception if the socket is already connected. May
 - `host`: Destination host; if you have the host as `std::string`, use its routine `std::string::c_str()` to get
 the C string
 - `port`: Destination port (TCP, of course); conversion from string like above.
-- `proto_osi3`: `IPv4` or `IPv6` (pp macros; defined in header file `inetsocket.hpp`)
+- `proto_osi3`: `LIBSOCKET_IPv4` or `LIBSOCKET_IPv6` (pp macros; defined in header file `inetsocket.hpp`)
 - `flags`: Default 0, can be `SOCK_NONBLOCK` or `SOCK_CLOEXEC` (see: `socket(2)`; on other platforms than Linux
 has to be 0 to avoid errors)
 
@@ -131,9 +131,9 @@ Declared in `streamclient.hpp`, defined in `streamclient.cpp`, inherited from `s
 
 	void shutdown(int method);
 
-Shuts the socket down (`shutdown(2)`). If you shut it down using the method `WRITE`, the peer receives an `EOF` on his socket and you may not write to the socket anymore. If you shut it down using `READ`, you may not read anymore from the socket.
+Shuts the socket down (`shutdown(2)`). If you shut it down using the method `LIBSOCKET_WRITE`, the peer receives an `EOF` on his socket and you may not write to the socket anymore. If you shut it down using `LIBSOCKET_READ`, you may not read anymore from the socket.
 
-`method` is `READ`, `WRITE`, or the ORed combination, `READ|WRITE`. `READ` and `WRITE` are defined in `streamclient.hpp`
+`method` is `LIBSOCKET_READ`, `LIBSOCKET_WRITE`, or the ORed combination, `LIBSOCKET_READ|LIBSOCKET_WRITE`. `LIBSOCKET_READ` and `LIBSOCKET_WRITE` are defined in `streamclient.hpp`
 
 ### Destroy Functions
 Declared in `socket.hpp`, defined in `socket.cpp`, inherited from `socket`
@@ -448,11 +448,11 @@ Connect the socket to `path`. `socket_flags` are given to `socket(2)`. You may u
 ### `shutdown()`
 Defined in `streamclient.cpp`, inherited from `stream_client_socket`
 
-	void shutdown(int method=WRITE);
+	void shutdown(int method=LIBSOCKET_WRITE);
 
-Shuts the socket down (`shutdown(2)`). If you shut it down using the method `WRITE`, the peer receives an `EOF` on his socket and you may not write to the socket anymore. If you shut it down using `READ`, you may not read anymore from the socket.
+Shuts the socket down (`shutdown(2)`). If you shut it down using the method `LIBSOCKET_WRITE`, the peer receives an `EOF` on his socket and you may not write to the socket anymore. If you shut it down using `LIBSOCKET_READ`, you may not read anymore from the socket.
 
-Using `READ|WRITE` (bitwise OR) shuts the socket completely down.
+Using `LIBSOCKET_READ|LIBSOCKET_WRITE` (bitwise OR) shuts the socket completely down.
 
 ### `snd() rcv()`
 Defined in `streamclient.cpp`, inherited from `stream_client_socket`
@@ -652,8 +652,8 @@ The `selectset` class makes the use of multiple sockets at once easy. It wraps t
 	void add_fd(socket& sock, int method);
 
 First, add just any socket class derived from `socket` to the new set. Do this multiple times if you have more than one socket (which
-is likely). `method` is either `READ` or `WRITE`, so if you want to be notified if some socket is ready to be read from it, specify `READ`.
-`READ` must also be specified for server sockets.
+is likely). `method` is either `LIBSOCKET_READ` or `LIBSOCKET_WRITE`, so if you want to be notified if some socket is ready to be read from it, specify `LIBSOCKET_READ`.
+`LIBSOCKET_READ` must also be specified for server sockets.
 
 	std::pair<std::vector<socket*>, std::vector<socket*> > wait(long long microsecs=0);
 
@@ -672,8 +672,8 @@ A typical program snippet using this class could look like this example:
 	inet_stream sock2("spheniscida.de","25",IPv6);
 
 	selectset socks;
-	socks.add_fd(sock1,WRITE);
-	socks.add_fd(sock2,READ);
+	socks.add_fd(sock1,LIBSOCKET_WRITE);
+	socks.add_fd(sock2,LIBSOCKET_READ);
 
 	ready_socks rs = socks.wait();
 

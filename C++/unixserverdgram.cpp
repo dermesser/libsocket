@@ -58,7 +58,7 @@ namespace libsocket
 		if ( sfd != -1 )
 			throw socket_exception(__FILE__,__LINE__,"unix_dgram_server::setup: Already set up!\n");
 
-		sfd = create_unix_server_socket(bindpath, DGRAM, socket_flags);
+		sfd = create_unix_server_socket(bindpath, LIBSOCKET_DGRAM, socket_flags);
 
 		if ( sfd < 0 )
 			throw socket_exception(__FILE__,__LINE__,"unix_dgram_server::setup: Could not create server!\n");

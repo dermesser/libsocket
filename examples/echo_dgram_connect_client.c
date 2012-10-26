@@ -18,7 +18,7 @@ int main(void)
 
 	memset(buf,0,16);
 
-	ret = sfd = create_inet_dgram_socket(IPv4,0);
+	ret = sfd = create_inet_dgram_socket(LIBSOCKET_IPv4,0);
 
 	if ( ret < 0 )
 	{

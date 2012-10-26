@@ -1,13 +1,6 @@
 # include <string.h>
 # include <string>
 
-# define TCP 1
-# define UDP 2
-
-# define IPv4 3
-# define IPv6 4
-
-# define BOTH 5 // what fits best (TCP/UDP or IPv4/6)
 /*
 The committers of the libsocket project, all rights reserved
 (c) 2012, dermesser <lbo@spheniscida.de>
@@ -71,7 +64,7 @@ namespace libsocket
 			throw socket_exception(__FILE__,__LINE__,"inet_stream_server::inet_stream_server() - already bound and listening!\n");
 		if ( bindhost == 0 || bindport == 0 )
 			throw socket_exception(__FILE__,__LINE__,"inet_stream_server::inet_stream_server() - at least one bind argument invalid!\n");
-		if ( -1 == (sfd = create_inet_server_socket(bindhost,bindport,TCP,proto_osi3,flags)) )
+		if ( -1 == (sfd = create_inet_server_socket(bindhost,bindport,LIBSOCKET_TCP,proto_osi3,flags)) )
 			throw socket_exception(__FILE__,__LINE__,"inet_stream_server::inet_stream_server() - could not create server socket!\n");
 
 		host = string(bindhost);
@@ -90,7 +83,7 @@ namespace libsocket
 			throw socket_exception(__FILE__,__LINE__,"inet_stream_server::inet_stream_server() - already bound and listening!\n");
 		if ( bindhost.empty() || bindport.empty() )
 			throw socket_exception(__FILE__,__LINE__,"inet_stream_server::inet_stream_server() - at least one bind argument invalid!\n");
-		if ( -1 == (sfd = create_inet_server_socket(bindhost.c_str(),bindport.c_str(),TCP,proto_osi3,flags)) )
+		if ( -1 == (sfd = create_inet_server_socket(bindhost.c_str(),bindport.c_str(),LIBSOCKET_TCP,proto_osi3,flags)) )
 			throw socket_exception(__FILE__,__LINE__,"inet_stream_server::inet_stream_server() - could not create server socket!\n");
 
 		host = string(bindhost);

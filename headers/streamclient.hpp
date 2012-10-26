@@ -4,8 +4,8 @@
 # include <string>
 # include "socket.hpp"
 
-# define READ 1
-# define WRITE 2
+# define LIBSOCKET_READ 1
+# define LIBSOCKET_WRITE 2
 
 using std::string;
 
@@ -29,7 +29,7 @@ namespace libsocket
 		friend stream_client_socket& operator<<(stream_client_socket& sock, string& str);
 		friend stream_client_socket& operator>>(stream_client_socket& sock, string& dest);
 
-		void shutdown(int method=WRITE);
+		void shutdown(int method=LIBSOCKET_WRITE);
 	};
 }
 # endif

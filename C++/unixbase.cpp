@@ -2,8 +2,6 @@
 # include <string>
 # include <stdio.h>
 
-# define STREAM 1
-# define DGRAM  2
 /*
 The committers of the libsocket project, all rights reserved
 (c) 2012, dermesser <lbo@spheniscida.de>

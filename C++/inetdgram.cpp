@@ -52,7 +52,7 @@ namespace libsocket
 	ssize_t inet_dgram::rcvfrom(void* buf, size_t len, char* hostbuf, size_t hostbuflen, char* portbuf, size_t portbuflen, int rcvfrom_flags, bool numeric)
 	{
 		ssize_t bytes;
-		int num = ((numeric == true) ? NUMERIC : 0);
+		int num = ((numeric == true) ? LIBSOCKET_NUMERIC : 0);
 
 		if ( -1 == sfd )
 			throw socket_exception(__FILE__,__LINE__,"inet_dgram::rcvfrom() - Socket already closed!\n");

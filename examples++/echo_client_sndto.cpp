@@ -26,7 +26,7 @@ int main(void)
 
 	buf.resize(32);
 
-	libsocket::inet_dgram_client sock(IPv4);
+	libsocket::inet_dgram_client sock(LIBSOCKET_IPv4);
 
 	try {
 		for ( int i = 0; i < 20; i++ )

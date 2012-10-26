@@ -26,7 +26,7 @@ int main(void)
 	answer.resize(32);
 
 	try {
-		libsocket::inet_stream sock(host,port,IPv6);
+		libsocket::inet_stream sock(host,port,LIBSOCKET_IPv6);
 
 		sock >> answer;
 

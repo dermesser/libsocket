@@ -47,13 +47,13 @@
 
 // Macro definitions
 
-# define BACKLOG 128
+# define LIBSOCKET_BACKLOG 128
 
-# define STREAM 1
-# define DGRAM  2
+# define LIBSOCKET_STREAM 1
+# define LIBSOCKET_DGRAM  2
 
-# define READ  1
-# define WRITE 2
+# define LIBSOCKET_READ  1
+# define LIBSOCKET_WRITE 2
 
 # ifdef VERBOSE
 	#define debug_write(str,l)                \
@@ -206,14 +206,17 @@ int shutdown_unix_stream_socket(int sfd, int method)
 	if ( sfd < 0 )
 		return -1;
 
-	if ( method & READ ) // READ is set (0001 && 0001 => 0001)
+	if ( (method != LIBSOCKET_READ) && (method != LIBSOCKET_WRITE) && (method != (LIBSOCKET_READ|LIBSOCKET_WRITE)) )
+		return -1;
+
+	if ( method & LIBSOCKET_READ ) // READ is set (0001 && 0001 => 0001)
 	{
 		if ( -1 == check_error(shutdown(sfd,SHUT_RD)))
 			return -1;
 
 	}
 
-	if ( method & WRITE ) // WRITE is set (0010 && 0010 => 0010)
+	if ( method & LIBSOCKET_WRITE ) // WRITE is set (0010 && 0010 => 0010)
 	{
 		if ( -1 == check_error(shutdown(sfd,SHUT_WR)))
 			return -1;
@@ -242,10 +245,10 @@ int create_unix_server_socket(const char* path, int socktype, int flags)
 
 	switch ( socktype )
 	{
-		case STREAM:
+		case LIBSOCKET_STREAM:
 			type = SOCK_STREAM;
 			break;
-		case DGRAM:
+		case LIBSOCKET_DGRAM:
 			type = SOCK_DGRAM;
 			break;
 		default:
@@ -272,7 +275,7 @@ int create_unix_server_socket(const char* path, int socktype, int flags)
 
 	if ( type == SOCK_STREAM )
 	{
-		if ( -1 == check_error(listen(sfd,BACKLOG)))
+		if ( -1 == check_error(listen(sfd,LIBSOCKET_BACKLOG)))
 			return -1;
 	}
 

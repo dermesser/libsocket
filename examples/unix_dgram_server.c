@@ -20,7 +20,7 @@ int main(void)
 	memset(buf,0,128);
 	memset(from,0,128);
 
-	ret = sfd = create_unix_server_socket("/tmp/echosock",DGRAM,0);
+	ret = sfd = create_unix_server_socket("/tmp/echosock",LIBSOCKET_DGRAM,0);
 
 	if ( ret < 0 )
 	{

@@ -27,18 +27,18 @@
 
 // Macro definitions
 
-# define TCP 1
-# define UDP 2
+# define LIBSOCKET_TCP 1
+# define LIBSOCKET_UDP 2
 
-# define IPv4 3
-# define IPv6 4
+# define LIBSOCKET_IPv4 3
+# define LIBSOCKET_IPv6 4
 
-# define BOTH 5 // what fits best (TCP/UDP or IPv4/6)
+# define LIBSOCKET_BOTH 5 // what fits best (TCP/UDP or IPv4/6)
 
-# define READ 1
-# define WRITE 2
+# define LIBSOCKET_READ 1
+# define LIBSOCKET_WRITE 2
 
-# define NUMERIC 1
+# define LIBSOCKET_NUMERIC 1
 
 # ifdef __cplusplus
 # ifdef _MIXED

@@ -24,15 +24,15 @@ Note: The manpage extracts come from the manpages delivered with Debian (Linux m
 
 ### Compile time configuration
 
-If the macro `VERBOSE` is defined, libsocket prints verbose error messages on STDERR device. The error messages come from functions like `strerror` or `gai_strerror`. This is **VERY** useful when there are problems in your program or the library itself. Typically, you specify it in the Makefile (the variable already exists):
+If the macro `LIBSOCKET_VERBOSE` is defined, libsocket prints verbose error messages on STDERR device. The error messages come from functions like `strerror` or `gai_strerror`. This is **VERY** useful when there are problems in your program or the library itself. Typically, you specify it in the Makefile (the variable already exists):
 
 	...
-	CCFLAGS=-DVERBOSE
+	CCFLAGS=-DLIBSOCKET_VERBOSE
 	...
 
 Usually, you'll use this option during development, but disable it when you finished the application. If you use the shared library, specify `-DVERBOSE` in the make variable `CFLAGS`  in `C/Makefile`.
 
-Another compile-time option is `_TRADITIONAL_RDNS`. It's also a macro (like `VERBOSE`) and specifies if the library should use `getnameinfo()` or `gethostbyaddr()` for rDNS queries. The latter possibility may be sensible e.g. on FreeBSD systems or on other systems were getnameinfo is not an option.
+Another compile-time option is `_TRADITIONAL_RDNS`. It's also a macro (like `LIBSOCKET_VERBOSE`) and specifies if the library should use `getnameinfo()` or `gethostbyaddr()` for rDNS queries. The latter possibility may be sensible e.g. on FreeBSD systems or on other systems were getnameinfo is not an option.
 
 ### Usage of flags
 
@@ -40,7 +40,7 @@ The usage of the flags for some functions is described for every function. If yo
 
 ### Return values
 
-If you don't enable the `VERBOSE` macro, the library knows another way to notify you if there was an error: The return value. If anything went wrong, the return value is always `-1`. **Every** function behaves this way, so it's
+If you don't enable the `LIBSOCKET_VERBOSE` macro, the library knows another way to notify you if there was an error: The return value. If anything went wrong, the return value is always `-1`. **Every** function behaves this way, so it's
 strongly recommended to check the return values of the API functions.
 
 ### libinetsocket
@@ -120,7 +120,7 @@ To send and receive data from this socket, please use `read(2)` and `write(2)`.
 
 Returns an integer describing a DGRAM (UDP) socket.
 
-* `proto_osi3` is `IPv4` (`AF_INET`) or `IPv6` (`AF_INET6`).
+* `proto_osi3` is `LIBSOCKET_IPv4` (`AF_INET`) or `LIBSOCKET_IPv6` (`AF_INET6`).
 * `flags` may be the flags specified in `socket(2)`, i.e. `SOCK_NONBLOCK` and/or `SOCK_CLOEXEC`. More than one flags may be ORed. **This argument is only sensible on Linux >= 2.6.27!**
 
 Like the function before, this function also has different prototypes on different platforms.
@@ -217,7 +217,7 @@ If it is not possible to send data at the moment, this call blocks excepted you 
 * `src_service`: Buffer to which the source port is written. May be 0, then the source port is discarded.
 * `src_service_len`: Length of `src_service` buffer
 * `recvfrom_flags` is a ORed combination of the flags below (Linux)
-* `numeric`: May be `NUMERIC` (defined in header files, then source port and host are given back numeric.
+* `numeric`: May be `LIBSOCKET_NUMERIC` (defined in header files, then source port and host are given back numeric.
 
 Returns the number of bytes received, or -1 if an error occurred.
 
@@ -343,13 +343,13 @@ Returns 0 on success, -1 on error.
 Calls `shutdown(2)` on `sfd`.
 
 * `sfd`: Socket file descriptor
-* `method` is either `READ`, `WRITE` or the ORed combination `READ|WRITE`.
+* `method` is either `LIBSOCKET_READ`, `LIBSOCKET_WRITE` or the ORed combination `LIBSOCKET_READ|LIBSOCKET_WRITE`.
 
 Calling `shutdown_inet_stream_socket()` on a socket has the following effects:
 
-* if `method` is `READ`: Disallow subsequent calls to `read()`
-* if `method` is `WRITE`: Disallow subsequent calls to `write()` and send an EOF-like signal to the remote host
-* if `method` is `READ|WRITE`: Combination of the two actions before.
+* if `method` is `LIBSOCKET_READ`: Disallow subsequent calls to `read()`
+* if `method` is `LIBSOCKET_WRITE`: Disallow subsequent calls to `write()` and send an EOF-like signal to the remote host
+* if `method` is `LIBSOCKET_READ|LIBSOCKET_WRITE`: Combination of the two actions before.
 
 Returns 0 upon success, -1 on error.
 
@@ -362,11 +362,11 @@ The arguments:
 
 * `bind_addr`: The address to which the socket is bound to. E.g.: "127.0.0.1" for localhost, "0.0.0.0" for all available addresses
 * `bind_port`: The port to bind to.
-* `proto_osi4`: `UDP` or `TCP` (defined in headers)
-* `proto_osi3`: `IPv4` or `IPv6`.
+* `proto_osi4`: `LIBSOCKET_UDP` or `LIBSOCKET_TCP` (defined in headers)
+* `proto_osi3`: `LIBSOCKET_IPv4` or `LIBSOCKET_IPv6`.
 * `flags`: `SOCK_NONBLOCK` or `SOCK_CLOEXEC` (like in `create_inet_stream_socket()` etc, on non-linux systems, specify it as 0)
 
-Internals: The `backlog` argument of `listen(2)` when using TCP sockets is set to `BACKLOG`, defined at the beginning of src/libinetsocket.c. Default is 128, the maximum value on Linux. This may differ on other platforms.
+Internals: The `backlog` argument of `listen(2)` when using TCP sockets is set to `LIBSOCKET_BACKLOG`, defined at the beginning of src/libinetsocket.c. Default is 128, the maximum value on Linux. This may differ on other platforms.
 
 Returns a valid socket file descriptor on success, on error, -1 is returned.
 
@@ -381,7 +381,7 @@ Accept incoming connections on server sockets created with `create_inet_server_s
 * `src_host_len`: Length of the previous buffer
 * `src_service`: Buffer to which the source port is written
 * `src_service_len`: Length of the previous buffer
-* `flags`: may be `NUMERIC`.
+* `flags`: may be `LIBSOCKET_NUMERIC`.
 * `accept_flags` are passed to `accept4()`.
 
 This function will block until there's an incoming connection.
@@ -395,7 +395,7 @@ Returns a stream file descriptor connected to the connecting client. On error, -
 `int get_address_family(const char* host)`
 
 Returns the libsocket address family for the given `host`. The address family is either
-`IPv4` or `IPv6` (defined in libinetsocket header file).
+`LIBSOCKET_IPv4` or `LIBSOCKET_IPv6` (defined in libinetsocket header file).
 
 This function is very useful when creating a UDP socket for a certain destination (`host`); without this function
 it would be impossible to obtain the address family to use for such a socket (UDP sockets do not have the `BOTH`
@@ -449,13 +449,13 @@ Returns 0 on success and -1 on error.
 `int shutdown_unix_stream_socket(int sfd, int method)`
 
 * `sfd`: Socket file descriptor
-* `method`: `READ`/`WRITE`/`READ|WRITE`
+* `method`: `LIBSOCKET_READ`/`LIBSOCKET_WRITE`/`LIBSOCKET_READ|LIBSOCKET_WRITE`
 
 Calling `shutdown_inet_stream_socket()` on a socket has the following effects:
 
-* if `method` is `READ`: Disallow subsequent calls to `read()`
-* if `method` is `WRITE`: Disallow subsequent calls to `write()` and send an EOF-like signal to the remote host
-* if `method` is `READ|WRITE`: Combination of the two actions before.
+* if `method` is `LIBSOCKET_READ`: Disallow subsequent calls to `read()`
+* if `method` is `LIBSOCKET_WRITE`: Disallow subsequent calls to `write()` and send an EOF-like signal to the remote host
+* if `method` is `LIBSOCKET_READ|LIBSOCKET_WRITE`: Combination of the two actions before.
 
 Returns 0 upon success, -1 on error.
 
@@ -465,7 +465,7 @@ Returns 0 upon success, -1 on error.
 Creates a new UNIX server (passive) socket.
 
 * `path`: Path to which the new socket is bound to.
-* `socktype`: `STREAM` or `DGRAM` (symbolic constants from header files)
+* `socktype`: `LIBSOCKET_STREAM` or `LIBSOCKET_DGRAM` (symbolic constants from header files)
 * `flags`: Flags for `socket(2)`: `SOCK_NONBLOCK` or `SOCK_CLOEXEC`
 
 Returns a valid passive socket descriptor or -1 on error.

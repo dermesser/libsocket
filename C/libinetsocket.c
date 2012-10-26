@@ -50,23 +50,22 @@
 
 //# define VERBOSE // Write errors on stderr?
 
-# define BACKLOG 128 // Linux accepts a backlog value at listen() up to 128
-# define CLIENT_NAME_BUF 1024 // How long is the buffer for the client's name?
+# define LIBSOCKET_BACKLOG 128 // Linux accepts a backlog value at listen() up to 128
+# define LIBSOCKET_CLIENT_NAME_BUF 1024 // How long is the buffer for the client's name?
 
 // Symbolic macros
+# define LIBSOCKET_TCP 1
+# define LIBSOCKET_UDP 2
 
-# define TCP 1
-# define UDP 2
+# define LIBSOCKET_IPv4 3
+# define LIBSOCKET_IPv6 4
 
-# define IPv4 3
-# define IPv6 4
+# define LIBSOCKET_BOTH 5 // what fits best (TCP/UDP or IPv4/6)
 
-# define BOTH 5 // what fits best (TCP/UDP or IPv4/6)
+# define LIBSOCKET_READ  1
+# define LIBSOCKET_WRITE 2
 
-# define READ  1
-# define WRITE 2
-
-# define NUMERIC 1
+# define LIBSOCKET_NUMERIC 1
 
 
 # ifdef VERBOSE
@@ -121,13 +120,13 @@ int create_inet_stream_socket(const char* host, const char* service, char proto_
 	// set address family
 	switch ( proto_osi3 )
 	{
-		case IPv4:
+		case LIBSOCKET_IPv4:
 			hint.ai_family = AF_INET;
 			break;
-		case IPv6:
+		case LIBSOCKET_IPv6:
 			hint.ai_family = AF_INET6;
 			break;
-		case BOTH:
+		case LIBSOCKET_BOTH:
 			hint.ai_family = AF_UNSPEC;
 			break;
 		default:
@@ -181,7 +180,7 @@ int create_inet_dgram_socket(char proto_osi3, int flags)
 {
 	int sfd;
 
-	if (proto_osi3 != IPv4 && proto_osi3 != IPv6)
+	if (proto_osi3 != LIBSOCKET_IPv4 && proto_osi3 != LIBSOCKET_IPv6)
 	{
 # ifdef VERBOSE
 		debug_write("create_inet_dgram_socket: osi3 argument invalid when using DGRAM sockets\n",48);
@@ -191,10 +190,10 @@ int create_inet_dgram_socket(char proto_osi3, int flags)
 
 	switch ( proto_osi3 )
 	{
-		case IPv4 :
+		case LIBSOCKET_IPv4 :
 			sfd = socket(AF_INET,SOCK_DGRAM|flags,0);
 			break;
-		case IPv6 :
+		case LIBSOCKET_IPv6 :
 			sfd = socket(AF_INET6,SOCK_DGRAM|flags,0);
 			break;
 		default:
@@ -300,7 +299,7 @@ ssize_t recvfrom_inet_dgram_socket(int sfd, void* buffer, size_t size, char* src
 
 	if ( src_host_len > 0 || src_service_len > 0 ) // If one of the things is wanted. If you give a null pointer with a positive _len parameter, you won't get the address.
 	{
-		if ( numeric == 1 )
+		if ( numeric == LIBSOCKET_NUMERIC )
 		{
 			numeric = NI_NUMERICHOST | NI_NUMERICSERV;
 		}
@@ -444,17 +443,17 @@ int shutdown_inet_stream_socket(int sfd, int method)
 	if ( sfd < 0 )
 		return -1;
 
-	if ( (method != READ) && (method != WRITE) && (method != (READ|WRITE)) )
+	if ( (method != LIBSOCKET_READ) && (method != LIBSOCKET_WRITE) && (method != (LIBSOCKET_READ|LIBSOCKET_WRITE)) )
 		return -1;
 
-	if ( method & READ ) // READ is set (0001 && 0001 => 0001 => true)
+	if ( method & LIBSOCKET_READ ) // READ is set (0001 && 0001 => 0001 => true)
 	{
 		if ( -1 == check_error(shutdown(sfd,SHUT_RD)))
 			return -1;
 
 	}
 
-	if ( method & WRITE ) // WRITE is set (0010 && 0010 => 0010 => true)
+	if ( method & LIBSOCKET_WRITE ) // WRITE is set (0010 && 0010 => 0010 => true)
 	{
 		if ( -1 == check_error(shutdown(sfd,SHUT_WR)))
 			return -1;
@@ -485,10 +484,10 @@ int create_inet_server_socket(const char* bind_addr, const char* bind_port, char
 
 	switch ( proto_osi4 )
 	{
-		case TCP:
+		case LIBSOCKET_TCP:
 			type = SOCK_STREAM;
 			break;
-		case UDP:
+		case LIBSOCKET_UDP:
 			type = SOCK_DGRAM;
 			break;
 		default:
@@ -496,13 +495,13 @@ int create_inet_server_socket(const char* bind_addr, const char* bind_port, char
 	}
 	switch ( proto_osi3 )
 	{
-		case IPv4:
+		case LIBSOCKET_IPv4:
 			domain = AF_INET;
 			break;
-		case IPv6:
+		case LIBSOCKET_IPv6:
 			domain = AF_INET6;
 			break;
-		case BOTH:
+		case LIBSOCKET_BOTH:
 			domain = AF_UNSPEC;
 			break;
 		default:
@@ -537,8 +536,8 @@ int create_inet_server_socket(const char* bind_addr, const char* bind_port, char
 		if ( retval != 0 ) // Error at bind()!!!
 			continue;
 
-		if (type == TCP)
-			retval = listen(sfd,BACKLOG);
+		if (type == LIBSOCKET_TCP)
+			retval = listen(sfd,LIBSOCKET_BACKLOG);
 
 		if ( retval == 0 ) // If we came until here, there wasn't an error anywhere. It is safe to cancel the loop here
 			break;
@@ -595,7 +594,7 @@ int accept_inet_stream_socket(int sfd, char* src_host, size_t src_host_len, char
 
 	if ( src_host_len > 0 || src_service_len > 0 ) // If one of the things is wanted. If you give a null pointer with a positive _len parameter, you won't get the address.
 	{
-		if ( flags == NUMERIC )
+		if ( flags == LIBSOCKET_NUMERIC )
 		{
 			flags = NI_NUMERICHOST | NI_NUMERICSERV;
 		} else
@@ -677,10 +676,10 @@ int get_address_family(const char* hostname)
 
 	if ( result->ai_family == AF_INET )
 	{
-		af = IPv4;
+		af = LIBSOCKET_IPv4;
 	} else if ( result->ai_family == AF_INET6 )
 	{
-		af = IPv6;
+		af = LIBSOCKET_IPv6;
 	} else
 	{
 		af = -1;
