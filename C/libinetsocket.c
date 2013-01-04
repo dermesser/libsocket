@@ -70,11 +70,11 @@
 
 # ifdef VERBOSE
 	#define debug_write(str,l)                \
-	do {                                      \
+	{                                      \
 		int __verbose_errno_save = errno; \
 		write(2,str,l);	                  \
 		errno = __verbose_errno_save;     \
-	} while (0)
+	}
 # endif
 
 

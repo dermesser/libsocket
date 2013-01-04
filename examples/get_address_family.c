@@ -1,6 +1,6 @@
 # include <stdio.h>
 # include <stdlib.h>
-# include "../headers/libinetsocket.h"
+# include <libsocket/libinetsocket.h>
 # include <unistd.h>
 # include <string.h>
 
@@ -19,10 +19,10 @@ int main(int argc, char** argv)
 
 	switch ( af )
 	{
-		case IPv4:
+		case LIBSOCKET_IPv4:
 			printf("Supports IPv4\n");
 			break;
-		case IPv6:
+		case LIBSOCKET_IPv6:
 			printf("Supports IPv6\n");
 			break;
 		default:

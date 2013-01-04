@@ -12,6 +12,7 @@ CPP=g++
 # CPPFLAGS for C++/*.cpp files
 CPPFLAGS=
 
+# _MIXED enables some "extern" declarations in the C headers
 .cpp.o:
 	$(CPP) -D_MIXED $(CPPFLAGS) -fPIC -c $<
 
