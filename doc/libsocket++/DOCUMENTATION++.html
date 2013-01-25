@@ -22,6 +22,12 @@ and maintain it twice, libsocket++ calls the functions from libsocket.</p>
 <pre><code>using libsocket::inet_stream;
 </code></pre>
 
+<h3>Header file</h3>
+
+<p>The header files are located in headers/; you just have to include the header file of the class(es) you're using. It will
+include all header files needed for it to work. E.g.: If you use <code>inet_stream</code>, you just include <code>inetclientstream.hpp</code>, but you
+don't have to include <code>inetbase.hpp</code>, <code>socket.hpp</code>, <code>exception.hpp</code> and so on.</p>
+
 <h2>Usage in Your Application</h2>
 
 <h3>Dynamic</h3>
@@ -30,25 +36,25 @@ and maintain it twice, libsocket++ calls the functions from libsocket.</p>
 
 <h3>Static</h3>
 
-<p>Compile the files (like mentioned in DOCUMENTATION.md) like every other:</p>
+<p>If you want to build a stand-alone binary without the need to link the libsocket SO, you may compile libsocket into your application
+(the license permits this), but there are some pitfalls.</p>
 
-<pre><code>$ g++ -c */*.cpp
-$ g++ *.o
-</code></pre>
-
-<p>or</p>
-
-<pre><code>$ g++ */*.cpp
-</code></pre>
-
-<p>Please note that libsocket++ is only an object-oriented wrapper around libsocket and not independant; you always have to compile
-C/libinetsocket.c, too.</p>
+<ul>
+<li>libsocket++ is only an object-oriented wrapper around libsocket; you always have to compile C/libinetsocket.c or link against
+libsocket.so.</li>
+<li>If you compile the C files with a C compiler and the C++ files with a C++ compiler, you <strong>have to set the flag -D_MIXED at the invocation
+of the C++ compiler!</strong> This macro enables <em>extern "C" { ... }</em> statements in the C headers. If you don't enable _MIXED, the linker will
+not find the C functions.</li>
+</ul>
 
 <p>To reduce the size of the executables, it is recommended to compile your code only with that library files which are really necessary.
 For example, if you have a program which serves as client for a UDP based application:</p>
 
 <pre><code>$ g++ -o client client.cpp /path/to/libsocket/C/libinetsocket.c /path/to/libsocket/C++/{socket,inetbase,inetdgram,inetclientdgram}.cpp
 </code></pre>
+
+<p>As each class has its own file, you may look in classes.svg which files to include (just follow the path from the class you want to use up to the
+root class and include the files. You may find hints in LINKAGE.mkd</p>
 
 <h2>Class Hierarchy and names</h2>
 
@@ -78,8 +84,7 @@ objects from this classes although it's possible (they aren't abstract).</p>
 };
 </code></pre>
 
-<p>An instantiation of this object is thrown in case of error. Almost every function
-may raise an exception containing a std::string looking like this:</p>
+<p>An <code>socket_exception</code> object is thrown in case of error. Almost every function may raise an exception containing a std::string looking like this:</p>
 
 <pre><code>../C++/inetclientstream.cpp:167: &lt;&lt;(std::string) output: Socket not connected!
             (1)             (2)       (3)                       (4)

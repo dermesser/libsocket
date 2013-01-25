@@ -9,8 +9,10 @@ Then, compile your programs using the `-lsocket` (for C libsocket) respectively 
 (for C++ libsocket) switch. libsocket++ contains also all libsocket functions, so you may link
 your C application against libsocket++, if you want to install only one library.
 
-To use libsocket, you also have to include headerfiles. Which headers you have to include
-depends on what your program should do. The header names are quite self-explaining:
+To use libsocket, you also have to include headerfiles. It depends on what your program does which headers you may
+want to include.
+
+The header names are quite self-explaining:
 
 C:
 
@@ -27,7 +29,7 @@ C++:
 - unixserverstream.hpp (UNIX STREAM server)
 - unixclientdgram.hpp (UNIX DGRAM client)
 - unixserverdgram.hpp (UNIX DGRAM server)
-- exception.hpp (always needed when using libsocket::socket_exception)
+- exception.hpp (always needed when using libsocket::socket\_exception)
 
 Include them using a directive like this (if you use the default location /usr/include/libsocket):
 
@@ -61,6 +63,9 @@ The following specifications can be used to determine which files must be specif
 
 Note: To understand the dependencies between the files, take a look at doc/libsocket++/classes.svg
 The descriptions of the classes are placed under the license at the beginning of every C++ source file.
+
+If you compile C files with a C compiler and C++ files with a C++ compiler, you have to invoke the C++ compiler with the
+option `-D_MIXED` to enable correct linkage!
 
 **Note II: Dynamic linkage is way easier!**
 
