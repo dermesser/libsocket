@@ -7,27 +7,27 @@
 
 int main(void)
 {
-	std::string req;
-	std::string client;
+    std::string req;
+    std::string client;
 
-	req.resize(64);
-	client.resize(64);
+    req.resize(64);
+    client.resize(64);
 
-	try {
-		libsocket::unix_dgram_server srv("/tmp/srvsock");
+    try {
+	libsocket::unix_dgram_server srv("/tmp/srvsock");
 
-		srv.rcvfrom(req,client);
+	srv.rcvfrom(req,client);
 
-		std::cout << "[server process] " << req << " from " << client << std::endl;
+	std::cout << "[server process] " << req << " from " << client << std::endl;
 
-		srv.sndto("Hiho, client!",client);
+	srv.sndto("Hiho, client!",client);
 
-		srv.destroy();
+	srv.destroy();
 
-	} catch (libsocket::socket_exception exc)
-	{
-		std::cerr << exc.mesg;
-	}
+    } catch (libsocket::socket_exception exc)
+    {
+	std::cerr << exc.mesg;
+    }
 
-	return 0;
+    return 0;
 }

@@ -8,25 +8,25 @@
 
 int main(void)
 {
-	using libsocket::unix_stream_client;
-	using std::string;
+    using libsocket::unix_stream_client;
+    using std::string;
 
-	string path = "/tmp/unixsocket";
-	char* answer = new char[128];
+    string path = "/tmp/unixsocket";
+    char* answer = new char[128];
 
-	memset(answer,0,128);
+    memset(answer,0,128);
 
-	try {
+    try {
 	unix_stream_client sock(path);
 
 	sock.snd("Hello World!\n",13);
 	sock.rcv(answer,127);
 
 	std::cout << answer;
-	} catch (libsocket::socket_exception exc)
-	{
-		std::cerr << exc.mesg;
-	}
+    } catch (libsocket::socket_exception exc)
+    {
+	std::cerr << exc.mesg;
+    }
 
-	return 0;
+    return 0;
 }

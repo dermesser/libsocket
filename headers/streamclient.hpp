@@ -11,25 +11,25 @@ using std::string;
 
 namespace libsocket
 {
-	class stream_client_socket : public virtual socket
-	{
-		protected:
+    class stream_client_socket : public virtual socket
+    {
+	protected:
 
-		bool shut_rd;
-		bool shut_wr;
+	    bool shut_rd;
+	    bool shut_wr;
 
-		public:
+	public:
 
-		stream_client_socket();
+	    stream_client_socket();
 
-		ssize_t snd(const void* buf, size_t len, int flags=0); // flags: send()
-		ssize_t rcv(void* buf, size_t len, int flags=0); // flags: recv()
+	    ssize_t snd(const void* buf, size_t len, int flags=0); // flags: send()
+	    ssize_t rcv(void* buf, size_t len, int flags=0); // flags: recv()
 
-		friend stream_client_socket& operator<<(stream_client_socket& sock, const char* str);
-		friend stream_client_socket& operator<<(stream_client_socket& sock, string& str);
-		friend stream_client_socket& operator>>(stream_client_socket& sock, string& dest);
+	    friend stream_client_socket& operator<<(stream_client_socket& sock, const char* str);
+	    friend stream_client_socket& operator<<(stream_client_socket& sock, string& str);
+	    friend stream_client_socket& operator>>(stream_client_socket& sock, string& dest);
 
-		void shutdown(int method=LIBSOCKET_WRITE);
-	};
+	    void shutdown(int method=LIBSOCKET_WRITE);
+    };
 }
 # endif

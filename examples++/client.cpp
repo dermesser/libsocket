@@ -11,34 +11,34 @@
  * closes the socket, reopens it with the same parameters
  * (to show what you may do with sockets... ;), receives
  * a message from the server and sends a message back.
-*/
+ */
 
 int main(void)
 {
-	using std::string;
+    using std::string;
 
-	using libsocket::inet_stream;
+    using libsocket::inet_stream;
 
-	string host = "::1";
-	string port = "1235";
-	string answer;
+    string host = "::1";
+    string port = "1235";
+    string answer;
 
-	answer.resize(32);
+    answer.resize(32);
 
-	try {
-		libsocket::inet_stream sock(host,port,LIBSOCKET_IPv6);
+    try {
+	libsocket::inet_stream sock(host,port,LIBSOCKET_IPv6);
 
-		sock >> answer;
+	sock >> answer;
 
-		std::cout << answer;
+	std::cout << answer;
 
-		sock << "Hello back!\n";
+	sock << "Hello back!\n";
 
-		sock.destroy();
-	} catch (libsocket::socket_exception exc)
-	{
-		std::cerr << exc.mesg;
-	}
+	sock.destroy();
+    } catch (libsocket::socket_exception exc)
+    {
+	std::cerr << exc.mesg;
+    }
 
-	return 0;
+    return 0;
 }

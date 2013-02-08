@@ -7,28 +7,28 @@
 
 int main(void)
 {
-	std::string sock = "/tmp/srvsock";
-	std::string logmsg = "Hello, server!";
-	std::string answer, peer;
+    std::string sock = "/tmp/srvsock";
+    std::string logmsg = "Hello, server!";
+    std::string answer, peer;
 
-	answer.resize(64);
-	peer.resize(64);
+    answer.resize(64);
+    peer.resize(64);
 
-	try {
-		libsocket::unix_dgram_client cl("/tmp/clsock");
+    try {
+	libsocket::unix_dgram_client cl("/tmp/clsock");
 
-		cl.sndto(logmsg,sock);
+	cl.sndto(logmsg,sock);
 
-		cl.rcvfrom(answer,peer);
+	cl.rcvfrom(answer,peer);
 
-		std::cout << "[client process] " << answer << " from " << peer << std::endl;
+	std::cout << "[client process] " << answer << " from " << peer << std::endl;
 
-		cl.destroy();
+	cl.destroy();
 
-	} catch (libsocket::socket_exception exc)
-	{
-		std::cerr << exc.mesg;
-	}
+    } catch (libsocket::socket_exception exc)
+    {
+	std::cerr << exc.mesg;
+    }
 
-	return 0;
+    return 0;
 }

@@ -8,35 +8,35 @@
 
 int main(void)
 {
-	using std::string;
+    using std::string;
 
-	string host = "localhost";
-	string port = "1234";
+    string host = "localhost";
+    string port = "1234";
 
-	string answer("Hello back from the server!");
-	string from;
-	string fromport;
-	string buf;
+    string answer("Hello back from the server!");
+    string from;
+    string fromport;
+    string buf;
 
-	buf.resize(32);
+    buf.resize(32);
 
-	try {
-		libsocket::inet_dgram_server srv(host,port,LIBSOCKET_BOTH);
-		for (;;)
-		{
-			srv.rcvfrom(buf,from,fromport);
-
-			std::cout << "Datagram from " << from << ":" << fromport << " " << buf << std::endl;
-
-			srv.sndto(answer,from,fromport);
-		}
-
-		srv.destroy();
-	} catch (libsocket::socket_exception exc)
+    try {
+	libsocket::inet_dgram_server srv(host,port,LIBSOCKET_BOTH);
+	for (;;)
 	{
-		std::cerr << exc.mesg;
+	    srv.rcvfrom(buf,from,fromport);
+
+	    std::cout << "Datagram from " << from << ":" << fromport << " " << buf << std::endl;
+
+	    srv.sndto(answer,from,fromport);
 	}
 
+	srv.destroy();
+    } catch (libsocket::socket_exception exc)
+    {
+	std::cerr << exc.mesg;
+    }
 
-	return 0;
+
+    return 0;
 }
