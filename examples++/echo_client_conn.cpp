@@ -9,43 +9,43 @@
 
 int main(void)
 {
-	using std::string;
+    using std::string;
 
-	string host = "localhost";
-	string port = "1234";
+    string host = "localhost";
+    string port = "1234";
 
-	string answer;
+    string answer;
 
-	answer.resize(32);
+    answer.resize(32);
 
-	libsocket::inet_dgram_client sock(LIBSOCKET_IPv4);
+    libsocket::inet_dgram_client sock(LIBSOCKET_IPv4);
 
-	try {
-		std::cout << sock.gethost();
-	} catch (libsocket::socket_exception exc)
+    try {
+	std::cout << sock.gethost();
+    } catch (libsocket::socket_exception exc)
+    {
+	std::cerr << exc.mesg;
+    }
+
+    try {
+	for ( int i = 0; i < 20; i++ )
 	{
-		std::cerr << exc.mesg;
+	    sock.connect(host,port);
+
+	    sock << "Hello, server";
+
+	    sock >> answer;
+
+	    std::cout << "Answer from server: " << answer << std::endl;
+
+	    sock.deconnect();
 	}
+    } catch ( libsocket::socket_exception exc )
+    {
+	std::cerr << exc.mesg;
+    }
 
-	try {
-		for ( int i = 0; i < 20; i++ )
-		{
-			sock.connect(host,port);
+    sock.destroy();
 
-			sock << "Hello, server";
-
-			sock >> answer;
-
-			std::cout << "Answer from server: " << answer << std::endl;
-
-			sock.deconnect();
-		}
-	} catch ( libsocket::socket_exception exc )
-	{
-		std::cerr << exc.mesg;
-	}
-
-	sock.destroy();
-
-	return 0;
+    return 0;
 }
