@@ -77,7 +77,10 @@ namespace libsocket
 		memset(buffer,0,dest.size());
 
 		if ( sock.sfd == -1 )
+		{
+			delete[] buffer;
 			throw socket_exception(__FILE__,__LINE__,">>(std::string) input: Socket not connected!\n");
+		}
 
 		if ( -1 == (read_bytes = read(sock.sfd,buffer,dest.size())) )
 			throw socket_exception(__FILE__,__LINE__,">>(std::string) input: Error while reading!\n");
