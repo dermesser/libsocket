@@ -1,23 +1,23 @@
 # include <string>
 /*
-The committers of the libsocket project, all rights reserved
-(c) 2012, dermesser <lbo@spheniscida.de>
+   The committers of the libsocket project, all rights reserved
+   (c) 2012, dermesser <lbo@spheniscida.de>
 
-Redistribution and use in source and binary forms, with or without modification, are permitted provided that the
-following conditions are met:
+   Redistribution and use in source and binary forms, with or without modification, are permitted provided that the
+   following conditions are met:
 
-	1. Redistributions of source code must retain the above copyright notice, this list of conditions and the following
-	disclaimer.
-	2. Redistributions in binary form must reproduce the above copyright notice, this list of conditions and the following
-	disclaimer in the documentation and/or other materials provided with the distribution.
+   1. Redistributions of source code must retain the above copyright notice, this list of conditions and the following
+   disclaimer.
+   2. Redistributions in binary form must reproduce the above copyright notice, this list of conditions and the following
+   disclaimer in the documentation and/or other materials provided with the distribution.
 
-THIS SOFTWARE IS PROVIDED BY THE REGENTS AND CONTRIBUTORS “AS IS” AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT
-NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO
-EVENT SHALL THE REGENTS OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
-CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR
-PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
-OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
-POSSIBILITY OF SUCH DAMAGE.
+   THIS SOFTWARE IS PROVIDED BY THE REGENTS AND CONTRIBUTORS “AS IS” AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT
+   NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO
+   EVENT SHALL THE REGENTS OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+   CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR
+   PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
+   OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+   POSSIBILITY OF SUCH DAMAGE.
 
 */
 
@@ -37,58 +37,58 @@ POSSIBILITY OF SUCH DAMAGE.
 
 namespace libsocket
 {
-	using std::string;
+    using std::string;
 
-	unix_stream_server::unix_stream_server(void)
-	{
-	}
+    unix_stream_server::unix_stream_server(void)
+    {
+    }
 
-	unix_stream_server::unix_stream_server(const char* path, int flags)
-	{
-		setup(path,flags);
-	}
+    unix_stream_server::unix_stream_server(const char* path, int flags)
+    {
+	setup(path,flags);
+    }
 
-	unix_stream_server::unix_stream_server(const string& path, int flags)
-	{
-		setup(path,flags);
-	}
+    unix_stream_server::unix_stream_server(const string& path, int flags)
+    {
+	setup(path,flags);
+    }
 
-	void unix_stream_server::setup(const char* path, int flags)
-	{
-		if ( sfd != -1 )
-			throw socket_exception(__FILE__,__LINE__,"unix_stream_server::setup: Socket already set up!\n");
-		if ( path == NULL )
-			throw socket_exception(__FILE__,__LINE__,"unix_stream_server::setup: Path is NULL!\n");
+    void unix_stream_server::setup(const char* path, int flags)
+    {
+	if ( sfd != -1 )
+	    throw socket_exception(__FILE__,__LINE__,"unix_stream_server::setup: Socket already set up!\n");
+	if ( path == NULL )
+	    throw socket_exception(__FILE__,__LINE__,"unix_stream_server::setup: Path is NULL!\n");
 
-		sfd = create_unix_server_socket(path,LIBSOCKET_STREAM,flags);
+	sfd = create_unix_server_socket(path,LIBSOCKET_STREAM,flags);
 
-		if ( sfd < 0 )
-			throw socket_exception(__FILE__,__LINE__,"unix_stream_server::setup: Error at creating UNIX stream server socket!\n");
+	if ( sfd < 0 )
+	    throw socket_exception(__FILE__,__LINE__,"unix_stream_server::setup: Error at creating UNIX stream server socket!\n");
 
-		_path.assign(path);
-	}
+	_path.assign(path);
+    }
 
-	void unix_stream_server::setup(const string& path, int flags)
-	{
-		setup(path.c_str(),flags);
-	}
+    void unix_stream_server::setup(const string& path, int flags)
+    {
+	setup(path.c_str(),flags);
+    }
 
-	unix_stream_client* unix_stream_server::accept(int flags)
-	{
-		int cfd;
+    unix_stream_client* unix_stream_server::accept(int flags)
+    {
+	int cfd;
 
-		if ( sfd == -1 )
-			throw socket_exception(__FILE__,__LINE__,"unix_stream_server::accept: Socket not set up yet!\n");
+	if ( sfd == -1 )
+	    throw socket_exception(__FILE__,__LINE__,"unix_stream_server::accept: Socket not set up yet!\n");
 
-		unix_stream_client* client = new unix_stream_client;
+	unix_stream_client* client = new unix_stream_client;
 
-		cfd = accept_unix_stream_socket(sfd,flags);
+	cfd = accept_unix_stream_socket(sfd,flags);
 
-		if ( cfd < 0 )
-			throw socket_exception(__FILE__,__LINE__,"unix_stream_server::accept: Error at accepting new connection!\n");
+	if ( cfd < 0 )
+	    throw socket_exception(__FILE__,__LINE__,"unix_stream_server::accept: Error at accepting new connection!\n");
 
-		client->sfd = cfd;
+	client->sfd = cfd;
 
-		return client;
-	}
+	return client;
+    }
 }
