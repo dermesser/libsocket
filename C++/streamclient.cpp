@@ -83,7 +83,10 @@ namespace libsocket
 	}
 
 	if ( -1 == (read_bytes = read(sock.sfd,buffer,dest.size())) )
+	{
+	    delete[] buffer;
 	    throw socket_exception(__FILE__,__LINE__,">>(std::string) input: Error while reading!\n");
+	}
 
 	if ( read_bytes < static_cast<ssize_t>(dest.size()) )
 	    dest.resize(read_bytes); // So the client doesn't print content more than one time
