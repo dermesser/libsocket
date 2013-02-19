@@ -75,7 +75,7 @@ Defined in `exception.cpp`, has to be included from `exception.hpp`
 		socket_exception(std::string,int,std::string);
 	};
 
-An `socket_exception` object is thrown in case of error. Almost every function may raise an exception containing a std::string looking like this:
+A `socket_exception` object is thrown in case of error. Almost every function may raise an exception containing a std::string looking like this:
 
 	../C++/inetclientstream.cpp:167: <<(std::string) output: Socket not connected!
 				(1)             (2)       (3)                       (4)
