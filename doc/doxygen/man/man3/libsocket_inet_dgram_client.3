@@ -1,0 +1,41 @@
+.TH "libsocket::inet_dgram_client" 3 "Sat Mar 2 2013" "libsocket" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+libsocket::inet_dgram_client \- 
+.SH SYNOPSIS
+.br
+.PP
+.PP
+Inherits \fBlibsocket::inet_dgram\fP, and \fBlibsocket::dgram_client_socket\fP\&.
+.SS "Public Member Functions"
+
+.in +1c
+.ti -1c
+.RI "\fBinet_dgram_client\fP (int proto_osi3, int flags=0)"
+.br
+.ti -1c
+.RI "\fBinet_dgram_client\fP (const char *dsthost, const char *dstport, int proto_osi3, int flags=0)"
+.br
+.ti -1c
+.RI "\fBinet_dgram_client\fP (const string &dsthost, const string &dstport, int proto_osi3, int flags=0)"
+.br
+.ti -1c
+.RI "void \fBsetup\fP (int proto_osi3, int flags=0)"
+.br
+.ti -1c
+.RI "void \fBsetup\fP (const char *dsthost, const char *dstport, int proto_osi3, int flags=0)"
+.br
+.ti -1c
+.RI "void \fBsetup\fP (const string &dsthost, const string &dstport, int proto_osi3, int flags=0)"
+.br
+.ti -1c
+.RI "void \fBconnect\fP (const char *dsthost, const char *dstport)"
+.br
+.ti -1c
+.RI "void \fBconnect\fP (const string &dsthost, const string &dstport)"
+.br
+.ti -1c
+.RI "void \fBdeconnect\fP (void)"
+.br
+.in -1c

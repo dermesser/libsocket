@@ -24,8 +24,9 @@
 
 */
 
-/*
- * DESCRIPTION FOR DGRAMCLIENT.CPP
+/**
+ * @file dgramclient.cpp
+ *
  * 	dgramclient.cpp contains the class dgram_client_socket. This
  * 	class provides the read/write functions for connected datagram
  * 	sockets (alias client dgram sockets...). This helps to avoid

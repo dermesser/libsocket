@@ -30,9 +30,14 @@
 
 namespace libsocket
 {
+    /**
+     * @brief socket is the base class of every other libsocket++ object.
+     * @ingroup class
+     */
     class socket
     {
 	protected:
+	    /// sfd is the sockets API file descriptor
 	    int sfd;
 
 	public:

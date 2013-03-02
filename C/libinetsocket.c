@@ -14,6 +14,12 @@
 
 # include <netinet/in.h> // e.g. struct sockaddr_in on OpenBSD
 
+/**
+ * @file    libinetsocket.c
+ * 
+ * Contains all C libinetsocket functions.
+ */
+
 /*
 
    The committers of the libsocket project, all rights reserved
@@ -69,6 +75,9 @@
 
 
 # ifdef VERBOSE
+/**
+ * @brief Writes an error to stderr without modifying errno.
+ */
 #define debug_write(str,l)                \
 {                                      \
     int __verbose_errno_save = errno; \
@@ -99,11 +108,17 @@ static inline signed int check_error(int return_value)
     return 0;
 }
 
-/*
- * Client part
+/**
+ * @brief Create and connect a new TCP/IP socket
  *
+ *
+ * @param host The host the socket will be connected to (everything resolvable, e.g. "::1", "8.8.8.8", "example.com")
+ * @param service The host's port, either numeric or as service name ("http").
+ * @param proto_osi3 `LIBSOCKET_IPv4` or `LIBSOCKET_IPv6`.
+ * @param flags Flags to be passed to `socket(2)`
+ *
+ * @return A valid socket file descriptor.
  */
-
 int create_inet_stream_socket(const char* host, const char* service, char proto_osi3, int flags)
 {
     int sfd, return_value;
@@ -173,11 +188,22 @@ int create_inet_stream_socket(const char* host, const char* service, char proto_
 
     freeaddrinfo(result);
 
-    return sfd;
-}
-
-int create_inet_dgram_socket(char proto_osi3, int flags)
-{
+    return sfd; }
+/**
+ * @brief Creates a new UDP/IP socket
+ *
+ * Returns an integer describing a DGRAM (UDP) socket.
+ *
+ * @param proto_osi3 is LIBSOCKET_IPv4 (AF_INET) or LIBSOCKET_IPv6 (AF_INET6). 
+ * @param flags may be the flags specified in socket(2), i.e. SOCK_NONBLOCK and/or SOCK_CLOEXEC. More than one
+ * flags may be ORed. This argument is only sensible on Linux >= 2.6.27!
+ *
+ * @return The socket file descriptor number, on error -1.
+ *
+ * To send and receive data with this socket use the functions explained below, sendto_inet_dgram_socket() and recvfrom_inet_dgram_socket().
+ */
+int create_inet_dgram_socket(char proto_osi3, int flags) 
+{ 
     int sfd;
 
     if (proto_osi3 != LIBSOCKET_IPv4 && proto_osi3 != LIBSOCKET_IPv6)
@@ -206,7 +232,21 @@ int create_inet_dgram_socket(char proto_osi3, int flags)
     return sfd;
 }
 
-//Working
+/**
+ * @brief This function is the equivalent to `sendto(2)`
+ * 
+ * @param sfd is the *Socket File Descriptor* (every socket file descriptor argument in libsocket is called sfd) which
+ * you got from create_inet_dgram_socket(). *The usage with STREAM sockets is not recommended and the result is undefined!*
+ * @param buf is a pointer to some data.
+ * @param size is the length of the buffer to which buf points.
+ * @param host is the host to which we want to send the data. It's a string so you may specify everything what's resolved by
+ * getaddrinfo(), i.e. an IP ("193.21.34.21") or a hostname ("example.net").
+ * @param service is the port on the remote host. Like in host, you may specify the port either as number ("123") or as service string ("ntp", "http", "gopher").
+ * @param sendto_flags is available on all platforms. The value given here goes directly to the internal sendto() call. The flags which may be specified differ between the
+ * platforms.
+ *
+ * If it is not possible to send data at the moment, this call blocks excepted you specified SOCK_NONBLOCK when creating the socket.
+ */
 ssize_t sendto_inet_dgram_socket(int sfd, const void* buf, size_t size,const char* host, const char* service, int sendto_flags)
 {
     struct sockaddr_storage oldsock;

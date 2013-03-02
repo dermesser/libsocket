@@ -21,8 +21,9 @@
 
 */
 
-/*
- * DESCRIPTION FOR SOCKET.CPP
+/**
+ * @file socket.cpp
+ *
  * 	Provides the basic socket functionality, like a field
  * 	for the file descriptor and the destructor respectively
  * 	a close()-wrapper destroy(). This is the root of the
@@ -33,13 +34,22 @@
 
 namespace libsocket
 {
+    /**
+     * @ingroup	constructor
+     */
     socket::socket() : sfd(-1) {}
 
     socket::~socket(void)
     {
 	destroy();
     }
-
+    
+    /**
+     * @brief	Destroys a socket.
+     *
+     * @retval 0    Fine!
+     * @retval <1   Bad.
+     */
     int socket::destroy(void)
     {
 	if ( 0 > close(sfd))
@@ -50,6 +60,15 @@ namespace libsocket
 	return 0;
     }
 
+    /**
+     * @brief Returns the socket file descriptor.
+     *
+     * @return The socket file descriptor of the class.
+     *
+     * getfd() is a getter you may use to obtain the file descriptor
+     * for raw operations on it. It's relatively uncritical as libsocket
+     * just wraps other syscalls and doesn't manipulate it using unusual ways.
+     */
     int socket::getfd(void) const
     {
 	return sfd;

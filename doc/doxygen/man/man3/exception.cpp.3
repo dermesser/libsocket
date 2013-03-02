@@ -1,0 +1,29 @@
+.TH "C++/exception.cpp" 3 "Sat Mar 2 2013" "libsocket" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+C++/exception.cpp \- 
+.SH SYNOPSIS
+.br
+.PP
+\fC#include <string>\fP
+.br
+\fC#include <stdio\&.h>\fP
+.br
+\fC#include <errno\&.h>\fP
+.br
+\fC#include '\&.\&./headers/exception\&.hpp'\fP
+.br
+
+.SH "Detailed Description"
+.PP 
+\fBFOR INTERNAL USE ONLY\fP
+.PP
+The class defined here, socket_exception, is a class for exception objects\&. Objects instantiated from this class are thrown if something goes wrong\&.
+.PP
+The class contains only the data member mesg and the constructor which constructs the error string in mesg\&. Typically, you'd create an object of this class with the following call: \fCsocket_exception(__FILE__,__LINE__,'Error Message');\fP
+.PP
+The tokens are substituded by the preprocessor and show where the error occurred\&. 
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for libsocket from the source code\&.

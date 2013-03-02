@@ -1,0 +1,49 @@
+.TH "libsocket::dgram_client_socket" 3 "Sat Mar 2 2013" "libsocket" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+libsocket::dgram_client_socket \- 
+.SH SYNOPSIS
+.br
+.PP
+.PP
+Inherits \fBlibsocket::socket\fP\&.
+.PP
+Inherited by \fBlibsocket::inet_dgram_client\fP, and \fBlibsocket::unix_dgram_client\fP\&.
+.SS "Public Member Functions"
+
+.in +1c
+.ti -1c
+.RI "ssize_t \fBsnd\fP (const void *buf, size_t len, int flags=0)"
+.br
+.ti -1c
+.RI "ssize_t \fBrcv\fP (void *buf, size_t len, int flags=0)"
+.br
+.ti -1c
+.RI "bool \fBgetconn\fP (void) const "
+.br
+.in -1c
+.SS "Protected Attributes"
+
+.in +1c
+.ti -1c
+.RI "bool \fBconnected\fP"
+.br
+.in -1c
+.SS "Friends"
+
+.in +1c
+.ti -1c
+.RI "\fBdgram_client_socket\fP & \fBoperator<<\fP (\fBdgram_client_socket\fP &sock, const char *str)"
+.br
+.ti -1c
+.RI "\fBdgram_client_socket\fP & \fBoperator<<\fP (\fBdgram_client_socket\fP &sock, string &str)"
+.br
+.ti -1c
+.RI "\fBdgram_client_socket\fP & \fBoperator>>\fP (\fBdgram_client_socket\fP &sock, string &dest)"
+.br
+.in -1c
+
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for libsocket from the source code\&.

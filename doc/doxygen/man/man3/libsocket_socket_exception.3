@@ -1,0 +1,59 @@
+.TH "libsocket::socket_exception" 3 "Sat Mar 2 2013" "libsocket" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+libsocket::socket_exception \- 
+.PP
+This class is instantiated and thrown when an error occurs\&.  
+
+.SH SYNOPSIS
+.br
+.PP
+.PP
+\fC#include <exception\&.hpp>\fP
+.SS "Public Member Functions"
+
+.in +1c
+.ti -1c
+.RI "\fBsocket_exception\fP (string, int, string)"
+.br
+.RI "\fIConstructor of a \fBsocket_exception\fP object
+.PP
+This constructor creates a new \fBsocket_exception\fP object\&. \fP"
+.in -1c
+.SS "Public Attributes"
+
+.in +1c
+.ti -1c
+.RI "int \fBerr\fP"
+.br
+.RI "\fIThis is the value of errno when the error occurred\&. \fP"
+.ti -1c
+.RI "string \fBmesg\fP"
+.br
+.RI "\fIThis is the message, showing file, line and a description\&. \fP"
+.in -1c
+.SH "Detailed Description"
+.PP 
+This class is instantiated and thrown when an error occurs\&. 
+.SH "Constructor & Destructor Documentation"
+.PP 
+.SS "libsocket::socket_exception::socket_exception (stringf, intl, stringm)"
+
+.PP
+Constructor of a \fBsocket_exception\fP object
+.PP
+This constructor creates a new \fBsocket_exception\fP object\&. \fBParameters:\fP
+.RS 4
+\fIf\fP File in which the error comes (\fBFILE\fP) 
+.br
+\fIl\fP Line (\fBLINE\fP) 
+.br
+\fIm\fP Description of the error\&. 
+.RE
+.PP
+
+
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for libsocket from the source code\&.
