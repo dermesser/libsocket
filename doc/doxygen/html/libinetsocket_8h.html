@@ -130,8 +130,6 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="libinetsocket_8h_source.html#l00036">36</a> of file <a class="el" href="libinetsocket_8h_source.html">libinetsocket.h</a>.</p>
-
 </div>
 </div>
 <a class="anchor" id="a6faeca25d8cb1ec163f09c0e69c71c0a"></a>
@@ -143,8 +141,6 @@ Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-
-<p>Definition at line <a class="el" href="libinetsocket_8h_source.html#l00033">33</a> of file <a class="el" href="libinetsocket_8h_source.html">libinetsocket.h</a>.</p>
 
 </div>
 </div>
@@ -158,8 +154,6 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="libinetsocket_8h_source.html#l00034">34</a> of file <a class="el" href="libinetsocket_8h_source.html">libinetsocket.h</a>.</p>
-
 </div>
 </div>
 <a class="anchor" id="a4e4f4aadb244e7d815712f1159128642"></a>
@@ -171,8 +165,6 @@ Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-
-<p>Definition at line <a class="el" href="libinetsocket_8h_source.html#l00041">41</a> of file <a class="el" href="libinetsocket_8h_source.html">libinetsocket.h</a>.</p>
 
 </div>
 </div>
@@ -186,8 +178,6 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="libinetsocket_8h_source.html#l00038">38</a> of file <a class="el" href="libinetsocket_8h_source.html">libinetsocket.h</a>.</p>
-
 </div>
 </div>
 <a class="anchor" id="a90a658822b6fdd329a3597f503dd3a5c"></a>
@@ -199,8 +189,6 @@ Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-
-<p>Definition at line <a class="el" href="libinetsocket_8h_source.html#l00030">30</a> of file <a class="el" href="libinetsocket_8h_source.html">libinetsocket.h</a>.</p>
 
 </div>
 </div>
@@ -214,8 +202,6 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="libinetsocket_8h_source.html#l00031">31</a> of file <a class="el" href="libinetsocket_8h_source.html">libinetsocket.h</a>.</p>
-
 </div>
 </div>
 <a class="anchor" id="abebf22b81cea8509ec9f6fea7b7c8583"></a>
@@ -227,8 +213,6 @@ Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-
-<p>Definition at line <a class="el" href="libinetsocket_8h_source.html#l00039">39</a> of file <a class="el" href="libinetsocket_8h_source.html">libinetsocket.h</a>.</p>
 
 </div>
 </div>
@@ -287,92 +271,6 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="libinetsocket_8c_source.html#l00561">561</a> of file <a class="el" href="libinetsocket_8c_source.html">libinetsocket.c</a>.</p>
-<div class="fragment"><div class="line">{</div>
-<div class="line">    <span class="keyword">struct </span>sockaddr_storage client_info;</div>
-<div class="line">    <span class="keywordtype">int</span> client_sfd;</div>
-<div class="line"></div>
-<div class="line"><span class="preprocessor"># ifndef _TRADITIONAL_RDNS</span></div>
-<div class="line"><span class="preprocessor"></span>    <span class="keywordtype">int</span> retval;</div>
-<div class="line"><span class="preprocessor"># endif</span></div>
-<div class="line"><span class="preprocessor"></span></div>
-<div class="line"><span class="preprocessor"># ifdef _TRADITIONAL_RDNS</span></div>
-<div class="line"><span class="preprocessor"></span>    <span class="keyword">struct </span>sockaddr_storage oldsockaddr;</div>
-<div class="line">    socklen_t oldsockaddrlen = <span class="keyword">sizeof</span>(<span class="keyword">struct </span>sockaddr_storage);</div>
-<div class="line">    <span class="keyword">struct </span>hostent* he;</div>
-<div class="line">    <span class="keywordtype">void</span>* addrptr;</div>
-<div class="line">    <span class="keywordtype">size_t</span> in_addrlen;</div>
-<div class="line">    uint16_t sport = 0;</div>
-<div class="line"><span class="preprocessor"># endif</span></div>
-<div class="line"><span class="preprocessor"></span></div>
-<div class="line"><span class="preprocessor"># ifdef VERBOSE</span></div>
-<div class="line"><span class="preprocessor"></span>    <span class="keyword">const</span> <span class="keywordtype">char</span>* errstr;</div>
-<div class="line"><span class="preprocessor"># endif</span></div>
-<div class="line"><span class="preprocessor"></span>    socklen_t addrlen = <span class="keyword">sizeof</span>(<span class="keyword">struct </span>sockaddr_storage);</div>
-<div class="line"></div>
-<div class="line">    <span class="comment">// Portable behavior</span></div>
-<div class="line"><span class="preprocessor"># ifdef __linux__</span></div>
-<div class="line"><span class="preprocessor"></span>    <span class="keywordflow">if</span> ( -1 == check_error((client_sfd = accept4(sfd,(<span class="keyword">struct</span> sockaddr*)&amp;client_info,&amp;addrlen,accept_flags)))) <span class="comment">// blocks</span></div>
-<div class="line">        <span class="keywordflow">return</span> -1;</div>
-<div class="line"><span class="preprocessor"># else</span></div>
-<div class="line"><span class="preprocessor"></span>    <span class="keywordflow">if</span> ( -1 == check_error((client_sfd = accept(sfd,(<span class="keyword">struct</span> sockaddr*)&amp;client_info,&amp;addrlen)))) <span class="comment">// blocks</span></div>
-<div class="line">        <span class="keywordflow">return</span> -1;</div>
-<div class="line"><span class="preprocessor"># endif</span></div>
-<div class="line"><span class="preprocessor"></span></div>
-<div class="line">    <span class="keywordflow">if</span> ( src_host_len &gt; 0 || src_service_len &gt; 0 ) <span class="comment">// If one of the things is wanted. If you give a null pointer with a positive _len parameter, you won&#39;t get the address.</span></div>
-<div class="line">    {</div>
-<div class="line">        <span class="keywordflow">if</span> ( flags == <a class="code" href="libinetsocket_8c.html#a4e4f4aadb244e7d815712f1159128642">LIBSOCKET_NUMERIC</a> )</div>
-<div class="line">        {</div>
-<div class="line">            flags = NI_NUMERICHOST | NI_NUMERICSERV;</div>
-<div class="line">        } <span class="keywordflow">else</span></div>
-<div class="line">        {</div>
-<div class="line">            flags = 0; <span class="comment">// To prevent errors: Unknown flags are ignored</span></div>
-<div class="line">        }</div>
-<div class="line"></div>
-<div class="line"><span class="preprocessor"># ifndef _TRADITIONAL_RDNS</span></div>
-<div class="line"><span class="preprocessor"></span>        <span class="keywordflow">if</span> ( 0 != (retval = getnameinfo((<span class="keyword">struct</span> sockaddr*)&amp;client_info,<span class="keyword">sizeof</span>(<span class="keyword">struct</span> sockaddr_storage),src_host,src_host_len,src_service,src_service_len,flags)) ) <span class="comment">// Write information to the provided memory</span></div>
-<div class="line">        {</div>
-<div class="line"><span class="preprocessor"># ifdef VERBOSE</span></div>
-<div class="line"><span class="preprocessor"></span>            errstr = gai_strerror(retval);</div>
-<div class="line">            debug_write(errstr,strlen(errstr));</div>
-<div class="line"><span class="preprocessor"># endif</span></div>
-<div class="line"><span class="preprocessor"></span>            <span class="keywordflow">return</span> -1;</div>
-<div class="line">        }</div>
-<div class="line"><span class="preprocessor"># endif</span></div>
-<div class="line"><span class="preprocessor"></span></div>
-<div class="line"><span class="preprocessor"># ifdef _TRADITIONAL_RDNS</span></div>
-<div class="line"><span class="preprocessor"></span>        <span class="keywordflow">if</span> ( -1 == check_error(getsockname(sfd,(<span class="keyword">struct</span> sockaddr*)&amp;oldsockaddr,&amp;oldsockaddrlen)) )</div>
-<div class="line">            <span class="keywordflow">return</span> -1;</div>
-<div class="line"></div>
-<div class="line">        <span class="keywordflow">if</span> ( oldsockaddrlen &gt; <span class="keyword">sizeof</span>(<span class="keyword">struct</span> sockaddr_storage) ) <span class="comment">// If getsockname truncated the struct</span></div>
-<div class="line">            <span class="keywordflow">return</span> -1;</div>
-<div class="line"></div>
-<div class="line">        <span class="keywordflow">if</span> ( oldsockaddr.ss_family == AF_INET )</div>
-<div class="line">        {</div>
-<div class="line">            addrptr = &amp;(((<span class="keyword">struct </span>sockaddr_in*)&amp;client_info)-&gt;sin_addr);</div>
-<div class="line">            in_addrlen = <span class="keyword">sizeof</span>(<span class="keyword">struct </span>in_addr);</div>
-<div class="line">            sport = ntohs(((<span class="keyword">struct</span> sockaddr_in*)&amp;client_info)-&gt;sin_port);</div>
-<div class="line">        } <span class="keywordflow">else</span> <span class="keywordflow">if</span> ( oldsockaddr.ss_family == AF_INET6 )</div>
-<div class="line">        {</div>
-<div class="line">            addrptr = &amp;(((<span class="keyword">struct </span>sockaddr_in6*)&amp;client_info)-&gt;sin6_addr);</div>
-<div class="line">            in_addrlen = <span class="keyword">sizeof</span>(<span class="keyword">struct </span>in6_addr);</div>
-<div class="line">            sport = ntohs(((<span class="keyword">struct</span> sockaddr_in6*)&amp;client_info)-&gt;sin6_port);</div>
-<div class="line">        }</div>
-<div class="line"></div>
-<div class="line">        <span class="keywordflow">if</span> ( NULL == (he = gethostbyaddr(addrptr,in_addrlen,oldsockaddr.ss_family) ) )</div>
-<div class="line">        {</div>
-<div class="line">            check_error(-1);</div>
-<div class="line">            <span class="keywordflow">return</span> -1;</div>
-<div class="line">        }</div>
-<div class="line"></div>
-<div class="line">        strncpy(src_host,he-&gt;h_name,src_host_len);</div>
-<div class="line">        snprintf(src_service,src_service_len,<span class="stringliteral">&quot;%u&quot;</span>,sport);</div>
-<div class="line"><span class="preprocessor"># endif</span></div>
-<div class="line"><span class="preprocessor"></span>    }</div>
-<div class="line"></div>
-<div class="line">    <span class="keywordflow">return</span> client_sfd;</div>
-<div class="line">}</div>
-</div><!-- fragment -->
 </div>
 </div>
 <a class="anchor" id="a10304769ea75add0f18d4c9caf8e2c30"></a>
@@ -405,82 +303,6 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="libinetsocket_8c_source.html#l00351">351</a> of file <a class="el" href="libinetsocket_8c_source.html">libinetsocket.c</a>.</p>
-<div class="fragment"><div class="line">{</div>
-<div class="line">    <span class="keyword">struct </span>addrinfo *result, *result_check, hint;</div>
-<div class="line">    <span class="keyword">struct </span>sockaddr_storage oldsockaddr;</div>
-<div class="line">    <span class="keyword">struct </span>sockaddr deconnect;</div>
-<div class="line">    socklen_t oldsockaddrlen = <span class="keyword">sizeof</span>(<span class="keyword">struct </span>sockaddr_storage);</div>
-<div class="line">    <span class="keywordtype">int</span> return_value;</div>
-<div class="line"><span class="preprocessor"># ifdef VERBOSE</span></div>
-<div class="line"><span class="preprocessor"></span>    <span class="keyword">const</span> <span class="keywordtype">char</span>* errstring;</div>
-<div class="line"><span class="preprocessor"># endif</span></div>
-<div class="line"><span class="preprocessor"></span></div>
-<div class="line">    <span class="keywordflow">if</span> ( sfd &lt; 0 )</div>
-<div class="line">        <span class="keywordflow">return</span> -1;</div>
-<div class="line"></div>
-<div class="line">    <span class="keywordflow">if</span> ( host == NULL )</div>
-<div class="line">    {</div>
-<div class="line">        <span class="comment">// This does not work on FreeBSD systems. We pretend to disconnect the socket although we don&#39;t do so. This is not very severe for the application</span></div>
-<div class="line"><span class="preprocessor"># ifndef __FreeBSD__</span></div>
-<div class="line"><span class="preprocessor"></span>        memset(&amp;deconnect,0,<span class="keyword">sizeof</span>(<span class="keyword">struct</span> sockaddr));</div>
-<div class="line"></div>
-<div class="line">        deconnect.sa_family = AF_UNSPEC;</div>
-<div class="line"></div>
-<div class="line">        <span class="keywordflow">if</span> ( check_error(connect(sfd,&amp;deconnect,<span class="keyword">sizeof</span>(<span class="keyword">struct</span> sockaddr))) )</div>
-<div class="line">            <span class="keywordflow">return</span> -1;</div>
-<div class="line"><span class="preprocessor"># endif</span></div>
-<div class="line"><span class="preprocessor"></span>        <span class="keywordflow">return</span> 0;</div>
-<div class="line">    }</div>
-<div class="line"></div>
-<div class="line">    <span class="keywordflow">if</span> ( -1 == check_error(getsockname(sfd,(<span class="keyword">struct</span> sockaddr*)&amp;oldsockaddr,&amp;oldsockaddrlen)) )</div>
-<div class="line">        <span class="keywordflow">return</span> -1;</div>
-<div class="line"></div>
-<div class="line">    <span class="keywordflow">if</span> ( oldsockaddrlen &gt; <span class="keyword">sizeof</span>(<span class="keyword">struct</span> sockaddr_storage) ) <span class="comment">// If getsockname truncated the struct</span></div>
-<div class="line">        <span class="keywordflow">return</span> -1;</div>
-<div class="line"></div>
-<div class="line">    memset(&amp;hint,0,<span class="keyword">sizeof</span>(<span class="keyword">struct</span> addrinfo));</div>
-<div class="line"></div>
-<div class="line">    hint.ai_family = ((<span class="keyword">struct </span>sockaddr_in*)&amp;oldsockaddr)-&gt;sin_family; <span class="comment">// AF_INET or AF_INET6 - offset is same at sockaddr_in and sockaddr_in6</span></div>
-<div class="line">    hint.ai_socktype = SOCK_DGRAM;</div>
-<div class="line"></div>
-<div class="line">    <span class="keywordflow">if</span> ( 0 != (return_value = getaddrinfo(host,service,&amp;hint,&amp;result)))</div>
-<div class="line">    {</div>
-<div class="line"><span class="preprocessor"># ifdef VERBOSE</span></div>
-<div class="line"><span class="preprocessor"></span>        errstring = gai_strerror(return_value);</div>
-<div class="line">        debug_write(errstring,strlen(errstring));</div>
-<div class="line"><span class="preprocessor"># endif</span></div>
-<div class="line"><span class="preprocessor"></span>        <span class="keywordflow">return</span> -1;</div>
-<div class="line">    }</div>
-<div class="line"></div>
-<div class="line">    <span class="comment">// As described in &quot;The Linux Programming Interface&quot;, Michael Kerrisk 2010, chapter 59.11 (p. 1220ff)</span></div>
-<div class="line"></div>
-<div class="line">    <span class="keywordflow">for</span> ( result_check = result; result_check != NULL; result_check = result_check-&gt;ai_next ) <span class="comment">// go through the linked list of struct addrinfo elements</span></div>
-<div class="line">    {</div>
-<div class="line">        <span class="keywordflow">if</span> ( -1 != (return_value = connect(sfd,result_check-&gt;ai_addr,result_check-&gt;ai_addrlen))) <span class="comment">// connected without error</span></div>
-<div class="line">        {</div>
-<div class="line">            <span class="keywordflow">break</span>;</div>
-<div class="line">        } <span class="keywordflow">else</span></div>
-<div class="line">        {</div>
-<div class="line">            check_error(return_value);</div>
-<div class="line">        }</div>
-<div class="line">    }</div>
-<div class="line"></div>
-<div class="line">    <span class="comment">// We do now have a working (updated) socket connection to our target</span></div>
-<div class="line"></div>
-<div class="line">    <span class="keywordflow">if</span> ( result_check == NULL ) <span class="comment">// or not?</span></div>
-<div class="line">    {</div>
-<div class="line"><span class="preprocessor"># ifdef VERBOSE</span></div>
-<div class="line"><span class="preprocessor"></span>        debug_write(<span class="stringliteral">&quot;Could not connect to any address!\n&quot;</span>,34);</div>
-<div class="line"><span class="preprocessor"># endif</span></div>
-<div class="line"><span class="preprocessor"></span>        <span class="keywordflow">return</span> -1;</div>
-<div class="line">    }</div>
-<div class="line"></div>
-<div class="line">    freeaddrinfo(result);</div>
-<div class="line"></div>
-<div class="line">    <span class="keywordflow">return</span> 0;</div>
-<div class="line">}</div>
-</div><!-- fragment -->
 </div>
 </div>
 <a class="anchor" id="a309e2c8bc69f56905d97d6a578e6ab2b"></a>
@@ -507,36 +329,18 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="libinetsocket_8c_source.html#l00177">177</a> of file <a class="el" href="libinetsocket_8c_source.html">libinetsocket.c</a>.</p>
-<div class="fragment"><div class="line">{</div>
-<div class="line">    <span class="keywordtype">int</span> sfd;</div>
-<div class="line"></div>
-<div class="line">    <span class="keywordflow">if</span> (proto_osi3 != <a class="code" href="libinetsocket_8c.html#a6faeca25d8cb1ec163f09c0e69c71c0a">LIBSOCKET_IPv4</a> &amp;&amp; proto_osi3 != <a class="code" href="libinetsocket_8c.html#ad07a481492f88d68c61a824e99853603">LIBSOCKET_IPv6</a>)</div>
-<div class="line">    {</div>
-<div class="line"><span class="preprocessor"># ifdef VERBOSE</span></div>
-<div class="line"><span class="preprocessor"></span>        debug_write(<span class="stringliteral">&quot;create_inet_dgram_socket: osi3 argument invalid when using DGRAM sockets\n&quot;</span>,48);</div>
-<div class="line"><span class="preprocessor"># endif</span></div>
-<div class="line"><span class="preprocessor"></span>        <span class="keywordflow">return</span> -1;</div>
-<div class="line">    }</div>
-<div class="line"></div>
-<div class="line">    <span class="keywordflow">switch</span> ( proto_osi3 )</div>
-<div class="line">    {</div>
-<div class="line">        <span class="keywordflow">case</span> <a class="code" href="libinetsocket_8c.html#a6faeca25d8cb1ec163f09c0e69c71c0a">LIBSOCKET_IPv4</a> :</div>
-<div class="line">            sfd = socket(AF_INET,SOCK_DGRAM|flags,0);</div>
-<div class="line">            <span class="keywordflow">break</span>;</div>
-<div class="line">        <span class="keywordflow">case</span> <a class="code" href="libinetsocket_8c.html#ad07a481492f88d68c61a824e99853603">LIBSOCKET_IPv6</a> :</div>
-<div class="line">            sfd = socket(AF_INET6,SOCK_DGRAM|flags,0);</div>
-<div class="line">            <span class="keywordflow">break</span>;</div>
-<div class="line">        <span class="keywordflow">default</span>:</div>
-<div class="line">            <span class="keywordflow">return</span> -1;</div>
-<div class="line">    }</div>
-<div class="line"></div>
-<div class="line">    <span class="keywordflow">if</span> ( -1 == check_error(sfd) )</div>
-<div class="line">        <span class="keywordflow">return</span> -1;</div>
-<div class="line"></div>
-<div class="line">    <span class="keywordflow">return</span> sfd;</div>
-<div class="line">}</div>
-</div><!-- fragment -->
+<p>Creates a new UDP/IP socket. </p>
+<p>Returns an integer describing a DGRAM (UDP) socket.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">proto_osi3</td><td>is LIBSOCKET_IPv4 (AF_INET) or LIBSOCKET_IPv6 (AF_INET6). </td></tr>
+    <tr><td class="paramname">flags</td><td>may be the flags specified in socket(2), i.e. SOCK_NONBLOCK and/or SOCK_CLOEXEC. More than one flags may be ORed. This argument is only sensible on Linux &gt;= 2.6.27!</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>The socket file descriptor number, on error -1.</dd></dl>
+<p>To send and receive data with this socket use the functions explained below, <a class="el" href="libinetsocket_8h.html#a6f93c2a528fa384895be9175389002eb" title="This function is the equivalent to sendto(2)">sendto_inet_dgram_socket()</a> and <a class="el" href="libinetsocket_8h.html#ad816061c898fe8b1f0d8edfee3f5786d">recvfrom_inet_dgram_socket()</a>. </p>
+
 </div>
 </div>
 <a class="anchor" id="ab5e00a5a7ba456d8a4b22012e3e2ce92"></a>
@@ -581,96 +385,6 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="libinetsocket_8c_source.html#l00469">469</a> of file <a class="el" href="libinetsocket_8c_source.html">libinetsocket.c</a>.</p>
-<div class="fragment"><div class="line">{</div>
-<div class="line">    <span class="keywordtype">int</span> sfd, domain, type, retval;</div>
-<div class="line">    <span class="keyword">struct </span>addrinfo *result, *result_check, hints;</div>
-<div class="line"><span class="preprocessor"># ifdef VERBOSE</span></div>
-<div class="line"><span class="preprocessor"></span>    <span class="keyword">const</span> <span class="keywordtype">char</span>* errstr;</div>
-<div class="line"><span class="preprocessor"># endif</span></div>
-<div class="line"><span class="preprocessor"></span></div>
-<div class="line">    <span class="comment">//if ( flags != SOCK_NONBLOCK &amp;&amp; flags != SOCK_CLOEXEC &amp;&amp; flags != (SOCK_CLOEXEC|SOCK_NONBLOCK) &amp;&amp; flags != 0 )</span></div>
-<div class="line">    <span class="comment">//  return -1;</span></div>
-<div class="line"></div>
-<div class="line">    <span class="keywordflow">if</span> ( bind_addr == NULL || bind_port == NULL )</div>
-<div class="line">        <span class="keywordflow">return</span> -1;</div>
-<div class="line"></div>
-<div class="line">    <span class="keywordflow">switch</span> ( proto_osi4 )</div>
-<div class="line">    {</div>
-<div class="line">        <span class="keywordflow">case</span> <a class="code" href="libinetsocket_8c.html#a90a658822b6fdd329a3597f503dd3a5c">LIBSOCKET_TCP</a>:</div>
-<div class="line">            type = SOCK_STREAM;</div>
-<div class="line">            <span class="keywordflow">break</span>;</div>
-<div class="line">        <span class="keywordflow">case</span> <a class="code" href="libinetsocket_8c.html#a666ef2c7dc102b69e27ae67e8658aa7f">LIBSOCKET_UDP</a>:</div>
-<div class="line">            type = SOCK_DGRAM;</div>
-<div class="line">            <span class="keywordflow">break</span>;</div>
-<div class="line">        <span class="keywordflow">default</span>:</div>
-<div class="line">            <span class="keywordflow">return</span> -1;</div>
-<div class="line">    }</div>
-<div class="line">    <span class="keywordflow">switch</span> ( proto_osi3 )</div>
-<div class="line">    {</div>
-<div class="line">        <span class="keywordflow">case</span> <a class="code" href="libinetsocket_8c.html#a6faeca25d8cb1ec163f09c0e69c71c0a">LIBSOCKET_IPv4</a>:</div>
-<div class="line">            domain = AF_INET;</div>
-<div class="line">            <span class="keywordflow">break</span>;</div>
-<div class="line">        <span class="keywordflow">case</span> <a class="code" href="libinetsocket_8c.html#ad07a481492f88d68c61a824e99853603">LIBSOCKET_IPv6</a>:</div>
-<div class="line">            domain = AF_INET6;</div>
-<div class="line">            <span class="keywordflow">break</span>;</div>
-<div class="line">        <span class="keywordflow">case</span> <a class="code" href="libinetsocket_8c.html#a072819fab499d5244935398d7f7b912a">LIBSOCKET_BOTH</a>:</div>
-<div class="line">            domain = AF_UNSPEC;</div>
-<div class="line">            <span class="keywordflow">break</span>;</div>
-<div class="line">        <span class="keywordflow">default</span>:</div>
-<div class="line">            <span class="keywordflow">return</span> -1;</div>
-<div class="line">    }</div>
-<div class="line"></div>
-<div class="line">    memset(&amp;hints,0,<span class="keyword">sizeof</span>(<span class="keyword">struct</span> addrinfo));</div>
-<div class="line"></div>
-<div class="line">    hints.ai_socktype = type;</div>
-<div class="line">    hints.ai_family = domain;</div>
-<div class="line">    hints.ai_flags = AI_PASSIVE;</div>
-<div class="line"></div>
-<div class="line">    <span class="keywordflow">if</span> ( 0 != (retval = getaddrinfo(bind_addr,bind_port,&amp;hints,&amp;result)) )</div>
-<div class="line">    {</div>
-<div class="line"><span class="preprocessor"># ifdef VERBOSE</span></div>
-<div class="line"><span class="preprocessor"></span>        errstr = gai_strerror(retval);</div>
-<div class="line">        debug_write(errstr,strlen(errstr));</div>
-<div class="line"><span class="preprocessor"># endif</span></div>
-<div class="line"><span class="preprocessor"></span>        <span class="keywordflow">return</span> -1;</div>
-<div class="line">    }</div>
-<div class="line"></div>
-<div class="line">    <span class="comment">// As described in &quot;The Linux Programming Interface&quot;, Michael Kerrisk 2010, chapter 59.11 (p. 1220ff)</span></div>
-<div class="line">    <span class="keywordflow">for</span> ( result_check = result; result_check != NULL; result_check = result_check-&gt;ai_next ) <span class="comment">// go through the linked list of struct addrinfo elements</span></div>
-<div class="line">    {</div>
-<div class="line">        sfd = socket(result_check-&gt;ai_family, result_check-&gt;ai_socktype | flags, result_check-&gt;ai_protocol);</div>
-<div class="line"></div>
-<div class="line">        <span class="keywordflow">if</span> ( sfd &lt; 0 ) <span class="comment">// Error at socket()!!!</span></div>
-<div class="line">            <span class="keywordflow">continue</span>;</div>
-<div class="line"></div>
-<div class="line">        retval = bind(sfd,result_check-&gt;ai_addr,(socklen_t)result_check-&gt;ai_addrlen);</div>
-<div class="line"></div>
-<div class="line">        <span class="keywordflow">if</span> ( retval != 0 ) <span class="comment">// Error at bind()!!!</span></div>
-<div class="line">            <span class="keywordflow">continue</span>;</div>
-<div class="line"></div>
-<div class="line">        <span class="keywordflow">if</span> (type == <a class="code" href="libinetsocket_8c.html#a90a658822b6fdd329a3597f503dd3a5c">LIBSOCKET_TCP</a>)</div>
-<div class="line">            retval = listen(sfd,<a class="code" href="libinetsocket_8c.html#a9a36bce475b3fe2d91c7ab82f29f41f3">LIBSOCKET_BACKLOG</a>);</div>
-<div class="line"></div>
-<div class="line">        <span class="keywordflow">if</span> ( retval == 0 ) <span class="comment">// If we came until here, there wasn&#39;t an error anywhere. It is safe to cancel the loop here</span></div>
-<div class="line">            <span class="keywordflow">break</span>;</div>
-<div class="line">    }</div>
-<div class="line"></div>
-<div class="line">    <span class="keywordflow">if</span> ( result_check == NULL )</div>
-<div class="line">    {</div>
-<div class="line"><span class="preprocessor"># ifdef VERBOSE</span></div>
-<div class="line"><span class="preprocessor"></span>        debug_write(<span class="stringliteral">&quot;Could not bind to any address!\n&quot;</span>,34);</div>
-<div class="line"><span class="preprocessor"># endif</span></div>
-<div class="line"><span class="preprocessor"></span>        <span class="keywordflow">return</span> -1;</div>
-<div class="line">    }</div>
-<div class="line"></div>
-<div class="line">    <span class="comment">// We do now have a working socket on which we may call accept()</span></div>
-<div class="line"></div>
-<div class="line">    freeaddrinfo(result);</div>
-<div class="line"></div>
-<div class="line">    <span class="keywordflow">return</span> sfd;</div>
-<div class="line">}</div>
-</div><!-- fragment -->
 </div>
 </div>
 <a class="anchor" id="a49bd7b2b6593d7fa2f88a96d66910e11"></a>
@@ -708,80 +422,19 @@ Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Create and connect a new TCP/IP socket </p>
 
-<p>Definition at line <a class="el" href="libinetsocket_8c_source.html#l00105">105</a> of file <a class="el" href="libinetsocket_8c_source.html">libinetsocket.c</a>.</p>
-<div class="fragment"><div class="line">{</div>
-<div class="line">    <span class="keywordtype">int</span> sfd, return_value;</div>
-<div class="line">    <span class="keyword">struct </span>addrinfo hint, *result, *result_check;</div>
-<div class="line"><span class="preprocessor"># ifdef VERBOSE</span></div>
-<div class="line"><span class="preprocessor"></span>    <span class="keyword">const</span> <span class="keywordtype">char</span>* errstring;</div>
-<div class="line"><span class="preprocessor"># endif</span></div>
-<div class="line"><span class="preprocessor"></span></div>
-<div class="line">    <span class="keywordflow">if</span> ( host == NULL || service == NULL )</div>
-<div class="line">        <span class="keywordflow">return</span> -1;</div>
-<div class="line"></div>
-<div class="line">    memset(&amp;hint,0,<span class="keyword">sizeof</span> hint);</div>
-<div class="line"></div>
-<div class="line">    <span class="comment">// set address family</span></div>
-<div class="line">    <span class="keywordflow">switch</span> ( proto_osi3 )</div>
-<div class="line">    {</div>
-<div class="line">        <span class="keywordflow">case</span> <a class="code" href="libinetsocket_8c.html#a6faeca25d8cb1ec163f09c0e69c71c0a">LIBSOCKET_IPv4</a>:</div>
-<div class="line">            hint.ai_family = AF_INET;</div>
-<div class="line">            <span class="keywordflow">break</span>;</div>
-<div class="line">        <span class="keywordflow">case</span> <a class="code" href="libinetsocket_8c.html#ad07a481492f88d68c61a824e99853603">LIBSOCKET_IPv6</a>:</div>
-<div class="line">            hint.ai_family = AF_INET6;</div>
-<div class="line">            <span class="keywordflow">break</span>;</div>
-<div class="line">        <span class="keywordflow">case</span> <a class="code" href="libinetsocket_8c.html#a072819fab499d5244935398d7f7b912a">LIBSOCKET_BOTH</a>:</div>
-<div class="line">            hint.ai_family = AF_UNSPEC;</div>
-<div class="line">            <span class="keywordflow">break</span>;</div>
-<div class="line">        <span class="keywordflow">default</span>:</div>
-<div class="line">            <span class="keywordflow">return</span> -1;</div>
-<div class="line">    }</div>
-<div class="line"></div>
-<div class="line">    <span class="comment">// Transport protocol is TCP</span></div>
-<div class="line">    hint.ai_socktype = SOCK_STREAM;</div>
-<div class="line"></div>
-<div class="line">    <span class="keywordflow">if</span> ( 0 != (return_value = getaddrinfo(host,service,&amp;hint,&amp;result)))</div>
-<div class="line">    {</div>
-<div class="line"><span class="preprocessor"># ifdef VERBOSE</span></div>
-<div class="line"><span class="preprocessor"></span>        errstring = gai_strerror(return_value);</div>
-<div class="line">        debug_write(errstring,strlen(errstring));</div>
-<div class="line"><span class="preprocessor"># endif</span></div>
-<div class="line"><span class="preprocessor"></span>        <span class="keywordflow">return</span> -1;</div>
-<div class="line">    }</div>
-<div class="line"></div>
-<div class="line">    <span class="comment">// As described in &quot;The Linux Programming Interface&quot;, Michael Kerrisk 2010, chapter 59.11 (p. 1220ff)</span></div>
-<div class="line"></div>
-<div class="line">    <span class="keywordflow">for</span> ( result_check = result; result_check != NULL; result_check = result_check-&gt;ai_next ) <span class="comment">// go through the linked list of struct addrinfo elements</span></div>
-<div class="line">    {</div>
-<div class="line">        sfd = socket(result_check-&gt;ai_family, result_check-&gt;ai_socktype | flags, result_check-&gt;ai_protocol);</div>
-<div class="line"></div>
-<div class="line">        <span class="keywordflow">if</span> ( sfd &lt; 0 ) <span class="comment">// Error!!!</span></div>
-<div class="line">            <span class="keywordflow">continue</span>;</div>
-<div class="line"></div>
-<div class="line">        <span class="keywordflow">if</span> ( -1 != connect(sfd,result_check-&gt;ai_addr,result_check-&gt;ai_addrlen)) <span class="comment">// connected without error</span></div>
-<div class="line">            <span class="keywordflow">break</span>;</div>
-<div class="line"></div>
-<div class="line">        close(sfd);</div>
-<div class="line">    }</div>
-<div class="line"></div>
-<div class="line">    <span class="comment">// We do now have a working socket STREAM connection to our target</span></div>
-<div class="line"></div>
-<div class="line">    <span class="keywordflow">if</span> ( result_check == NULL ) <span class="comment">// Have we?</span></div>
-<div class="line">    {</div>
-<div class="line"><span class="preprocessor"># ifdef VERBOSE</span></div>
-<div class="line"><span class="preprocessor"></span>        debug_write(<span class="stringliteral">&quot;Could not connect to any address!\n&quot;</span>,34);</div>
-<div class="line"><span class="preprocessor"># endif</span></div>
-<div class="line"><span class="preprocessor"></span>        <span class="keywordflow">return</span> -1;</div>
-<div class="line">    }</div>
-<div class="line">    <span class="comment">// Yes :)</span></div>
-<div class="line"></div>
-<div class="line">    freeaddrinfo(result);</div>
-<div class="line"></div>
-<div class="line">    <span class="keywordflow">return</span> sfd;</div>
-<div class="line">}</div>
-</div><!-- fragment -->
+<p>Create and connect a new TCP/IP socket. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">host</td><td>The host the socket will be connected to (everything resolvable, e.g. "::1", "8.8.8.8", "example.com") </td></tr>
+    <tr><td class="paramname">service</td><td>The host's port, either numeric or as service name ("http"). </td></tr>
+    <tr><td class="paramname">proto_osi3</td><td><code>LIBSOCKET_IPv4</code> or <code>LIBSOCKET_IPv6</code>. </td></tr>
+    <tr><td class="paramname">flags</td><td>Flags to be passed to <code>socket(2)</code></td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>A valid socket file descriptor. </dd></dl>
+
 </div>
 </div>
 <a class="anchor" id="a9c4e366b938b60a8c669c2a82448a6cf"></a>
@@ -798,17 +451,6 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="libinetsocket_8c_source.html#l00428">428</a> of file <a class="el" href="libinetsocket_8c_source.html">libinetsocket.c</a>.</p>
-<div class="fragment"><div class="line">{</div>
-<div class="line">    <span class="keywordflow">if</span> ( sfd &lt; 0 )</div>
-<div class="line">        <span class="keywordflow">return</span> -1;</div>
-<div class="line"></div>
-<div class="line">    <span class="keywordflow">if</span> ( -1 == check_error(close(sfd)))</div>
-<div class="line">        <span class="keywordflow">return</span> -1;</div>
-<div class="line"></div>
-<div class="line">    <span class="keywordflow">return</span> 0;</div>
-<div class="line">}</div>
-</div><!-- fragment -->
 </div>
 </div>
 <a class="anchor" id="a6acc9e6975d1c0ed0608f3b49c709cb1"></a>
@@ -825,48 +467,6 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="libinetsocket_8c_source.html#l00647">647</a> of file <a class="el" href="libinetsocket_8c_source.html">libinetsocket.c</a>.</p>
-<div class="fragment"><div class="line">{</div>
-<div class="line">    <span class="keywordtype">int</span> return_value;</div>
-<div class="line">    <span class="keyword">struct </span>addrinfo hint, *result;</div>
-<div class="line"><span class="preprocessor"># ifdef VERBOSE</span></div>
-<div class="line"><span class="preprocessor"></span>    <span class="keyword">const</span> <span class="keywordtype">char</span>* errstring;</div>
-<div class="line"><span class="preprocessor"># endif</span></div>
-<div class="line"><span class="preprocessor"></span>    <span class="keywordtype">int</span> af;</div>
-<div class="line"></div>
-<div class="line">    <span class="keywordflow">if</span> ( hostname == NULL )</div>
-<div class="line">        <span class="keywordflow">return</span> -1;</div>
-<div class="line"></div>
-<div class="line">    memset(&amp;hint,0,<span class="keyword">sizeof</span> hint);</div>
-<div class="line"></div>
-<div class="line">    hint.ai_family = AF_UNSPEC;</div>
-<div class="line"></div>
-<div class="line">    <span class="keywordflow">if</span> ( 0 != (return_value = getaddrinfo(hostname,<span class="stringliteral">&quot;0&quot;</span>,&amp;hint,&amp;result)))</div>
-<div class="line">    {</div>
-<div class="line"><span class="preprocessor"># ifdef VERBOSE</span></div>
-<div class="line"><span class="preprocessor"></span>        errstring = gai_strerror(return_value);</div>
-<div class="line">        debug_write(errstring,strlen(errstring));</div>
-<div class="line"><span class="preprocessor"># endif</span></div>
-<div class="line"><span class="preprocessor"></span>        <span class="keywordflow">return</span> -1;</div>
-<div class="line">    }</div>
-<div class="line"></div>
-<div class="line">    <span class="keywordflow">if</span> ( result == NULL )</div>
-<div class="line">        <span class="keywordflow">return</span> -1;</div>
-<div class="line"></div>
-<div class="line">    <span class="keywordflow">if</span> ( result-&gt;ai_family == AF_INET )</div>
-<div class="line">    {</div>
-<div class="line">        af = <a class="code" href="libinetsocket_8c.html#a6faeca25d8cb1ec163f09c0e69c71c0a">LIBSOCKET_IPv4</a>;</div>
-<div class="line">    } <span class="keywordflow">else</span> <span class="keywordflow">if</span> ( result-&gt;ai_family == AF_INET6 )</div>
-<div class="line">    {</div>
-<div class="line">        af = <a class="code" href="libinetsocket_8c.html#ad07a481492f88d68c61a824e99853603">LIBSOCKET_IPv6</a>;</div>
-<div class="line">    } <span class="keywordflow">else</span></div>
-<div class="line">    {</div>
-<div class="line">        af = -1;</div>
-<div class="line">    }</div>
-<div class="line"></div>
-<div class="line">    <span class="keywordflow">return</span> af;</div>
-<div class="line">}</div>
-</div><!-- fragment -->
 </div>
 </div>
 <a class="anchor" id="ad816061c898fe8b1f0d8edfee3f5786d"></a>
@@ -935,96 +535,6 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="libinetsocket_8c_source.html#l00261">261</a> of file <a class="el" href="libinetsocket_8c_source.html">libinetsocket.c</a>.</p>
-<div class="fragment"><div class="line">{</div>
-<div class="line">    <span class="keyword">struct </span>sockaddr_storage client;</div>
-<div class="line"></div>
-<div class="line"><span class="preprocessor"># ifdef _TRADITIONAL_RDNS</span></div>
-<div class="line"><span class="preprocessor"></span>    <span class="keyword">struct </span>sockaddr_storage oldsockaddr;</div>
-<div class="line">    socklen_t oldsockaddrlen = <span class="keyword">sizeof</span>(<span class="keyword">struct </span>sockaddr_storage);</div>
-<div class="line">    <span class="keyword">struct </span>hostent* he;</div>
-<div class="line">    <span class="keywordtype">void</span>* addrptr;</div>
-<div class="line">    <span class="keywordtype">size_t</span> addrlen;</div>
-<div class="line">    uint16_t sport = 0;</div>
-<div class="line"><span class="preprocessor"># endif</span></div>
-<div class="line"><span class="preprocessor"></span></div>
-<div class="line">    ssize_t bytes;</div>
-<div class="line"></div>
-<div class="line"><span class="preprocessor"># ifndef _TRADITIONAL_RDNS</span></div>
-<div class="line"><span class="preprocessor"></span>    <span class="keywordtype">int</span> retval;</div>
-<div class="line"><span class="preprocessor"># endif</span></div>
-<div class="line"><span class="preprocessor"></span></div>
-<div class="line"><span class="preprocessor"># ifdef VERBOSE</span></div>
-<div class="line"><span class="preprocessor"></span>    <span class="keyword">const</span> <span class="keywordtype">char</span>* errstr;</div>
-<div class="line"><span class="preprocessor"># endif</span></div>
-<div class="line"><span class="preprocessor"></span>    <span class="keywordflow">if</span> ( sfd &lt; 0 )</div>
-<div class="line">        <span class="keywordflow">return</span> -1;</div>
-<div class="line"></div>
-<div class="line">    <span class="keywordflow">if</span> ( buffer == NULL || size == 0)</div>
-<div class="line">        <span class="keywordflow">return</span> -1;</div>
-<div class="line"></div>
-<div class="line">    memset(buffer,0,size);</div>
-<div class="line">    memset(src_host,0,src_host_len);</div>
-<div class="line">    memset(src_service,0,src_service_len);</div>
-<div class="line"></div>
-<div class="line">    socklen_t stor_addrlen = <span class="keyword">sizeof</span>(<span class="keyword">struct </span>sockaddr_storage);</div>
-<div class="line"></div>
-<div class="line">    <span class="keywordflow">if</span> ( -1 == check_error(bytes = recvfrom(sfd,buffer,size,recvfrom_flags,(<span class="keyword">struct</span> sockaddr*)&amp;client,&amp;stor_addrlen)))</div>
-<div class="line">        <span class="keywordflow">return</span> -1;</div>
-<div class="line"></div>
-<div class="line">    <span class="keywordflow">if</span> ( src_host_len &gt; 0 || src_service_len &gt; 0 ) <span class="comment">// If one of the things is wanted. If you give a null pointer with a positive _len parameter, you won&#39;t get the address.</span></div>
-<div class="line">    {</div>
-<div class="line">        <span class="keywordflow">if</span> ( numeric == <a class="code" href="libinetsocket_8c.html#a4e4f4aadb244e7d815712f1159128642">LIBSOCKET_NUMERIC</a> )</div>
-<div class="line">        {</div>
-<div class="line">            numeric = NI_NUMERICHOST | NI_NUMERICSERV;</div>
-<div class="line">        }</div>
-<div class="line"></div>
-<div class="line">        <span class="comment">// getnameinfo() doesn&#39;t work on FreeBSD (here)</span></div>
-<div class="line"><span class="preprocessor"># ifndef _TRADITIONAL_RDNS</span></div>
-<div class="line"><span class="preprocessor"></span>        <span class="keywordflow">if</span> ( 0 != (retval = getnameinfo((<span class="keyword">struct</span> sockaddr*)&amp;client,<span class="keyword">sizeof</span>(<span class="keyword">struct</span> sockaddr_storage),src_host,src_host_len,src_service,src_service_len,numeric)) ) <span class="comment">// Write information to the provided memory</span></div>
-<div class="line">        {</div>
-<div class="line"><span class="preprocessor"># ifdef VERBOSE</span></div>
-<div class="line"><span class="preprocessor"></span>            errstr = gai_strerror(retval);</div>
-<div class="line">            debug_write(errstr,strlen(errstr));</div>
-<div class="line"><span class="preprocessor"># endif</span></div>
-<div class="line"><span class="preprocessor"></span>            <span class="keywordflow">return</span> -1;</div>
-<div class="line">        }</div>
-<div class="line"><span class="preprocessor"># endif</span></div>
-<div class="line"><span class="preprocessor"></span></div>
-<div class="line">        <span class="comment">// so use traditional methods</span></div>
-<div class="line"><span class="preprocessor"># ifdef _TRADITIONAL_RDNS</span></div>
-<div class="line"><span class="preprocessor"></span>        <span class="keywordflow">if</span> ( -1 == check_error(getsockname(sfd,(<span class="keyword">struct</span> sockaddr*)&amp;oldsockaddr,&amp;oldsockaddrlen)) )</div>
-<div class="line">            <span class="keywordflow">return</span> -1;</div>
-<div class="line"></div>
-<div class="line">        <span class="keywordflow">if</span> ( oldsockaddrlen &gt; <span class="keyword">sizeof</span>(<span class="keyword">struct</span> sockaddr_storage) ) <span class="comment">// If getsockname truncated the struct</span></div>
-<div class="line">            <span class="keywordflow">return</span> -1;</div>
-<div class="line"></div>
-<div class="line">        <span class="keywordflow">if</span> ( oldsockaddr.ss_family == AF_INET )</div>
-<div class="line">        {</div>
-<div class="line">            addrptr = &amp;(((<span class="keyword">struct </span>sockaddr_in*)&amp;client)-&gt;sin_addr);</div>
-<div class="line">            addrlen = <span class="keyword">sizeof</span>(<span class="keyword">struct </span>in_addr);</div>
-<div class="line">            sport = ntohs(((<span class="keyword">struct</span> sockaddr_in*)&amp;client)-&gt;sin_port);</div>
-<div class="line">        } <span class="keywordflow">else</span> <span class="keywordflow">if</span> ( oldsockaddr.ss_family == AF_INET6 )</div>
-<div class="line">        {</div>
-<div class="line">            addrptr = &amp;(((<span class="keyword">struct </span>sockaddr_in6*)&amp;client)-&gt;sin6_addr);</div>
-<div class="line">            addrlen = <span class="keyword">sizeof</span>(<span class="keyword">struct </span>in6_addr);</div>
-<div class="line">            sport = ntohs(((<span class="keyword">struct</span> sockaddr_in6*)&amp;client)-&gt;sin6_port);</div>
-<div class="line">        }</div>
-<div class="line"></div>
-<div class="line">        <span class="keywordflow">if</span> ( NULL == (he = gethostbyaddr(addrptr,addrlen,oldsockaddr.ss_family) ) )</div>
-<div class="line">        {</div>
-<div class="line">            check_error(-1);</div>
-<div class="line">            <span class="keywordflow">return</span> -1;</div>
-<div class="line">        }</div>
-<div class="line"></div>
-<div class="line">        strncpy(src_host,he-&gt;h_name,src_host_len);</div>
-<div class="line">        snprintf(src_service,src_service_len,<span class="stringliteral">&quot;%u&quot;</span>,sport);</div>
-<div class="line"><span class="preprocessor"># endif</span></div>
-<div class="line"><span class="preprocessor"></span>    }</div>
-<div class="line"></div>
-<div class="line">    <span class="keywordflow">return</span> bytes;</div>
-<div class="line">}</div>
-</div><!-- fragment -->
 </div>
 </div>
 <a class="anchor" id="a6f93c2a528fa384895be9175389002eb"></a>
@@ -1075,56 +585,20 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="libinetsocket_8c_source.html#l00208">208</a> of file <a class="el" href="libinetsocket_8c_source.html">libinetsocket.c</a>.</p>
-<div class="fragment"><div class="line">{</div>
-<div class="line">    <span class="keyword">struct </span>sockaddr_storage oldsock;</div>
-<div class="line">    <span class="keyword">struct </span>addrinfo *result, *result_check, hint;</div>
-<div class="line">    <span class="keywordtype">size_t</span> oldsocklen = <span class="keyword">sizeof</span>(<span class="keyword">struct </span>sockaddr_storage);</div>
-<div class="line">    <span class="keywordtype">int</span> return_value;</div>
-<div class="line"><span class="preprocessor"># ifdef VERBOSE</span></div>
-<div class="line"><span class="preprocessor"></span>    <span class="keyword">const</span> <span class="keywordtype">char</span>* errstring;</div>
-<div class="line"><span class="preprocessor"># endif</span></div>
-<div class="line"><span class="preprocessor"></span></div>
-<div class="line">    <span class="keywordflow">if</span> ( sfd &lt; 0 )</div>
-<div class="line">        <span class="keywordflow">return</span> -1;</div>
-<div class="line"></div>
-<div class="line">    <span class="keywordflow">if</span> ( buf == NULL || size == 0)</div>
-<div class="line">        <span class="keywordflow">return</span> -1;</div>
-<div class="line"></div>
-<div class="line">    <span class="keywordflow">if</span> ( host == NULL || service == NULL )</div>
-<div class="line">        <span class="keywordflow">return</span> -1;</div>
-<div class="line"></div>
-<div class="line">    <span class="keywordflow">if</span> ( -1 == check_error(getsockname(sfd,(<span class="keyword">struct</span> sockaddr*)&amp;oldsock,(socklen_t*)&amp;oldsocklen)) )</div>
-<div class="line">        <span class="keywordflow">return</span> -1;</div>
-<div class="line"></div>
-<div class="line">    memset(&amp;hint,0,<span class="keyword">sizeof</span>(<span class="keyword">struct</span> addrinfo));</div>
-<div class="line"></div>
-<div class="line">    hint.ai_family = oldsock.ss_family;</div>
-<div class="line">    hint.ai_socktype = SOCK_DGRAM;</div>
-<div class="line"></div>
-<div class="line">    <span class="keywordflow">if</span> ( 0 != (return_value = getaddrinfo(host,service,&amp;hint,&amp;result)))</div>
-<div class="line">    {</div>
-<div class="line"><span class="preprocessor"># ifdef VERBOSE</span></div>
-<div class="line"><span class="preprocessor"></span>        errstring = gai_strerror(return_value);</div>
-<div class="line">        debug_write(errstring,strlen(errstring));</div>
-<div class="line"><span class="preprocessor"># endif</span></div>
-<div class="line"><span class="preprocessor"></span>        <span class="keywordflow">return</span> -1;</div>
-<div class="line">    }</div>
-<div class="line"></div>
-<div class="line">    <span class="keywordflow">for</span> ( result_check = result; result_check != NULL; result_check = result_check-&gt;ai_next ) <span class="comment">// go through the linked list of struct addrinfo elements</span></div>
-<div class="line">    {</div>
-<div class="line">        <span class="keywordflow">if</span> ( -1 != (return_value = sendto(sfd,buf,size,sendto_flags,result_check-&gt;ai_addr,result_check-&gt;ai_addrlen))) <span class="comment">// connected without error</span></div>
-<div class="line">        {</div>
-<div class="line">            <span class="keywordflow">break</span>; <span class="comment">// Exit loop if send operation was successful</span></div>
-<div class="line">        } <span class="keywordflow">else</span></div>
-<div class="line">        {</div>
-<div class="line">            check_error(return_value);</div>
-<div class="line">        }</div>
-<div class="line">    }</div>
-<div class="line"></div>
-<div class="line">    <span class="keywordflow">return</span> return_value;</div>
-<div class="line">}</div>
-</div><!-- fragment -->
+<p>This function is the equivalent to <code>sendto(2)</code> </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">sfd</td><td>is the <em>Socket File Descriptor</em> (every socket file descriptor argument in libsocket is called sfd) which you got from <a class="el" href="libinetsocket_8h.html#a309e2c8bc69f56905d97d6a578e6ab2b" title="Creates a new UDP/IP socket.">create_inet_dgram_socket()</a>. <em>The usage with STREAM sockets is not recommended and the result is undefined!</em> </td></tr>
+    <tr><td class="paramname">buf</td><td>is a pointer to some data. </td></tr>
+    <tr><td class="paramname">size</td><td>is the length of the buffer to which buf points. </td></tr>
+    <tr><td class="paramname">host</td><td>is the host to which we want to send the data. It's a string so you may specify everything what's resolved by getaddrinfo(), i.e. an IP ("193.21.34.21") or a hostname ("example.net"). </td></tr>
+    <tr><td class="paramname">service</td><td>is the port on the remote host. Like in host, you may specify the port either as number ("123") or as service string ("ntp", "http", "gopher"). </td></tr>
+    <tr><td class="paramname">sendto_flags</td><td>is available on all platforms. The value given here goes directly to the internal sendto() call. The flags which may be specified differ between the platforms.</td></tr>
+  </table>
+  </dd>
+</dl>
+<p>If it is not possible to send data at the moment, this call blocks excepted you specified SOCK_NONBLOCK when creating the socket. </p>
+
 </div>
 </div>
 <a class="anchor" id="ac66a538a20eaea51b83d48b1922f2997"></a>
@@ -1151,36 +625,12 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="libinetsocket_8c_source.html#l00439">439</a> of file <a class="el" href="libinetsocket_8c_source.html">libinetsocket.c</a>.</p>
-<div class="fragment"><div class="line">{</div>
-<div class="line">    <span class="keywordflow">if</span> ( sfd &lt; 0 )</div>
-<div class="line">        <span class="keywordflow">return</span> -1;</div>
-<div class="line"></div>
-<div class="line">    <span class="keywordflow">if</span> ( (method != <a class="code" href="libinetsocket_8c.html#a22332dc147ccc74e8de7810a7adddd7a">LIBSOCKET_READ</a>) &amp;&amp; (method != <a class="code" href="libinetsocket_8c.html#abebf22b81cea8509ec9f6fea7b7c8583">LIBSOCKET_WRITE</a>) &amp;&amp; (method != (<a class="code" href="libinetsocket_8c.html#a22332dc147ccc74e8de7810a7adddd7a">LIBSOCKET_READ</a>|<a class="code" href="libinetsocket_8c.html#abebf22b81cea8509ec9f6fea7b7c8583">LIBSOCKET_WRITE</a>)) )</div>
-<div class="line">        <span class="keywordflow">return</span> -1;</div>
-<div class="line"></div>
-<div class="line">    <span class="keywordflow">if</span> ( method &amp; <a class="code" href="libinetsocket_8c.html#a22332dc147ccc74e8de7810a7adddd7a">LIBSOCKET_READ</a> ) <span class="comment">// READ is set (0001 &amp;&amp; 0001 =&gt; 0001 =&gt; true)</span></div>
-<div class="line">    {</div>
-<div class="line">        <span class="keywordflow">if</span> ( -1 == check_error(shutdown(sfd,SHUT_RD)))</div>
-<div class="line">            <span class="keywordflow">return</span> -1;</div>
-<div class="line"></div>
-<div class="line">    }</div>
-<div class="line"></div>
-<div class="line">    <span class="keywordflow">if</span> ( method &amp; <a class="code" href="libinetsocket_8c.html#abebf22b81cea8509ec9f6fea7b7c8583">LIBSOCKET_WRITE</a> ) <span class="comment">// WRITE is set (0010 &amp;&amp; 0010 =&gt; 0010 =&gt; true)</span></div>
-<div class="line">    {</div>
-<div class="line">        <span class="keywordflow">if</span> ( -1 == check_error(shutdown(sfd,SHUT_WR)))</div>
-<div class="line">            <span class="keywordflow">return</span> -1;</div>
-<div class="line">    }</div>
-<div class="line"></div>
-<div class="line">    <span class="keywordflow">return</span> 0;</div>
-<div class="line">}</div>
-</div><!-- fragment -->
 </div>
 </div>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Sat Mar 2 2013 21:24:43 for libsocket by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Sat Mar 2 2013 22:41:12 for libsocket by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.1.2
 </small></address>

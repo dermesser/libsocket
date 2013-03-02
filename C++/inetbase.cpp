@@ -22,8 +22,8 @@
 
 */
 
-/*
- * DESCRIPTION FOR INETBASE.CPP
+/**
+ *  @file inetbase.cpp
  *
  * 	inetbase.cpp defines the class inet_socket. This class
  * 	is used as base class in the hierarchy between socket and
@@ -46,12 +46,18 @@ namespace libsocket
     using std::string;
 
     inet_socket::inet_socket() : host(""), port("") {}
-
+    
+    /**
+     * @brief	Returns the remote host
+     */
     string inet_socket::gethost(void) const
     {
 	return host;
     }
 
+    /**
+     * @brief	Returns the remote port
+     */
     string inet_socket::getport(void) const
     {
 	return port;

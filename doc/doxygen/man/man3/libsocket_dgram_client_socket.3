@@ -7,6 +7,8 @@ libsocket::dgram_client_socket \-
 .br
 .PP
 .PP
+\fC#include <dgramclient\&.hpp>\fP
+.PP
 Inherits \fBlibsocket::socket\fP\&.
 .PP
 Inherited by \fBlibsocket::inet_dgram_client\fP, and \fBlibsocket::unix_dgram_client\fP\&.
@@ -43,6 +45,35 @@ Inherited by \fBlibsocket::inet_dgram_client\fP, and \fBlibsocket::unix_dgram_cl
 .RI "\fBdgram_client_socket\fP & \fBoperator>>\fP (\fBdgram_client_socket\fP &sock, string &dest)"
 .br
 .in -1c
+.SH "Detailed Description"
+.PP 
+Represents generic datagram socket\&. 
+.SH "Member Function Documentation"
+.PP 
+.SS "ssize_t libsocket::dgram_client_socket::rcv (void *buf, size_tlen, intflags = \fC0\fP)"
+
+.PP
+Receive data from a connected DGRAM socket\&. If a datagram socket is connected, this function may be called to receive data sent from the host connected to\&.
+.PP
+\fBParameters:\fP
+.RS 4
+\fIbuf\fP Area to write the data to 
+.br
+\fIlen\fP How many data we want to receive 
+.br
+\fIflags\fP Flags to be passed to \fCrecv(2)\fP
+.RE
+.PP
+\fBReturn values:\fP
+.RS 4
+\fI>0\fP n bytes were received\&. 
+.br
+\fI0\fP 0 bytes were received\&. (EOF?) 
+.br
+\fI-1\fP Something went wrong\&. 
+.RE
+.PP
+
 
 .SH "Author"
 .PP 

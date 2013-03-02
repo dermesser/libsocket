@@ -10,6 +10,9 @@ using std::string;
 
 namespace libsocket
 {
+    /**
+     * @brief Represents generic datagram socket
+     */
     class dgram_client_socket : public virtual socket
     {
 	protected:

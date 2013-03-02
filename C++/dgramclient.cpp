@@ -52,6 +52,20 @@ namespace libsocket
 	: connected(false)
     {}
 
+    /**
+     * @brief Receive data from a connected DGRAM socket
+     *
+     * If a datagram socket is connected, this function may be called to receive data sent from
+     * the host connected to.
+     *
+     * @param buf Area to write the data to
+     * @param len How many data we want to receive
+     * @param flags Flags to be passed to `recv(2)`
+     *
+     * @retval >0 n bytes were received.
+     * @retval 0 0 bytes were received. (EOF?)
+     * @retval -1 Something went wrong.
+     */
     ssize_t dgram_client_socket::rcv(void* buf, size_t len, int flags)
     {
 	ssize_t bytes;

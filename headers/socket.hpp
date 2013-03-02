@@ -33,6 +33,8 @@ namespace libsocket
     /**
      * @brief socket is the base class of every other libsocket++ object.
      * @ingroup class
+     *
+     * It provides the most important field: The sfd field holds the file descriptor for every socket.
      */
     class socket
     {

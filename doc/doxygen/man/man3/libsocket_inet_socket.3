@@ -7,6 +7,8 @@ libsocket::inet_socket \-
 .br
 .PP
 .PP
+\fC#include <inetbase\&.hpp>\fP
+.PP
 Inherits \fBlibsocket::socket\fP\&.
 .PP
 Inherited by \fBlibsocket::inet_dgram\fP, \fBlibsocket::inet_stream\fP, and \fBlibsocket::inet_stream_server\fP\&.
@@ -33,6 +35,21 @@ Inherited by \fBlibsocket::inet_dgram\fP, \fBlibsocket::inet_stream\fP, and \fBl
 .RI "int \fBproto\fP"
 .br
 .in -1c
+.SH "Detailed Description"
+.PP 
+Internet-socket base class\&. 
+
+This class provides some fields for all internet sockets, like remote host and port and the used protocol version\&. 
+.SH "Member Function Documentation"
+.PP 
+.SS "string libsocket::inet_socket::gethost (void) const"
+
+.PP
+Returns the remote host\&. 
+.SS "string libsocket::inet_socket::getport (void) const"
+
+.PP
+Returns the remote port\&. 
 
 .SH "Author"
 .PP 

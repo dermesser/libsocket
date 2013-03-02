@@ -60,6 +60,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
   <div id="navrow2" class="tabs2">
     <ul class="tablist">
       <li><a href="namespaces.html"><span>Namespace&#160;List</span></a></li>
+      <li><a href="namespacemembers.html"><span>Namespace&#160;Members</span></a></li>
     </ul>
   </div>
 <!-- window showing the filter options -->
@@ -67,7 +68,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
      onmouseover="return searchBox.OnSearchSelectShow()"
      onmouseout="return searchBox.OnSearchSelectHide()"
      onkeydown="return searchBox.OnSearchSelectKey(event)">
-<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Classes</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Namespaces</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Variables</a></div>
+<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Classes</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Namespaces</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(6)"><span class="SelectionMark">&#160;</span>Typedefs</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(7)"><span class="SelectionMark">&#160;</span>Friends</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(8)"><span class="SelectionMark">&#160;</span>Macros</a></div>
 
 <!-- iframe showing the search results (closed by default) -->
 <div id="MSearchResultsWindow">
@@ -93,6 +94,7 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structlibsocket_1_1socket__exception.html">socket_exception</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">This class is instantiated and thrown when an error occurs.  <a href="structlibsocket_1_1socket__exception.html#details">More...</a><br/></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlibsocket_1_1inet__socket.html">inet_socket</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Internet-socket base class.  <a href="classlibsocket_1_1inet__socket.html#details">More...</a><br/></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlibsocket_1_1inet__dgram__client.html">inet_dgram_client</a></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlibsocket_1_1inet__stream.html">inet_stream</a></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlibsocket_1_1inet__dgram.html">inet_dgram</a></td></tr>
@@ -100,7 +102,7 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlibsocket_1_1inet__stream__server.html">inet_stream_server</a></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlibsocket_1_1selectset.html">selectset</a></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlibsocket_1_1socket.html">socket</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">socket is the base class of every other libsocket++ object.  <a href="classlibsocket_1_1socket.html#details">More...</a><br/></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">socket is the base class of every other libsocket++ object.It provides the most important field: The sfd field holds the file descriptor for every socket.  <a href="classlibsocket_1_1socket.html#details">More...</a><br/></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlibsocket_1_1stream__client__socket.html">stream_client_socket</a></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlibsocket_1_1unix__socket.html">unix_socket</a></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlibsocket_1_1unix__dgram__client.html">unix_dgram_client</a></td></tr>
@@ -111,37 +113,211 @@ Classes</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2><a name="typedef-members"></a>
 Typedefs</h2></td></tr>
-<tr class="memitem:a6a1e1e8274ce3e31d5d3a358b7a81fcb"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a6a1e1e8274ce3e31d5d3a358b7a81fcb"></a>
-typedef std::pair&lt; std::vector<br class="typebreak"/>
+<tr class="memitem:a6a1e1e8274ce3e31d5d3a358b7a81fcb"><td class="memItemLeft" align="right" valign="top">typedef std::pair&lt; std::vector<br class="typebreak"/>
 &lt; <a class="el" href="classlibsocket_1_1socket.html">libsocket::socket</a> * &gt;<br class="typebreak"/>
 , std::vector<br class="typebreak"/>
-&lt; <a class="el" href="classlibsocket_1_1socket.html">libsocket::socket</a> * &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>ready_socks</b></td></tr>
+&lt; <a class="el" href="classlibsocket_1_1socket.html">libsocket::socket</a> * &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacelibsocket.html#a6a1e1e8274ce3e31d5d3a358b7a81fcb">ready_socks</a></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2><a name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:a2fcb9da5304c132ae5daada927d7f51b"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a2fcb9da5304c132ae5daada927d7f51b"></a>
-<a class="el" href="classlibsocket_1_1dgram__client__socket.html">dgram_client_socket</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>operator&gt;&gt;</b> (<a class="el" href="classlibsocket_1_1dgram__client__socket.html">dgram_client_socket</a> &amp;sock, string &amp;dest)</td></tr>
-<tr class="memitem:a351f59d0da15b97c096a51afd84d556b"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a351f59d0da15b97c096a51afd84d556b"></a>
-<a class="el" href="classlibsocket_1_1dgram__client__socket.html">dgram_client_socket</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>operator&lt;&lt;</b> (<a class="el" href="classlibsocket_1_1dgram__client__socket.html">dgram_client_socket</a> &amp;sock, const char *str)</td></tr>
-<tr class="memitem:acd9fe7579bf7355ac028be5ce84b00e0"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="acd9fe7579bf7355ac028be5ce84b00e0"></a>
-<a class="el" href="classlibsocket_1_1dgram__client__socket.html">dgram_client_socket</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>operator&lt;&lt;</b> (<a class="el" href="classlibsocket_1_1dgram__client__socket.html">dgram_client_socket</a> &amp;sock, string &amp;str)</td></tr>
-<tr class="memitem:a57a83a44e9e7c7093d81dac34fa3c69c"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a57a83a44e9e7c7093d81dac34fa3c69c"></a>
-int&#160;</td><td class="memItemRight" valign="bottom"><b>highestfd</b> (std::vector&lt; int &gt;)</td></tr>
-<tr class="memitem:a5817e2f3dd38e9fa3ca81324d523ab31"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a5817e2f3dd38e9fa3ca81324d523ab31"></a>
-<a class="el" href="classlibsocket_1_1stream__client__socket.html">stream_client_socket</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>operator&gt;&gt;</b> (<a class="el" href="classlibsocket_1_1stream__client__socket.html">stream_client_socket</a> &amp;sock, string &amp;dest)</td></tr>
-<tr class="memitem:ab75d262439c6b532ca5382d175d515e4"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ab75d262439c6b532ca5382d175d515e4"></a>
-<a class="el" href="classlibsocket_1_1stream__client__socket.html">stream_client_socket</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>operator&lt;&lt;</b> (<a class="el" href="classlibsocket_1_1stream__client__socket.html">stream_client_socket</a> &amp;sock, const char *str)</td></tr>
-<tr class="memitem:a93a6c9ca32d744e81f5891d82a55f700"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a93a6c9ca32d744e81f5891d82a55f700"></a>
-<a class="el" href="classlibsocket_1_1stream__client__socket.html">stream_client_socket</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>operator&lt;&lt;</b> (<a class="el" href="classlibsocket_1_1stream__client__socket.html">stream_client_socket</a> &amp;sock, string &amp;str)</td></tr>
+<tr class="memitem:a2fcb9da5304c132ae5daada927d7f51b"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classlibsocket_1_1dgram__client__socket.html">dgram_client_socket</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacelibsocket.html#a2fcb9da5304c132ae5daada927d7f51b">operator&gt;&gt;</a> (<a class="el" href="classlibsocket_1_1dgram__client__socket.html">dgram_client_socket</a> &amp;sock, string &amp;dest)</td></tr>
+<tr class="memitem:a351f59d0da15b97c096a51afd84d556b"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classlibsocket_1_1dgram__client__socket.html">dgram_client_socket</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacelibsocket.html#a351f59d0da15b97c096a51afd84d556b">operator&lt;&lt;</a> (<a class="el" href="classlibsocket_1_1dgram__client__socket.html">dgram_client_socket</a> &amp;sock, const char *str)</td></tr>
+<tr class="memitem:acd9fe7579bf7355ac028be5ce84b00e0"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classlibsocket_1_1dgram__client__socket.html">dgram_client_socket</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacelibsocket.html#acd9fe7579bf7355ac028be5ce84b00e0">operator&lt;&lt;</a> (<a class="el" href="classlibsocket_1_1dgram__client__socket.html">dgram_client_socket</a> &amp;sock, string &amp;str)</td></tr>
+<tr class="memitem:a57a83a44e9e7c7093d81dac34fa3c69c"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacelibsocket.html#a57a83a44e9e7c7093d81dac34fa3c69c">highestfd</a> (std::vector&lt; int &gt;)</td></tr>
+<tr class="memitem:a5817e2f3dd38e9fa3ca81324d523ab31"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classlibsocket_1_1stream__client__socket.html">stream_client_socket</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacelibsocket.html#a5817e2f3dd38e9fa3ca81324d523ab31">operator&gt;&gt;</a> (<a class="el" href="classlibsocket_1_1stream__client__socket.html">stream_client_socket</a> &amp;sock, string &amp;dest)</td></tr>
+<tr class="memitem:ab75d262439c6b532ca5382d175d515e4"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classlibsocket_1_1stream__client__socket.html">stream_client_socket</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacelibsocket.html#ab75d262439c6b532ca5382d175d515e4">operator&lt;&lt;</a> (<a class="el" href="classlibsocket_1_1stream__client__socket.html">stream_client_socket</a> &amp;sock, const char *str)</td></tr>
+<tr class="memitem:a93a6c9ca32d744e81f5891d82a55f700"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classlibsocket_1_1stream__client__socket.html">stream_client_socket</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacelibsocket.html#a93a6c9ca32d744e81f5891d82a55f700">operator&lt;&lt;</a> (<a class="el" href="classlibsocket_1_1stream__client__socket.html">stream_client_socket</a> &amp;sock, string &amp;str)</td></tr>
 </table>
-<a name="details" id="details"></a><h2>Detailed Description</h2>
-<div class="textblock"><p>The class defined here, <a class="el" href="structlibsocket_1_1socket__exception.html" title="This class is instantiated and thrown when an error occurs.">socket_exception</a>, is a class for exception objects. Objects instantiated from this class are thrown if something goes wrong.</p>
-<p>The class contains only the data member mesg and the constructor which constructs the error string in mesg. Typically, you'd create an object of this class with the following call: <a class="el" href="structlibsocket_1_1socket__exception.html" title="This class is instantiated and thrown when an error occurs.">socket_exception</a>(<b>FILE</b>,<b>LINE</b>,"Error Message");</p>
-<p>The tokens are substituded by the preprocessor and show where the error occurred. </p>
-</div></div><!-- contents -->
+<h2>Typedef Documentation</h2>
+<a class="anchor" id="a6a1e1e8274ce3e31d5d3a358b7a81fcb"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">typedef std::pair&lt;std::vector&lt;<a class="el" href="classlibsocket_1_1socket.html">libsocket::socket</a>*&gt;, std::vector&lt;<a class="el" href="classlibsocket_1_1socket.html">libsocket::socket</a>*&gt; &gt; <a class="el" href="namespacelibsocket.html#a6a1e1e8274ce3e31d5d3a358b7a81fcb">libsocket::ready_socks</a></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<h2>Function Documentation</h2>
+<a class="anchor" id="a57a83a44e9e7c7093d81dac34fa3c69c"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int libsocket::highestfd </td>
+          <td>(</td>
+          <td class="paramtype">std::vector&lt; int &gt;&#160;</td>
+          <td class="paramname"><em>v</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="ab75d262439c6b532ca5382d175d515e4"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classlibsocket_1_1stream__client__socket.html">stream_client_socket</a>&amp; libsocket::operator&lt;&lt; </td>
+          <td>(</td>
+          <td class="paramtype">stream_client_socket &amp;&#160;</td>
+          <td class="paramname"><em>sock</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const char *&#160;</td>
+          <td class="paramname"><em>str</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="a351f59d0da15b97c096a51afd84d556b"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classlibsocket_1_1dgram__client__socket.html">dgram_client_socket</a>&amp; libsocket::operator&lt;&lt; </td>
+          <td>(</td>
+          <td class="paramtype">dgram_client_socket &amp;&#160;</td>
+          <td class="paramname"><em>sock</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const char *&#160;</td>
+          <td class="paramname"><em>str</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="a93a6c9ca32d744e81f5891d82a55f700"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classlibsocket_1_1stream__client__socket.html">stream_client_socket</a>&amp; libsocket::operator&lt;&lt; </td>
+          <td>(</td>
+          <td class="paramtype">stream_client_socket &amp;&#160;</td>
+          <td class="paramname"><em>sock</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">string &amp;&#160;</td>
+          <td class="paramname"><em>str</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="acd9fe7579bf7355ac028be5ce84b00e0"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classlibsocket_1_1dgram__client__socket.html">dgram_client_socket</a>&amp; libsocket::operator&lt;&lt; </td>
+          <td>(</td>
+          <td class="paramtype">dgram_client_socket &amp;&#160;</td>
+          <td class="paramname"><em>sock</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">string &amp;&#160;</td>
+          <td class="paramname"><em>str</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="a5817e2f3dd38e9fa3ca81324d523ab31"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classlibsocket_1_1stream__client__socket.html">stream_client_socket</a>&amp; libsocket::operator&gt;&gt; </td>
+          <td>(</td>
+          <td class="paramtype">stream_client_socket &amp;&#160;</td>
+          <td class="paramname"><em>sock</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">string &amp;&#160;</td>
+          <td class="paramname"><em>dest</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="a2fcb9da5304c132ae5daada927d7f51b"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classlibsocket_1_1dgram__client__socket.html">dgram_client_socket</a>&amp; libsocket::operator&gt;&gt; </td>
+          <td>(</td>
+          <td class="paramtype">dgram_client_socket &amp;&#160;</td>
+          <td class="paramname"><em>sock</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">string &amp;&#160;</td>
+          <td class="paramname"><em>dest</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+</div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Sat Mar 2 2013 21:45:51 for libsocket by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Sat Mar 2 2013 22:41:12 for libsocket by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.1.2
 </small></address>

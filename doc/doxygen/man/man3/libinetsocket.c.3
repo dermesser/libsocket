@@ -70,15 +70,12 @@ C/libinetsocket.c \-
 .ti -1c
 .RI "int \fBcreate_inet_stream_socket\fP (const char *host, const char *service, char proto_osi3, int flags)"
 .br
-.RI "\fICreate and connect a new TCP/IP socket\&. \fP"
 .ti -1c
 .RI "int \fBcreate_inet_dgram_socket\fP (char proto_osi3, int flags)"
 .br
-.RI "\fICreates a new UDP/IP socket\&. \fP"
 .ti -1c
 .RI "ssize_t \fBsendto_inet_dgram_socket\fP (int sfd, const void *buf, size_t size, const char *host, const char *service, int sendto_flags)"
 .br
-.RI "\fIThis function is the equivalent to \fCsendto(2)\fP \fP"
 .ti -1c
 .RI "ssize_t \fBrecvfrom_inet_dgram_socket\fP (int sfd, void *buffer, size_t size, char *src_host, size_t src_host_len, char *src_service, size_t src_service_len, int recvfrom_flags, int numeric)"
 .br

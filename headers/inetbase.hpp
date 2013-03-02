@@ -30,6 +30,11 @@ namespace libsocket
 {
     using std::string;
 
+    /**
+     * @brief	Internet-socket base class
+     *
+     * This class provides some fields for all internet sockets, like remote host and port and the used protocol version.
+     */
     class inet_socket : public virtual socket
     {
 	protected:

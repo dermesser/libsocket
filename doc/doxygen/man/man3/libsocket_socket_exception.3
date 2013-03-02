@@ -3,9 +3,6 @@
 .nh
 .SH NAME
 libsocket::socket_exception \- 
-.PP
-This class is instantiated and thrown when an error occurs\&.  
-
 .SH SYNOPSIS
 .br
 .PP
@@ -17,9 +14,6 @@ This class is instantiated and thrown when an error occurs\&.
 .ti -1c
 .RI "\fBsocket_exception\fP (string, int, string)"
 .br
-.RI "\fIConstructor of a \fBsocket_exception\fP object
-.PP
-This constructor creates a new \fBsocket_exception\fP object\&. \fP"
 .in -1c
 .SS "Public Attributes"
 
@@ -27,11 +21,9 @@ This constructor creates a new \fBsocket_exception\fP object\&. \fP"
 .ti -1c
 .RI "int \fBerr\fP"
 .br
-.RI "\fIThis is the value of errno when the error occurred\&. \fP"
 .ti -1c
 .RI "string \fBmesg\fP"
 .br
-.RI "\fIThis is the message, showing file, line and a description\&. \fP"
 .in -1c
 .SH "Detailed Description"
 .PP 
@@ -53,6 +45,16 @@ This constructor creates a new \fBsocket_exception\fP object\&. \fBParameters:\f
 .RE
 .PP
 
+.SH "Member Data Documentation"
+.PP 
+.SS "int libsocket::socket_exception::err"
+
+.PP
+This is the value of errno when the error occurred\&. 
+.SS "string libsocket::socket_exception::mesg"
+
+.PP
+This is the message, showing file, line and a description\&. 
 
 .SH "Author"
 .PP 

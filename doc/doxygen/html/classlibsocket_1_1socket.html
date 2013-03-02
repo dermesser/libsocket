@@ -93,9 +93,6 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 </div><!--header-->
 <div class="contents">
 
-<p>socket is the base class of every other libsocket++ object.  
- <a href="classlibsocket_1_1socket.html#details">More...</a></p>
-
 <p><code>#include &lt;<a class="el" href="socket_8hpp_source.html">socket.hpp</a>&gt;</code></p>
 <div class="dynheader">
 Inheritance diagram for libsocket::socket:</div>
@@ -103,8 +100,8 @@ Inheritance diagram for libsocket::socket:</div>
  <div class="center">
   <img src="classlibsocket_1_1socket.png" usemap="#libsocket::socket_map" alt=""/>
   <map id="libsocket::socket_map" name="libsocket::socket_map">
-<area href="classlibsocket_1_1dgram__client__socket.html" alt="libsocket::dgram_client_socket" shape="rect" coords="0,56,184,80"/>
-<area href="classlibsocket_1_1inet__socket.html" alt="libsocket::inet_socket" shape="rect" coords="388,56,572,80"/>
+<area href="classlibsocket_1_1dgram__client__socket.html" title="Represents generic datagram socket." alt="libsocket::dgram_client_socket" shape="rect" coords="0,56,184,80"/>
+<area href="classlibsocket_1_1inet__socket.html" title="Internet-socket base class." alt="libsocket::inet_socket" shape="rect" coords="388,56,572,80"/>
 <area href="classlibsocket_1_1stream__client__socket.html" alt="libsocket::stream_client_socket" shape="rect" coords="776,56,960,80"/>
 <area href="classlibsocket_1_1unix__socket.html" alt="libsocket::unix_socket" shape="rect" coords="1164,56,1348,80"/>
 <area href="classlibsocket_1_1inet__dgram__client.html" alt="libsocket::inet_dgram_client" shape="rect" coords="194,112,378,136"/>
@@ -123,18 +120,15 @@ Inheritance diagram for libsocket::socket:</div>
 <tr class="heading"><td colspan="2"><h2><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:ac952755b874a4c592d5fec1e4318ea98"><td class="memItemLeft" align="right" valign="top">virtual int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlibsocket_1_1socket.html#ac952755b874a4c592d5fec1e4318ea98">destroy</a> (void)</td></tr>
-<tr class="memdesc:ac952755b874a4c592d5fec1e4318ea98"><td class="mdescLeft">&#160;</td><td class="mdescRight">Destroys a socket.  <a href="#ac952755b874a4c592d5fec1e4318ea98"></a><br/></td></tr>
 <tr class="memitem:a29acfab57fbfad029ac686753335d6fd"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlibsocket_1_1socket.html#a29acfab57fbfad029ac686753335d6fd">getfd</a> (void) const </td></tr>
-<tr class="memdesc:a29acfab57fbfad029ac686753335d6fd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the socket file descriptor.  <a href="#a29acfab57fbfad029ac686753335d6fd"></a><br/></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2><a name="pro-attribs"></a>
 Protected Attributes</h2></td></tr>
-<tr class="memitem:a96e42a64848a4da35e00485405607a9f"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a96e42a64848a4da35e00485405607a9f"></a>
-int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlibsocket_1_1socket.html#a96e42a64848a4da35e00485405607a9f">sfd</a></td></tr>
-<tr class="memdesc:a96e42a64848a4da35e00485405607a9f"><td class="mdescLeft">&#160;</td><td class="mdescRight">sfd is the sockets API file descriptor <br/></td></tr>
+<tr class="memitem:a96e42a64848a4da35e00485405607a9f"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlibsocket_1_1socket.html#a96e42a64848a4da35e00485405607a9f">sfd</a></td></tr>
 </table>
 <a name="details" id="details"></a><h2>Detailed Description</h2>
-<div class="textblock"><p>socket is the base class of every other libsocket++ object. </p>
+<div class="textblock"><p>socket is the base class of every other libsocket++ object.</p>
+<p>It provides the most important field: The sfd field holds the file descriptor for every socket. </p>
 </div><h2>Member Function Documentation</h2>
 <a class="anchor" id="ac952755b874a4c592d5fec1e4318ea98"></a>
 <div class="memitem">
@@ -189,6 +183,29 @@ int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class
 
 </div>
 </div>
+<h2>Member Data Documentation</h2>
+<a class="anchor" id="a96e42a64848a4da35e00485405607a9f"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">int libsocket::socket::sfd</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>sfd is the sockets API file descriptor </p>
+
+</div>
+</div>
 <hr/>The documentation for this class was generated from the following files:<ul>
 <li>headers/<a class="el" href="socket_8hpp_source.html">socket.hpp</a></li>
 <li>C++/<a class="el" href="socket_8cpp.html">socket.cpp</a></li>
@@ -196,7 +213,7 @@ int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Sat Mar 2 2013 21:55:00 for libsocket by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Sat Mar 2 2013 22:54:06 for libsocket by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.1.2
 </small></address>
