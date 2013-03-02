@@ -77,6 +77,8 @@ namespace libsocket
 	if ( connect_unix_dgram_socket(sfd,path) < 0 )
 	    throw socket_exception(__FILE__,__LINE__,"unix_dgram_client::connect: Could not connect dgram socket!\n");
 
+	_path.assign(path);
+
 	connected = true;
     }
 
