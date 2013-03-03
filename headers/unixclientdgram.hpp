@@ -6,7 +6,12 @@
 
 # include <string>
 
-/*
+/**
+ * @file unixclientdgram.hpp
+ *
+ * Contains the class for use of UNIX-domain datagram sockets.
+ *
+ * @license
    The committers of the libsocket project, all rights reserved
    (c) 2012, dermesser <lbo@spheniscida.de>
 

@@ -1,7 +1,11 @@
 # ifndef LIBUNIXSOCKET_HEAD
 # define LIBUNIXSOCKET_HEAD
-/*
-
+/**
+ * @file libunixsocket.h
+ *
+ * Contains all libunixsocket C functions.
+ *
+ * @license
 	The committers of the libsocket project, all rights reserved
 	(c) 2012, dermesser <lbo@spheniscida.de>
 

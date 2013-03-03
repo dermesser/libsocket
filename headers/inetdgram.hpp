@@ -12,8 +12,12 @@
 # include <sys/types.h>
 # include <stdio.h>
 
-// oo wrapper around libinetsocket
-/*
+/**
+ * @file inetdgram.hpp
+ *
+ * Contains the inet_dgram class
+ *
+ * @license
    The committers of the libsocket project, all rights reserved
    (c) 2012, dermesser <lbo@spheniscida.de>
 
@@ -35,12 +39,11 @@
 
 */
 
+
 namespace libsocket
 {
     using std::string;
 
-    /************** inet_dgram class (inet UDP sockets) ************/
-    
     /**
      * @brief Base class for UDP/IP sockets
      *

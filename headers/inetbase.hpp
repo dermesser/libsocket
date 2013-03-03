@@ -44,8 +44,11 @@ namespace libsocket
     class inet_socket : public virtual socket
     {
 	protected:
+	    /// The address we're bound or connected to
 	    string host;
+	    /// The port we're bound or connected to
 	    string port;
+	    /// Which internet protocol version we're using
 	    int proto;
 
 	public:

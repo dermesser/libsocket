@@ -8,7 +8,12 @@
 # include "inetdgram.hpp"
 # include "dgramclient.hpp"
 
-/*
+/**
+ * @file inetdgramclient.hpp
+ *
+ * Contains the inet_dgram_client class.
+ *
+ * @license
    The committers of the libsocket project, all rights reserved
    (c) 2012, dermesser <lbo@spheniscida.de>
 
@@ -33,6 +38,10 @@ namespace libsocket
 {
     using std::string;
 
+    /**
+     * @brief Using UDP/IP easy as never before.
+     *
+     */
     class inet_dgram_client : public inet_dgram, public dgram_client_socket
     {
 	public:

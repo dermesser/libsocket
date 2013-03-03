@@ -50,7 +50,6 @@ namespace libsocket
     
     /**
      * @brief	Constructor of a socket_exception object
-     * @ingroup constructor
      *
      * This constructor creates a new socket_exception object.
      *

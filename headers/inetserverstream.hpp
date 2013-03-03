@@ -4,7 +4,12 @@
 # include "inetbase.hpp"
 # include "inetclientstream.hpp"
 
-/*
+/**
+ * @file inetserverstream.hpp
+ *
+ * Contains the class for TCP/IP servers.
+ *
+ * @license
    The committers of the libsocket project, all rights reserved
    (c) 2012, dermesser <lbo@spheniscida.de>
 

@@ -6,7 +6,12 @@
 
 # include "exception.hpp"
 
-/*
+/**
+ * @file socket.hpp
+ *
+ * Contains the very base class of libsocket++
+ *
+ * @license
    The committers of the libsocket project, all rights reserved
    (c) 2012, dermesser <lbo@spheniscida.de>
 
@@ -28,11 +33,16 @@
 
 */
 
+
+/**
+ * @brief Contains libsocket elements
+ *
+ * All libsocket classes etc are defined within the namespace "libsocket".
+ */
 namespace libsocket
 {
     /**
      * @brief socket is the base class of every other libsocket++ object.
-     * @ingroup class
      *
      * It provides the most important field: The sfd field holds the file descriptor for every socket.
      */

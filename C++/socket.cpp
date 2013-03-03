@@ -35,7 +35,7 @@
 namespace libsocket
 {
     /**
-     * @ingroup	constructor
+     * @brief Constructor. Sets `sfd` to -1.
      */
     socket::socket() : sfd(-1) {}
 
@@ -48,7 +48,7 @@ namespace libsocket
      * @brief	Destroys a socket.
      *
      * @retval 0    Fine!
-     * @retval <1   Bad.
+     * @retval <0   Most likely the socket was already closed before.
      */
     int socket::destroy(void)
     {

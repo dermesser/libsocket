@@ -6,7 +6,12 @@
 
 # include "libunixsocket.h"
 
-/*
+/**
+ * @file unixbase.hpp
+ *
+ * Contains the base class for all UNIX-related socket classes.
+ *
+ * @license
    The committers of the libsocket project, all rights reserved
    (c) 2012, dermesser <lbo@spheniscida.de>
 
@@ -28,25 +33,17 @@
 
 */
 
-/**
- * @file unixbase.hpp
- *
- * Contains the unix_socket class.
- */
-
 namespace libsocket
 {
     using std::string;
 
     /**
      * @brief Base class for all UNIX socket classes
-     *
-     * Stores only the path a socket is connected or bound to.
      */
     class unix_socket : public virtual socket
     {
 	protected:
-	    string _path; //!< The mentioned path.
+	    string _path; //!< The path we're connected (client stream) or bound (server stream, server datagram)
 
 	public:
 	    unix_socket();
