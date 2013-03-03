@@ -188,7 +188,9 @@ int create_inet_stream_socket(const char* host, const char* service, char proto_
 
     freeaddrinfo(result);
 
-    return sfd; }
+    return sfd;
+}
+
 /**
  * @brief Creates a new UDP/IP socket
  *
@@ -297,9 +299,25 @@ ssize_t sendto_inet_dgram_socket(int sfd, const void* buf, size_t size,const cha
     return return_value;
 }
 
-
-// Get a single UDP packet
-// 			 Socket   Target        Size of buffer string for client and its size     client port        its size		     may be NUMERIC (give host and service in numeric form)
+/**
+ * @brief Receive data from a UDP/IP socket
+ *
+ * Receives data like `recvfrom(2)`. Pointers may be `NULL`, then the information (e.g. the source port) is lost (you may use
+ * NULL pointers if you're not interested in some information)
+ *
+ * @param sfd The socket file descriptor.
+ * @param buffer Where the data will be written
+ * @param size The size of `buffer`
+ * @param src_host Where the sending host's name/IP will be stored
+ * @param src_host_len `src_host`'s length
+ * @param src_service Where the port on remote side will be written to
+ * @param src_service_len `src_service`'s length
+ * @param recvfrom_flags Flags for `recvfrom(2)`
+ *
+ * @retval >0 Data was received.
+ * @retval 0 Peer sent EOF.
+ * @retval <0 An error occurred.
+ */
 ssize_t recvfrom_inet_dgram_socket(int sfd, void* buffer, size_t size, char* src_host, size_t src_host_len, char* src_service, size_t src_service_len, int recvfrom_flags, int numeric)
 {
     struct sockaddr_storage client;

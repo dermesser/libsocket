@@ -28,14 +28,25 @@
 
 */
 
+/**
+ * @file unixbase.hpp
+ *
+ * Contains the unix_socket class.
+ */
+
 namespace libsocket
 {
     using std::string;
 
+    /**
+     * @brief Base class for all UNIX socket classes
+     *
+     * Stores only the path a socket is connected or bound to.
+     */
     class unix_socket : public virtual socket
     {
 	protected:
-	    string _path;
+	    string _path; //!< The mentioned path.
 
 	public:
 	    unix_socket();

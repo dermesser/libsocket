@@ -24,8 +24,9 @@
 
 */
 
-/*
- * DESCRIPTION FOR UNIXBASE.CPP
+/**
+ * @file unixbase.cpp
+ *
  * 	Provides only the field bindpath for every UNIX socket classes.
  * 	This is particularly used for the UNIX datagram sockets which
  * 	may be bound, both client and server.
@@ -39,6 +40,9 @@ namespace libsocket
 
     unix_socket::unix_socket(void) : _path("") {}
 
+    /**
+     * @brief Returns the path we're bound or connected to
+     */
     string unix_socket::get_path(void)
     {
 	return _path;

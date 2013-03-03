@@ -26,6 +26,12 @@
 
 */
 
+/**
+ * @file inetbase.hpp
+ *
+ * Contains inet_socket.
+ */
+
 namespace libsocket
 {
     using std::string;

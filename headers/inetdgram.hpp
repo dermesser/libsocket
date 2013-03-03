@@ -40,7 +40,12 @@ namespace libsocket
     using std::string;
 
     /************** inet_dgram class (inet UDP sockets) ************/
-
+    
+    /**
+     * @brief Base class for UDP/IP sockets
+     *
+     * This classes provides the Send/Receive functions shared by all classes using Internet Datagram sockets.
+     */
     class inet_dgram : public inet_socket
     {
 	public:
