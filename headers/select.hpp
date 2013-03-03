@@ -14,7 +14,6 @@
  *
  * The class selectset provides a possibility to wait for data on multiple sockets.
  *
- * @license
    The committers of the libsocket project, all rights reserved
    (c) 2012, dermesser <lbo@spheniscida.de>
 

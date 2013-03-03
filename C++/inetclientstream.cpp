@@ -46,6 +46,7 @@ namespace libsocket
 {
     using std::string;
 
+    /// Void constructor; call connect() before using the socket!
     inet_stream::inet_stream(void)
     {
     }

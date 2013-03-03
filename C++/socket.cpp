@@ -43,7 +43,7 @@ namespace libsocket
     {
 	destroy();
     }
-    
+
     /**
      * @brief	Destroys a socket.
      *

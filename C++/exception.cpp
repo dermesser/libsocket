@@ -26,7 +26,7 @@
 
 /**
  * @file exception.cpp
- *  
+ *
  * **FOR INTERNAL USE ONLY**
  *
  * The class defined here, socket_exception, is a
@@ -47,7 +47,7 @@
 namespace libsocket
 {
     using std::string;
-    
+
     /**
      * @brief	Constructor of a socket_exception object
      *

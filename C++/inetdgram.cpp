@@ -51,7 +51,7 @@ namespace libsocket
 
     /**
      * @brief Receives data from peer
-     * 
+     *
      * rcvfrom is the equivalent to `recvfrom(2)`.
      *
      * @param buf Target memory
@@ -127,7 +127,7 @@ namespace libsocket
 
     /**
      * @brief rcvfrom for C++ strings, implemented consistently
-     *	
+     *
      * Works like every other `rcvfrom()` library call, but places the received memory to the C++ string `buf`.
      *
      * @param buf The string where the received data should be stored at. Its length determines how much data will be stored; the library
@@ -136,7 +136,7 @@ namespace libsocket
      * @param srcport Like `srchost` but for the remote port
      * @param rcvfrom_flags Flags to be passed to `recvfrom(2)`
      * @param numeric If remote host and port should be saved numerically
-     
+
      * @retval >0 n bytes of data were read into `buf`.
      * @retval 0 Peer sent EOF
      *
@@ -167,7 +167,7 @@ namespace libsocket
      * @brief Send data to UDP peer
      *
      * This is the counterpart to system's `sendto(2)`. It sends data to a UDP peer.
-     * 
+     *
      * @param buf The data to be sent
      * @param len Length of transmission
      * @param dsthost Target host
@@ -196,7 +196,7 @@ namespace libsocket
      * @brief Send data to UDP peer; C++ string host and port
      *
      * This is the counterpart to system's `sendto(2)`. It sends data to a UDP peer.
-     * 
+     *
      * @param buf The data to be sent
      * @param len Length of transmission
      * @param dsthost Target host
@@ -218,7 +218,7 @@ namespace libsocket
      * @brief Send data to UDP peer; using C++ strings only.
      *
      * This is the counterpart to system's `sendto(2)`. It sends data to a UDP peer.
-     * 
+     *
      * @param buf The data to be sent
      * @param dsthost Target host
      * @param dstport Target port

@@ -8,7 +8,6 @@
  *
  * All functions necessary for UNIX-domain datagram sockets.
  *
- * @license
    The committers of the libsocket project, all rights reserved
    (c) 2012, dermesser <lbo@spheniscida.de>
 

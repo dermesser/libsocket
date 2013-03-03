@@ -11,7 +11,6 @@
  *
  * Contains the very base class of libsocket++
  *
- * @license
    The committers of the libsocket project, all rights reserved
    (c) 2012, dermesser <lbo@spheniscida.de>
 

@@ -11,7 +11,10 @@
 # include <string.h>
 # include <errno.h>
 
-/*
+/**
+ * @file libunixsocket.c
+ *
+ * Contains all C functions to handle UNIX domain sockets.
 
    The committers of the libsocket project, all rights reserved
    (c) 2012, dermesser <lbo@spheniscida.de>

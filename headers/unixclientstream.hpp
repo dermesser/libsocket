@@ -11,7 +11,6 @@
  *
  * Contains the class for use of UNIX-domain stream sockets as client.
  *
- * @license
    The committers of the libsocket project, all rights reserved
    (c) 2012, dermesser <lbo@spheniscida.de>
 

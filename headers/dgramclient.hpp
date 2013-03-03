@@ -13,7 +13,7 @@ using std::string;
  *
  * Contains the dgram_client_socket base class
  *
- * @license 
+ *
    The committers of the libsocket project, all rights reserved
    (c) 2012, dermesser <lbo@spheniscida.de>
 

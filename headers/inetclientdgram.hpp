@@ -9,11 +9,10 @@
 # include "dgramclient.hpp"
 
 /**
- * @file inetdgramclient.hpp
+ * @file inetclientdgram.hpp
  *
  * Contains the inet_dgram_client class.
  *
- * @license
    The committers of the libsocket project, all rights reserved
    (c) 2012, dermesser <lbo@spheniscida.de>
 

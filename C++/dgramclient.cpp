@@ -81,6 +81,14 @@ namespace libsocket
 	return bytes;
     }
 
+    /**
+     * @brief Receive data from connected datagram socket
+     *
+     * If a datagram socket is connected, you may receive data from it using stream-like functions.
+     *
+     * @param sock The socket to receive data from
+     * @param dest The string to write data to. This string has to be resized to the number of bytes you wish to receive.
+     */
     dgram_client_socket& operator>>(dgram_client_socket& sock, string& dest)
     {
 	ssize_t read_bytes;

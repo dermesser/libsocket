@@ -4,7 +4,11 @@
 # include <string>
 # include "socket.hpp"
 # include "libinetsocket.h"
-/*
+/**
+ * @file inetbase.hpp
+ *
+ * Contains the IP socket base class.
+ *
    The committers of the libsocket project, all rights reserved
    (c) 2012, dermesser <lbo@spheniscida.de>
 
@@ -25,12 +29,6 @@
    POSSIBILITY OF SUCH DAMAGE.
 
 */
-
-/**
- * @file inetbase.hpp
- *
- * Contains inet_socket.
- */
 
 namespace libsocket
 {

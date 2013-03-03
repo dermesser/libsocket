@@ -46,7 +46,7 @@ namespace libsocket
     using std::string;
 
     inet_socket::inet_socket() : host(""), port("") {}
-    
+
     /**
      * @brief	Returns the remote host
      */

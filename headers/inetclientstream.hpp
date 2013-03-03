@@ -13,7 +13,6 @@
  *
  * inet_stream is the TCP/IP socket class
  *
- * @license
    The committers of the libsocket project, all rights reserved
    (c) 2012, dermesser <lbo@spheniscida.de>
 
@@ -45,7 +44,6 @@ namespace libsocket
     class inet_stream : public inet_socket, public stream_client_socket
     {
 	public:
-
 	    inet_stream(void);
 	    inet_stream(const char* dsthost, const char* dstport, int proto_osi3, int flags=0); // flags: socket()
 	    inet_stream(const string& dsthost, const string& dstport, int proto_osi3, int flags=0);
