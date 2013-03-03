@@ -1,0 +1,23 @@
+/**
+@mainpage The libsocket documentation
+
+This is the documentation for the C and C++ library libsocket. libsocket is intended to simplify the use of internet and
+UNIX sockets.
+
+@section libsocket for C
+
+To get started with *libsocket for C*, take a look at <a href="libinetsocket_8c.html">the libinetsocket</a> and the <a
+href="libunixsocket_8c.html">libunixsocket</a> documentation.
+
+@section libsocket for C++
+
+*libsocket for C++* should be also easy to understand; but it has a <a href="classlibsocket_1_1socket.html">quite sophisticated class hierarchy</a>.
+
+From all these classes, there are only 8 classes actually intended for use in your C++ applications. Explore them in the tab "Classes":
+
+- inet_stream, inet_stream_server (TCP/IP client and server)
+- inet_dgram_client, inet_dgram_server (UDP/IP client [unbound] and server [bound])
+- unix_stream_client, unix_stream_server (UNIX domain; STREAM client and server)
+- unix_dgram_client, unix_stream_client (UNIX domain; DGRAM unbound and bound sockets)
+
+*/
