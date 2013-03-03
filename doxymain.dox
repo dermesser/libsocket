@@ -4,12 +4,14 @@
 This is the documentation for the C and C++ library libsocket. libsocket is intended to simplify the use of internet and
 UNIX sockets.
 
-@section libsocket for C
+@tableofcontents
+
+@section libsocket libsocket for C
 
 To get started with *libsocket for C*, take a look at <a href="libinetsocket_8c.html">the libinetsocket</a> and the <a
 href="libunixsocket_8c.html">libunixsocket</a> documentation.
 
-@section libsocket for C++
+@section libsocketpp libsocket for C++
 
 *libsocket for C++* should be also easy to understand; but it has a <a href="classlibsocket_1_1socket.html">quite sophisticated class hierarchy</a>.
 
