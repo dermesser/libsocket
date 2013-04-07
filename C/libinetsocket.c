@@ -211,7 +211,7 @@ ssize_t sendto_inet_dgram_socket(int sfd, const void* buf, size_t size,const cha
 {
     struct sockaddr_storage oldsock;
     struct addrinfo *result, *result_check, hint;
-    size_t oldsocklen = sizeof(struct sockaddr_storage);
+    socklen_t oldsocklen = sizeof(struct sockaddr_storage);
     int return_value;
 # ifdef VERBOSE
     const char* errstring;
@@ -225,12 +225,16 @@ ssize_t sendto_inet_dgram_socket(int sfd, const void* buf, size_t size,const cha
 
     if ( host == NULL || service == NULL )
 	return -1;
-
     if ( -1 == check_error(getsockname(sfd,(struct sockaddr*)&oldsock,(socklen_t*)&oldsocklen)) )
 	return -1;
 
     memset(&hint,0,sizeof(struct addrinfo));
 
+/*
+ * This works for Linux > 2.6.32
+    socklen_t dom_len = sizeof(hint.ai_family);
+    getsockopt(sfd,SOL_SOCKET,SO_DOMAIN,&hint.ai_family,&dom_len);
+*/
     hint.ai_family = oldsock.ss_family;
     hint.ai_socktype = SOCK_DGRAM;
 
