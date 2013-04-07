@@ -8,8 +8,8 @@ UNIX sockets.
 
 @section libsocket libsocket for C
 
-To get started with *libsocket for C*, take a look at <a href="libinetsocket_8c.html">the libinetsocket</a> and the <a
-href="libunixsocket_8c.html">libunixsocket</a> documentation.
+To get started with *libsocket for C*, take a look at <a href="group__libinetsocket.html">the libinetsocket</a> and the <a
+href="group__libunixsocket.html">libunixsocket</a> documentation.
 
 @section libsocketpp libsocket for C++
 

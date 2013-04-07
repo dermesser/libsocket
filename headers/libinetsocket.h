@@ -3,7 +3,7 @@
 /**
  * @file libinetsocket.h
  *
- * Contains all functions available in the C libsocket.
+ * @brief Contains all functions available in the C libsocket.
  *
 	The committers of the libsocket project, all rights reserved
 	(c) 2012, dermesser <lbo@spheniscida.de>

@@ -15,15 +15,19 @@
 # include <netinet/in.h> // e.g. struct sockaddr_in on OpenBSD
 
 /**
- * @addtogroup libinetsocket
- * @{
  * @file    libinetsocket.c
  * 
- * Contains all C libinetsocket functions.
+ * @brief Contains all C libinetsocket functions.
+ *
+ * This is the main file for libinetsocket. It contains all functions
+ * used to work with INET and INET6 sockets, both TCP and UDP.
+ */
+/**
+ * @addtogroup libinetsocket
+ * @{
  */
 
 /*
-
    The committers of the libsocket project, all rights reserved
    (c) 2012, dermesser <lbo@spheniscida.de>
 
@@ -58,27 +62,25 @@
 
 //# define VERBOSE // Write errors on stderr?
 
-# define LIBSOCKET_BACKLOG 128 // Linux accepts a backlog value at listen() up to 128
-# define LIBSOCKET_CLIENT_NAME_BUF 1024 // How long is the buffer for the client's name?
+# define LIBSOCKET_BACKLOG 128 ///< Linux accepts a backlog value at listen() up to 128
 
 // Symbolic macros
-# define LIBSOCKET_TCP 1
-# define LIBSOCKET_UDP 2
+# define LIBSOCKET_TCP 1 ///< Protocol flag
+# define LIBSOCKET_UDP 2 ///< Protocol flag
 
-# define LIBSOCKET_IPv4 3
-# define LIBSOCKET_IPv6 4
+# define LIBSOCKET_IPv4 3 ///< Address family flag
+# define LIBSOCKET_IPv6 4 ///< Adress family flag
+# define LIBSOCKET_BOTH 5 ///< Adress family flag: what fits best (TCP/UDP or IPv4/6; delegate the decision to `getaddrinfo()`)
 
-# define LIBSOCKET_BOTH 5 // what fits best (TCP/UDP or IPv4/6)
+# define LIBSOCKET_READ  1 ///< Flag for shutdown
+# define LIBSOCKET_WRITE 2 ///< Flag for shutdown
 
-# define LIBSOCKET_READ  1
-# define LIBSOCKET_WRITE 2
-
-# define LIBSOCKET_NUMERIC 1
+# define LIBSOCKET_NUMERIC 1 ///< May be specified as flag for functions to signalize that the name resolution should not be performed.
 
 
 # ifdef VERBOSE
 /**
- * @brief Writes an error to stderr without modifying errno.
+ * Writes an error to stderr without modifying errno.
  */
 #define debug_write(str,l)                \
 {                                      \
@@ -93,6 +95,18 @@
 # define _TRADITIONAL_RDNS
 # endif
 
+/**
+ * @brief Checks return value for error.
+ *
+ * Every value returned by a syscall is passed to this function. It returns 0
+ * if the return value is ok or -1 if there was an error.
+ * If the macro `VERBOSE` is defined, an appropriate message is printed to STDERR.
+ *
+ * @param return_value A return value from a syscall.
+ *
+ * @retval 0 The syscall was successful.
+ * @retval -1 There was an error.
+ */
 static inline signed int check_error(int return_value)
 {
 # ifdef VERBOSE
@@ -411,6 +425,19 @@ ssize_t recvfrom_inet_dgram_socket(int sfd, void* buffer, size_t size, char* src
     return bytes;
 }
 
+/**
+ * @brief Connect a UDP socket.
+ *
+ * If a datagram socket is connected, all data written to it (using `write(2)`) is sent to the peer
+ * connected to and all data `read(2)` from it is data sent by the peer. Usually used by clients only.
+ *
+ * @param sfd The socket file descriptor
+ * @param host The host to connect to
+ * @param service The port/service specifier
+ *
+ * @retval 0 Success
+ * @retval -1 Error.
+ */
 int connect_inet_dgram_socket(int sfd, const char* host, const char* service)
 {
     struct addrinfo *result, *result_check, hint;
@@ -487,7 +514,16 @@ int connect_inet_dgram_socket(int sfd, const char* host, const char* service)
     return 0;
 }
 
-
+/**
+ * @brief Close a socket.
+ *
+ * This function closes a socket. You may also use `close(2)`.
+ *
+ * @param sfd The file descriptor
+ *
+ * @retval 0 Closed socket successfully
+ * @retval -1 Socket was already closed (other errors are very unlikely to occur)
+ */
 int destroy_inet_socket(int sfd)
 {
     if ( sfd < 0 )
@@ -499,6 +535,20 @@ int destroy_inet_socket(int sfd)
     return 0;
 }
 
+/**
+ * @brief Perform a `shutdown(2)` call on a socket
+ *
+ * If you're done with writing or reading from a socket
+ * you may signalize this to the OS and/or the peer. For
+ * example, shutting down a socket for writing sends
+ * the peer an EOF signal.
+ *
+ * @param sfd The socket
+ * @param method `LIBSOCKET_READ` or `LIBSOCKET_WRITE` or the combination via `|`
+ *
+ * @retval 0 Everything's fine.
+ * @retval -1 Something went wrong, e.g. the socket was closed, the file descriptor is invalid etc.
+ */
 int shutdown_inet_stream_socket(int sfd, int method)
 {
     if ( sfd < 0 )
@@ -528,6 +578,21 @@ int shutdown_inet_stream_socket(int sfd, int method)
  *
  */
 
+/**
+ * @brief Create a TCP server socket
+ *
+ * To accept connections from clients via TCP, you need to create
+ * a server socket.
+ *
+ * @param bind_addr Address to bind to. If you want to bind to every address use "0.0.0.0" or "::" (IPv6 wildcard)
+ * @param bind_port The port to bind to. If you write a webserver, this will be "http" or "80" or "https" or "443".
+ * @param proto_osi4 Either `LIBSOCKET_TCP` or `LIBSOCKET_UDP`. Server sockets in TCP and UDP differ only in that TCP sockets need a call to `listen(2)`
+ * @param proto_osi3 Either `LIBSOCKET_IPv4`, `LIBSOCKET_IPv6` or `LIBSOCKET_BOTH`; latter means that the DNS resolver should decide.
+ * @param flags The `flags` argument is passed ORed to the `type` argument of `socket(2)`; everything other than 0 does not make sense on other OSes than Linux.
+ *
+ * @retval >0 A working passive socket. Call `accept_inet_stream_socket()` next.
+ * @retval <0 Something went wrong; for example, the addresses where garbage or the port was not free.
+ */
 //		              Bind address	   Port			  TCP/UDP	   IPv4/6
 int create_inet_server_socket(const char* bind_addr, const char* bind_port, char proto_osi4, char proto_osi3, int flags)
 {
@@ -619,7 +684,23 @@ int create_inet_server_socket(const char* bind_addr, const char* bind_port, char
     return sfd;
 }
 
-// Accept connections on TCP sockets
+/**
+ * @brief Accept a connection attempt on a server socket.
+ *
+ * This function accepts an incoming connection on a server socket.
+ *
+ * (the `src_*` arguments may be `NULL`, in which case the address is not stored)
+ *
+ * @param sfd The server socket
+ * @param src_host Buffer where the client's address is copied to
+ * @param src_host_len `src_host`'s length. If the hostname is longer than this, it is truncated.
+ * @param src_service Buffer in which the client's port is stored
+ * @param src_service_len Its size. If shorter than the hostname it gets truncated.
+ * @param flags May be `LIBSOCKET_NUMERIC`; then there is no rDNS lookup and the IP and port number are stored as-is.
+ *
+ * @retval >0 A socket file descriptor which can be used to talk to the client
+ * @retval <0 Error.
+ */
 //	 		       Socket    Src string      Src str len          Src service        Src service len         NUMERIC?
 int accept_inet_stream_socket(int sfd, char* src_host, size_t src_host_len, char* src_service, size_t src_service_len, int flags, int accept_flags)
 {
@@ -707,6 +788,20 @@ int accept_inet_stream_socket(int sfd, char* src_host, size_t src_host_len, char
     return client_sfd;
 }
 
+/**
+ * @brief Look up which address families a host supports.
+ *
+ * If you want to send a datagram to a host but you don't know
+ * if it supports IPv4 or IPv6, use this function. It returns
+ * the address family returned by a DNS lookup. On most systems IPv6
+ * is the preferred address family.
+ *
+ * @param hostname The hostname of the host you want to look up.
+ *
+ * @retval LIBSOCKET_IPv4 Host supports only IPv4
+ * @retval LIBSOCKET_IPv6 Host supports IPv6 (usually it supports IPv4 then, too)
+ * @retval <0 Error.
+ */
 int get_address_family(const char* hostname)
 {
     int return_value;
