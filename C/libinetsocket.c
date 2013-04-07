@@ -15,6 +15,8 @@
 # include <netinet/in.h> // e.g. struct sockaddr_in on OpenBSD
 
 /**
+ * @addtogroup libinetsocket
+ * @{
  * @file    libinetsocket.c
  * 
  * Contains all C libinetsocket functions.
@@ -111,11 +113,12 @@ static inline signed int check_error(int return_value)
 /**
  * @brief Create and connect a new TCP/IP socket
  *
+ * This function returns a working client TCP/IP socket.
  *
  * @param host The host the socket will be connected to (everything resolvable, e.g. "::1", "8.8.8.8", "example.com")
  * @param service The host's port, either numeric or as service name ("http").
  * @param proto_osi3 `LIBSOCKET_IPv4` or `LIBSOCKET_IPv6`.
- * @param flags Flags to be passed to `socket(2)`
+ * @param flags Flags to be passed to `socket(2)`. Most flags are Linux-only!
  *
  * @return A valid socket file descriptor.
  */
@@ -745,5 +748,7 @@ int get_address_family(const char* hostname)
 
     return af;
 }
-
+/**
+ * @}
+ */
 #undef debug_write

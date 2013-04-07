@@ -12,6 +12,8 @@
 # include <errno.h>
 
 /**
+ * @addtogroup libunixsocket
+ * @{
  * @file libunixsocket.c
  *
  * Contains all C functions to handle UNIX domain sockets.
@@ -345,5 +347,9 @@ ssize_t sendto_unix_dgram_socket(int sfd, const void* buf, size_t size, const ch
 
     return bytes;
 }
+
+/**
+ * @}
+ */
 
 #undef debug_write

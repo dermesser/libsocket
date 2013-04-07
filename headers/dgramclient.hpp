@@ -33,17 +33,24 @@ using std::string;
    OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
    POSSIBILITY OF SUCH DAMAGE.
 
+
  */
 
 namespace libsocket
 {
     /**
-     * @brief Represents generic datagram socket
+     * @addtogroup libsocketplusplus
+     * @{
+     */
+
+    /**
+     * @brief Represents a generic "client" datagram socket, i.e. a datagram socket which can be connected.
      */
     class dgram_client_socket : public virtual socket
     {
 	protected:
-	    bool connected;
+	    bool connected; ///< Stores the connection state of the socket so other functions in this class can check if the socket is connected.
+			    ///< The `connection()` method itself is implemented in derived classes, e.g. inet_dgram_client
 
 	public:
 
@@ -64,5 +71,8 @@ namespace libsocket
 	    bool getconn(void) const;
     };
 
+    /**
+     * @}
+     */
 }
 # endif

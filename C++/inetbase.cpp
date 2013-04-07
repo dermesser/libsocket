@@ -48,7 +48,8 @@ namespace libsocket
     inet_socket::inet_socket() : host(""), port("") {}
 
     /**
-     * @brief	Returns the remote host
+     * For sockets behaving as client: Returns the remote host.
+     * For sockets behaving as server: Returns the address bound to.
      */
     string inet_socket::gethost(void) const
     {
@@ -56,7 +57,8 @@ namespace libsocket
     }
 
     /**
-     * @brief	Returns the remote port
+     * For sockets behaving as client: Returns the remote port.
+     * For sockets behaving as server: Returns the port bound to.
      */
     string inet_socket::getport(void) const
     {

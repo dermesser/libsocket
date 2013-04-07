@@ -39,6 +39,8 @@
  * 	the functions have to check if the socket is connected (bool connected).
  * 	In the stream classes, this check is realized by checking if the file
  * 	descriptor is -1 or not.
+ * @addtogroup libsocketplusplus
+ * @{
  */
 
 # include "../headers/exception.hpp"
@@ -161,3 +163,7 @@ namespace libsocket
 	return connected;
     }
 }
+
+/**
+ * @}
+ */

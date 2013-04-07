@@ -10,7 +10,8 @@
  * @file unixclientdgram.hpp
  *
  * Contains the class for use of UNIX-domain datagram sockets.
- *
+ */
+/*
    The committers of the libsocket project, all rights reserved
    (c) 2012, dermesser <lbo@spheniscida.de>
 
@@ -36,6 +37,9 @@ using std::string;
 
 namespace libsocket
 {
+    /** @addtogroup libsocketplusplus
+     * @{
+     */
     class unix_dgram_client : public unix_dgram, public dgram_client_socket
     {
 	public:
@@ -51,6 +55,9 @@ namespace libsocket
 
 	    void deconnect(void);
     };
+    /**
+     * @}
+     */
 }
 
 # endif

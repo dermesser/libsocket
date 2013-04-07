@@ -10,7 +10,8 @@
  * @file unixbase.hpp
  *
  * Contains the base class for all UNIX-related socket classes.
- *
+ */
+/*
    The committers of the libsocket project, all rights reserved
    (c) 2012, dermesser <lbo@spheniscida.de>
 
@@ -37,6 +38,10 @@ namespace libsocket
     using std::string;
 
     /**
+     * @addtogroup libsocketplusplus
+     * @{
+     */
+    /**
      * @brief Base class for all UNIX socket classes
      */
     class unix_socket : public virtual socket
@@ -49,5 +54,8 @@ namespace libsocket
 
 	    string get_path(void);
     };
+    /**
+     * @}
+     */
 }
 # endif

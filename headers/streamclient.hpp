@@ -11,7 +11,8 @@
  * @file streamclient.hpp
  *
  * Contains all functions and data members needed by stream socket classes, both UNIX and INET.
- *
+ */
+/*
    The committers of the libsocket project, all rights reserved
    (c) 2012, dermesser <lbo@spheniscida.de>
 
@@ -36,6 +37,9 @@ using std::string;
 
 namespace libsocket
 {
+    /** @addtogroup libsocketplusplus
+     * @{
+     */
     class stream_client_socket : public virtual socket
     {
 	protected:
@@ -56,5 +60,8 @@ namespace libsocket
 
 	    void shutdown(int method=LIBSOCKET_WRITE);
     };
+    /**
+     * @}
+     */
 }
 # endif

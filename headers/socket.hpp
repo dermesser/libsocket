@@ -10,7 +10,8 @@
  * @file socket.hpp
  *
  * Contains the very base class of libsocket++
- *
+ */
+/*
    The committers of the libsocket project, all rights reserved
    (c) 2012, dermesser <lbo@spheniscida.de>
 
@@ -41,6 +42,10 @@
 namespace libsocket
 {
     /**
+     * @addtogroup libsocketplusplus
+     * @{
+     */
+    /**
      * @brief socket is the base class of every other libsocket++ object.
      *
      * It provides the most important field: The sfd field holds the file descriptor for every socket.
@@ -61,5 +66,8 @@ namespace libsocket
 
 	    int getfd(void) const;
     };
+    /**
+     * @}
+     */
 }
 #endif

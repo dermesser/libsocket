@@ -9,7 +9,8 @@
  * Contains the libsocket exception class, socket_exception
  *
  *
- *
+ */
+/*
    The committers of the libsocket project, all rights reserved
    (c) 2012, dermesser <lbo@spheniscida.de>
 
@@ -35,14 +36,26 @@ using std::string;
 namespace libsocket
 {
     /**
+     * @addtogroup libsocketplusplus
+     * @{
+     */
+
+    /**
      * @brief This class is instantiated and thrown when an error occurs.
+     * If there's an error somewhere in libsocket++, the function in which the error occurs /always/
+     * throws a `socket_exception` object showing why the error occurred.
      */
     struct socket_exception
     {
 	int err; //!< This is the value of errno when the error occurred.
-	string mesg; //!< This is the message, showing file, line and a description.
+	string mesg; //!< This is the message, showing file, line and a description. If your program is verbose, simply print it to STDERR.
+		     //!< It contains 1. why the error occurred 2. in which file it occurred 3. in which line it occurred. It's a bit like rsync.
+		     //!< A typical message looks like the following one: "../C++/inetclientstream.cpp:167: <<(std::string) output: Socket not connected!"
 
 	socket_exception(string,int,string);
     };
+    /**
+     * @}
+     */
 }
 # endif

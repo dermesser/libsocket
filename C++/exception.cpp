@@ -40,6 +40,9 @@
  *
  * The tokens are substituded by the preprocessor and show where
  * the error occurred.
+ *
+ * @addtogroup libsocketplusplus
+ * @{
  */
 
 # include "../headers/exception.hpp"
@@ -76,3 +79,7 @@ namespace libsocket
 	mesg = m;
     }
 }
+
+/**
+ * @}
+ */

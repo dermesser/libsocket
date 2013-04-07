@@ -10,7 +10,8 @@
  * @file unixserverstream.hpp
  *
  * UNIX-domain STREAM server socket class
- *
+ */
+/*
    The committers of the libsocket project, all rights reserved
    (c) 2012, dermesser <lbo@spheniscida.de>
 
@@ -36,6 +37,9 @@ namespace libsocket
 {
     using std::string;
 
+    /** @addtogroup libsocketplusplus
+     * @{
+     */
     class unix_stream_server : public unix_socket
     {
 	public:
@@ -49,5 +53,8 @@ namespace libsocket
 
 	    unix_stream_client* accept(int flags=0);
     };
+    /**
+     * @}
+     */
 }
 # endif

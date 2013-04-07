@@ -13,7 +13,8 @@
  * @file select.hpp
  *
  * The class selectset provides a possibility to wait for data on multiple sockets.
- *
+ */
+/*
    The committers of the libsocket project, all rights reserved
    (c) 2012, dermesser <lbo@spheniscida.de>
 
@@ -42,6 +43,9 @@
 
 namespace libsocket
 {
+    /** @addtogroup libsocketplusplus
+     * @{
+     */
     class selectset
     {
 	private:
@@ -64,6 +68,9 @@ namespace libsocket
 
     typedef std::pair<std::vector<libsocket::socket*>, std::vector<libsocket::socket*> > ready_socks;
 
+    /**
+     * @}
+     */
 }
 
 #endif

@@ -9,7 +9,8 @@
  * @file unixserverdgram.hpp
  *
  * Contains the class for bound UNIX-domain datagram sockets.
- *
+ */
+/*
    The committers of the libsocket project, all rights reserved
    (c) 2012, dermesser <lbo@spheniscida.de>
 
@@ -35,6 +36,9 @@ using std::string;
 
 namespace libsocket
 {
+    /** @addtogroup libsocketplusplus
+     * @{
+     */
     class unix_dgram_server : public unix_dgram
     {
 	private:
@@ -49,6 +53,9 @@ namespace libsocket
 	    void setup(const char* bindpath, int socket_flags=0);
 	    void setup(const string& bindpath, int socket_flags=0);
     };
+    /**
+     * @}
+     */
 }
 
 # endif
