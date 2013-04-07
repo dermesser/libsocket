@@ -40,6 +40,9 @@ namespace libsocket
     /** @addtogroup libsocketplusplus
      * @{
      */
+    /**
+     * @brief Socket class for UNIX-domain STREAM socket server.
+     */
     class unix_stream_server : public unix_socket
     {
 	public:

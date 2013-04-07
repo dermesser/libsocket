@@ -40,6 +40,9 @@ namespace libsocket
     /** @addtogroup libsocketplusplus
      * @{
      */
+    /**
+     * @brief Class for UNIX datagram sockets
+     */
     class unix_dgram_client : public unix_dgram, public dgram_client_socket
     {
 	public:

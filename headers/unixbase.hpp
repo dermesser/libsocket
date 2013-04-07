@@ -43,6 +43,9 @@ namespace libsocket
      */
     /**
      * @brief Base class for all UNIX socket classes
+     *
+     * This class provides only the data member _path and is used as base class for every socket class
+     * working with UNIX sockets.
      */
     class unix_socket : public virtual socket
     {

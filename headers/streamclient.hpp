@@ -40,12 +40,17 @@ namespace libsocket
     /** @addtogroup libsocketplusplus
      * @{
      */
+    /**
+     * @brief Generic socket for active stream sockets (TCP client sockets, UNIX Stream clients)
+     *
+     * This class defines the basic i/o operations for all stream-based sockets.
+     */
     class stream_client_socket : public virtual socket
     {
 	protected:
 
-	    bool shut_rd;
-	    bool shut_wr;
+	    bool shut_rd; ///< If the socket was shut down for reading (-> no reads anymore)
+	    bool shut_wr; ///< If the socket was shut down for writing (-> no writes anymore)
 
 	public:
 

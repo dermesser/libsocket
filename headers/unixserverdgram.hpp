@@ -39,10 +39,15 @@ namespace libsocket
     /** @addtogroup libsocketplusplus
      * @{
      */
+    /**
+     * @brief Provides an interface to UNIX-domain datagram sockets.
+     *
+     * The difference to unix_dgram_client is that this class cannot be connected to another socket.
+     */
     class unix_dgram_server : public unix_dgram
     {
 	private:
-	    bool bound;
+	    bool bound; ///< Shows if the socket is already bound (for setup routines)
 
 	public:
 

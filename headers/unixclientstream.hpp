@@ -40,6 +40,9 @@ namespace libsocket
     /** @addtogroup libsocketplusplus
      * @{
      */
+    /**
+     * @brief Provides an interface for working with UNIX STREAM sockets
+     */
     class unix_stream_client : public unix_socket, public stream_client_socket
     {
 	public:
@@ -51,7 +54,7 @@ namespace libsocket
 	    void connect(const char* path, int socket_flags=0);
 	    void connect(const string& path, int socket_flags=0);
 
-	    friend class unix_stream_server;
+	    friend class unix_stream_server; ///< unix_stream_server returns pointer to unix_stream_client objects when accepting connections.
     };
     /**
      * @}

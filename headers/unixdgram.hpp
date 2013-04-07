@@ -35,6 +35,9 @@ namespace libsocket
     /** @addtogroup libsocketplusplus
      * @{
      */
+    /**
+     * @brief Generic class for all UNIX datagram (DGRAM) sockets, implementing i/o functions.
+     */
     class unix_dgram : public unix_socket
     {
 	public:
