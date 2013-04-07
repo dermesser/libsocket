@@ -265,6 +265,9 @@ int create_inet_dgram_socket(char proto_osi3, int flags)
  * platforms.
  *
  * If it is not possible to send data at the moment, this call blocks excepted you specified SOCK_NONBLOCK when creating the socket.
+ *
+ * @retval n *n* bytes of data could be sent.
+ * @retval -1 Error.
  */
 ssize_t sendto_inet_dgram_socket(int sfd, const void* buf, size_t size,const char* host, const char* service, int sendto_flags)
 {
@@ -331,7 +334,7 @@ ssize_t sendto_inet_dgram_socket(int sfd, const void* buf, size_t size,const cha
  * @param src_service_len `src_service`'s length
  * @param recvfrom_flags Flags for `recvfrom(2)`
  *
- * @retval >0 Data was received.
+ * @retval n *n* bytes of data were received.
  * @retval 0 Peer sent EOF.
  * @retval <0 An error occurred.
  */

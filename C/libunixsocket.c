@@ -69,6 +69,18 @@
     } while (0)
 # endif
 
+/**
+ * @brief Checks return value for error.
+ *
+ * Every value returned by a syscall is passed to this function. It returns 0
+ * if the return value is ok or -1 if there was an error.
+ * If the macro `VERBOSE` is defined, an appropriate message is printed to STDERR.
+ *
+ * @param return_value A return value from a syscall.
+ *
+ * @retval 0 The syscall was successful.
+ * @retval -1 There was an error.
+ */
 static inline signed int check_error(int return_value)
 {
 # ifdef VERBOSE
@@ -86,6 +98,14 @@ static inline signed int check_error(int return_value)
     return 0;
 }
 
+/**
+ * @brief Create and connect a new UNIX STREAM socket.
+ *
+ * Creates and connects a new STREAM socket with the socket given in `path`.
+ *
+ * @retval >0 Success; return value is a socket file descriptor
+ * @retval <0 Error.
+ */
 int create_unix_stream_socket(const char* path, int flags)
 {
     struct sockaddr_un saddr;
@@ -116,6 +136,15 @@ int create_unix_stream_socket(const char* path, int flags)
     return sfd;
 }
 
+/**
+ * @brief Create a UNIX DGRAM socket
+ *
+ * @param bind_path If not `NULL`, bind to `bind_path`.
+ * @param flags Flags to pass to `socket(2)` (varies from OS to OS; look in the man pages)
+ *
+ * @retval >0 Success. Value is socket.
+ * @retval <0 Error.
+ */
 int create_unix_dgram_socket(const char* bind_path, int flags)
 {
     int sfd, retval;
@@ -151,8 +180,18 @@ int create_unix_dgram_socket(const char* bind_path, int flags)
     return sfd;
 }
 
-// Reconnect a datagram UNIX domain socket - works only for DGRAM sockets!
-//		      Socket   New path
+/**
+ * @brief Connect a datagram socket
+ *
+ * Connects a datagram socket to the specified socket so the
+ * stream i/o operations may be used (`read(2)/write(2)`)
+ *
+ * @param sfd The socket
+ * @param path The path to connect to
+ *
+ * @retval 0 Fine
+ * @retval <0 Not fine
+ */
 int connect_unix_dgram_socket(int sfd, const char* path)
 {
     struct sockaddr_un new_addr;
@@ -193,8 +232,16 @@ int connect_unix_dgram_socket(int sfd, const char* path)
     return 0;
 }
 
-// Destroy a socket
-//		   Socket file descriptor
+/**
+ * @brief Close a socket
+ *
+ * Actually, it's the same as `close(2)`.
+ *
+ * @param sfd The socket to close.
+ *
+ * @retval 0 Socket could be closed
+ * @retval <0 Socket was already closed.
+ */
 int destroy_unix_socket(int sfd)
 {
     if ( sfd < 0 )
@@ -206,6 +253,19 @@ int destroy_unix_socket(int sfd)
     return 0;
 }
 
+/**
+ * @brief Shut a socket down
+ *
+ * Shut a socket down for reading or writing. If shut down for
+ * reading, the program can't read anymore. If shut down for writing
+ * no data can be sent anymore and the peer receives EOF.
+ *
+ * @param sfd The socket
+ * @param method `LIBSOCKET_READ`, `LIBSOCKET_WRITE` or `LIBSOCKET_READ|LIBSOCKET_WRITE`
+ *
+ * @retval 0 Success
+ * @retval <0 Error
+ */
 int shutdown_unix_stream_socket(int sfd, int method)
 {
     if ( sfd < 0 )
@@ -230,8 +290,20 @@ int shutdown_unix_stream_socket(int sfd, int method)
     return 0;
 }
 
-// Create new UNIX domain server socket
-//			      Bind address DGRAM or STREAM
+/**
+ * @brief Create a passive UNIX socket
+ *
+ * Creating a DGRAM server socket is the same as creating one
+ * using `create_unix_dgram_socket()` but with latter you may
+ * also not bind to anywhere.
+ *
+ * @param path Path to bind the socket to
+ * @param socktype `LIBSOCKET_STREAM` or `LIBSOCKET_DGRAM`
+ * @param flags Flags for `socket(2)`.
+ *
+ * @retval >0 Success; returned value is a file descriptor for the socket
+ * @retval <0 An error occurred.
+ */
 int create_unix_server_socket(const char* path, int socktype, int flags)
 {
     struct sockaddr_un saddr;
@@ -287,7 +359,15 @@ int create_unix_server_socket(const char* path, int socktype, int flags)
     return sfd;
 }
 
-// Accept connections
+/**
+ * @brief Accept connections on a passive UNIX socket
+ *
+ * @param sfd The server socket
+ * @param flags Flags for `accept4(3)` (therefore useless on any other system than Linux)
+ *
+ * @retval >0 Return value is a socket connected to the client
+ * @retval <0 Error at `accept[4]()`
+ */
 int accept_unix_stream_socket(int sfd, int flags)
 {
     int cfd;
@@ -304,7 +384,19 @@ int accept_unix_stream_socket(int sfd, int flags)
     return cfd;
 }
 
-// Receives data
+/**
+ * @brief Receive datagram from another UNIX socket
+ *
+ * @param sfd The socket descriptor
+ * @param buf The buffer to which the data is written
+ * @param size its size
+ * @param from Place where the path of the sending socket is placed to
+ * @param from_size its size
+ * @param recvfrom_flags Flags passed to `recvfrom(2)`
+ *
+ * @retval n *n* bytes were received
+ * @retval <0 Error at `recvfrom(2)`
+ */
 ssize_t recvfrom_unix_dgram_socket(int sfd, void* buf, size_t size, char* from, size_t from_size, int recvfrom_flags)
 {
     int bytes;
@@ -323,7 +415,18 @@ ssize_t recvfrom_unix_dgram_socket(int sfd, void* buf, size_t size, char* from, 
     return bytes;
 }
 
-// Sends data
+/**
+ * @brief Send datagram to socket
+ *
+ * @param sfd Socket
+ * @param buf Data to be sent
+ * @param size The length of the buffer `buf`
+ * @param path Destination socket
+ * @param sendto_flags Flags passed to `sendto(2)`
+ *
+ * @retval n *n* bytes were sent
+ * @retval <0 Error at `sendto(2)`.
+ */
 ssize_t sendto_unix_dgram_socket(int sfd, const void* buf, size_t size, const char* path, int sendto_flags)
 {
     int bytes;
