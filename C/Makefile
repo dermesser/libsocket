@@ -5,7 +5,7 @@ SHARED_OBJECT=libsocket.so
 
 LIBPATH=/usr/lib
 
-CC=gcc
+#CC=gcc
 CPP=g++
 # -DVERBOSE to enable verbosity from libinetsocket/libunixsocket
 CFLAGS=

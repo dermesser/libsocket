@@ -26,8 +26,7 @@
 
 /**
  * @file exception.cpp
- *
- * **FOR INTERNAL USE ONLY**
+ * @brief Exception class in libsocket **CLASS FOR INTERNAL USE ONLY**
  *
  * The class defined here, socket_exception, is a
  * class for exception objects. Objects instantiated

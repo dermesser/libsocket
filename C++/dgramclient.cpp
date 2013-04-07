@@ -26,6 +26,7 @@
 
 /**
  * @file dgramclient.cpp
+ * @brief Base class for all datagram-based socket classes
  *
  * 	dgramclient.cpp contains the class dgram_client_socket. This
  * 	class provides the read/write functions for connected datagram
@@ -119,6 +120,16 @@ namespace libsocket
 	return sock;
     }
 
+    /**
+     * @brief Send data to connected socket
+     *
+     * @param buf Pointer to the data
+     * @param len The length of the buffer
+     * @param flags Flags for `send(2)`
+     *
+     * @retval n *n* bytes were sent
+     * @retval <0 An error occurred.
+     */
     ssize_t dgram_client_socket::snd(const void* buf, size_t len, int flags)
     {
 	ssize_t bytes;
@@ -132,6 +143,11 @@ namespace libsocket
 	return bytes;
     }
 
+    /**
+     * @brief Send data to connected peer
+     *
+     * Usage: `socket << "Abcde";`
+     */
     dgram_client_socket& operator<<(dgram_client_socket& sock, const char* str)
     {
 	if ( str == NULL )
@@ -147,6 +163,11 @@ namespace libsocket
 	return sock;
     }
 
+    /**
+     * @brief Send data to connected peer
+     *
+     * Usage: `socket << "Abcde";`
+     */
     dgram_client_socket& operator<<(dgram_client_socket& sock, string& str)
     {
 	if ( sock.connected == false )
@@ -157,7 +178,9 @@ namespace libsocket
 	return sock;
     }
 
-    // Getters
+    /**
+     * Look up if socket is connected.
+     */
     bool dgram_client_socket::getconn(void) const
     {
 	return connected;

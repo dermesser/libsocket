@@ -23,6 +23,7 @@
 
 /**
  * @file socket.cpp
+ * @brief The very base class of libsocket.
  *
  * 	Provides the basic socket functionality, like a field
  * 	for the file descriptor and the destructor respectively

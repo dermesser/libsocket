@@ -24,6 +24,7 @@
 
 /**
  *  @file inetbase.cpp
+ *  @brief The base class for all internet-based sockets.
  *
  * 	inetbase.cpp defines the class inet_socket. This class
  * 	is used as base class in the hierarchy between socket and

@@ -32,6 +32,8 @@
 
 /**
  * @file inetdgram.cpp
+ * @brief The base class for all internet-datagram sockets (UDP/IP)
+ *
  * 	The class inet_dgram provides that functions which
  * 	are used for all UDP sockets: rcvfrom and sndto. These
  * 	may be used for both client and server UDP sockets.

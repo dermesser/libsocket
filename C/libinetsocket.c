@@ -333,6 +333,7 @@ ssize_t sendto_inet_dgram_socket(int sfd, const void* buf, size_t size,const cha
  * @param src_service Where the port on remote side will be written to
  * @param src_service_len `src_service`'s length
  * @param recvfrom_flags Flags for `recvfrom(2)`
+ * @param numeric `LIBSOCKET_NUMERIC` if you want the names to remain unresolved.
  *
  * @retval n *n* bytes of data were received.
  * @retval 0 Peer sent EOF.
@@ -700,6 +701,7 @@ int create_inet_server_socket(const char* bind_addr, const char* bind_port, char
  * @param src_service Buffer in which the client's port is stored
  * @param src_service_len Its size. If shorter than the hostname it gets truncated.
  * @param flags May be `LIBSOCKET_NUMERIC`; then there is no rDNS lookup and the IP and port number are stored as-is.
+ * @param accept_flags Flags for `accept4(2)` (which is only used on Linux)
  *
  * @retval >0 A socket file descriptor which can be used to talk to the client
  * @retval <0 Error.

@@ -26,6 +26,7 @@
 
 /**
  * @file unixbase.cpp
+ * @brief Base class for all unix sockets
  *
  * 	Provides only the field bindpath for every UNIX socket classes.
  * 	This is particularly used for the UNIX datagram sockets which

@@ -23,12 +23,14 @@
 
 */
 
-/*
- * DESCRIPTION FOR INETSERVERDGRAM.CPP
- * 	inet_dgram_server provides nothing more than a constructor
- * 	which binds the UDP socket to the specified host. Everything
- * 	other, e.g. the I/O functions like rcvfrom and sndto are
- * 	inherited from inet_dgram.
+/**
+ * @file inetserverdgram.cpp
+ * @brief Contains class for creating a bound datagram socket.
+ *
+ * inet_dgram_server provides nothing more than a constructor
+ * which binds the UDP socket to the specified host. Everything
+ * other, e.g. the I/O functions like rcvfrom and sndto are
+ * inherited from inet_dgram.
  */
 
 # include "../headers/libinetsocket.h"
@@ -39,16 +41,40 @@ namespace libsocket
 {
     using std::string;
 
+    /**
+     * @brief Create datagram socket and bind it.
+     *
+     * @param host Bind address (Wildcard: "0.0.0.0"/"::")
+     * @param port Bind port
+     * @param proto_osi3 `LIBSOCKET_IPv4` or `LIBSOCKET_IPv6` or `LIBSOCKET_BOTH`
+     * @param flags Flags for `socket(2)`
+     */
     inet_dgram_server::inet_dgram_server(const char* host, const char* port, int proto_osi3, int flags)
     {
 	setup(host,port,proto_osi3,flags);
     }
 
+    /**
+     * @brief Create datagram socket and bind it.
+     *
+     * @param host Bind address (Wildcard: "0.0.0.0"/"::")
+     * @param port Bind port
+     * @param proto_osi3 `LIBSOCKET_IPv4` or `LIBSOCKET_IPv6` or `LIBSOCKET_BOTH`
+     * @param flags Flags for `socket(2)`
+     */
     inet_dgram_server::inet_dgram_server(const string& host, const string& port, int proto_osi3, int flags)
     {
 	setup(host,port,proto_osi3,flags);
     }
 
+    /**
+     * @brief Set up socket. **NOT FOR EXTERNAL USE**
+     *
+     * @param bhost Bind address (Wildcard: "0.0.0.0"/"::")
+     * @param bport Bind port
+     * @param proto_osi3 `LIBSOCKET_IPv4` or `LIBSOCKET_IPv6` or `LIBSOCKET_BOTH`
+     * @param flags Flags for `socket(2)`
+     */
     void inet_dgram_server::setup(const char* bhost, const char* bport, int proto_osi3, int flags)
     {
 	// No separate call to get_address_family()
@@ -60,6 +86,14 @@ namespace libsocket
 	port = string(bport);
     }
 
+    /**
+     * @brief Set up socket. **NOT FOR EXTERNAL USE**
+     *
+     * @param bhost Bind address (Wildcard: "0.0.0.0"/"::")
+     * @param bport Bind port
+     * @param proto_osi3 `LIBSOCKET_IPv4` or `LIBSOCKET_IPv6` or `LIBSOCKET_BOTH`
+     * @param flags Flags for `socket(2)`
+     */
     void inet_dgram_server::setup(const string& bhost, const string& bport, int proto_osi3, int flags)
     {
 	setup(bhost.c_str(),bport.c_str(),proto_osi3,flags);

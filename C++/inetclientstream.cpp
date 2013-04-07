@@ -28,8 +28,10 @@
 
 */
 
-/*
- * DESCRIPTION FOR INETCLIENTSTREAM.CPP
+/**
+ * @file inetclientstream.cpp
+ * @brief TCP/IP socket class.
+ *
  * 	inetclientstream.cpp provides the class inet_stream
  * 	(which should actually be called inet_stream_client).
  * 	This class is used to communicate with TCP servers,
@@ -51,16 +53,46 @@ namespace libsocket
     {
     }
 
+    /**
+     * @brief Connecting constructor
+     *
+     * Creates TCP/IP client socket and connects.
+     *
+     * @param dsthost Remote host
+     * @param dstport Remote port
+     * @param proto_osi3 `LIBSOCKET_IPv4` or `LIBSOCKET_IPv6` or `LIBSOCKET_BOTH`
+     * @param flags Flags for `socket(2)`
+     */
     inet_stream::inet_stream(const char* dsthost, const char* dstport, int proto_osi3, int flags)
     {
 	connect(dsthost,dstport,proto_osi3,flags);
     }
 
+    /**
+     * @brief Connecting constructor
+     *
+     * Creates TCP/IP client socket and connects.
+     *
+     * @param dsthost Remote host
+     * @param dstport Remote port
+     * @param proto_osi3 `LIBSOCKET_IPv4` or `LIBSOCKET_IPv6` or `LIBSOCKET_BOTH`
+     * @param flags Flags for `socket(2)`
+     */
     inet_stream::inet_stream(const string& dsthost, const string& dstport, int proto_osi3, int flags)
     {
 	connect(dsthost.c_str(),dstport.c_str(),proto_osi3,flags);
     }
 
+    /**
+     * @brief Set up socket if not already done.
+     *
+     * Creates TCP/IP client socket and connects. Fails if the socket is already set up.
+     *
+     * @param dsthost Remote host
+     * @param dstport Remote port
+     * @param proto_osi3 `LIBSOCKET_IPv4` or `LIBSOCKET_IPv6` or `LIBSOCKET_BOTH`
+     * @param flags Flags for `socket(2)`
+     */
     void inet_stream::connect(const char* dsthost, const char* dstport, int proto_osi3, int flags)
     {
 	if ( sfd != -1 )
@@ -80,6 +112,16 @@ namespace libsocket
 	shut_wr = false;
     }
 
+    /**
+     * @brief Set up socket if not already done.
+     *
+     * Creates TCP/IP client socket and connects. Fails if the socket is already set up.
+     *
+     * @param dsthost Remote host
+     * @param dstport Remote port
+     * @param proto_osi3 `LIBSOCKET_IPv4` or `LIBSOCKET_IPv6` or `LIBSOCKET_BOTH`
+     * @param flags Flags for `socket(2)`
+     */
     void inet_stream::connect(const string& dsthost, const string& dstport, int proto_osi3, int flags)
     {
 	connect(dsthost.c_str(),dstport.c_str(),proto_osi3,flags);

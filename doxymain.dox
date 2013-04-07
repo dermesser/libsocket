@@ -2,24 +2,112 @@
 @mainpage The libsocket documentation
 
 This is the documentation for the C and C++ library libsocket. libsocket is intended to simplify the use of internet and
-UNIX sockets.
-
-@tableofcontents
+UNIX sockets. Information about how to build libsocket are placed <a href="building.html">here</a>, and <a href="usage.html">this page</a>
+tells you how to use libsocket in your applications.
 
 @section libsocket libsocket for C
 
 To get started with *libsocket for C*, take a look at <a href="group__libinetsocket.html">the libinetsocket</a> and the <a
 href="group__libunixsocket.html">libunixsocket</a> documentation.
 
+@subsection lsconcepts Basic concepts
+
+All functions are documented in the links mentioned above; you don't need to know more about them than that they return -1 if
+something goes wrong. If you want to enable errors on STDERR, define in the Makefiles the macro `VERBOSE` using the
+compiler switch `-DVERBOSE`.
+
 @section libsocketpp libsocket for C++
 
-*libsocket for C++* should be also easy to understand; but it has a <a href="classlibsocket_1_1socket.html">quite sophisticated class hierarchy</a>.
+libsocket++ should also be easy to understand but it has a <a href="classlibsocket_1_1socket.html">quite sophisticated class hierarchy</a>.
 
-From all these classes, there are only 8 classes actually intended for use in your C++ applications. Explore them in the tab "Classes":
+@subsection lppconcepts Basic concepts
+
+You don't have to know too much to be able to use libsocket++; nevertheless you should know the basics.
+
+libsocket++ consists of many C++ classes. Only the following are intended for use in external applications:
 
 - inet_stream, inet_stream_server (TCP/IP client and server)
 - inet_dgram_client, inet_dgram_server (UDP/IP client [unbound] and server [bound])
 - unix_stream_client, unix_stream_server (UNIX domain; STREAM client and server)
 - unix_dgram_client, unix_stream_client (UNIX domain; DGRAM unbound and bound sockets)
 
+If a function fails, it throws a `socket_exception` object containing the error. Look <a href="structlibsocket_1_1socket__exception.html">here</a>
+for detailed information. *Therefore it's important to put libsocket++ operations inside `try {...} catch () {...}` blocks*.
+
+*/
+
+/************************************** BUILDING **********************************************/
+
+/**
+@page building Building libsocket
+
+It should be rather simple to build and install libsocket.
+
+@section targets Targets
+
+- all (default): Build both shared objects (libsocket.so, libsocket++.so)
+- libsocket: Build only libsocket
+- libsocketpp: Build only libsocket++
+- install: Install shared objects and header files
+- install-headers: Install headers to (default) `/usr/include/libsocket/`
+- clean: Remove object files and shared libraries from source tree
+- deinstall: Remove all previously installed files (libraries, header files)
+
+@section Customization
+
+You may specify variables when invoking make: `$ make VARIABLE_DECLARATIONS TARGET`
+
+Predefined vars are:
+
+    LIBPATH=/usr/lib
+    HEADERPATH=/usr/include/libsocket
+    CC=gcc
+    CPP=g++
+    CFLAGS=
+
+If you want to have errors on STDERR from libsocket, simply say `$ make CFLAGS=-DVERBOSE`. If you want to
+install the shared libraries to `/usr/local/lib`, use `$ make LIBPATH=/usr/local/lib`.
+
+*/
+
+/************************************ USAGE ************************************/
+
+/**
+@page usage Usage
+
+As libsocket is built as shared library, it's not really hard to use.
+
+@section headers Including the header files
+
+The header files are placed by default to `/usr/include/libsocket` (you may want to change that, especially on BSD). This directory
+should be contained in your compiler's include path, so just say (if you want to build an application using UNIX client stream sockets):
+
+    # include <libsocket/unixclientdgram.hpp>
+
+The classes are contained in these header files:
+
+    CLASS		    HEADER FILE
+    ----------------------------------------------------
+    inet_stream		    inetclientstream.hpp
+    inet_stream_server	    inetserverstream.hpp
+    inet_dgram_client	    inetclientdgram.hpp
+    inet_dgram_server	    inetserverdgram.hpp
+
+    unix_dgram_client	    unixclientdgram.hpp
+    unix_dgram_server	    unixserverdgram.hpp
+    unix_stream_client	    unixclientstream.hpp
+    unix_stream_server	    unixserverstream.hpp
+    
+    selectset		    select.hpp
+
+    [libinetsocket]	    libinetsocket.h
+    [libunixsocket]	    libunixsocket.h
+
+@section linkage Linking your apps with libsocket
+
+If you let the Makefile place the shared object to a default library path like `/usr/lib`, `/lib`, `/usr/local/lib`, you need to
+link your programs with the following switches:
+
+- For libsocket: `$CC -lsocket ...`
+- For libsocket++: `$CXX -lsocket++ ...`
 */
