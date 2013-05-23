@@ -13,13 +13,13 @@ int main(void)
     using libsocket::inet_stream;
 
     try {
-	string host = "176.28.21.82";
+	string host = "spheniscida.de";
 	string port = "80";
 	string answer;
 	string request1("GET / HTTP/1.1\n");
 	string request2("Host: spheniscida.de\n\n");
 
-	libsocket::inet_stream sock(host.c_str(),port.c_str(),LIBSOCKET_IPv4,0);
+	libsocket::inet_stream sock(host,port,LIBSOCKET_IPv4,0);
 
 	sock << request1 << request2;
 

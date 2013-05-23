@@ -9,7 +9,7 @@ int main(void)
 {
     using std::string;
 
-    string host = "176.28.21.82";
+    string host = "spheniscida.de";
     string port = "80";
     ssize_t len;
     string test;
