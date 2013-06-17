@@ -2,6 +2,7 @@
 
 OBJECTS=libinetsocket.o libunixsocket.o
 SHARED_OBJECT=libsocket.so
+STATICLIB=libsocket.a
 
 LIBPATH=/usr/lib
 
@@ -13,8 +14,12 @@ CFLAGS=
 .c.o:
 	$(CC) $(CFLAGS) -fPIC -c $<
 
-so: $(OBJECTS)
-	$(CC) -shared -o ../$(SHARED_OBJECT) $(OBJECTS)
+static: $(OBJECTS)
+	ar rs ../$(STATICLIB) $(OBJECTS)
+
+so: static
+	$(CC) -shared -o ../$(SHARED_OBJECT) -Wl,--whole-archive ../$(STATICLIB) -Wl,--no-whole-archive
+
 
 install: so
 	install ../$(SHARED_OBJECT) $(LIBPATH) ; \

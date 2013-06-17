@@ -24,7 +24,7 @@ install-headers:
 	cp headers/*.h* $(HEADERPATH)
 
 clean:
-	rm *.so; \
+	rm *.so *.a; \
 	cd C; $(MAKE) clean; \
 	cd ../C++; $(MAKE) clean
 

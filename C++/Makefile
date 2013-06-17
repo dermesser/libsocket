@@ -7,6 +7,9 @@ LIBPATH=/usr/lib
 
 SHARED_OBJECT=libsocket++.so
 
+LIBSOCKET_STATIC=libsocket.a
+LIBSOCKETPP_STATIC=libsocket++.a
+
 CC=gcc
 CPP=g++
 # CPPFLAGS for C++/*.cpp files
@@ -22,11 +25,16 @@ obj: $(OBJECTS)
 # Build C object files (libsocket)
 libsocket:
 	cd ../C/;  \
-	$(MAKE) obj
+	$(MAKE) static
 
-# Build Shared Object
-so: obj libsocket
-	$(CPP) $(CPPFLAGS) -shared -o ../$(SHARED_OBJECT) ../C/*.o $(OBJECTS)
+# Build static object
+static: obj
+	ar rs ../$(LIBSOCKETPP_STATIC) $(OBJECTS)
+
+# Build shared object
+so: static libsocket
+	$(CPP) $(CPPFLAGS) -shared -o ../$(SHARED_OBJECT) -Wl,--whole-archive ../$(LIBSOCKET_STATIC) ../$(LIBSOCKETPP_STATIC) -Wl,--no-whole-archive
+
 
 # Install SO
 install: so
