@@ -4,9 +4,6 @@
 # include <string>
 # include "socket.hpp"
 
-# define LIBSOCKET_READ 1
-# define LIBSOCKET_WRITE 2
-
 /**
  * @file streamclient.hpp
  *
