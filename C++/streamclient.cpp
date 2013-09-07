@@ -1,7 +1,3 @@
-# include <string>
-# include <unistd.h>
-# include <string.h>
-
 /*
    The committers of the libsocket project, all rights reserved
    (c) 2012, dermesser <lbo@spheniscida.de>
@@ -31,6 +27,15 @@
  * 	stream-based sockets (TCP and UNIX-SOCK_STREAM).
  */
 
+# include <string>
+# include <unistd.h>
+# include <string.h>
+
+// Inclusion here prevents further inclusion from headers/socket.hpp
+namespace BERKELEY {
+# include <sys/socket.h>
+} // Against conflicts (shutdown(2)...)
+
 # include "../headers/libinetsocket.h"
 # include "../headers/exception.hpp"
 # include "../headers/streamclient.hpp"
@@ -56,7 +61,7 @@ namespace libsocket
 
 	memset(buf,0,len);
 
-	if ( -1 == (recvd = recv(sfd,buf,len,flags)) )
+	if ( -1 == (recvd = BERKELEY::recv(sfd,buf,len,flags)) )
 	    throw socket_exception(__FILE__,__LINE__,"stream_client_socket::rcv() - Error while reading!\n");
 
 	return recvd;
@@ -140,7 +145,7 @@ namespace libsocket
 	if ( buf == NULL || len == 0 )
 	    throw socket_exception(__FILE__,__LINE__,"stream_client_socket::snd() - Buffer or length is null!\n");
 
-	if ( -1 == (snd_bytes = send(sfd,buf,len,flags)) )
+	if ( -1 == (snd_bytes = BERKELEY::send(sfd,buf,len,flags)) )
 	    throw socket_exception(__FILE__,__LINE__,"stream_client_socket::snd() - Error while sending\n");
 
 	return snd_bytes;
@@ -148,6 +153,8 @@ namespace libsocket
 
     void stream_client_socket::shutdown(int method)
     {
+        int u_method = 0; // unix flags
+
 	// Already shut down using this method...
 	if ( (method & (LIBSOCKET_READ|LIBSOCKET_WRITE)) && (shut_rd == true) && (shut_wr == true) )
 	    return;
@@ -156,7 +163,16 @@ namespace libsocket
 	if ( (method & LIBSOCKET_WRITE) && (shut_wr == true) )
 	    return;
 
-	if ( 0 > shutdown_inet_stream_socket(sfd,method)) // It's equal whether we use this or its brother from libunixsocket
+        if ( method == (LIBSOCKET_READ|LIBSOCKET_WRITE) )
+            u_method = BERKELEY::SHUT_RDWR;
+        else if ( method == LIBSOCKET_READ )
+            u_method = BERKELEY::SHUT_RD;
+        else if ( method == LIBSOCKET_WRITE )
+            u_method = BERKELEY::SHUT_WR;
+        else // With no valid combination
+            return;
+
+	if ( 0 > BERKELEY::shutdown(sfd,u_method)) // It's equal whether we use this or its brother from libunixsocket
 	{
 	    throw socket_exception(__FILE__,__LINE__,"stream_client_socket::shutdown() - Could not shutdown socket\n");
 	}
