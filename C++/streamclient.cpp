@@ -34,6 +34,7 @@
  */
 
 # include "../headers/libinetsocket.h"
+# include "../headers/libunixsocket.h" 
 # include "../headers/exception.hpp"
 # include "../headers/streamclient.hpp"
 
@@ -158,10 +159,17 @@ namespace libsocket
 	if ( (method & WRITE) && (shut_wr == true) )
 	    return;
 
-	if ( 0 > shutdown_inet_stream_socket(sfd,method)) // It's equal whether we use this or its brother from libunixsocket
-	{
-	    throw socket_exception(__FILE__,__LINE__,"stream_client_socket::shutdown() - Could not shutdown socket\n");
-	}
+	# ifdef LIBINETSOCKET_HEAD
+		if ( 0 > shutdown_inet_stream_socket(sfd,method)) // It's equal whether we use this or its brother from libunixsocket
+		{
+			throw socket_exception(__FILE__,__LINE__,"stream_client_socket::shutdown() - Could not shutdown socket\n");
+		}
+	# elseif LIBUNIXSOCKET_HEAD
+		if ( 0 > shutdown_unix_stream_socket(sfd,method)) // It's equal whether we use this or its brother from libinetsocket
+		{
+			throw socket_exception(__FILE__,__LINE__,"stream_client_socket::shutdown() - Could not shutdown socket\n");
+		}
+	# endif
 
 	if ( method & READ )
 	    shut_rd = true;

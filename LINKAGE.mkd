@@ -124,14 +124,14 @@ For...
 	- socket.cpp (socket)
 	- exception.cpp (socket_exception)
 	- unixbase.cpp (unix_socket)
-	- clientstream.cpp (stream_client_socket)
+	- streamclient.cpp (stream_client_socket)
 	- unixclientstream.cpp (unix_stream_client)
 
 * UNIX Stream Server Programs:
 	- libunixsocket.c [socket functionality]
 	- socket.cpp (socket)
 	- exception.cpp (socket_exception)
-	- clientstream.cpp (stream_client_socket)
+	- streamclient.cpp (stream_client_socket)
 	- unixbase.cpp (unix_socket)
 	- unixclientstream.cpp (unix_stream_client)
 	- unixserverstream.cpp
