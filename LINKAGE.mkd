@@ -16,8 +16,8 @@ The header names are quite self-explaining:
 
 C:
 
-- libinetsocket.c (all inet-related stuff)
-- libunixsocket.c (all UNIX-related stuff)
+- libinetsocket.h (all inet-related stuff)
+- libunixsocket.h (all UNIX-related stuff)
 
 C++:
 
