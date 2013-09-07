@@ -38,9 +38,6 @@
 
 # include "socket.hpp"
 
-# define LIBSOCKET_READ 1
-# define LIBSOCKET_WRITE 2
-
 namespace libsocket
 {
     /** @addtogroup libsocketplusplus

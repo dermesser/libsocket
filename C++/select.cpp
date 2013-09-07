@@ -32,9 +32,6 @@
 
 */
 
-# define READ 1
-# define WRITE 2
-
 /*
  * @file select.cpp
  * @brief Contains the class selectset which provides a neat interface for watching several sockets
@@ -68,14 +65,14 @@ namespace libsocket
     {
 	int fd = sock.getfd();
 
-	if ( method == READ )
+	if ( method == LIBSOCKET_READ )
 	{
 	    FD_SET(fd,&readset);
 	    filedescriptors.push_back(fd);
 	    fdsockmap[fd] = &sock;
 	    set_up = true;
 
-	} else if ( method == WRITE )
+	} else if ( method == LIBSOCKET_WRITE )
 	{
 	    FD_SET(fd,&writeset);
 	    filedescriptors.push_back(fd);
