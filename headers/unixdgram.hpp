@@ -3,6 +3,11 @@
 
 # include "unixbase.hpp"
 
+/**
+ * @file unixdgram.hpp
+ *
+ * All functions necessary for UNIX-domain datagram sockets.
+ */
 /*
    The committers of the libsocket project, all rights reserved
    (c) 2012, dermesser <lbo@spheniscida.de>
@@ -27,6 +32,12 @@
 
 namespace libsocket
 {
+    /** @addtogroup libsocketplusplus
+     * @{
+     */
+    /**
+     * @brief Generic class for all UNIX datagram (DGRAM) sockets, implementing i/o functions.
+     */
     class unix_dgram : public unix_socket
     {
 	public:
@@ -42,6 +53,9 @@ namespace libsocket
 	    ssize_t rcvfrom(string& buf, string& source, int recvfrom_flags=0);
 
     };
+    /**
+     * @}
+     */
 }
 
 # endif

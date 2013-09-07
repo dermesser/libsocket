@@ -36,7 +36,9 @@
 # define WRITE 2
 
 /*
- * DESCRIPTION FOR SELECT.CPP
+ * @file select.cpp
+ * @brief Contains the class selectset which provides a neat interface for watching several sockets
+ *
  * 	The class selectset implements a wrapper for the syscall select() which allows
  * 	to accept connections on more than one socket or communicate with multiple clients
  * 	without multithreading.

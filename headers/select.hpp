@@ -9,6 +9,11 @@
 
 # include <sys/select.h>
 
+/**
+ * @file select.hpp
+ *
+ * The class selectset provides a possibility to wait for data on multiple sockets.
+ */
 /*
    The committers of the libsocket project, all rights reserved
    (c) 2012, dermesser <lbo@spheniscida.de>
@@ -38,16 +43,29 @@
 
 namespace libsocket
 {
+    /** @addtogroup libsocketplusplus
+     * @{
+     */
+    /**
+     * @brief selectset provides a simple interface to the system call select(3).
+     *
+     * To watch different sockets for new data to read or a possibility to write without using threads, use
+     * this class. It is rather simple to use; add file descriptors (socket ids) using `add_fd()` specifying
+     * whether to watch them for reading or writing and then call `wait()`; once there's data to be read or written
+     * it returns a std::pair with vectors of `libsocket::socket*`, the first vector contains sockets ready for reading,
+     * the second one contains those sockets ready for writing. Usually it's necessary to cast them to the actual socket type
+     * using `dynamic_cast<>()`.
+     */
     class selectset
     {
 	private:
-	    std::vector<int> filedescriptors;
-	    std::map<int,socket*> fdsockmap;
+	    std::vector<int> filedescriptors; ///< All file descriptors from the socket objects
+	    std::map<int,socket*> fdsockmap;  ///< A map containing the relations between the filedescriptors and the socket objects
 
-	    bool set_up;
+	    bool set_up; ///< Stores if the class has been initiated
 
-	    fd_set readset;
-	    fd_set writeset;
+	    fd_set readset; ///< The fd_set for select with the descriptors waiting for read
+	    fd_set writeset; ///< and the descriptors waiting for write
 
 	public:
 
@@ -60,6 +78,9 @@ namespace libsocket
 
     typedef std::pair<std::vector<libsocket::socket*>, std::vector<libsocket::socket*> > ready_socks;
 
+    /**
+     * @}
+     */
 }
 
 #endif

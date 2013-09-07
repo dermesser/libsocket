@@ -4,6 +4,12 @@
 # include <string>
 # include "socket.hpp"
 # include "libinetsocket.h"
+/**
+ * @file inetbase.hpp
+ *
+ * Contains the IP socket base class.
+ *
+ */
 /*
    The committers of the libsocket project, all rights reserved
    (c) 2012, dermesser <lbo@spheniscida.de>
@@ -30,11 +36,23 @@ namespace libsocket
 {
     using std::string;
 
+    /**
+     * @addtogroup libsocketplusplus
+     * @{
+     */
+    /**
+     * @brief	Internet-socket base class
+     * This class provides some fields for all internet sockets, like remote host and port and the used protocol version.
+     */
+
     class inet_socket : public virtual socket
     {
 	protected:
+	    /// The address we're bound or connected to
 	    string host;
+	    /// The port we're bound or connected to
 	    string port;
+	    /// Which internet protocol version we're using
 	    int proto;
 
 	public:
@@ -44,6 +62,9 @@ namespace libsocket
 	    string gethost(void) const;
 	    string getport(void) const;
     };
+    /**
+     * @}
+     */
 }
 
 # endif

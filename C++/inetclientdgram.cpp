@@ -30,8 +30,10 @@
 
 */
 
-/*
- * DESCRIPTION FOR INETCLIENTDGRAM.CPP
+/**
+ * @file inetclientdgram.cpp
+ * @brief Class for connectable UDP sockets
+ *
  * 	This file provides the class inet_dgram_client which is used
  * 	for internet domain UDP client sockets. You think, in UDP
  * 	there is no difference between client and server? This is
@@ -50,16 +52,38 @@ namespace libsocket
 
     // Constructors
 
+    /**
+     * @brief Create normal datagram socket (connectable).
+     *
+     * @param proto_osi3 `LIBSOCKET_IPv4` or `LIBSOCKET_IPv6` or `LIBSOCKET_BOTH`
+     * @param flags Flags for `socket(2)`.
+     */
     inet_dgram_client::inet_dgram_client(int proto_osi3,int flags)
     {
 	setup(proto_osi3,flags);
     }
 
+    /**
+     * @brief Create datagram socket and connect it immediately to the given host and port.
+     *
+     * @param dsthost Remote host name
+     * @param dstport Remote port
+     * @param proto_osi3 `LIBSOCKET_IPv4` or `LIBSOCKET_IPv6` or `LIBSOCKET_BOTH`
+     * @param flags Flags for `socket(2)`
+     */
     inet_dgram_client::inet_dgram_client(const char* dsthost, const char* dstport, int proto_osi3, int flags)
     {
 	setup(dsthost,dstport,proto_osi3,flags);
     }
 
+    /**
+     * @brief Create datagram socket and connect it immediately to the given host and port.
+     *
+     * @param dsthost Remote host name
+     * @param dstport Remote port
+     * @param proto_osi3 `LIBSOCKET_IPv4` or `LIBSOCKET_IPv6` or `LIBSOCKET_BOTH`
+     * @param flags Flags for `socket(2)`
+     */
     inet_dgram_client::inet_dgram_client(const string& dsthost, const string& dstport, int proto_osi3, int flags)
     {
 	setup(dsthost,dstport,proto_osi3,flags);
@@ -67,6 +91,12 @@ namespace libsocket
 
     // Managing
 
+    /**
+     * @brief Set up normal datagram socket (connectable). [NOT FOR EXTERNAL USE]
+     *
+     * @param proto_osi3 `LIBSOCKET_IPv4` or `LIBSOCKET_IPv6` or `LIBSOCKET_BOTH`
+     * @param flags Flags for `socket(2)`.
+     */
     void inet_dgram_client::setup(int proto_osi3, int flags)
     {
 	if ( -1 == (sfd = create_inet_dgram_socket(proto_osi3,flags)) )
@@ -74,6 +104,14 @@ namespace libsocket
 	proto = proto_osi3;
     }
 
+    /**
+     * @brief Set up datagram socket and connect it immediately to the given host and port. [NOT FOR EXTERNAL USE]
+     *
+     * @param dsthost Remote host name
+     * @param dstport Remote port
+     * @param proto_osi3 `LIBSOCKET_IPv4` or `LIBSOCKET_IPv6` or `LIBSOCKET_BOTH`
+     * @param flags Flags for `socket(2)`
+     */
     void inet_dgram_client::setup(const char* dsthost, const char* dstport, int proto_osi3, int flags)
     {
 	// Retrieve address family
@@ -88,11 +126,28 @@ namespace libsocket
 	proto = proto_osi3;
     }
 
+    /**
+     * @brief Set up datagram socket and connect it immediately to the given host and port. [NOT FOR EXTERNAL USE]
+     *
+     * @param dsthost Remote host name
+     * @param dstport Remote port
+     * @param proto_osi3 `LIBSOCKET_IPv4` or `LIBSOCKET_IPv6` or `LIBSOCKET_BOTH`
+     * @param flags Flags for `socket(2)`
+     */
     void inet_dgram_client::setup(const string& dsthost, const string& dstport, int proto_osi3, int flags)
     {
 	setup(dsthost.c_str(),dstport.c_str(),proto_osi3,flags);
     }
 
+    /**
+     * @brief Connect datagram socket.
+     *
+     * Connect a datagram socket to a remote peer so only its packets are received
+     * and all data written is sent to it.
+     *
+     * @param dsthost Destination host
+     * @param dstport Destination port
+     */
     void inet_dgram_client::connect(const char* dsthost, const char* dstport)
     {
 	if ( sfd == -1 )
@@ -105,6 +160,15 @@ namespace libsocket
 	connected = true;
     }
 
+    /**
+     * @brief Connect datagram socket.
+     *
+     * Connect a datagram socket to a remote peer so only its packets are received
+     * and all data written is sent to it.
+     *
+     * @param dsthost Destination host
+     * @param dstport Destination port
+     */
     void inet_dgram_client::connect(const string& dsthost, const string& dstport)
     {
 	if ( sfd == -1 )
@@ -117,6 +181,12 @@ namespace libsocket
 	connected = true;
     }
 
+    /*
+     * @brief Break association to host. Does not close the socket.
+     *
+     * *Should actually be called 'disconnect'*
+     *
+     */
     void inet_dgram_client::deconnect(void)
     {
 	if ( -1 == (connect_inet_dgram_socket(sfd,NULL,NULL)) )

@@ -24,20 +24,24 @@
 
 */
 
-/*
- * DESCRIPTION FOR EXCEPTION.CPP
- *	The class defined here, socket_exception, is a
- *	class for exception objects. Objects instantiated
- *	from this class are thrown if something goes wrong.
+/**
+ * @file exception.cpp
+ * @brief Exception class in libsocket **CLASS FOR INTERNAL USE ONLY**
  *
- *	The class contains only the data member mesg and the
- *	constructor which constructs the error string in mesg.
- *	Typically, you'd create an object of this class with the
- *	following call:
- *		socket_exception(__FILE__,__LINE__,"Error Message");
+ * The class defined here, socket_exception, is a
+ * class for exception objects. Objects instantiated
+ * from this class are thrown if something goes wrong.
  *
- *	The tokens are substituded by the preprocessor and show where
- *	the error occurred.
+ * The class contains only the data member mesg and the
+ * constructor which constructs the error string in mesg.
+ * Typically, you'd create an object of this class with the
+ * following call: `socket_exception(__FILE__,__LINE__,"Error Message");`
+ *
+ * The tokens are substituded by the preprocessor and show where
+ * the error occurred.
+ *
+ * @addtogroup libsocketplusplus
+ * @{
  */
 
 # include "../headers/exception.hpp"
@@ -46,6 +50,15 @@ namespace libsocket
 {
     using std::string;
 
+    /**
+     * @brief	Constructor of a socket_exception object
+     *
+     * This constructor creates a new socket_exception object.
+     *
+     * @param	f   File in which the error comes (__FILE__)
+     * @param	l   Line (__LINE__)
+     * @param	m   Description of the error.
+     */
     socket_exception::socket_exception(string f, int l, string m)
     {
 	char line[5];
@@ -65,3 +78,7 @@ namespace libsocket
 	mesg = m;
     }
 }
+
+/**
+ * @}
+ */

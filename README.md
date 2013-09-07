@@ -1,5 +1,7 @@
 #README for libsocket
 
+(Pre-built documentation may be found on [my server](http://lbo.spheniscida.de/doc/libsocket/doxygen/index.html))
+
 ## WHAT IS libsocket AND WHY SHOULD I USE IT?
 
 libsocket is a library with a C part and a C++ part making sockets usage easy and clean.

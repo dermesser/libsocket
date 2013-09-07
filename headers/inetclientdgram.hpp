@@ -8,6 +8,11 @@
 # include "inetdgram.hpp"
 # include "dgramclient.hpp"
 
+/**
+ * @file inetclientdgram.hpp
+ *
+ * Contains the inet_dgram_client class.
+ */
 /*
    The committers of the libsocket project, all rights reserved
    (c) 2012, dermesser <lbo@spheniscida.de>
@@ -33,6 +38,16 @@ namespace libsocket
 {
     using std::string;
 
+    /**
+     * @addtogroup libsocketplusplus
+     * @{
+     */
+    /**
+     * @brief Using UDP/IP easy as never before.
+     * Class for connectable datagram sockets in the INET domain. You may connect this sockets
+     * to permanently associate a peer to which all data is sent and from which all data is received
+     * when using the functions defined in class `dgram_client_socket`
+     */
     class inet_dgram_client : public inet_dgram, public dgram_client_socket
     {
 	public:
@@ -55,5 +70,8 @@ namespace libsocket
 	    void deconnect(void);
 
     };
+    /**
+     * @}
+     */
 }
 # endif

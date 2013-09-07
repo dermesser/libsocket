@@ -4,6 +4,11 @@
 # include "inetbase.hpp"
 # include "inetclientstream.hpp"
 
+/**
+ * @file inetserverstream.hpp
+ *
+ * Contains the class for TCP/IP servers.
+ */
 /*
    The committers of the libsocket project, all rights reserved
    (c) 2012, dermesser <lbo@spheniscida.de>
@@ -28,10 +33,24 @@
 
 namespace libsocket
 {
+    /**
+     * @addtogroup libsocketplusplus
+     * @{
+     */
+    /**
+     * @brief TCP server socket (passive TCP socket)
+     *
+     * This class acts as TCP server. Once set up you may call `accept()` on it. When a client wants
+     * to connect, a pointer to an `inet_stream` class is returned. It may be used to communicate with
+     * the client.
+     *
+     * @see inet_stream
+     */
     class inet_stream_server : public inet_socket
     {
 	private:
-	    bool nonblock;
+	    bool nonblock; ///< States if the server socket is blocking or nonblocking.
+			   ///< @see inet_stream_server::accept
 
 	public:
 
@@ -47,6 +66,9 @@ namespace libsocket
 	    string getbindhost(void);
 	    string getbindport(void);
     };
+    /**
+     * @}
+     */
 }
 
 # endif

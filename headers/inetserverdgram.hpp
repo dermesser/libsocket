@@ -4,6 +4,11 @@
 # include "inetbase.hpp"
 # include "inetdgram.hpp"
 
+/**
+ * @file inetserverdgram.hpp
+ *
+ * Contains the class for UDP/IP server.
+ */
 /*
    The committers of the libsocket project, all rights reserved
    (c) 2012, dermesser <lbo@spheniscida.de>
@@ -28,6 +33,15 @@
 
 namespace libsocket
 {
+    /** @addtogroup libsocketplusplus
+     * @{
+     */
+    /**
+     * @brief Plain UDP sockets
+     *
+     * Although called `..._server`, this class may also be used as client (UDP is symmetric). It has some
+     * special features, e.g. it's not possible to connect it.
+     */
     class inet_dgram_server : public inet_dgram
     {
 	public:
@@ -38,6 +52,9 @@ namespace libsocket
 	    void setup(const char* host, const char* port, int proto_osi3, int flags=0);
 	    void setup(const string& host, const string& port, int proto_osi3, int flags=0);
     };
+    /**
+     * @}
+     */
 }
 
 # endif

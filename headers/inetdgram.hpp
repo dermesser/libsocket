@@ -12,7 +12,11 @@
 # include <sys/types.h>
 # include <stdio.h>
 
-// oo wrapper around libinetsocket
+/**
+ * @file inetdgram.hpp
+ *
+ * Contains the inet_dgram class
+ */
 /*
    The committers of the libsocket project, all rights reserved
    (c) 2012, dermesser <lbo@spheniscida.de>
@@ -35,12 +39,21 @@
 
 */
 
+
 namespace libsocket
 {
     using std::string;
 
-    /************** inet_dgram class (inet UDP sockets) ************/
-
+    /**
+     * @addtogroup libsocketplusplus
+     * @{
+     */
+    /**
+     *
+     * @brief Base class for UDP/IP sockets
+     *
+     * This classes provides the Send/Receive functions shared by all classes using Internet Datagram sockets.
+     */
     class inet_dgram : public inet_socket
     {
 	public:
@@ -58,6 +71,9 @@ namespace libsocket
 
 	    ssize_t rcvfrom(string& buf, string& srchost, string& srcport, int rcvfrom_flags=0, bool numeric=false);
     };
+    /**
+     * @}
+     */
 }
 
 # endif

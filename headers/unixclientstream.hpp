@@ -6,6 +6,11 @@
 # include "streamclient.hpp"
 # include "unixbase.hpp"
 
+/**
+ * @file unixclientstream.hpp
+ *
+ * Contains the class for use of UNIX-domain stream sockets as client.
+ */
 /*
    The committers of the libsocket project, all rights reserved
    (c) 2012, dermesser <lbo@spheniscida.de>
@@ -32,6 +37,12 @@ namespace libsocket
 {
     using std::string;
 
+    /** @addtogroup libsocketplusplus
+     * @{
+     */
+    /**
+     * @brief Provides an interface for working with UNIX STREAM sockets
+     */
     class unix_stream_client : public unix_socket, public stream_client_socket
     {
 	public:
@@ -43,7 +54,10 @@ namespace libsocket
 	    void connect(const char* path, int socket_flags=0);
 	    void connect(const string& path, int socket_flags=0);
 
-	    friend class unix_stream_server;
+	    friend class unix_stream_server; ///< unix_stream_server returns pointer to unix_stream_client objects when accepting connections.
     };
+    /**
+     * @}
+     */
 }
 # endif

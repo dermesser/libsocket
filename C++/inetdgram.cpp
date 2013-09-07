@@ -30,8 +30,10 @@
 
 */
 
-/*
- * DESCRIPTION FOR INETDGRAM.CPP
+/**
+ * @file inetdgram.cpp
+ * @brief The base class for all internet-datagram sockets (UDP/IP)
+ *
  * 	The class inet_dgram provides that functions which
  * 	are used for all UDP sockets: rcvfrom and sndto. These
  * 	may be used for both client and server UDP sockets.
@@ -49,6 +51,25 @@ namespace libsocket
 
     // I
 
+    /**
+     * @brief Receives data from peer
+     *
+     * rcvfrom is the equivalent to `recvfrom(2)`.
+     *
+     * @param buf Target memory
+     * @param len The size of the target memory
+     * @param hostbuf Buffer to write the peer's hostname to
+     * @param hostbuflen Its length
+     * @param portbuf Like `hostbuf`, but for the remote port
+     * @param portbuflen `portbuf`'s length
+     * @param rcvfrom_flags Flags to be passed to `recvfrom(2)`
+     * @param numeric If this is `true`, host and port are saved numerically (25 instead of "smtp")
+     *
+     * @retval >0 n bytes of data were read into `buf`.
+     * @retval 0 Peer sent EOF
+     *
+     * Every error makes the function throw an exception.
+     */
     ssize_t inet_dgram::rcvfrom(void* buf, size_t len, char* hostbuf, size_t hostbuflen, char* portbuf, size_t portbuflen, int rcvfrom_flags, bool numeric)
     {
 	ssize_t bytes;
@@ -64,6 +85,23 @@ namespace libsocket
     }
 
 
+    /**
+     * @brief rcvfrom for C++ strings
+     *
+     * Works like `rcvfrom()`, but takes C++ strings instead of pointers.
+     *
+     * @param buf Buffer to copy the received data to
+     * @param len The buffer's length
+     * @param srchost String to place the remote host's name to
+     * @param srcport Like `srchost` but for the remote port
+     * @param rcvfrom_flags Flags to be passed to `recvfrom(2)`
+     * @param numeric If remote host and port should be saved numerically
+     *
+     * @retval >0 n bytes of data were read into `buf`.
+     * @retval 0 Peer sent EOF
+     *
+     * Every error makes the function throw an exception.
+     */
     ssize_t inet_dgram::rcvfrom(void* buf, size_t len, string& srchost, string& srcport, int rcvfrom_flags, bool numeric)
     {
 	ssize_t bytes;
@@ -89,6 +127,23 @@ namespace libsocket
 	return bytes;
     }
 
+    /**
+     * @brief rcvfrom for C++ strings, implemented consistently
+     *
+     * Works like every other `rcvfrom()` library call, but places the received memory to the C++ string `buf`.
+     *
+     * @param buf The string where the received data should be stored at. Its length determines how much data will be stored; the library
+     * will not resize `buf`.
+     * @param srchost String to place the remote host's name to
+     * @param srcport Like `srchost` but for the remote port
+     * @param rcvfrom_flags Flags to be passed to `recvfrom(2)`
+     * @param numeric If remote host and port should be saved numerically
+
+     * @retval >0 n bytes of data were read into `buf`.
+     * @retval 0 Peer sent EOF
+     *
+     * Every error makes the function throw an exception.
+     */
     ssize_t inet_dgram::rcvfrom(string& buf, string& srchost, string& srcport, int rcvfrom_flags, bool numeric)
     {
 	ssize_t bytes;
@@ -110,6 +165,22 @@ namespace libsocket
 
     // O
 
+    /**
+     * @brief Send data to UDP peer
+     *
+     * This is the counterpart to system's `sendto(2)`. It sends data to a UDP peer.
+     *
+     * @param buf The data to be sent
+     * @param len Length of transmission
+     * @param dsthost Target host
+     * @param dstport Target port
+     * @param sndto_flags Flags for `sendto(2)`
+     *
+     * @retval >0 n bytes of data were sent.
+     * @retval 0 Nothing was sent
+     *
+     * Every error makes the function throw an exception.
+     */
     ssize_t inet_dgram::sndto(const void* buf, size_t len, const char* dsthost, const char* dstport, int sndto_flags)
     {
 	ssize_t bytes;
@@ -123,6 +194,19 @@ namespace libsocket
 	return bytes;
     }
 
+    /**
+     * @brief Send data to UDP peer; C++ string host and port
+     *
+     * This is the counterpart to system's `sendto(2)`. It sends data to a UDP peer.
+     *
+     * @param buf The data to be sent
+     * @param len Length of transmission
+     * @param dsthost Target host
+     * @param dstport Target port
+     * @param sndto_flags Flags for `sendto(2)`
+     *
+     * Every error makes the function throw an exception.
+     */
     ssize_t inet_dgram::sndto(const void* buf, size_t len, const string& dsthost, const string& dstport, int sndto_flags)
     {
 	ssize_t bytes;
@@ -132,6 +216,18 @@ namespace libsocket
 	return bytes;
     }
 
+    /**
+     * @brief Send data to UDP peer; using C++ strings only.
+     *
+     * This is the counterpart to system's `sendto(2)`. It sends data to a UDP peer.
+     *
+     * @param buf The data to be sent
+     * @param dsthost Target host
+     * @param dstport Target port
+     * @param sndto_flags Flags for `sendto(2)`
+     *
+     * Every error makes the function throw an exception.
+     */
     ssize_t inet_dgram::sndto(const string& buf, const string& dsthost, const string& dstport, int sndto_flags)
     {
 	ssize_t bytes;

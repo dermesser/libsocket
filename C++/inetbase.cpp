@@ -22,8 +22,9 @@
 
 */
 
-/*
- * DESCRIPTION FOR INETBASE.CPP
+/**
+ *  @file inetbase.cpp
+ *  @brief The base class for all internet-based sockets.
  *
  * 	inetbase.cpp defines the class inet_socket. This class
  * 	is used as base class in the hierarchy between socket and
@@ -47,11 +48,19 @@ namespace libsocket
 
     inet_socket::inet_socket() : host(""), port("") {}
 
+    /**
+     * For sockets behaving as client: Returns the remote host.
+     * For sockets behaving as server: Returns the address bound to.
+     */
     string inet_socket::gethost(void) const
     {
 	return host;
     }
 
+    /**
+     * For sockets behaving as client: Returns the remote port.
+     * For sockets behaving as server: Returns the port bound to.
+     */
     string inet_socket::getport(void) const
     {
 	return port;

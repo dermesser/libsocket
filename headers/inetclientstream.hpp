@@ -8,8 +8,11 @@
 # include "inetbase.hpp"
 # include "streamclient.hpp"
 
-
-// Quite simple oo wrapper around libINETSTREAMCLIENT
+/**
+ * @file inetclientstream.hpp
+ *
+ * inet_stream is the TCP/IP socket class
+ */
 /*
    The committers of the libsocket project, all rights reserved
    (c) 2012, dermesser <lbo@spheniscida.de>
@@ -36,10 +39,18 @@ namespace libsocket
 {
     using std::string;
 
+    /**
+     * @addtogroup libsocketplusplus
+     * @{
+     */
+    /**
+     * @brief Provides TCP/IP client sockets.
+     * This class is the most used socket class in libsocket++. It provides plain TCP client sockets which
+     * can be used for almost everything.
+     */
     class inet_stream : public inet_socket, public stream_client_socket
     {
 	public:
-
 	    inet_stream(void);
 	    inet_stream(const char* dsthost, const char* dstport, int proto_osi3, int flags=0); // flags: socket()
 	    inet_stream(const string& dsthost, const string& dstport, int proto_osi3, int flags=0);
@@ -47,7 +58,11 @@ namespace libsocket
 	    void connect(const char* dsthost, const char* dstport, int proto_osi3, int flags=0); // flags: socket()
 	    void connect(const string& dsthost, const string& dstport, int proto_osi3, int flags=0);
 
-	    friend class inet_stream_server;
+	    friend class inet_stream_server; ///< `inet_stream_server` is our friend so he may manipulate private members
+					     ///< as `sfd` when returning an instance (e.g. at `accept()`)
     };
+    /**
+     * @}
+     */
 }
 # endif
