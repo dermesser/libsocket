@@ -1,5 +1,5 @@
-# ifndef _INETSERVERDGRAM_H
-# define _INETSERVERDGRAM_H
+# ifndef INETSERVERDGRAM_H
+# define INETSERVERDGRAM_H
 
 # include "inetbase.hpp"
 # include "inetdgram.hpp"

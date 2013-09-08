@@ -1,5 +1,5 @@
-# ifndef _INETBASE_H
-# define _INETBASE_H
+# ifndef INETBASE_H
+# define INETBASE_H
 
 # include <string>
 # include "socket.hpp"

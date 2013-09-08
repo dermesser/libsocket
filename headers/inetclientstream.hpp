@@ -1,5 +1,5 @@
-# ifndef _INETCLIENTSTREAM_H
-# define _INETCLIENTSTREAM_H
+# ifndef INETCLIENTSTREAM_H
+# define INETCLIENTSTREAM_H
 
 # include <string>
 # include <sys/types.h>

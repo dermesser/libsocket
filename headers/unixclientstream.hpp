@@ -1,5 +1,5 @@
-# ifndef _UNIXCLIENTSTREAM_H
-# define _UNIXCLIENTSTREAM_H
+# ifndef UNIXCLIENTSTREAM_H
+# define UNIXCLIENTSTREAM_H
 
 # include <string>
 

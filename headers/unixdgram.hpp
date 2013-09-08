@@ -1,5 +1,5 @@
-# ifndef _UNIXDGRAM_H
-# define _UNIXDGRAM_H
+# ifndef UNIXDGRAM_H
+# define UNIXDGRAM_H
 
 # include "unixbase.hpp"
 

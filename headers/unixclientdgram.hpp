@@ -1,5 +1,5 @@
-# ifndef _UNIXCLIENTDGRAM_H
-# define _UNIXCLIENTDGRAM_H
+# ifndef UNIXCLIENTDGRAM_H
+# define UNIXCLIENTDGRAM_H
 
 # include "unixdgram.hpp"
 # include "dgramclient.hpp"

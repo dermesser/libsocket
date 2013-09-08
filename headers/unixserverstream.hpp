@@ -1,5 +1,5 @@
-# ifndef _UNIXSERVERSTREAM_H
-# define _UNIXSERVERSTREAM_H
+# ifndef UNIXSERVERSTREAM_H
+# define UNIXSERVERSTREAM_H
 
 # include <string>
 

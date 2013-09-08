@@ -1,5 +1,5 @@
-# ifndef _UNIXSERVERDGRAM_H
-# define _UNIXSERVERDGRAM_H
+# ifndef UNIXSERVERDGRAM_H
+# define UNIXSERVERDGRAM_H
 
 # include "unixdgram.hpp"
 

@@ -1,5 +1,5 @@
-# ifndef _STREAMCLIENT_H
-# define _STREAMCLIENT_H
+# ifndef STREAMCLIENT_H
+# define STREAMCLIENT_H
 
 # include <string>
 # include "socket.hpp"

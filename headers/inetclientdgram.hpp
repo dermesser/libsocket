@@ -1,5 +1,5 @@
-# ifndef _INETDGRAMCLIENT_H
-# define _INETDGRAMCLIENT_H
+# ifndef INETDGRAMCLIENT_H
+# define INETDGRAMCLIENT_H
 
 # include <string>
 # include <sys/types.h>

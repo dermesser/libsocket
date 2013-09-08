@@ -1,5 +1,5 @@
-# ifndef _EXCEPTION_H
-# define _EXCEPTION_H
+# ifndef EXCEPTION_H
+# define EXCEPTION_H
 
 # include <string>
 

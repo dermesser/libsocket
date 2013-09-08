@@ -1,5 +1,5 @@
-# ifndef _SELECT_H
-# define _SELECT_H
+# ifndef SELECT_H
+# define SELECT_H
 
 # include <vector>
 # include <map>

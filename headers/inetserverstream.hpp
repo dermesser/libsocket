@@ -1,5 +1,5 @@
-# ifndef _INETSERVERSTREAM_H
-# define _INETSERVERSTREAM_H
+# ifndef INETSERVERSTREAM_H
+# define INETSERVERSTREAM_H
 
 # include "inetbase.hpp"
 # include "inetclientstream.hpp"
