@@ -30,7 +30,7 @@
 # include <string>
 # include <unistd.h>
 # include <string.h>
-
+# include <memory>
 // Inclusion here prevents further inclusion from headers/socket.hpp
 namespace BERKELEY {
 # include <sys/socket.h>
@@ -75,29 +75,26 @@ namespace libsocket
 	if ( sock.shut_rd == true )
 	    throw socket_exception(__FILE__,__LINE__,"stream_client_socket::operator>>(std::string) - Socket has already been shut down!\n");
 
-	buffer = new char[dest.size()];
+        using std::unique_ptr;
+        unique_ptr<char[]> buffer(new chat[dest.size()]);
 
-	memset(buffer,0,dest.size());
+	memset(buffer.get(),0,dest.size());
 
 	if ( sock.sfd == -1 )
 	{
-	    delete[] buffer;
 	    throw socket_exception(__FILE__,__LINE__,">>(std::string) input: Socket not connected!\n");
 	}
 
-	if ( -1 == (read_bytes = read(sock.sfd,buffer,dest.size())) )
+	if ( -1 == (read_bytes = read(sock.sfd,buffer.get(),dest.size())) )
 	{
-	    delete[] buffer;
 	    throw socket_exception(__FILE__,__LINE__,">>(std::string) input: Error while reading!\n");
 	}
 
 	if ( read_bytes < static_cast<ssize_t>(dest.size()) )
 	    dest.resize(read_bytes); // So the client doesn't print content more than one time
-	// and it can check if the string's length is 0 (end of transmission)
+                                     // and it can check if the string's length is 0 (end of transmission)
 
-	dest.assign(buffer,read_bytes);
-
-	delete[] buffer;
+	dest.assign(buffer.get(),read_bytes);
 
 	return sock;
     }
