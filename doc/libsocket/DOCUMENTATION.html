@@ -42,10 +42,11 @@ CCFLAGS=-DLIBSOCKET_VERBOSE
 
 <p>The usage of the flags for some functions is described for every function. If you don't need any flags (you think), you may specify <code>0</code> for every flag argument without errors.</p>
 
-<h3>Return values</h3>
+<h3>Errors and return values</h3>
 
 <p>If you don't enable the <code>LIBSOCKET_VERBOSE</code> macro, the library knows another way to notify you if there was an error: The return value. If anything went wrong, the return value is always <code>-1</code>. <strong>Every</strong> function behaves this way, so it's
-strongly recommended to check the return values of the API functions.</p>
+strongly recommended to check the return values of the API functions. To obtain more information about what went wrong, check <code>errno</code>; the man pages of the used syscalls (described in this document) contain information
+about possible <code>errno</code> values.</p>
 
 <h3>libinetsocket</h3>
 

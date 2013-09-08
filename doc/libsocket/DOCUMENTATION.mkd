@@ -38,10 +38,11 @@ Another compile-time option is `_TRADITIONAL_RDNS`. It's also a macro (like `LIB
 
 The usage of the flags for some functions is described for every function. If you don't need any flags (you think), you may specify `0` for every flag argument without errors.
 
-### Return values
+### Errors and return values
 
 If you don't enable the `LIBSOCKET_VERBOSE` macro, the library knows another way to notify you if there was an error: The return value. If anything went wrong, the return value is always `-1`. **Every** function behaves this way, so it's
-strongly recommended to check the return values of the API functions.
+strongly recommended to check the return values of the API functions. To obtain more information about what went wrong, check `errno`; the man pages of the used syscalls (described in this document) contain information
+about possible `errno` values.
 
 ### libinetsocket
 

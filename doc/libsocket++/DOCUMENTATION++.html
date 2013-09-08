@@ -54,7 +54,7 @@ For example, if you have a program which serves as client for a UDP based applic
 </code></pre>
 
 <p>As each class has its own file, you may look in classes.svg which files to include (just follow the path from the class you want to use up to the
-root class and include the files. You may find hints in LINKAGE.mkd</p>
+root class and include the files. You find additional hints in LINKAGE.mkd)</p>
 
 <h2>Class Hierarchy and names</h2>
 
@@ -101,6 +101,8 @@ objects from this classes although it's possible (they aren't abstract).</p>
     std::cerr &lt;&lt; exc.mesg &lt;&lt; " errno code: " &lt;&lt; exc.err;
 }
 </code></pre>
+
+<p>Machine-readable information about errors are placed in the <code>errno</code> variable. Possible values are described in the syscall's manual pages, referenced from this document.</p>
 
 <h1>libinetsocket++</h1>
 
