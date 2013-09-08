@@ -32,19 +32,19 @@
 
 */
 
-/*
+/**
  * @file select.cpp
  * @brief Contains the class selectset which provides a neat interface for watching several sockets
  *
- * 	The class selectset implements a wrapper for the syscall select() which allows
- * 	to accept connections on more than one socket or communicate with multiple clients
- * 	without multithreading.
+ * The class selectset implements a wrapper for the syscall select() which allows
+ * to accept connections on more than one socket or communicate with multiple clients
+ * without multithreading.
  *
- * 	New sockets may be added with add_fd(), accepting a child class of libsocket::socket.
+ * New sockets may be added with add_fd(), accepting a child class of libsocket::socket.
  *
- * 	When all sockets are added, the select() call can be triggered by calling wait(). This
- * 	function returns a pair of vector<int>s, the first with the sockets ready for reading and
- * 	the second containing the sockets ready for writing.
+ * When all sockets are added, the select() call can be triggered by calling wait(). This
+ * function returns a pair of vector<int>s, the first with the sockets ready for reading and
+ * the second containing the sockets ready for writing.
  */
 
 # include "../headers/exception.hpp"
@@ -52,15 +52,27 @@
 
 namespace libsocket
 {
-    int highestfd(std::vector<int>);
+    int highestfd(std::vector<int>); ///< Determines the highest number in a vector of ints; necessary for select()
 
-    selectset::selectset()
+    /**
+     * @brief Constructor.
+     *
+     * Initializes the sets.
+     */
+    selectset::selectset(void)
 	: filedescriptors(0), set_up(false)
     {
 	FD_ZERO(&readset);
 	FD_ZERO(&writeset);
     }
 
+    /**
+     * @brief Add a socket to the internal sets
+     *
+     * @param sock Some socket. May be server or client socket.
+     * @param method `LIBSOCKET_READ`/`LIBSOCKET_WRITE` or an `OR`ed combination thereof. Determines if the socket is checked on the possibility to read or to write.
+     *
+     */
     void selectset::add_fd(socket& sock, int method)
     {
 	int fd = sock.getfd();
@@ -88,6 +100,13 @@ namespace libsocket
 	}
     }
 
+    /**
+     * @brief Waits for a possibility to read or write data to emerge.
+     *
+     * @param microsecs A timeout in microseconds (for 5 seconds simply write 5e6, for ten seconds 10e6 and so on)
+     *
+     * @returns A pair of vectors of pointers to sockets. Information about the type of socket is lost; use `dynamic_cast<>()` and check for `NULL` to re-convert it.
+     */
     std::pair<std::vector<socket*>, std::vector<socket*> > selectset::wait(long long microsecs)
     {
 	int n = 0;
