@@ -61,6 +61,7 @@ namespace libsocket
      * @param bindhost The address the server should listen on
      * @param bindport The port the server should listen on
      * @param proto_osi3 The protocol: `LIBSOCKET_IPv4/LIBSOCKET_IPv6`
+     * @param flags Flags for `socket(2)`
      */
     inet_stream_server::inet_stream_server(const char* bindhost, const char* bindport, int proto_osi3, int flags)
 	: nonblock(false)
@@ -76,6 +77,7 @@ namespace libsocket
      * @param bindhost The address the server should listen on
      * @param bindport The port the server should listen on
      * @param proto_osi3 The protocol: `LIBSOCKET_IPv4/LIBSOCKET_IPv6`
+     * @param flags Flags for `socket(2)`
      */
     inet_stream_server::inet_stream_server(const string& bindhost, const string& bindport, int proto_osi3, int flags)
 	: nonblock(false)
@@ -92,6 +94,7 @@ namespace libsocket
      * @param bindhost The address the server should listen on
      * @param bindport The port the server should listen on
      * @param proto_osi3 The protocol: `LIBSOCKET_IPv4/LIBSOCKET_IPv6`
+     * @param flags Flags for `socket(2)`
      */
     void inet_stream_server::setup(const char* bindhost, const char* bindport, int proto_osi3, int flags)
     {
@@ -121,6 +124,7 @@ namespace libsocket
      * @param bindhost The address the server should listen on
      * @param bindport The port the server should listen on
      * @param proto_osi3 The protocol: `LIBSOCKET_IPv4/LIBSOCKET_IPv6`
+     * @param flags Flags for `socket(2)`
      */
     void inet_stream_server::setup(const string& bindhost, const string& bindport, int proto_osi3, int flags)
     {

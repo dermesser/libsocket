@@ -587,10 +587,11 @@ int shutdown_inet_stream_socket(int sfd, int method)
  */
 
 /**
- * @brief Create a TCP server socket
+ * @brief Create a TCP or UDP server socket
  *
- * To accept connections from clients via TCP, you need to create
- * a server socket.
+ * To accept connections from clients via TCP or receive datagrams via UDP, you need to create
+ * a server socket. This function creates such a socket and `bind(2)`s
+ * it to the specified address. If `proto_osi4` is `LIBSOCKET_TCP`, `listen(2)` is called, too.
  *
  * @param bind_addr Address to bind to. If you want to bind to every address use "0.0.0.0" or "::" (IPv6 wildcard)
  * @param bind_port The port to bind to. If you write a webserver, this will be "http" or "80" or "https" or "443".
