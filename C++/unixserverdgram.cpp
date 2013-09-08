@@ -25,10 +25,11 @@
 
 */
 
-/*
- * DESCRIPTION FOR UNIXSERVERDGRAM.CPP
- * 	Class for UNIX domain datagram servers - or -
- * 	a not connect()-able unix_dgram_client class.
+/**
+ * @file unixserverdgram.cpp
+ * @brief Class for UNIX domain datagram servers
+ *
+ * The only difference to "client" datagram socket is that this socket type is not `connect()`-able.
  */
 
 # include "../headers/libunixsocket.h"
@@ -39,20 +40,47 @@ namespace libsocket
 {
     using std::string;
 
+    /**
+     * @brief Void constructor.
+     */
     unix_dgram_server::unix_dgram_server(void)
 	: bound(false)
     { }
 
+    /**
+     * @brief Constructs and binds a socket
+     *
+     * Constructs a socket and binds it to `bindpath`. Then calls `listen()`.
+     *
+     * @param bindpath Bind path.
+     * @param socket_flags Flags for `socket(2)`
+     */
     unix_dgram_server::unix_dgram_server(const char* bindpath, int socket_flags)
     {
 	setup(bindpath,socket_flags);
     }
 
+    /**
+     * @brief Constructs and binds a socket
+     *
+     * Constructs a socket and binds it to `bindpath`. Then calls `listen()`.
+     *
+     * @param bindpath Bind path.
+     * @param socket_flags Flags for `socket(2)`
+     */
     unix_dgram_server::unix_dgram_server(const string& bindpath, int socket_flags)
     {
 	setup(bindpath.c_str(),socket_flags);
     }
 
+    /**
+     * @brief Binds a socket
+     *
+     * Binds a socket. (Also calls `listen()`)
+     *
+     * @param bindpath Bind path.
+     * @param socket_flags Flags for `socket(2)`
+     */
     void unix_dgram_server::setup(const char* bindpath, int socket_flags)
     {
 	if ( sfd != -1 )
@@ -67,6 +95,14 @@ namespace libsocket
 	bound = true;
     }
 
+    /**
+     * @brief Binds a socket
+     *
+     * Binds a socket. (Also calls `listen()`)
+     *
+     * @param bindpath Bind path.
+     * @param socket_flags Flags for `socket(2)`
+     */
     void unix_dgram_server::setup(const string& bindpath, int socket_flags)
     {
 	setup(bindpath.c_str(),socket_flags);

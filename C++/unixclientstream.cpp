@@ -27,12 +27,14 @@
 
 */
 
-/*
- * DESCRIPTION FOR UNIXCLIENTSTREAM.CPP
- * 	unix_stream_client is the client socket
- * 	for UNIX domain SOCK_STREAM client sockets.
- * 	You may create and connect the socket after
- * 	instantiation using connect().
+/**
+ * @file unixclientstream.cpp
+ * @brief Contains `unix_stream_client`, which can be used for UNIX SOCK_STREAM connections.
+ *
+ * unix_stream_client is the client socket
+ * for UNIX domain SOCK_STREAM client sockets.
+ * You may create and connect the socket after
+ * instantiation using connect().
  */
 
 # include "../headers/libunixsocket.h"
@@ -43,18 +45,45 @@ namespace libsocket
 {
     using std::string;
 
+    /**
+     * @brief Constructor.
+     */
     unix_stream_client::unix_stream_client(void) {}
-    // Server path!
+
+    /**
+     * @brief Constructor, setting up a connection
+     *
+     * Constructs a UNIX stream client socket and connects it.
+     *
+     * @param path Peer (server) socket.
+     * @param socket_flags Flags for `socket(2)`
+     */
     unix_stream_client::unix_stream_client(const char* path, int socket_flags)
     {
 	connect(path,socket_flags);
     }
 
+    /**
+     * @brief Constructor, setting up a connection
+     *
+     * Constructs a UNIX stream client socket and connects it.
+     *
+     * @param path Peer (server) socket.
+     * @param socket_flags Flags for `socket(2)`
+     */
     unix_stream_client::unix_stream_client(const string& path, int socket_flags)
     {
 	connect(path.c_str(),socket_flags);
     }
 
+    /**
+     * @brief Connect socket
+     *
+     * Connects a client stream socket.
+     *
+     * @param path The server socket's path
+     * @param socket_flags Flags for `socket(2)` (Do I repeat myself?)
+     */
     void unix_stream_client::connect(const char* path, int socket_flags)
     {
 	if ( sfd != -1 )
@@ -72,6 +101,14 @@ namespace libsocket
 	shut_wr = false;
     }
 
+    /**
+     * @brief Connect socket
+     *
+     * Connects a client stream socket.
+     *
+     * @param path The server socket's path
+     * @param socket_flags Flags for `socket(2)` (Do I repeat myself?)
+     */
     void unix_stream_client::connect(const string& path, int socket_flags)
     {
 	connect(path.c_str(),socket_flags);

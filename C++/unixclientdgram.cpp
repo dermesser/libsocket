@@ -24,10 +24,10 @@ using std::string;
 
 */
 
-/** 
+/**
  * @file unixclientdgram.cpp
  * @brief Client for UNIX domain datagram sockets.
- * 	
+ *
  * An important difference to inet_dgram_client is that the
  * path given at the constructors is the /bind path/, not
  * a socket to which the datagram is connected immediately
@@ -102,7 +102,7 @@ namespace libsocket
      * @brief Connect a UNIX datagram socket
      *
      * This function connects a datagram socket; `connect(2)` says the following about this:
-     * 
+     *
      * > If the socket sockfd is of type SOCK_DGRAM then addr is the address to which datagrams are sent by default, and the only address from which datagrams are  received.
      *
      * @param path The path of the socket to connect this socket to.
@@ -123,7 +123,7 @@ namespace libsocket
      * @brief Connect a UNIX datagram socket
      *
      * This function connects a datagram socket; `connect(2)` says the following about this:
-     * 
+     *
      * > If the socket sockfd is of type SOCK_DGRAM then addr is the address to which datagrams are sent by default, and the only address from which datagrams are  received.
      *
      * @param path The path of the socket to connect this socket to.

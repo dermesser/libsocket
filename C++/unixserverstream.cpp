@@ -21,14 +21,15 @@
 
 */
 
-/*
- * DESCRIPTION FOR UNIXSERVERSTREAM.CPP
- *	Provides a UNIX domain STREAM server.
- *	The path given at the constructors is the bind
- *	path. accept() accepts a new connection and returns
- *	(like inet_stream_server) a pointer to a dynamically allocated
- *	instance of unix_stream_client which may be used to
- *	communicate with the connected client.
+/**
+ * @file unixserverstream.cpp
+ * @brief Provides a UNIX domain STREAM server.
+ *
+ *  The path given at the constructors is the bind
+ *  path. accept() accepts a new connection and returns
+ *  (like inet_stream_server) a pointer to a dynamically allocated
+ *  instance of unix_stream_client which may be used to
+ *  communicate with the connected client.
  */
 
 # include "../headers/libunixsocket.h"
@@ -39,20 +40,41 @@ namespace libsocket
 {
     using std::string;
 
+    /**
+     * @brief Void constructor
+     */
     unix_stream_server::unix_stream_server(void)
     {
     }
 
+    /**
+     * @brief Constructs and binds server socket.
+     *
+     * @param path Bind path.
+     * @param flags Flags for `socket(2)`
+     */
     unix_stream_server::unix_stream_server(const char* path, int flags)
     {
 	setup(path,flags);
     }
 
+    /**
+     * @brief Constructs and binds server socket.
+     *
+     * @param path Bind path.
+     * @param flags Flags for `socket(2)`
+     */
     unix_stream_server::unix_stream_server(const string& path, int flags)
     {
 	setup(path,flags);
     }
 
+    /**
+     * @brief Sets a server socket up.
+     *
+     * @param path Bind path.
+     * @param flags Flags for `socket(2)`
+     */
     void unix_stream_server::setup(const char* path, int flags)
     {
 	if ( sfd != -1 )
@@ -68,11 +90,22 @@ namespace libsocket
 	_path.assign(path);
     }
 
+    /**
+     * @brief Sets a server socket up.
+     *
+     * @param path Bind path.
+     * @param flags Flags for `socket(2)`
+     */
     void unix_stream_server::setup(const string& path, int flags)
     {
 	setup(path.c_str(),flags);
     }
 
+    /**
+     * @brief Accepts incoming connections on a UNIX domain stream server socket.
+     *
+     * @param flags Flags for Linux' `accept4()`; useless on other implementations.
+     */
     unix_stream_client* unix_stream_server::accept(int flags)
     {
 	int cfd;
