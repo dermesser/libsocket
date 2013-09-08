@@ -24,13 +24,15 @@ using std::string;
 
 */
 
-/*
- * DESCRIPTION FOR UNIXCLIENTDGRAM.CPP
- * 	Client for UNIX domain datagram sockets.
- * 	An important difference to inet_dgram_client is that the
- * 	path given at the constructors is the /bind path/, not
- * 	a socket to which the datagram is connected immediately
- * 	after creation.
+/** 
+ * @file unixclientdgram.cpp
+ * @brief Client for UNIX domain datagram sockets.
+ * 	
+ * An important difference to inet_dgram_client is that the
+ * path given at the constructors is the /bind path/, not
+ * a socket to which the datagram is connected immediately
+ * after creation.
+ *
  */
 
 # include "../headers/exception.hpp"
@@ -39,7 +41,12 @@ using std::string;
 
 namespace libsocket
 {
-    //				Bind path, not connect!
+    /**
+     * @brief Set a UNIX domain datagram socket up
+     *
+     * @param path The path to bind this socket to
+     * @param flags Flags for `socket(2)`
+     */
     void unix_dgram_client::setup(const char* path, int flags)
     {
 	if ( sfd != -1 )
@@ -55,21 +62,51 @@ namespace libsocket
 
     }
 
+    /**
+     * @brief Constructor with only `socket()` flags
+     *
+     * @param flags Flags for `socket(2)`
+     */
     unix_dgram_client::unix_dgram_client(int flags)
     {
 	setup(0,flags); // bind to nowhere
     }
 
+    /**
+     * @brief Constructor setting the socket up
+     *
+     * This constructor binds the socket to the given path.
+     *
+     * @param path Bind path.
+     * @param flags Flags for `socket(2)`
+     */
     unix_dgram_client::unix_dgram_client(const char* path, int flags)
     {
 	setup(path,flags); // bind to path
     }
 
+    /**
+     * @brief Constructor setting the socket up
+     *
+     * This constructor binds the socket to the given path.
+     *
+     * @param path Bind path.
+     * @param flags Flags for `socket(2)`
+     */
     unix_dgram_client::unix_dgram_client(const string& path, int flags)
     {
 	setup(path.c_str(),flags);
     }
 
+    /**
+     * @brief Connect a UNIX datagram socket
+     *
+     * This function connects a datagram socket; `connect(2)` says the following about this:
+     * 
+     * > If the socket sockfd is of type SOCK_DGRAM then addr is the address to which datagrams are sent by default, and the only address from which datagrams are  received.
+     *
+     * @param path The path of the socket to connect this socket to.
+     */
     void unix_dgram_client::connect(const char* path)
     {
 	if ( sfd == -1 )
@@ -82,11 +119,26 @@ namespace libsocket
 	connected = true;
     }
 
+    /**
+     * @brief Connect a UNIX datagram socket
+     *
+     * This function connects a datagram socket; `connect(2)` says the following about this:
+     * 
+     * > If the socket sockfd is of type SOCK_DGRAM then addr is the address to which datagrams are sent by default, and the only address from which datagrams are  received.
+     *
+     * @param path The path of the socket to connect this socket to.
+     */
     void unix_dgram_client::connect(const string& path)
     {
 	connect(path.c_str());
     }
 
+    /**
+     * @brief Disconnect a UNIX datagram socket
+     *
+     * Disconnects a previously connected socket.
+     *
+     */
     void unix_dgram_client::deconnect(void)
     {
 	if ( connect_unix_dgram_socket(sfd,0) < 0 )
