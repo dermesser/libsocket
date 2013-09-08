@@ -1,6 +1,7 @@
 # include <iostream>
 # include <string>
 # include <string.h>
+# include <memory>
 
 # include <unistd.h>
 # include <sys/socket.h>
@@ -106,23 +107,24 @@ namespace libsocket
     {
 	ssize_t bytes;
 
-	char* from_host = new char[1024]; // Let's say, that's enough
-	char* from_port = new char[32];
+	using std::unique_ptr;
+	unique_ptr<char[]> from_host(new char[1024]);
+	unique_ptr<char[]> from_port(new char[32]);
 
-	memset(from_host,0,1024);
-	memset(from_port,0,32);
+	memset(from_host.get(),0,1024);
+	memset(from_port.get(),0,32);
 	memset(buf,0,len);
 
-	bytes = rcvfrom(buf,len,from_host,1023,from_port,31,rcvfrom_flags,numeric);
+	bytes = rcvfrom(buf,len,from_host.get(),1023,from_port.get(),31,rcvfrom_flags,numeric);
 
-	srchost.resize(strlen(from_host));
-	srcport.resize(strlen(from_port));
+	if ( bytes < 0 )
+	    throw socket_exception(__FILE__,__LINE__,"inet_dgram::rcvfrom: Could not receive data from peer!\n");
 
-	srchost.assign(from_host);
-	srcport.assign(from_port);
+	srchost.resize(strlen(from_host.get()));
+	srcport.resize(strlen(from_port.get()));
 
-	delete[] from_host;
-	delete[] from_port;
+	srchost.assign(from_host.get());
+	srcport.assign(from_port.get());
 
 	return bytes;
     }
@@ -148,17 +150,19 @@ namespace libsocket
     {
 	ssize_t bytes;
 
-	char* cbuf = new char[buf.size()];
+	using std::unique_ptr;
+	unique_ptr<char[]> cbuf(new char[buf.size()])
 
-	memset(cbuf,0,buf.size());
+	    memset(cbuf.get(),0,buf.size());
 
-	bytes = rcvfrom(cbuf,static_cast<size_t>(buf.size()),srchost,srcport,rcvfrom_flags,numeric); // calling inet_dgram::rcvfrom(void*, size_t, string&, string&, int, bool)
+	bytes = rcvfrom(cbuf.get(),static_cast<size_t>(buf.size()),srchost,srcport,rcvfrom_flags,numeric); // calling inet_dgram::rcvfrom(void*, size_t, string&, string&, int, bool)
+
+	if ( bytes < 0 )
+	    throw socket_exception(__FILE__,__LINE__,"inet_dgram::rcvfrom: Could not receive data from peer!\n");
 
 	buf.resize(bytes);
 
-	buf.assign(cbuf,bytes);
-
-	delete[] cbuf;
+	buf.assign(cbuf.get(),bytes);
 
 	return bytes;
     }

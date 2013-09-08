@@ -1,6 +1,9 @@
 # include <string>
 # include <unistd.h>
 # include <string.h>
+
+# include <memory>
+
 /*
    The committers of the libsocket project, all rights reserved
    (c) 2012, dermesser <lbo@spheniscida.de>
@@ -134,21 +137,23 @@ namespace libsocket
 
 	ssize_t bytes;
 
-	char* source_cstr = new char[512]; // AFAIK, the address field in struct sockaddr_un is only 108 bytes long...
+	using std::unique_ptr;
+
+	unique_ptr<char[]> source_cstr(new char[108]); // AFAIK, the address field in struct sockaddr_un is only 108 bytes long...
 	size_t source_cstr_len;
 
-	memset(source_cstr,0,512);
+	memset(source_cstr.get(),0,108);
 
-	bytes = recvfrom_unix_dgram_socket(sfd,buf,length,source_cstr,511,recvfrom_flags);
+	bytes = recvfrom_unix_dgram_socket(sfd,buf,length,source_cstr.get(),107,recvfrom_flags);
 
 	if ( bytes < 0 )
 	    throw socket_exception(__FILE__,__LINE__,"unix_dgram::rcvfrom: Could not receive data from peer!\n");
 
-	source_cstr_len = strlen(source_cstr);
+	source_cstr_len = strlen(source_cstr.get());
 
 	source.resize(source_cstr_len);
 
-	source = source_cstr;
+	source = source_cstr.get();
 
 	return bytes;
     }
@@ -169,28 +174,27 @@ namespace libsocket
 
 	ssize_t bytes;
 
-	char* source_cstr = new char[512]; // AFAIK, the address field in struct sockaddr_un is only 108 bytes...
-	char* cbuf = new char[buf.size()];
+	using std::unique_ptr;
+
+	unique_ptr<char[]> source_cstr(new char[108]); // AFAIK, the address field in struct sockaddr_un is only 108 bytes...
+	unique_ptr<char[]> cbuf(new char[buf.size()]);
 
 	size_t source_cstr_len;
 
-	memset(source_cstr,0,512);
+	memset(source_cstr.get(),0,108);
 
-	bytes = recvfrom_unix_dgram_socket(sfd,cbuf,buf.size(),source_cstr,511,recvfrom_flags);
+	bytes = recvfrom_unix_dgram_socket(sfd,cbuf.get(),buf.size(),source_cstr.get(),107,recvfrom_flags);
 
 	if ( bytes < 0 )
 	    throw socket_exception(__FILE__,__LINE__,"unix_dgram::rcvfrom: Could not receive data from peer!\n");
 
-	source_cstr_len = strlen(source_cstr);
+	source_cstr_len = strlen(source_cstr.get());
 
 	source.resize(source_cstr_len);
 	buf.resize(bytes);
 
-	buf.assign(cbuf,bytes);
-	source.assign(source_cstr,source_cstr_len);
-
-	delete[] source_cstr;
-	delete[] cbuf;
+	buf.assign(cbuf.get(),bytes);
+	source.assign(source_cstr.get(),source_cstr_len);
 
 	return bytes;
     }
