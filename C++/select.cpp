@@ -78,6 +78,13 @@ namespace libsocket
 	    filedescriptors.push_back(fd);
 	    fdsockmap[fd] = &sock;
 	    set_up = true;
+	} else if ( method == (LIBSOCKET_READ|LIBSOCKET_WRITE) )
+	{ // don't put the fd in our data structures twice.
+	    FD_SET(fd,&readset);
+	    FD_SET(fd,&writeset);
+	    filedescriptors.push_back(fd);
+	    fdsockmap[fd] = &sock;
+	    set_up = true;
 	}
     }
 
