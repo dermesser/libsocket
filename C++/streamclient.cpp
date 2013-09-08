@@ -20,11 +20,13 @@
 
 */
 
-/*
- * DESCRIPTION FOR STREAMCLIENT.CPP
- * 	This class provides, similar to dgramclient.cpp resp.
- * 	dgram_client_socket, the basic I/O functions for all
- * 	stream-based sockets (TCP and UNIX-SOCK_STREAM).
+/**
+ * @file streamclient.cpp
+ * @brief Basic stream I/O (read/write/send/recv)
+ *
+ * This class provides, similar to dgramclient.cpp resp.
+ * dgram_client_socket, the basic I/O functions for all
+ * stream-based sockets (TCP and UNIX-SOCK_STREAM).
  */
 
 # include <string>
@@ -42,10 +44,24 @@ namespace BERKELEY {
 
 namespace libsocket
 {
+    /**
+     * @brief Void constructor
+     */
     stream_client_socket::stream_client_socket()
 	: shut_rd(false), shut_wr(false)
     {}
 
+    /**
+     * @brief Receive data from socket
+     *
+     * ...and puts it in `buf`.
+     *
+     * @param buf A writable memory buffer of length `len`
+     * @param len Length of `buf`
+     * @param flags Flags for `recv(2)`. WARNING: Throws an exception if `recv()` returns -1; this may be the case if the flag `MSG_DONTWAIT` is used.
+     *
+     * @returns The length of received data
+     */
     ssize_t stream_client_socket::rcv(void* buf, size_t len, int flags)
     {
 	ssize_t recvd;
@@ -67,6 +83,18 @@ namespace libsocket
 	return recvd;
     }
 
+    /**
+     * @brief Receive data from socket to a string
+     *
+     * Receives n bytes of data (where `n == dest.size()`) and writes it to a string.
+     *
+     * Application: infix; `sock >> dest1 [>> dest2...];`
+     *
+     * @param sock the socket.
+     * @param dest the destination string. Its length determines how much data is received.
+     *
+     * @returns the same socket which was given as parameter. (See "Application")
+     */
     stream_client_socket& operator>>(stream_client_socket& sock, string& dest)
     {
 	ssize_t read_bytes;
@@ -104,6 +132,19 @@ namespace libsocket
 
     // O
 
+    /**
+     * @brief Send data to socket
+     *
+     * Sends data to socket using stream-like syntax:
+     *
+     * `socket << "Hello " << "World" << "\n";`
+     *
+     * Important: Only overloaded for C and C++ strings, not for numbers, chars etc.!
+     *
+     * @param sock A socket.
+     * @param str Data to be sent; do a `static_cast<>()` to send raw data.
+     *
+     */
     stream_client_socket& operator<<(stream_client_socket& sock, const char* str)
     {
 	if ( sock.shut_wr == true )
@@ -121,6 +162,19 @@ namespace libsocket
 	return sock;
     }
 
+    /**
+     * @brief Send data to socket
+     *
+     * Sends data to socket using stream-like syntax:
+     *
+     * `socket << "Hello " << "World" << "\n";`
+     *
+     * Important: Only overloaded for C and C++ strings, not for numbers, chars etc.!
+     *
+     * @param sock A socket.
+     * @param str Data to be sent; do a `static_cast<>()` to send raw data.
+     *
+     */
     stream_client_socket& operator<<(stream_client_socket& sock, string& str)
     {
 	if ( sock.shut_wr == true )
@@ -134,6 +188,16 @@ namespace libsocket
 	return sock;
     }
 
+    /**
+     * @brief Send data to socket
+     *
+     * @param buf Data to be sent
+     * @param len Length of `buf`
+     * @param flags Flags for `send(2)`. WARNING: Throws an exception if `send()` returns -1; this may be the case if the flag `MSG_DONTWAIT` is used.
+     *
+     * @returns The number of bytes sent to the peer.
+     *
+     */
     ssize_t stream_client_socket::snd(const void* buf, size_t len, int flags)
     {
 	ssize_t snd_bytes;
@@ -151,9 +215,16 @@ namespace libsocket
 	return snd_bytes;
     }
 
+    /**
+     * @brief Shut a socket down
+     *
+     * Shuts a socket down using `shutdown(2)`.
+     *
+     * @param method `LIBSOCKET_READ/LIBSOCKET_WRITE` or an `OR`ed combination.
+     */
     void stream_client_socket::shutdown(int method)
     {
-        int u_method = 0; // unix flags
+	int u_method = 0; // unix flags
 
 	// Already shut down using this method...
 	if ( (method & (LIBSOCKET_READ|LIBSOCKET_WRITE)) && (shut_rd == true) && (shut_wr == true) )
@@ -163,14 +234,14 @@ namespace libsocket
 	if ( (method & LIBSOCKET_WRITE) && (shut_wr == true) )
 	    return;
 
-        if ( method == (LIBSOCKET_READ|LIBSOCKET_WRITE) )
-            u_method = BERKELEY::SHUT_RDWR;
-        else if ( method == LIBSOCKET_READ )
-            u_method = BERKELEY::SHUT_RD;
-        else if ( method == LIBSOCKET_WRITE )
-            u_method = BERKELEY::SHUT_WR;
-        else // With no valid combination
-            return;
+	if ( method == (LIBSOCKET_READ|LIBSOCKET_WRITE) )
+	    u_method = BERKELEY::SHUT_RDWR;
+	else if ( method == LIBSOCKET_READ )
+	    u_method = BERKELEY::SHUT_RD;
+	else if ( method == LIBSOCKET_WRITE )
+	    u_method = BERKELEY::SHUT_WR;
+	else // With no valid combination
+	    return;
 
 	if ( 0 > BERKELEY::shutdown(sfd,u_method)) // It's equal whether we use this or its brother from libunixsocket
 	{
