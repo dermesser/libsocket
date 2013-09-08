@@ -1,5 +1,7 @@
 # include <string.h>
 # include <string>
+# include <memory>
+
 
 /*
    The committers of the libsocket project, all rights reserved
@@ -155,16 +157,17 @@ namespace libsocket
 	if ( sfd < 0 )
 	    throw socket_exception(__FILE__,__LINE__,"inet_stream_server::accept() - stream server socket is not in listening state -- please call first setup()!\n");
 
-	char* src_host = new char[1024];
-	char* src_port = new char[32];
+	using std::unique_ptr;
+	unique_ptr<char[]> src_host(new char[1024]);
+	unique_ptr<char[]> src_port(new char[32]);
 
-	memset(src_host,0,1024);
-	memset(src_port,0,32);
+	memset(src_host.get(),0,1024);
+	memset(src_port.get(),0,32);
 
 	int client_sfd;
 	inet_stream* client = new inet_stream;
 
-	if ( -1 == (client_sfd = accept_inet_stream_socket(sfd,src_host,1023,src_port,31,numeric,accept_flags)) )
+	if ( -1 == (client_sfd = accept_inet_stream_socket(sfd,src_host.get(),1023,src_port.get(),31,numeric,accept_flags)) )
 	{
 	    if ( nonblock == false )
 	    {
@@ -176,12 +179,9 @@ namespace libsocket
 	}
 
 	client->sfd = client_sfd;
-	client->host = string(src_host); // these strings are destructed automatically when the returned object is deleted. (http://stackoverflow.com/a/6256543)
-	client->port = string(src_port); //
+	client->host = string(src_host.get()); // these strings are destructed automatically when the returned object is deleted. (http://stackoverflow.com/a/6256543)
+	client->port = string(src_port.get()); //
 	client->proto = proto;
-
-	delete[] src_host;
-	delete[] src_port;
 
 	return client;
     }
