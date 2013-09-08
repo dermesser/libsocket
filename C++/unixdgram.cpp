@@ -23,12 +23,14 @@
 
 */
 
-/*
- * DESCRIPTION FOR UNIXDGRAM.CPP
- * 	Provides the basic I/O functions for every UNIX domain
- * 	datagram socket. Every unix datagram socket class is
- * 	derived from this class because sndto and rcvfrom may be
- * 	called on every datagram socket.
+/**
+ * @file unixdgram.cpp
+ * @brief I/O for UNIX sockets
+ *
+ * Provides the basic I/O functions for every UNIX domain
+ * datagram socket. Every unix datagram socket class is
+ * derived from this class because sndto and rcvfrom may be
+ * called on every datagram socket.
  */
 
 # include "../headers/libunixsocket.h"
@@ -37,7 +39,16 @@
 
 namespace libsocket
 {
-    // Main sendto function
+    /**
+     * @brief Send data to datagram socket
+     *
+     * @param buf Pointer to data.
+     * @param length Length of `buf`
+     * @param path Path of destination
+     * @param sendto_flags Flags for `sendto(2)`
+     *
+     * @returns How many bytes were sent.
+     */
     ssize_t unix_dgram::sndto(const void* buf, size_t length, const char* path, int sendto_flags)
     {
 	if ( buf == NULL )
@@ -51,16 +62,46 @@ namespace libsocket
 	return bytes;
     }
 
+    /**
+     * @brief Send data to datagram socket
+     *
+     * @param buf Pointer to data.
+     * @param length Length of `buf`
+     * @param path Path of destination
+     * @param sendto_flags Flags for `sendto(2)`
+     *
+     * @returns How many bytes were sent.
+     */
     ssize_t unix_dgram::sndto(const void* buf, size_t length, const string& path, int sendto_flags)
     {
-	return sndto(buf,length,path.c_str(),sendto_flags); // calling sndto(const void*,size_t,const char*, int)
+	return sndto(buf,length,path.c_str(),sendto_flags);
     }
 
+    /**
+     * @brief Send data to datagram socket
+     *
+     * @param buf Pointer to data.
+     * @param path Path of destination
+     * @param sendto_flags Flags for `sendto(2)`
+     *
+     * @returns How many bytes were sent.
+     */
     ssize_t unix_dgram::sndto(const string& buf, const string& path, int sendto_flags)
     {
-	return sndto(static_cast<const void*>(buf.c_str()),buf.size(),path.c_str(),sendto_flags); // calling sndto(const void*,size_t,const char*, int)
+	return sndto(static_cast<const void*>(buf.c_str()),buf.size(),path.c_str(),sendto_flags);
     }
 
+    /**
+     * @brief Receive data and store the sender's address
+     *
+     * @param buf Receive buffer
+     * @param length Length of `buf`
+     * @param source Buffer for sender's path
+     * @param source_len `source`'s length
+     * @param recvfrom_flags Flags for `recvfrom(2)`
+     *
+     * @returns How many bytes were received.
+     */
     ssize_t unix_dgram::rcvfrom(void* buf, size_t length, char* source, size_t source_len, int recvfrom_flags)
     {
 	if ( buf == NULL )
@@ -76,6 +117,16 @@ namespace libsocket
 	return bytes;
     }
 
+    /**
+     * @brief Receive data and store the sender's address
+     *
+     * @param buf Receive buffer
+     * @param length Length of `buf`
+     * @param source Buffer for sender's path. The path is truncated to `source.size()` characters.
+     * @param recvfrom_flags Flags for `recvfrom(2)`
+     *
+     * @returns How many bytes were received.
+     */
     ssize_t unix_dgram::rcvfrom(void* buf, size_t length, string& source, int recvfrom_flags)
     {
 	if ( buf == NULL )
@@ -102,6 +153,15 @@ namespace libsocket
 	return bytes;
     }
 
+    /**
+     * @brief Receive data and store the sender's address
+     *
+     * @param buf Receive buffer. The data is truncated to `buf.size()` characters.
+     * @param source Buffer for sender's path. The path is truncated to `source.size()` characters.
+     * @param recvfrom_flags Flags for `recvfrom(2)`
+     *
+     * @returns How many bytes were received.
+     */
     ssize_t unix_dgram::rcvfrom(string& buf, string& source, int recvfrom_flags)
     {
 	if ( buf.empty() )
