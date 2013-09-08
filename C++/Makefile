@@ -13,7 +13,7 @@ LIBSOCKETPP_STATIC=libsocket++.a
 CC=gcc
 CPP=g++
 # CPPFLAGS for C++/*.cpp files
-CPPFLAGS= -std=gnu++11
+CPPFLAGS= -std=c++11
 
 # _MIXED enables some "extern" declarations in the C headers
 .cpp.o:
