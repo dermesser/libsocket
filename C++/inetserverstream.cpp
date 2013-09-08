@@ -122,11 +122,14 @@ namespace libsocket
 	}
 
 	client->sfd = client_sfd;
-	client->host = string(src_host);
-	client->port = string(src_port);
+	client->host = string(src_host); // these strings are destructed automatically when the returned object is deleted. (http://stackoverflow.com/a/6256543)
+	client->port = string(src_port); //
 	client->proto = proto;
+
+	delete src_host;
+	delete src_port;
 
 	return client;
     }
-
 }
+
