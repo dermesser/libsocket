@@ -180,8 +180,8 @@ namespace libsocket
 	client->port = string(src_port); //
 	client->proto = proto;
 
-	delete src_host;
-	delete src_port;
+	delete[] src_host;
+	delete[] src_port;
 
 	return client;
     }
