@@ -151,9 +151,9 @@ namespace libsocket
 	ssize_t bytes;
 
 	using std::unique_ptr;
-	unique_ptr<char[]> cbuf(new char[buf.size()])
+	unique_ptr<char[]> cbuf(new char[buf.size()]);
 
-	    memset(cbuf.get(),0,buf.size());
+        memset(cbuf.get(),0,buf.size());
 
 	bytes = rcvfrom(cbuf.get(),static_cast<size_t>(buf.size()),srchost,srcport,rcvfrom_flags,numeric); // calling inet_dgram::rcvfrom(void*, size_t, string&, string&, int, bool)
 

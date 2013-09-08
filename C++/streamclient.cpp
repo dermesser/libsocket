@@ -98,13 +98,12 @@ namespace libsocket
     stream_client_socket& operator>>(stream_client_socket& sock, string& dest)
     {
 	ssize_t read_bytes;
-	char* buffer;
 
 	if ( sock.shut_rd == true )
 	    throw socket_exception(__FILE__,__LINE__,"stream_client_socket::operator>>(std::string) - Socket has already been shut down!\n");
 
         using std::unique_ptr;
-        unique_ptr<char[]> buffer(new chat[dest.size()]);
+        unique_ptr<char[]> buffer(new char[dest.size()]);
 
 	memset(buffer.get(),0,dest.size());
 
