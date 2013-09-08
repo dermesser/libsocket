@@ -23,8 +23,10 @@
 
 */
 
-/*
- * DESCRIPTION FOR INETSERVERSTREAM.CPP
+/**
+ * @file inetserverstream.cpp
+ * @brief INET server class
+ *
  * 	inet_stream_server provides the TCP server part of libsocket.
  *	It's main function is accept() which returns a pointer to
  *	a dynamically allocated inet_stream (client socket) class which
@@ -41,23 +43,54 @@ namespace libsocket
 {
     using std::string;
 
+    /**
+     * @brief Void constructor; don't forget to setup() the socket before use!
+     */
     inet_stream_server::inet_stream_server(void)
 	: nonblock(false)
     {
     }
 
+    /**
+     * @brief Set up a server socket.
+     *
+     * This constructor initializes a server socket for TCP/IP communication.
+     *
+     * @param bindhost The address the server should listen on
+     * @param bindport The port the server should listen on
+     * @param proto_osi3 The protocol: `LIBSOCKET_IPv4/LIBSOCKET_IPv6`
+     */
     inet_stream_server::inet_stream_server(const char* bindhost, const char* bindport, int proto_osi3, int flags)
 	: nonblock(false)
     {
 	setup(bindhost,bindport,proto_osi3,flags);
     }
 
+    /**
+     * @brief Set up a server socket.
+     *
+     * This constructor initializes a server socket for TCP/IP communication.
+     *
+     * @param bindhost The address the server should listen on
+     * @param bindport The port the server should listen on
+     * @param proto_osi3 The protocol: `LIBSOCKET_IPv4/LIBSOCKET_IPv6`
+     */
     inet_stream_server::inet_stream_server(const string& bindhost, const string& bindport, int proto_osi3, int flags)
 	: nonblock(false)
     {
 	setup(bindhost,bindport,proto_osi3,flags);
     }
 
+    /**
+     * @brief Set up a server socket.
+     *
+     * If the zero-argument constructor was used, this method
+     * initializes a server socket for TCP/IP communication.
+     *
+     * @param bindhost The address the server should listen on
+     * @param bindport The port the server should listen on
+     * @param proto_osi3 The protocol: `LIBSOCKET_IPv4/LIBSOCKET_IPv6`
+     */
     void inet_stream_server::setup(const char* bindhost, const char* bindport, int proto_osi3, int flags)
     {
 	if ( sfd != -1 )
@@ -77,6 +110,16 @@ namespace libsocket
 # endif
     }
 
+    /**
+     * @brief Set up a server socket.
+     *
+     * If the zero-argument constructor was used, this method
+     * initializes a server socket for TCP/IP communication.
+     *
+     * @param bindhost The address the server should listen on
+     * @param bindport The port the server should listen on
+     * @param proto_osi3 The protocol: `LIBSOCKET_IPv4/LIBSOCKET_IPv6`
+     */
     void inet_stream_server::setup(const string& bindhost, const string& bindport, int proto_osi3, int flags)
     {
 	if ( sfd != -1 )
@@ -96,6 +139,17 @@ namespace libsocket
 # endif
     }
 
+    /**
+     * @brief Accept a connection and return a socket connected to the client.
+     *
+     * Waits for a client to connect and returns a pointer to a inet_stream object which can
+     * be used to communicate with the client.
+     *
+     * @param numeric Specifies if the client's parameter (IP address, port) should be delivered numerically in the src_host/src_port parameters.
+     * @param accept_flags Flags specified in `accept(2)`
+     *
+     * @returns A pointer to a connected TCP/IP client socket object.
+     */
     inet_stream* inet_stream_server::accept(int numeric,int accept_flags)
     {
 	if ( sfd < 0 )

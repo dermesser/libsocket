@@ -50,6 +50,7 @@ namespace libsocket
     {
 	private:
 	    bool nonblock; ///< States if the server socket is blocking or nonblocking.
+                           ///< Is used by inet_stream_server::accept to determine if accepting went wrong or the socket is just non-blocking.
 			   ///< @see inet_stream_server::accept
 
 	public:
