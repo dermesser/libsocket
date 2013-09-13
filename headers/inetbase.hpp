@@ -2,8 +2,9 @@
 # define INETBASE_H
 
 # include <string>
-# include "socket.hpp"
-# include "libinetsocket.h"
+# include <libsocket/socket.hpp>
+# include <libsocket/libinetsocket.h>
+
 /**
  * @file inetbase.hpp
  *

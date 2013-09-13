@@ -4,7 +4,7 @@
 # include <sys/socket.h>
 # include <sys/types.h>
 
-# include "exception.hpp"
+# include <libsocket/exception.hpp>
 
 /**
  * @file socket.hpp

@@ -38,9 +38,9 @@ namespace BERKELEY {
 # include <sys/socket.h>
 } // Against conflicts (shutdown(2)...)
 
-# include "../headers/libinetsocket.h"
-# include "../headers/exception.hpp"
-# include "../headers/streamclient.hpp"
+# include <libsocket/libinetsocket.h>
+# include <libsocket/exception.hpp>
+# include <libsocket/streamclient.hpp>
 
 namespace libsocket
 {

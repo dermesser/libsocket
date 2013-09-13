@@ -1,7 +1,7 @@
 # include <iostream>
 # include <string>
-# include "../headers/inetclientstream.hpp"
-# include "../headers/exception.hpp"
+# include <libsocket/inetclientstream.hpp>
+# include <libsocket/exception.hpp>
 
 // HTTP client demonstrating the use of stream operators
 // on STREAM sockets

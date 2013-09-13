@@ -1,8 +1,8 @@
 # ifndef INETSERVERDGRAM_H
 # define INETSERVERDGRAM_H
 
-# include "inetbase.hpp"
-# include "inetdgram.hpp"
+# include <libsocket/inetbase.hpp>
+# include <libsocket/inetdgram.hpp>
 
 /**
  * @file inetserverdgram.hpp

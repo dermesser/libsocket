@@ -36,10 +36,10 @@
  *	either with the second constructor or with setup()
  */
 
-# include "../headers/libinetsocket.h"
-# include "../headers/inetclientstream.hpp"
-# include "../headers/exception.hpp"
-# include "../headers/inetserverstream.hpp"
+# include <libsocket/libinetsocket.h>
+# include <libsocket/inetclientstream.hpp>
+# include <libsocket/exception.hpp>
+# include <libsocket/inetserverstream.hpp>
 
 namespace libsocket
 {

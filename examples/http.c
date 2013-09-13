@@ -1,6 +1,6 @@
 # include <stdio.h>
 # include <stdlib.h>
-# include "../headers/libinetsocket.h"
+# include <libsocket/libinetsocket.h>
 # include <unistd.h>
 # include <string.h>
 

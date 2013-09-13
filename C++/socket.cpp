@@ -31,7 +31,7 @@
  * 	class graph.
  */
 
-# include "../headers/socket.hpp"
+# include <libsocket/socket.hpp>
 
 namespace libsocket
 {

@@ -40,9 +40,9 @@
  * 	may be used for both client and server UDP sockets.
  */
 
-# include "../headers/libinetsocket.h"
-# include "../headers/exception.hpp"
-# include "../headers/inetdgram.hpp"
+# include <libsocket/libinetsocket.h>
+# include <libsocket/exception.hpp>
+# include <libsocket/inetdgram.hpp>
 
 namespace libsocket
 {

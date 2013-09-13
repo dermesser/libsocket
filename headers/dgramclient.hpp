@@ -1,7 +1,7 @@
 # ifndef DGRAMCLIENT_H
 # define DGRAMCLIENT_H
 
-# include "socket.hpp"
+# include <libsocket/socket.hpp>
 # include <string>
 # include <unistd.h>
 # include <string.h>

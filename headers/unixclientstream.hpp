@@ -3,8 +3,8 @@
 
 # include <string>
 
-# include "streamclient.hpp"
-# include "unixbase.hpp"
+# include <libsocket/streamclient.hpp>
+# include <libsocket/unixbase.hpp>
 
 /**
  * @file unixclientstream.hpp

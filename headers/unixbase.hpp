@@ -2,9 +2,8 @@
 # define UNIXBASE_H
 # include <string>
 
-# include "socket.hpp"
-
-# include "libunixsocket.h"
+# include <libsocket/socket.hpp>
+# include <libsocket/libunixsocket.h>
 
 /**
  * @file unixbase.hpp

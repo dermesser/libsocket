@@ -40,9 +40,9 @@
  * 	The I/O abilities are inherited from stream_client_socket.
  */
 
-# include "../headers/libinetsocket.h"
-# include "../headers/exception.hpp"
-# include "../headers/inetclientstream.hpp"
+# include <libsocket/libinetsocket.h>
+# include <libsocket/exception.hpp>
+# include <libsocket/inetclientstream.hpp>
 
 namespace libsocket
 {

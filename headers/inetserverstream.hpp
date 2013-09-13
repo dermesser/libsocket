@@ -1,8 +1,8 @@
 # ifndef INETSERVERSTREAM_H
 # define INETSERVERSTREAM_H
 
-# include "inetbase.hpp"
-# include "inetclientstream.hpp"
+# include <libsocket/inetbase.hpp>
+# include <libsocket/inetclientstream.hpp>
 
 /**
  * @file inetserverstream.hpp

@@ -47,8 +47,8 @@
  * the second containing the sockets ready for writing.
  */
 
-# include "../headers/exception.hpp"
-# include "../headers/select.hpp"
+# include <libsocket/exception.hpp>
+# include <libsocket/select.hpp>
 
 namespace libsocket
 {

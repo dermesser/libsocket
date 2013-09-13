@@ -1,6 +1,6 @@
 # include <iostream>
-# include "../headers/inetserverdgram.hpp"
-# include "../headers/exception.hpp"
+# include <libsocket/inetserverdgram.hpp>
+# include <libsocket/exception.hpp>
 # include <cstring>
 
 // Server for echo_client_*.cpp

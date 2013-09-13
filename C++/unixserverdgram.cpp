@@ -32,9 +32,9 @@
  * The only difference to "client" datagram socket is that this socket type is not `connect()`-able.
  */
 
-# include "../headers/libunixsocket.h"
-# include "../headers/exception.hpp"
-# include "../headers/unixserverdgram.hpp"
+# include <libsocket/libunixsocket.h>
+# include <libsocket/exception.hpp>
+# include <libsocket/unixserverdgram.hpp>
 
 namespace libsocket
 {

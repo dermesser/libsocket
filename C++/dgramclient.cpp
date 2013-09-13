@@ -44,8 +44,8 @@
  * @{
  */
 
-# include "../headers/exception.hpp"
-# include "../headers/dgramclient.hpp"
+# include <libsocket/exception.hpp>
+# include <libsocket/dgramclient.hpp>
 
 namespace libsocket
 {

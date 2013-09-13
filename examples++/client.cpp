@@ -1,7 +1,7 @@
 # include <iostream>
 # include <string>
-# include "../headers/inetclientstream.hpp"
-# include "../headers/exception.hpp"
+# include <libsocket/inetclientstream.hpp>
+# include <libsocket/exception.hpp>
 
 # include <unistd.h>
 # include <stdlib.h>

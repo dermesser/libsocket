@@ -42,9 +42,9 @@
  * 	bound to somewhere.
  */
 
-# include "../headers/libinetsocket.h"
-# include "../headers/exception.hpp"
-# include "../headers/inetclientdgram.hpp"
+# include <libsocket/libinetsocket.h>
+# include <libsocket/exception.hpp>
+# include <libsocket/inetclientdgram.hpp>
 
 namespace libsocket
 {

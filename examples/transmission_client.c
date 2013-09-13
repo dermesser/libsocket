@@ -1,7 +1,7 @@
 # include <stdio.h>
 # include <stdlib.h>
 # include <unistd.h>
-# include "../headers/libinetsocket.h"
+# include <libsocket/libinetsocket.h>
 
 /*
  * Connect to a transmission_server.c instance

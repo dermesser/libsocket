@@ -5,8 +5,8 @@
 # include <sys/types.h>
 # include <sys/socket.h>
 
-# include "inetbase.hpp"
-# include "streamclient.hpp"
+# include <libsocket/inetbase.hpp>
+# include <libsocket/streamclient.hpp>
 
 /**
  * @file inetclientstream.hpp

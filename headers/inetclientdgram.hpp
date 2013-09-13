@@ -5,8 +5,8 @@
 # include <sys/types.h>
 # include <sys/socket.h>
 
-# include "inetdgram.hpp"
-# include "dgramclient.hpp"
+# include <libsocket/inetdgram.hpp>
+# include <libsocket/dgramclient.hpp>
 
 /**
  * @file inetclientdgram.hpp

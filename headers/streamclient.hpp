@@ -2,7 +2,7 @@
 # define STREAMCLIENT_H
 
 # include <string>
-# include "socket.hpp"
+# include <libsocket/socket.hpp>
 
 /**
  * @file streamclient.hpp

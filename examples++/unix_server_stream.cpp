@@ -1,6 +1,6 @@
-# include "../headers/unixserverstream.hpp"
-# include "../headers/unixclientstream.hpp"
-# include "../headers/exception.hpp"
+# include <libsocket/unixserverstream.hpp>
+# include <libsocket/unixclientstream.hpp>
+# include <libsocket/exception.hpp>
 # include <string>
 # include <iostream>
 # include <string.h>

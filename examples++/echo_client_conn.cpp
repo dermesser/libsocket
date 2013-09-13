@@ -1,7 +1,7 @@
 # include <iostream>
 # include <unistd.h>
-# include "../headers/inetclientdgram.hpp"
-# include "../headers/exception.hpp"
+# include <libsocket/inetclientdgram.hpp>
+# include <libsocket/exception.hpp>
 
 /*
  * Sends and receives messages via connected UDP sockets

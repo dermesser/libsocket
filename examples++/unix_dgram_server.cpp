@@ -1,7 +1,7 @@
 # include <string>
 # include <iostream>
-# include "../headers/exception.hpp"
-# include "../headers/unixserverdgram.hpp"
+# include <libsocket/exception.hpp>
+# include <libsocket/unixserverdgram.hpp>
 
 // Sends a little log message via DGRAM to the syslogd
 

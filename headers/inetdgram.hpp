@@ -5,7 +5,7 @@
 # include <string>
 # include <string.h>
 
-# include "inetbase.hpp"
+# include <libsocket/inetbase.hpp>
 
 # include <unistd.h>
 # include <sys/socket.h>
