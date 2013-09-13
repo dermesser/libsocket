@@ -5,11 +5,11 @@ SHARED_OBJECT=libsocket.so
 STATICLIB=libsocket.a
 
 LIBPATH=/usr/lib
+API_PARENT_INC_DIR=$(CURDIR)/..
 
 #CC=gcc
-CPP=g++
 # -DVERBOSE to enable verbosity from libinetsocket/libunixsocket
-CFLAGS=
+CFLAGS+=-I $(API_PARENT_INC_DIR)
 
 .c.o:
 	$(CC) $(CFLAGS) -fPIC -c $<

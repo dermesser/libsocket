@@ -9,15 +9,16 @@ SHARED_OBJECT=libsocket++.so
 
 LIBSOCKET_STATIC=libsocket.a
 LIBSOCKETPP_STATIC=libsocket++.a
+API_PARENT_INC_DIR=$(CURDIR)/..
 
-CC=gcc
-CPP=g++
-# CPPFLAGS for C++/*.cpp files
-CPPFLAGS= -std=c++11
+CXX=g++
+# CXXFLAGS for C++/*.cpp files
+CXXFLAGS+=-I $(API_PARENT_INC_DIR)
+override CXXFLAGS+=-std=c++11
 
 # _MIXED enables some "extern" declarations in the C headers
 .cpp.o:
-	$(CPP) -D_MIXED $(CPPFLAGS) -fPIC -c $<
+	$(CXX) -D_MIXED $(CXXFLAGS) -fPIC -c $<
 
 # Build C++ object files
 obj: $(OBJECTS)
@@ -33,7 +34,7 @@ static: obj
 
 # Build shared object
 so: static libsocket
-	$(CPP) $(CPPFLAGS) -shared -o ../$(SHARED_OBJECT) -Wl,--whole-archive ../$(LIBSOCKET_STATIC) ../$(LIBSOCKETPP_STATIC) -Wl,--no-whole-archive
+	$(CXX) $(CXXFLAGS) -shared -o ../$(SHARED_OBJECT) -Wl,--whole-archive ../$(LIBSOCKET_STATIC) ../$(LIBSOCKETPP_STATIC) -Wl,--no-whole-archive
 
 
 # Install SO
