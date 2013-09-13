@@ -72,8 +72,8 @@ about possible <code>errno</code> values.</p>
 
 <p><em>Details about dependancies:</em> The actual code is in <code>libinetsocket.c</code> resp. <code>libunixsocket.c</code>. Every file of your application which wants to use this functions has to include the header files, e.g.:</p>
 
-<pre><code># include "../headers/libinetsocket.c"
-# include &lt;stdio.h&gt;
+<pre><code>#include &lt;libsocket/libinetsocket.h&gt;
+#include &lt;stdio.h&gt;
 ...
 .
 .
