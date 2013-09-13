@@ -1,5 +1,5 @@
-# ifndef SOCKET_H
-# define SOCKET_H
+#ifndef LIBSOCKET_SOCKET_H_CCC0882809A540AAAD842D9AE3DB47BB
+#define LIBSOCKET_SOCKET_H_CCC0882809A540AAAD842D9AE3DB47BB
 
 # include <sys/socket.h>
 # include <sys/types.h>
