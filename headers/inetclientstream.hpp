@@ -1,5 +1,5 @@
-# ifndef INETCLIENTSTREAM_H
-# define INETCLIENTSTREAM_H
+#ifndef LIBSOCKET_INETCLIENTSTREAM_H
+# define LIBSOCKET_INETCLIENTSTREAM_H
 
 # include <string>
 # include <sys/types.h>
