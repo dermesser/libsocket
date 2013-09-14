@@ -65,7 +65,7 @@ Note: To understand the dependencies between the files, take a look at doc/libso
 The descriptions of the classes are placed under the license at the beginning of every C++ source file.
 
 If you compile C files with a C compiler and C++ files with a C++ compiler, you have to invoke the C++ compiler with the
-option `-D_MIXED` to enable correct linkage!
+option `-DMIXED` to enable correct linkage!
 
 **Note II: Dynamic linkage is way easier!**
 
