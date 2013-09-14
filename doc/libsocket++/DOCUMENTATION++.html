@@ -42,8 +42,8 @@ don't have to include <code>inetbase.hpp</code>, <code>socket.hpp</code>, <code>
 <ul>
 <li>libsocket++ is only an object-oriented wrapper around libsocket; you always have to compile C/libinetsocket.c or link against
 libsocket.so.</li>
-<li>If you compile the C files with a C compiler and the C++ files with a C++ compiler, you <strong>have to set the flag -D_MIXED at the invocation
-of the C++ compiler!</strong> This macro enables <em>extern "C" { ... }</em> statements in the C headers. If you don't enable _MIXED, the linker will
+<li>If you compile the C files with a C compiler and the C++ files with a C++ compiler, you <strong>have to set the flag -DMIXED at the invocation
+of the C++ compiler!</strong> This macro enables <em>extern "C" { ... }</em> statements in the C headers. If you don't enable MIXED, the linker will
 not find the C functions.</li>
 </ul>
 

@@ -45,7 +45,7 @@
 # define LIBSOCKET_NUMERIC 1
 
 # ifdef __cplusplus
-# ifdef _MIXED
+# ifdef MIXED
 extern "C" {
 # endif
 # endif
@@ -62,7 +62,7 @@ extern int accept_inet_stream_socket(int sfd, char* src_host, size_t src_host_le
 extern int get_address_family(const char* hostname);
 
 # ifdef __cplusplus
-# ifdef _MIXED
+# ifdef MIXED
 }
 # endif
 # endif

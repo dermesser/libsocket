@@ -37,8 +37,8 @@ If you want to build a stand-alone binary without the need to link the libsocket
 
 - libsocket++ is only an object-oriented wrapper around libsocket; you always have to compile C/libinetsocket.c or link against
   libsocket.so.
-- If you compile the C files with a C compiler and the C++ files with a C++ compiler, you **have to set the flag -D_MIXED at the invocation
-  of the C++ compiler!** This macro enables *extern "C" { ... }* statements in the C headers. If you don't enable \_MIXED, the linker will
+- If you compile the C files with a C compiler and the C++ files with a C++ compiler, you **have to set the flag -DMIXED at the invocation
+  of the C++ compiler!** This macro enables *extern "C" { ... }* statements in the C headers. If you don't enable MIXED, the linker will
   not find the C functions.
 
 To reduce the size of the executables, it is recommended to compile your code only with that library files which are really necessary.
