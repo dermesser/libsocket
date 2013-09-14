@@ -84,9 +84,9 @@
  */
 #define debug_write(str,l)                \
 {                                      \
-    int __verbose_errno_save = errno; \
+    int verbose_errno_save = errno; \
     write(2,str,l);	                  \
-    errno = __verbose_errno_save;     \
+    errno = verbose_errno_save;     \
 }
 # endif
 

@@ -39,7 +39,7 @@
 # define LIBSOCKET_WRITE 2
 
 # ifdef __cplusplus
-# ifdef _MIXED
+# ifdef MIXED
 extern "C" {
 # endif
 # endif
@@ -55,7 +55,7 @@ extern ssize_t recvfrom_unix_dgram_socket(int sfd, void* buf, size_t size, char*
 extern ssize_t sendto_unix_dgram_socket(int sfd, const void* buf, size_t size, const char* path, int sendto_flags);
 
 # ifdef __cplusplus
-# ifdef _MIXED
+# ifdef MIXED
 }
 # endif
 # endif

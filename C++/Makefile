@@ -15,9 +15,9 @@ CPP=g++
 # CPPFLAGS for C++/*.cpp files
 CPPFLAGS= -std=c++11
 
-# _MIXED enables some "extern" declarations in the C headers
+# MIXED enables some "extern" declarations in the C headers.
 .cpp.o:
-	$(CPP) -D_MIXED $(CPPFLAGS) -fPIC -c $<
+	$(CPP) -DMIXED $(CPPFLAGS) -fPIC -c $<
 
 # Build C++ object files
 obj: $(OBJECTS)
