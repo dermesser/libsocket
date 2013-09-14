@@ -66,8 +66,8 @@ Static linking is **not** recommended. That means, copy a checkout of the librar
 
 *Details about dependancies:* The actual code is in `libinetsocket.c` resp. `libunixsocket.c`. Every file of your application which wants to use this functions has to include the header files, e.g.:
 
-	# include "../headers/libinetsocket.c"
-	# include <stdio.h>
+	#include <stdio.h>
+	#include <libsocket/libinetsocket.h>
 	...
 	.
 	.
