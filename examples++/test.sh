@@ -9,6 +9,7 @@
 
 LIBPATH=/usr/lib
 HEADERPATH=/usr/include
+CPPFLAGS="-std=c++11 -DVERBOSE"
 
 echo "=== MAKE SURE YOU INSTALLED THE LATEST VERSION AS S/O! ==="
 echo "Starting test suite examples++/..."
@@ -16,8 +17,8 @@ echo "Starting test suite examples++/..."
 ### TCP client/server
 echo "Testing TCP client/server..."
 
-g++ -I$HEADERPATH -L$LIBPATH -o srv -lsocket++ server.cpp
-g++ -I$HEADERPATH -L$LIBPATH -o cl  -lsocket++ client.cpp
+g++ $CPPFLAGS -I$HEADERPATH -L$LIBPATH -o srv -lsocket++ server.cpp
+g++ $CPPFLAGS -I$HEADERPATH -L$LIBPATH -o cl  -lsocket++ client.cpp
 
 ./srv > /dev/null &
 sleep 1
@@ -30,9 +31,9 @@ rm srv cl
 ### echo client/server
 echo "Testing echo client/server..."
 
-g++ -I$HEADERPATH -L$LIBPATH -o cl_conn -lsocket++ echo_client_conn.cpp
-g++ -I$HEADERPATH -L$LIBPATH -o cl_sndto -lsocket++ echo_client_sndto.cpp
-g++ -I$HEADERPATH -L$LIBPATH -o srv -lsocket++ echo_server.cpp
+g++ $CPPFLAGS -I$HEADERPATH -L$LIBPATH -o cl_conn -lsocket++ echo_client_conn.cpp
+g++ $CPPFLAGS -I$HEADERPATH -L$LIBPATH -o cl_sndto -lsocket++ echo_client_sndto.cpp
+g++ $CPPFLAGS -I$HEADERPATH -L$LIBPATH -o srv -lsocket++ echo_server.cpp
 
 ./srv > /dev/null &
 sleep 1
@@ -46,8 +47,8 @@ rm srv cl_sndto cl_conn
 ### HTTP clients
 echo "Testing HTTP clients..."
 
-g++ -I$HEADERPATH -L$LIBPATH -o http1 -lsocket++ http.cpp
-g++ -I$HEADERPATH -L$LIBPATH -o http2 -lsocket++ http_2.cpp
+g++ $CPPFLAGS -I$HEADERPATH -L$LIBPATH -o http1 -lsocket++ http.cpp
+g++ $CPPFLAGS -I$HEADERPATH -L$LIBPATH -o http2 -lsocket++ http_2.cpp
 
 ./http1 > /dev/null
 ./http2 > /dev/null
@@ -57,7 +58,7 @@ rm http1 http2
 ### UNIX dgram client (log client)
 echo "Testing UNIX dgram client (log client)..."
 
-g++ -I$HEADERPATH -L$LIBPATH -o cl -lsocket++ unix_dgram_syslogclient.cpp
+g++ $CPPFLAGS -I$HEADERPATH -L$LIBPATH -o cl -lsocket++ unix_dgram_syslogclient.cpp
 
 ./cl > /dev/null
 
@@ -66,8 +67,8 @@ rm cl
 ### UNIX dgram client/server
 echo "Testing UNIX dgram client/server..."
 
-g++ -I$HEADERPATH -L$LIBPATH -o srv -lsocket++ unix_dgram_server.cpp
-g++ -I$HEADERPATH -L$LIBPATH -o cl -lsocket++ unix_dgram_client.cpp
+g++ $CPPFLAGS -I$HEADERPATH -L$LIBPATH -o srv -lsocket++ unix_dgram_server.cpp
+g++ $CPPFLAGS -I$HEADERPATH -L$LIBPATH -o cl -lsocket++ unix_dgram_client.cpp
 
 ./srv > /dev/null &
 sleep 1
@@ -80,8 +81,8 @@ rm cl srv
 ### UNIX stream server/client
 echo "Testing UNIX STREAM client/server..."
 
-g++ -I$HEADERPATH -L$LIBPATH -o srv -lsocket++ unix_server_stream.cpp
-g++ -I$HEADERPATH -L$LIBPATH -o cl -lsocket++ unix_client_stream.cpp
+g++ $CPPFLAGS -I$HEADERPATH -L$LIBPATH -o srv -lsocket++ unix_server_stream.cpp
+g++ $CPPFLAGS -I$HEADERPATH -L$LIBPATH -o cl -lsocket++ unix_client_stream.cpp
 
 ./srv > /dev/null &
 sleep 1
