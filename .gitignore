@@ -1,5 +1,8 @@
 *.o
 a.out
-*.so
+*.so*
 cl
 srv
+*.swp
+*.a
+
