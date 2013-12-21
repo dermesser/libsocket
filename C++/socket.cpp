@@ -40,25 +40,15 @@ namespace libsocket
      */
     socket::socket() : sfd(-1) {}
 
+    /**
+     * @brief Destructor: closes socket.
+     */
     socket::~socket(void)
     {
         /*
-         * We don't call destroy() here; think of this situation:
-         *
-         * void doSomethingStupid(XyzSocket s)
-         * {
-         *      ... do something ...
-         *
-         *      ...
-         *
-         *      // <-- Destructor is called here; socket would be closed!
-         * }
-         *
-         * At the end of this function, the destructor is called (not passed by reference!). This may lead to
-         * errors in the calling function relying on the working socket.
+         * This is possible because socket::~socket(const socket&) is deleted.
          */
-
-	//destroy();
+	destroy();
     }
 
     /**
