@@ -71,6 +71,7 @@ namespace libsocket
 	public:
 
 	    socket();
+            socket(const socket&) = delete;
 
 	    virtual ~socket();
 
