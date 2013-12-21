@@ -34,6 +34,17 @@ libsocket++ consists of many C++ classes. Only the following are intended for us
 If a function fails, it throws a `socket_exception` object containing the error. Look <a href="structlibsocket_1_1socket__exception.html">here</a>
 for detailed information. *Therefore it's important to put libsocket++ operations inside `try {...} catch () {...}` blocks*.
 
+Libsocket++ uses C++11 to delete the copy constructors of the socket classes. Therefore it became possible to implement a destructor
+closing the socket. To pass a socket to other functions use `call-by-reference`, `call-by-pointer` or `std::move` and an rvalue-accepting function type:
+
+@code{.cpp}
+
+void f(xyzsocket&);
+void f(xyzsocket*);
+void f(xyzsocket&&);
+
+@endcode
+
 */
 
 /************************************** BUILDING **********************************************/
