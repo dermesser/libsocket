@@ -83,53 +83,60 @@ libsocket does not work on OpenBSD yet because there are some source level incom
 If you're using libsocket successfully on other platforms, please let me know (via github
         (dermesser) or `<lbo[[at]]spheniscida.de>`.
 
-##How to use the libsocket: static vs. dynamic ###Static Linkage
+##How to use the libsocket: static vs. dynamic
+
+###Static Linkage
 
 It's possible to compile libsocket statically into your program (by placing the .c[pp] and .h[pp]
-    files in your source tree). You don't have to mind legal issues because libsocket is licensed by
+files in your source tree). You don't have to mind legal issues because libsocket is licensed by
 a slightly modified 2-clause BSD license which permits any use, as long as you include the license
 text in your product (so it's clear that libsocket is licensed by this License) and the notice that
-*we* wrote libsocket (as described in the license) It's nice to mention libsocket in your product's
-Readme or advertisements anyway :)
+*we* wrote libsocket (as described in the license). It's ok to mention libsocket in your product's
+Readme or advertisements anyway.
 
 ###Dynamic Linkage
 
-The recommended method to use libsocket is to link your program against the libsocket SO. Using this
+The recommended method to use libsocket is to link your program against the libsocket SO (DLL). Using this
 method is quite easy; you have to compile the dynamic libraries (libsocket and libsocket++) using
 the Makefile (see section "BUILDING")
 
-Linking your programs against the library is also easy; if $OBJECTS are your object files, then link
+Linking your programs against the library is also simple: if $OBJECTS are your object files, then link
 them together using one of these commands:
 
-        $ gcc -o yourprog -lsocket $OBJECTS $ g++ -o yourprog -lsocket++ $OBJECTS
+        $ gcc -o yourprog -lsocket $OBJECTS
+        # or
+        $ g++ -o yourprog -lsocket++ $OBJECTS
 
 You only need to link against one library, even when using C++, because libsocket++ contains all
 necessary functions.
 
-If you distribute your program in binary form, it's possible to distribute library binaries along
+If you distribute your program in binary form, it's possible to distribute the library binaries along with
 your program and install them along your program.
 
 ###Other stuff
 
-You may use other compilers than the GNU Compilers ($(CC), $(CPP)). The dynamic and static linking
-was tested successfully using clang/clang++ 3.0 and 3.1 on GNU/Linux and clang 3.1 on FreeBSD (and,
-        of course, gcc on both platforms).
+You may use other compilers than the GNU Compilers ($(CC), $(CPP)). Both the dynamic and static linking
+were tested successfully using clang/clang++ > 3.0 on GNU/Linux and clang > 3.1 on FreeBSD (and,
+of course, gcc/g++ on both platforms).
 
 ##BUILDING
 
-If you want to install both libsocket and libsocket++, simply use this command: # make install
+If you want to install both libsocket and libsocket++, simply use this command:
+
+    # make install
 
 This installs the SOs libsocket.so and libsocket++.so to /usr/lib/ and the header files to
 /usr/include/libsocket. If you want to change this path, use this command:
 
-        # LIBPATH=/path/to/lib/ HEADERPATH=/path/to/headers/libsocket make -e install
+    # LIBPATH=/path/to/lib/ HEADERPATH=/path/to/headers/libsocket make -e install
 
 This command installs the libs to $LIBPATH and the header files to $HEADERPATH.
 
 If you do not like libsocket anymore, remove it using
 
-        # make deinstall If you specified non-default library or header paths, specify them again
-and use '-e'.
+    # make deinstall
+
+If you specified non-default library or header paths, specify them again and use '-e'.
 
 ##EXAMPLES
 
