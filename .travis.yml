@@ -1,6 +1,6 @@
 language: cpp
-#compiler:
+compiler:
     - gcc
 #    - clang
 # Change this to your needs
-script: make
+script: "CPP=clang++ make -e"
