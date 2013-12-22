@@ -37,9 +37,9 @@
  * instantiation using connect().
  */
 
-# include "../headers/libunixsocket.h"
-# include "../headers/exception.hpp"
-# include "../headers/unixclientstream.hpp"
+# include <libunixsocket.h>
+# include <exception.hpp>
+# include <unixclientstream.hpp>
 
 namespace libsocket
 {

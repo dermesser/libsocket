@@ -44,7 +44,7 @@
  * @{
  */
 
-# include "../headers/exception.hpp"
+# include <exception.hpp>
 
 namespace libsocket
 {

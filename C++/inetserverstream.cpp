@@ -36,10 +36,12 @@
  *	either with the second constructor or with setup()
  */
 
-# include "../headers/libinetsocket.h"
-# include "../headers/inetclientstream.hpp"
-# include "../headers/exception.hpp"
-# include "../headers/inetserverstream.hpp"
+# include <conf.h>
+
+# include <libinetsocket.h>
+# include <inetclientstream.hpp>
+# include <exception.hpp>
+# include <inetserverstream.hpp>
 
 namespace libsocket
 {
@@ -109,7 +111,7 @@ namespace libsocket
 	port = string(bindport);
 
 	nonblock = false;
-# ifdef __linux__
+# if LIBSOCKET_OS == Linux
 	if (flags & SOCK_NONBLOCK)
 	    nonblock = true;
 # endif
@@ -139,7 +141,7 @@ namespace libsocket
 	port = string(bindport);
 
 	nonblock = false;
-# ifdef __linux__
+# if LIBSOCKET_OS == Linux
 	if (flags & SOCK_NONBLOCK)
 	    nonblock = true;
 # endif

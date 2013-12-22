@@ -36,9 +36,9 @@
  * called on every datagram socket.
  */
 
-# include "../headers/libunixsocket.h"
-# include "../headers/exception.hpp"
-# include "../headers/unixdgram.hpp"
+# include <libunixsocket.h>
+# include <exception.hpp>
+# include <unixdgram.hpp>
 
 namespace libsocket
 {

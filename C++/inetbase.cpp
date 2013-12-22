@@ -40,7 +40,7 @@
  * 	server application to get the paramters of the remote peer.
  */
 
-# include "../headers/inetbase.hpp"
+# include <inetbase.hpp>
 
 namespace libsocket
 {

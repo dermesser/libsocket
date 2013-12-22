@@ -32,9 +32,9 @@
  *  communicate with the connected client.
  */
 
-# include "../headers/libunixsocket.h"
-# include "../headers/exception.hpp"
-# include "../headers/unixserverstream.hpp"
+# include <libunixsocket.h>
+# include <exception.hpp>
+# include <unixserverstream.hpp>
 
 namespace libsocket
 {

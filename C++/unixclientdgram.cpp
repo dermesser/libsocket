@@ -35,9 +35,9 @@ using std::string;
  *
  */
 
-# include "../headers/exception.hpp"
-# include "../headers/libunixsocket.h"
-# include "../headers/unixclientdgram.hpp"
+# include <exception.hpp>
+# include <libunixsocket.h>
+# include <unixclientdgram.hpp>
 
 namespace libsocket
 {

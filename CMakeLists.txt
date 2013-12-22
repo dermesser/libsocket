@@ -1,7 +1,12 @@
 PROJECT(Libsocket)
 CMAKE_MINIMUM_REQUIRED(VERSION 2.6)
 
+# Header conf
 SET(VERSION 2.2)
+
+CONFIGURE_FILE(headers/conf.h.in headers/conf.h)
+
+INCLUDE_DIRECTORIES(BEFORE headers/)
 
 SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
 
@@ -11,8 +16,8 @@ ADD_SUBDIRECTORY(C/)
 
 ADD_SUBDIRECTORY(C++/)
 
-ADD_DEPENDENCIES(socket++ socket)
+ADD_SUBDIRECTORY(headers/)
 
-CONFIGURE_FILE(headers/conf.h.in headers/conf.h)
+ADD_DEPENDENCIES(socket++ socket)
 
 

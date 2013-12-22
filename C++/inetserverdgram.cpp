@@ -33,9 +33,9 @@
  * inherited from inet_dgram.
  */
 
-# include "../headers/libinetsocket.h"
-# include "../headers/exception.hpp"
-# include "../headers/inetserverdgram.hpp"
+# include <libinetsocket.h>
+# include <exception.hpp>
+# include <inetserverdgram.hpp>
 
 namespace libsocket
 {

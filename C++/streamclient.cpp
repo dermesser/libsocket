@@ -38,9 +38,10 @@ namespace BERKELEY {
 # include <sys/socket.h>
 } // Against conflicts (shutdown(2)...)
 
-# include "../headers/libinetsocket.h"
-# include "../headers/exception.hpp"
-# include "../headers/streamclient.hpp"
+# include <conf.h>
+# include <libinetsocket.h>
+# include <exception.hpp>
+# include <streamclient.hpp>
 
 namespace libsocket
 {
@@ -230,7 +231,7 @@ namespace libsocket
 	if ( (method & LIBSOCKET_WRITE) && (shut_wr == true) )
 	    return;
 
-#ifdef __linux__
+#if LIBSOCKET_OS == Linux
         using BERKELEY::SHUT_RDWR;
         using BERKELEY::SHUT_RD;
         using BERKELEY::SHUT_WR;
