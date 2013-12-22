@@ -1,5 +1,4 @@
 language: cpp
 compiler:
     - clang
-# Change this to your needs
-script: "CPP=clang++ make -e"
+script: "cmake -DCMAKE_CXX_COMPILER=clang++ && make"
