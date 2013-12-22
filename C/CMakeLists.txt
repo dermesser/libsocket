@@ -5,6 +5,5 @@ SET(libsocket_src
 ./unix/libunixsocket.c)
 
 ADD_LIBRARY(socket MODULE ${libsocket_src})
-#ADD_LIBRARY(socket_st STATIC ${libsocket_src})
 
-INSTALL(TARGETS socket DESTINATION /usr/lib)
+INSTALL(TARGETS socket DESTINATION ${LIB_DIR})

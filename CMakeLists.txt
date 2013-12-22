@@ -4,13 +4,24 @@ CMAKE_MINIMUM_REQUIRED(VERSION 2.6)
 # Header conf
 SET(VERSION 2.2)
 
+IF( CMAKE_SYSTEM_NAME STREQUAL "Linux" )
+    SET(IS_LINUX 1)
+    SET(IS_FREEBSD 0)
+ELSEIF( CMAKE_SYSTEM_NAME STREQUAL "FreeBSD" )
+    SET(IS_FREEBSD 1)
+    SET(IS_LINUX 0)
+ENDIF()
+
 CONFIGURE_FILE(headers/conf.h.in headers/conf.h)
 
+# Compiler configuration
 INCLUDE_DIRECTORIES(BEFORE headers/)
-
 SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
-
 #ADD_DEFINITIONS(-DVERBOSE)
+
+# Install directories
+SET(HEADER_DIR /usr/include/libsocket)
+SET(LIB_DIR /usr/lib)
 
 ADD_SUBDIRECTORY(C/)
 

@@ -2,6 +2,8 @@
 # define _GNU_SOURCE
 # endif
 
+# include <conf.h>
+
 # include <stdlib.h>
 # include <stdio.h>
 # include <sys/socket.h>
@@ -736,7 +738,7 @@ int accept_inet_stream_socket(int sfd, char* src_host, size_t src_host_len, char
     socklen_t addrlen = sizeof(struct sockaddr_storage);
 
     // Portable behavior
-# if LIBSOCKET_OS == Linux
+# if LIBSOCKET_LINUX
     if ( -1 == check_error((client_sfd = accept4(sfd,(struct sockaddr*)&client_info,&addrlen,accept_flags)))) // blocks
 	return -1;
 # else

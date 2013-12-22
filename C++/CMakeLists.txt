@@ -33,4 +33,4 @@ ${sources}
 
 ADD_LIBRARY(socket++ MODULE ${sources})
 
-INSTALL(TARGETS socket++ DESTINATION /usr/lib)
+INSTALL(TARGETS socket++ DESTINATION ${LIB_DIR})

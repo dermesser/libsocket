@@ -2,6 +2,8 @@
 # define _GNU_SOURCE // accept4()
 # endif
 
+# include <conf.h>
+
 # include <sys/socket.h>
 # include <stdlib.h>
 # include <sys/types.h>
@@ -374,7 +376,7 @@ int accept_unix_stream_socket(int sfd, int flags)
 
     if ( sfd < 0 )
 	return -1;
-# if LIBSOCKET_OS == Linux
+# if LIBSOCKET_LINUX
     if ( -1 == check_error(cfd = accept4(sfd,0,0,flags)) )
 	return -1;
 # else

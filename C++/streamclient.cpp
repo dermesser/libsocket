@@ -231,7 +231,7 @@ namespace libsocket
 	if ( (method & LIBSOCKET_WRITE) && (shut_wr == true) )
 	    return;
 
-#if LIBSOCKET_OS == Linux
+#if LIBSOCKET_LINUX
         using BERKELEY::SHUT_RDWR;
         using BERKELEY::SHUT_RD;
         using BERKELEY::SHUT_WR;

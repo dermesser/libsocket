@@ -38,7 +38,7 @@ The libsocket library supports following things and protocols:
 * IPv6 (client, server; if your machine supports it)
 * TCP (client, server)
 * UDP (client, server)
-* UNIX Domain Sockets (DGRAM&STREAM server/client), only for Linux
+* UNIX Domain Sockets (DGRAM/STREAM server/client)
 * Intelligent algorithms to get the best connection and no errors
 * Easy use (one function call to get a socket up and running, another one to close it)
 * Proper error processing (using `errno`, `gai_strerror()` etc.) and exception system.
@@ -56,32 +56,21 @@ Almost every function working with sockets is wrapped by libsocket, e.g.:
         - socket/connect - one function
         - socket/bind    - one function
 
-libsocket is designed not to use a "proprietary" socket format (as libc does with its `FILE` type)
-giving you the possibility to operate on the raw file descriptor with functions not provided by
+libsocket is designed to not use a "proprietary" socket format (as libc does with its `FILE` type)
+giving you the possibility to operate on the raw file descriptor with functions other than those provided by
 libsocket.
-
-Detailed documentation can be found in `doc/`.
 
 ##PLATFORMS
 
-libsocket is developed on Linux 3.x with gcc, but every file was successfully tested with clang
-(from llvm 3.0, 3.1) and works with it.
+Libsocket works best on modern linux systems. It needs a C++11 compiler like g++ or clang++. Override the
+default compiler using the flag `-DCMAKE_CXX_COMPILER=<compiler` or `-DCMAKE_C_COMPILER=<compiler>`.
 
-libsocket works, both statically and dynamically linked, on these platform combinations:
-
-- GCC 4.7, GNU/Linux (tested on Debian and Fedora)
-- GCC 4.6, GNU/Linux (tested on Debian)
-- clang/clang++ 3.0, GNU/Linux (tested on Debian)
-- clang/clang++ 3.1, GNU/Linux (tested on Debian)
-- gcc version 4.2.1 20070831 patched, FreeBSD 9.0
-- gcc version 4.2.1 20070831 patched, FreeBSD 9.1
-- clang/clang++ 3.1 portbld, FreeBSD 9.0
-- clang/clang++ 3.1 portbld, FreeBSD 9.1
+Theoretically libsocket should work without or only minor modifications on FreeBSD; I for myself
+haven't run it on FreeBSD as I currently don't want to install a C++11 toolchain.
 
 libsocket does not work on OpenBSD yet because there are some source level incompatibilities.
 
-If you're using libsocket successfully on other platforms, please let me know (via github
-        (dermesser) or `<lbo[[at]]spheniscida.de>`.
+If you're using libsocket successfully on other platforms, or ported it please let me know.
 
 ##How to use the libsocket: static vs. dynamic
 
@@ -113,30 +102,15 @@ necessary functions.
 If you distribute your program in binary form, it's possible to distribute the library binaries along with
 your program and install them along your program.
 
-###Other stuff
-
-You may use other compilers than the GNU Compilers ($(CC), $(CPP)). Both the dynamic and static linking
-were tested successfully using clang/clang++ > 3.0 on GNU/Linux and clang > 3.1 on FreeBSD (and,
-of course, gcc/g++ on both platforms).
-
 ##BUILDING
 
 If you want to install both libsocket and libsocket++, simply use this command:
 
+    # cmake CMakeLists.txt # Not necessary, only if make doesn't want to work immediately
     # make install
 
 This installs the SOs libsocket.so and libsocket++.so to /usr/lib/ and the header files to
-/usr/include/libsocket. If you want to change this path, use this command:
-
-    # LIBPATH=/path/to/lib/ HEADERPATH=/path/to/headers/libsocket make -e install
-
-This command installs the libs to $LIBPATH and the header files to $HEADERPATH.
-
-If you do not like libsocket anymore, remove it using
-
-    # make deinstall
-
-If you specified non-default library or header paths, specify them again and use '-e'.
+/usr/include/libsocket. You may change these paths in the CMakeLists.txt file in the project root.
 
 ##EXAMPLES
 

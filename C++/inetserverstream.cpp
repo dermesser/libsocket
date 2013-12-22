@@ -111,7 +111,7 @@ namespace libsocket
 	port = string(bindport);
 
 	nonblock = false;
-# if LIBSOCKET_OS == Linux
+# if LIBSOCKET_LINUX
 	if (flags & SOCK_NONBLOCK)
 	    nonblock = true;
 # endif
@@ -141,7 +141,7 @@ namespace libsocket
 	port = string(bindport);
 
 	nonblock = false;
-# if LIBSOCKET_OS == Linux
+# if LIBSOCKET_LINUX
 	if (flags & SOCK_NONBLOCK)
 	    nonblock = true;
 # endif

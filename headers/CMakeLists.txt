@@ -27,6 +27,5 @@ SET(excluded
 ./config.h.in
 )
 
-SET(HEADER_DIR /usr/include/libsocket)
 
 INSTALL(FILES ${headers} DESTINATION ${HEADER_DIR})
