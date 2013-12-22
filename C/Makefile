@@ -153,27 +153,12 @@ socket/fast:
 	cd /home/lbo/development/libsocket && $(MAKE) -f C/CMakeFiles/socket.dir/build.make C/CMakeFiles/socket.dir/build
 .PHONY : socket/fast
 
-# Convenience name for target.
-C/CMakeFiles/socket_st.dir/rule:
-	cd /home/lbo/development/libsocket && $(MAKE) -f CMakeFiles/Makefile2 C/CMakeFiles/socket_st.dir/rule
-.PHONY : C/CMakeFiles/socket_st.dir/rule
-
-# Convenience name for target.
-socket_st: C/CMakeFiles/socket_st.dir/rule
-.PHONY : socket_st
-
-# fast build rule for target.
-socket_st/fast:
-	cd /home/lbo/development/libsocket && $(MAKE) -f C/CMakeFiles/socket_st.dir/build.make C/CMakeFiles/socket_st.dir/build
-.PHONY : socket_st/fast
-
 inet/libinetsocket.o: inet/libinetsocket.c.o
 .PHONY : inet/libinetsocket.o
 
 # target to build an object file
 inet/libinetsocket.c.o:
 	cd /home/lbo/development/libsocket && $(MAKE) -f C/CMakeFiles/socket.dir/build.make C/CMakeFiles/socket.dir/inet/libinetsocket.c.o
-	cd /home/lbo/development/libsocket && $(MAKE) -f C/CMakeFiles/socket_st.dir/build.make C/CMakeFiles/socket_st.dir/inet/libinetsocket.c.o
 .PHONY : inet/libinetsocket.c.o
 
 inet/libinetsocket.i: inet/libinetsocket.c.i
@@ -182,7 +167,6 @@ inet/libinetsocket.i: inet/libinetsocket.c.i
 # target to preprocess a source file
 inet/libinetsocket.c.i:
 	cd /home/lbo/development/libsocket && $(MAKE) -f C/CMakeFiles/socket.dir/build.make C/CMakeFiles/socket.dir/inet/libinetsocket.c.i
-	cd /home/lbo/development/libsocket && $(MAKE) -f C/CMakeFiles/socket_st.dir/build.make C/CMakeFiles/socket_st.dir/inet/libinetsocket.c.i
 .PHONY : inet/libinetsocket.c.i
 
 inet/libinetsocket.s: inet/libinetsocket.c.s
@@ -191,7 +175,6 @@ inet/libinetsocket.s: inet/libinetsocket.c.s
 # target to generate assembly for a file
 inet/libinetsocket.c.s:
 	cd /home/lbo/development/libsocket && $(MAKE) -f C/CMakeFiles/socket.dir/build.make C/CMakeFiles/socket.dir/inet/libinetsocket.c.s
-	cd /home/lbo/development/libsocket && $(MAKE) -f C/CMakeFiles/socket_st.dir/build.make C/CMakeFiles/socket_st.dir/inet/libinetsocket.c.s
 .PHONY : inet/libinetsocket.c.s
 
 unix/libunixsocket.o: unix/libunixsocket.c.o
@@ -200,7 +183,6 @@ unix/libunixsocket.o: unix/libunixsocket.c.o
 # target to build an object file
 unix/libunixsocket.c.o:
 	cd /home/lbo/development/libsocket && $(MAKE) -f C/CMakeFiles/socket.dir/build.make C/CMakeFiles/socket.dir/unix/libunixsocket.c.o
-	cd /home/lbo/development/libsocket && $(MAKE) -f C/CMakeFiles/socket_st.dir/build.make C/CMakeFiles/socket_st.dir/unix/libunixsocket.c.o
 .PHONY : unix/libunixsocket.c.o
 
 unix/libunixsocket.i: unix/libunixsocket.c.i
@@ -209,7 +191,6 @@ unix/libunixsocket.i: unix/libunixsocket.c.i
 # target to preprocess a source file
 unix/libunixsocket.c.i:
 	cd /home/lbo/development/libsocket && $(MAKE) -f C/CMakeFiles/socket.dir/build.make C/CMakeFiles/socket.dir/unix/libunixsocket.c.i
-	cd /home/lbo/development/libsocket && $(MAKE) -f C/CMakeFiles/socket_st.dir/build.make C/CMakeFiles/socket_st.dir/unix/libunixsocket.c.i
 .PHONY : unix/libunixsocket.c.i
 
 unix/libunixsocket.s: unix/libunixsocket.c.s
@@ -218,7 +199,6 @@ unix/libunixsocket.s: unix/libunixsocket.c.s
 # target to generate assembly for a file
 unix/libunixsocket.c.s:
 	cd /home/lbo/development/libsocket && $(MAKE) -f C/CMakeFiles/socket.dir/build.make C/CMakeFiles/socket.dir/unix/libunixsocket.c.s
-	cd /home/lbo/development/libsocket && $(MAKE) -f C/CMakeFiles/socket_st.dir/build.make C/CMakeFiles/socket_st.dir/unix/libunixsocket.c.s
 .PHONY : unix/libunixsocket.c.s
 
 # Help Target
@@ -234,7 +214,6 @@ help:
 	@echo "... list_install_components"
 	@echo "... rebuild_cache"
 	@echo "... socket"
-	@echo "... socket_st"
 	@echo "... inet/libinetsocket.o"
 	@echo "... inet/libinetsocket.i"
 	@echo "... inet/libinetsocket.s"

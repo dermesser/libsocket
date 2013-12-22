@@ -153,19 +153,6 @@ socket/fast:
 .PHONY : socket/fast
 
 #=============================================================================
-# Target rules for targets named socket_st
-
-# Build rule for target.
-socket_st: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 socket_st
-.PHONY : socket_st
-
-# fast build rule for target.
-socket_st/fast:
-	$(MAKE) -f C/CMakeFiles/socket_st.dir/build.make C/CMakeFiles/socket_st.dir/build
-.PHONY : socket_st/fast
-
-#=============================================================================
 # Target rules for targets named socket++
 
 # Build rule for target.
@@ -191,7 +178,6 @@ help:
 	@echo "... list_install_components"
 	@echo "... rebuild_cache"
 	@echo "... socket"
-	@echo "... socket_st"
 	@echo "... socket++"
 .PHONY : help
 
