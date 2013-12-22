@@ -230,12 +230,18 @@ namespace libsocket
 	if ( (method & LIBSOCKET_WRITE) && (shut_wr == true) )
 	    return;
 
+#ifdef __linux__
+        using BERKELEY::SHUT_RDWR;
+        using BERKELEY::SHUT_RD;
+        using BERKELEY::SHUT_WR;
+#endif
+
 	if ( method == (LIBSOCKET_READ|LIBSOCKET_WRITE) )
-	    u_method = BERKELEY::SHUT_RDWR;
+	    u_method = SHUT_RDWR;
 	else if ( method == LIBSOCKET_READ )
-	    u_method = BERKELEY::SHUT_RD;
+	    u_method = SHUT_RD;
 	else if ( method == LIBSOCKET_WRITE )
-	    u_method = BERKELEY::SHUT_WR;
+	    u_method = SHUT_WR;
 	else // With no valid combination
 	    return;
 
