@@ -65,12 +65,19 @@ libsocket.
 Libsocket works best on modern linux systems. It needs a C++11 compiler like g++ or clang++. Override the
 default compiler using the flag `-DCMAKE_CXX_COMPILER=<compiler` or `-DCMAKE_C_COMPILER=<compiler>`.
 
-Theoretically libsocket should work without or only minor modifications on FreeBSD; I for myself
-haven't run it on FreeBSD as I currently don't want to install a C++11 toolchain.
+Other than on Linux systems libsocket is known to work as well (although not really thoroughly tested) on
+FreeBSD systems with working C++11 stack. The library has been tested on a FreeBSD 10.0-RC4 amd64 system
+using the shipped compilers (which is clang 3.3).
 
 libsocket does not work on OpenBSD yet because there are some source level incompatibilities.
 
 If you're using libsocket successfully on other platforms, or ported it please let me know.
+
+On both Linux and FreeBSD the usual CMake approach does work:
+
+    cmake CMakeLists.txt
+    make
+    make install
 
 ##How to use the libsocket: static vs. dynamic
 
@@ -106,7 +113,7 @@ your program and install them along your program.
 
 If you want to install both libsocket and libsocket++, simply use this command:
 
-    # cmake CMakeLists.txt # Not necessary, only if make doesn't want to work immediately
+    $ cmake CMakeLists.txt
     # make install
 
 This installs the SOs libsocket.so and libsocket++.so to /usr/lib/ and the header files to
