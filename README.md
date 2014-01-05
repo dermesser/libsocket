@@ -2,7 +2,7 @@
 
 ![Travis Build Status](https://api.travis-ci.org/dermesser/libsocket.png )
 
-(Pre-built documentation may be found on [my
+(Pre-built documentation can be found on [my
  server](http://lbo.spheniscida.de/doc/libsocket/doxygen/index.html))
 
 ## WHAT IS libsocket AND WHY SHOULD I USE IT?
@@ -15,7 +15,7 @@ Using the C part:
 - Functions combining more than one operation on sockets (e.g. create and connect TCP socket)
 - Main principle: "One function to connect a socket, one to close it."
 
-Using the C++ part:
+[Using the C++ part:](http://lbo.spheniscida.de/doc/libsocket/doxygen/usage.html)
 
 - Link against `libsocket++.so`
 - Classes representing the different socket types, e.g. TCP client sockets, UNIX DGRAM "server"
@@ -26,9 +26,8 @@ possibility of extensive and intensive code sharing.
 accepting `std::string` objects and more-or-less STL use), so -> good integration in other
 applications or libraries.
 - Using C++11 features: The copy constructor of the `socket` base class is deleted; this enables the
-destructor to close the socket when it leaves the visible scope. Some functions are internally using
+destructor to safely close the socket when it leaves the visible scope. Some functions are internally using
 `unique_ptr`s to enable safe deallocation.
-
 
 ##FEATURES AND ADVANTAGES
 
@@ -44,7 +43,7 @@ The libsocket library supports following things and protocols:
 * Proper error processing (using `errno`, `gai_strerror()` etc.) and exception system.
 
 One of the main advantages of libsocket is that you don't have to write the complex and error-prone
-procedures for connecting a socket, check it for errors etc. yourself. Your networking programs
+procedures for connecting a socket, checking it for errors etc. yourself. Your networking programs
 become shorter and better readable.
 
 libsocket supports the important socket types: INET/INET6 with TCP and UDP; and UNIX DGRAM/STREAM.
@@ -62,22 +61,42 @@ libsocket.
 
 ##PLATFORMS
 
+### GNU/Linux
+
 Libsocket works best on modern linux systems. It needs a C++11 compiler like g++ or clang++. Override the
-default compiler using the flag `-DCMAKE_CXX_COMPILER=<compiler` or `-DCMAKE_C_COMPILER=<compiler>`.
+default compiler using the flag `-DCMAKE_CXX_COMPILER=<compiler>` or `-DCMAKE_C_COMPILER=<compiler>`.
+
+### FreeBSD
 
 Other than on Linux systems libsocket is known to work as well (although not really thoroughly tested) on
 FreeBSD systems with working C++11 stack. The library has been tested on a FreeBSD 10.0-RC4 amd64 system
 using the shipped compilers (which is clang 3.3).
 
-libsocket does not work on OpenBSD yet because there are some source level incompatibilities.
+### SunOS: OpenIndiana, (Solaris?)
 
-If you're using libsocket successfully on other platforms, or ported it please let me know.
+The library part written in C works (partly) also on OpenIndiana; this has been verified using
+`SunOS openindiana 5.11 oi_151a8`.
 
-On both Linux and FreeBSD the usual CMake approach does work:
+Because a modern C++ compiler was not available at the time of testing, the C++ library part is not
+built on SunOS systems.
 
-    cmake CMakeLists.txt
-    make
-    make install
+Another difficulty is the existence of the system library `libsocket`; therefore the C library is renamed
+to libsocket\_hl on SunOS. You have to link your programs using the flag `-lsocket_hl`, not `-lsocket`.
+
+#### SunOS limitations
+
+* The UDP server example (`examples/echo_dgram_server.c`) refuses to create a socket. The error is
+    "Operation not supported on transport endpoint".
+* The TCP server example (`examples/transmission_server.c`) also fails when trying to create the socket.
+    Here, the error displayed is "Invalid argument". I'm quite sure that these issues can be fixed with
+    a little investigation and knowledge of SunOS.
+
+### OpenBSD
+libsocket does not work on OpenBSD yet because there are some more fundamental source level incompatibilities
+than those between Linux and FreeBSD/OpenIndiana-SunOS.
+
+### Other OSs
+If you're using libsocket successfully on other platforms (or even ported it), please let me know.
 
 ##How to use the libsocket: static vs. dynamic
 
@@ -114,6 +133,7 @@ your program and install them along your program.
 If you want to install both libsocket and libsocket++, simply use this command:
 
     $ cmake CMakeLists.txt
+    $ make
     # make install
 
 This installs the SOs libsocket.so and libsocket++.so to /usr/lib/ and the header files to
@@ -135,6 +155,8 @@ server/client
 * `unix_dgram_client.c`, `unix_dgram_server.c`: Demonstrating UNIX DGRAM sockets as simple
 server/client transmitting text.
 
+Build these with `gcc -o <outfile> -lsocket <example-name>`.
+
 (C++)
 
 * `http.cpp`, `http_2.cpp`: Two simple HTTP clients using slightly different approaches
@@ -143,6 +165,8 @@ server/client transmitting text.
 * `echo_server.cpp, echo_client_conn.cpp, echo_client_sndto.cpp`: UDP client/server (two clients:
         One using sendto(), another using connected datagram sockets)
 * `unix_client_stream.cpp, unix_server_stream.cpp`: Client/Server using UNIX STREAM sockets.
+
+Build these with `[clan]g++ -std=c++11 -lsocket++ -o <outfile> <example-name>`.
 
 You should have a look at the length of the code; while `http.c` is complete with 24 sloc (source
         lines of code) - the quite similar client simple-http
