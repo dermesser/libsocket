@@ -63,13 +63,18 @@ libsocket.
 ##PLATFORMS
 
 Libsocket works best on modern linux systems. It needs a C++11 compiler like g++ or clang++. Override the
-default compiler using the flag `-DCMAKE_CXX_COMPILER=<compiler` or `-DCMAKE_C_COMPILER=<compiler>`.
+default compiler using the flag `-DCMAKE_CXX_COMPILER=<compiler>` or `-DCMAKE_C_COMPILER=<compiler>`.
 
 Other than on Linux systems libsocket is known to work as well (although not really thoroughly tested) on
 FreeBSD systems with working C++11 stack. The library has been tested on a FreeBSD 10.0-RC4 amd64 system
 using the shipped compilers (which is clang 3.3).
 
-libsocket does not work on OpenBSD yet because there are some source level incompatibilities.
+At least the C part may be also built on Solaris (although having tested it on OpenIndiana SunOS openindiana 5.11 oii\_151a8).
+And as this works (all the system interfacing code is in there), the C++ code could also be compiled if there's 
+a C++11 compiler available (don't know; I'm no OpenIndiana expert).
+
+libsocket does not work on OpenBSD yet because there are some more fundamental source level incompatibilities
+than those between Linux and FreeBSD/OpenIndiana-SunOS.
 
 If you're using libsocket successfully on other platforms, or ported it please let me know.
 
