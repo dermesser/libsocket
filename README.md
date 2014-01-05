@@ -26,9 +26,8 @@ possibility of extensive and intensive code sharing.
 accepting `std::string` objects and more-or-less STL use), so -> good integration in other
 applications or libraries.
 - Using C++11 features: The copy constructor of the `socket` base class is deleted; this enables the
-destructor to close the socket when it leaves the visible scope. Some functions are internally using
+destructor to safely close the socket when it leaves the visible scope. Some functions are internally using
 `unique_ptr`s to enable safe deallocation.
-
 
 ##FEATURES AND ADVANTAGES
 
@@ -62,20 +61,41 @@ libsocket.
 
 ##PLATFORMS
 
+### GNU/Linux
+
 Libsocket works best on modern linux systems. It needs a C++11 compiler like g++ or clang++. Override the
 default compiler using the flag `-DCMAKE_CXX_COMPILER=<compiler>` or `-DCMAKE_C_COMPILER=<compiler>`.
+
+### FreeBSD
 
 Other than on Linux systems libsocket is known to work as well (although not really thoroughly tested) on
 FreeBSD systems with working C++11 stack. The library has been tested on a FreeBSD 10.0-RC4 amd64 system
 using the shipped compilers (which is clang 3.3).
 
-At least the C part may be also built on Solaris (although having tested it on OpenIndiana SunOS openindiana 5.11 oii\_151a8).
-And as this works (all the system interfacing code is in there), the C++ code could also be compiled if there's 
-a C++11 compiler available (don't know; I'm no OpenIndiana expert).
+### SunOS: OpenIndiana, (Solaris?)
 
+The library part written in C works (partly) also on OpenIndiana; this has been verified using
+`SunOS openindiana 5.11 oi_151a8`.
+
+Because a modern C++ compiler was not available at the time of testing, the C++ library part is not
+built on SunOS systems.
+
+Another difficulty is the existence of the system library `libsocket`; therefore the C library is renamed
+to libsocket\_hl on SunOS. You have to link your programs using the flag `-lsocket_hl`, not `-lsocket`.
+
+#### SunOS limitations
+
+* The UDP server example (`examples/echo_dgram_server.c`) refuses to create a socket. The error is
+    "Operation not supported on transport endpoint".
+* The TCP server example (`examples/transmission_server.c`) also fails when trying to create the socket.
+    Here, the error displayed is "Invalid argument". I'm quite sure that this issues can be fixed with
+    a little investigation and knowledge of SunOS.
+
+### OpenBSD
 libsocket does not work on OpenBSD yet because there are some more fundamental source level incompatibilities
 than those between Linux and FreeBSD/OpenIndiana-SunOS.
 
+### Other OSs
 If you're using libsocket successfully on other platforms, or ported it please let me know.
 
 ##How to use the libsocket: static vs. dynamic
