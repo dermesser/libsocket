@@ -4,6 +4,12 @@ SET(libsocket_src
 ./inet/libinetsocket.c
 ./unix/libunixsocket.c)
 
-ADD_LIBRARY(socket MODULE ${libsocket_src})
+IF ( NOT IS_SUNOS )
+    ADD_LIBRARY(socket MODULE ${libsocket_src})
+    INSTALL(TARGETS socket DESTINATION ${LIB_DIR})
+ELSE() # On SunOS (e.g. OpenIndiana) we have to link against the system's libsocket. The library is renamed to libsocket_hl (hl = high-level)
+    FIND_LIBRARY(solaris_socket_lib socket)
+    ADD_LIBRARY(socket_hl MODULE ${libsocket_src})
+    INSTALL(TARGETS socket_hl DESTINATION ${LIB_DIR})
+ENDIF()
 
-INSTALL(TARGETS socket DESTINATION ${LIB_DIR})
