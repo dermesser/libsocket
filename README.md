@@ -2,20 +2,20 @@
 
 ![Travis Build Status](https://api.travis-ci.org/dermesser/libsocket.png )
 
-(Pre-built documentation can be found on [my
- server](http://lbo.spheniscida.de/doc/libsocket/doxygen/index.html))
+(Pre-built documentation for libsocket developers can be found on [my
+ server](http://lbo.spheniscida.de/doc/libsocket/doxygen/html/))
 
 ## WHAT IS libsocket AND WHY SHOULD I USE IT?
 
 libsocket is a library with a C part and a C++ part making sockets usage easy and clean.
 
-Using the C part:
+[Using the C part:](doc/libsocket/DOCUMENTATION.mkd)
 
 - Link against `libsocket.so`
 - Functions combining more than one operation on sockets (e.g. create and connect TCP socket)
 - Main principle: "One function to connect a socket, one to close it."
 
-[Using the C++ part:](http://lbo.spheniscida.de/doc/libsocket/doxygen/usage.html)
+[Using the C++ part:](doc/libsocket++/DOCUMENTATION++.mkd)
 
 - Link against `libsocket++.so`
 - Classes representing the different socket types, e.g. TCP client sockets, UNIX DGRAM "server"

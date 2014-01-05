@@ -13,7 +13,7 @@ Sometimes, there are expressions in the text looking like this:
 	getaddrinfo(3)
 	socket(2)
 
-This are "links" to manpages. They can be reached by the following commands:
+Those are "links" to manpages. They can be reached by the following commands:
 
 	$ man 3 getaddrinfo
 	$ man 2 socket
@@ -24,15 +24,15 @@ Note: The manpage extracts come from the manpages delivered with Debian (Linux m
 
 ### Compile time configuration
 
-If the macro `LIBSOCKET_VERBOSE` is defined, libsocket prints verbose error messages on STDERR device. The error messages come from functions like `strerror` or `gai_strerror`. This is **VERY** useful when there are problems in your program or the library itself. Typically, you specify it in the Makefile (the variable already exists):
+If the macro `VERBOSE` is defined, libsocket prints verbose error messages on STDERR device. The error messages come from functions like `strerror` or `gai_strerror`. This is **VERY** useful when there are problems in your program or the library itself. Typically, you specify it in the Makefile (the variable already exists):
 
 	...
-	CCFLAGS=-DLIBSOCKET_VERBOSE
+	CCFLAGS=-DVERBOSE
 	...
 
 Usually, you'll use this option during development, but disable it when you finished the application. If you use the shared library, specify `-DVERBOSE` in the make variable `CFLAGS`  in `C/Makefile`.
 
-Another compile-time option is `_TRADITIONAL_RDNS`. It's also a macro (like `LIBSOCKET_VERBOSE`) and specifies if the library should use `getnameinfo()` or `gethostbyaddr()` for rDNS queries. The latter possibility may be sensible e.g. on FreeBSD systems or on other systems were getnameinfo is not an option.
+Another compile-time option is `_TRADITIONAL_RDNS`. It's also a macro (like `VERBOSE`) and specifies if the library should use `getnameinfo()` or `gethostbyaddr()` for rDNS queries. The latter possibility may be sensible e.g. on FreeBSD systems or on other systems were getnameinfo is not an option.
 
 ### Usage of flags
 
@@ -40,7 +40,7 @@ The usage of the flags for some functions is described for every function. If yo
 
 ### Errors and return values
 
-If you don't enable the `LIBSOCKET_VERBOSE` macro, the library knows another way to notify you if there was an error: The return value. If anything went wrong, the return value is always `-1`. **Every** function behaves this way, so it's
+If you don't enable the `VERBOSE` macro, the library knows another way to notify you if there was an error: The return value. If anything went wrong, the return value is always `-1`. **Every** function behaves this way, so it's
 strongly recommended to check the return values of the API functions. To obtain more information about what went wrong, check `errno`; the man pages of the used syscalls (described in this document) contain information
 about possible `errno` values.
 
@@ -64,7 +64,7 @@ Build and install the library following the instructions in `README.md` and link
 ## Static
 Static linking is **not** recommended. That means, copy a checkout of the library files (C/, headers/) to the source tree of your application. Then, simply compile the files together with the other files (as they would be normal part of your application).
 
-*Details about dependancies:* The actual code is in `libinetsocket.c` resp. `libunixsocket.c`. Every file of your application which wants to use this functions has to include the header files, e.g.:
+*Details about dependancies:* The actual code is in `libinetsocket.c` resp. `libunixsocket.c`. Every file of your application that wants to use these functions has to include the header files, e.g.:
 
 	# include "../headers/libinetsocket.c"
 	# include <stdio.h>
@@ -122,7 +122,7 @@ To send and receive data from this socket, please use `read(2)` and `write(2)`.
 Returns an integer describing a DGRAM (UDP) socket.
 
 * `proto_osi3` is `LIBSOCKET_IPv4` (`AF_INET`) or `LIBSOCKET_IPv6` (`AF_INET6`).
-* `flags` may be the flags specified in `socket(2)`, i.e. `SOCK_NONBLOCK` and/or `SOCK_CLOEXEC`. More than one flags may be ORed. **This argument is only sensible on Linux >= 2.6.27!**
+* `flags` may be the flags specified in `socket(2)`, i.e. `SOCK_NONBLOCK` and/or `SOCK_CLOEXEC`. More than one flags may be ORed. **This argument only has an effect on Linux >= 2.6.27!**
 
 Like the function before, this function also has different prototypes on different platforms.
 

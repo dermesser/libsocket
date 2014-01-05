@@ -15,7 +15,7 @@ libsocket is not targeted at programmers which do their first experiences with C
 socket(2)
 </code></pre>
 
-<p>This are "links" to manpages. They can be reached by the following commands:</p>
+<p>Those are "links" to manpages. They can be reached by the following commands:</p>
 
 <pre><code>$ man 3 getaddrinfo
 $ man 2 socket
@@ -70,7 +70,7 @@ about possible <code>errno</code> values.</p>
 
 <p>Static linking is <strong>not</strong> recommended. That means, copy a checkout of the library files (C/, headers/) to the source tree of your application. Then, simply compile the files together with the other files (as they would be normal part of your application).</p>
 
-<p><em>Details about dependancies:</em> The actual code is in <code>libinetsocket.c</code> resp. <code>libunixsocket.c</code>. Every file of your application which wants to use this functions has to include the header files, e.g.:</p>
+<p><em>Details about dependancies:</em> The actual code is in <code>libinetsocket.c</code> resp. <code>libunixsocket.c</code>. Every file of your application that wants to use these functions has to include the header files, e.g.:</p>
 
 <pre><code># include "../headers/libinetsocket.c"
 # include &lt;stdio.h&gt;
@@ -142,7 +142,7 @@ return -1.</p>
 
 <ul>
 <li><code>proto_osi3</code> is <code>LIBSOCKET_IPv4</code> (<code>AF_INET</code>) or <code>LIBSOCKET_IPv6</code> (<code>AF_INET6</code>).</li>
-<li><code>flags</code> may be the flags specified in <code>socket(2)</code>, i.e. <code>SOCK_NONBLOCK</code> and/or <code>SOCK_CLOEXEC</code>. More than one flags may be ORed. <strong>This argument is only sensible on Linux >= 2.6.27!</strong></li>
+<li><code>flags</code> may be the flags specified in <code>socket(2)</code>, i.e. <code>SOCK_NONBLOCK</code> and/or <code>SOCK_CLOEXEC</code>. More than one flags may be ORed. <strong>This argument only has an effect on Linux >= 2.6.27!</strong></li>
 </ul>
 
 <p>Like the function before, this function also has different prototypes on different platforms.</p>

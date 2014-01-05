@@ -1,28 +1,23 @@
 /**
 @mainpage The libsocket documentation
 
+<b>This documentation is targeted at people who want to gain deeper insight into the libsocket source code.
+Normal library users should use the documentation provided in the doc/libsocket and doc/libsocket++ directories!</b>
+
 This is the documentation for the C and C++ library libsocket. libsocket is intended to simplify the use of internet and
 UNIX sockets. Information about how to build libsocket are placed <a href="building.html">here</a>, and <a href="usage.html">this page</a>
 tells you how to use libsocket in your applications.
 
 @section libsocket libsocket for C
 
-To get started with *libsocket for C*, take a look at <a href="group__libinetsocket.html">the libinetsocket</a> and the <a
-href="group__libunixsocket.html">libunixsocket</a> documentation.
+To get started with *libsocket for C*, take a look at [the hand-crafted documentation](https://github.com/dermesser/libsocket/blob/master/doc/libsocket/DOCUMENTATION.mkd).
 
-@subsection lsconcepts Basic concepts
-
-All functions are documented in the links mentioned above; you don't need to know more about them than that they return -1 if
-something goes wrong. If you want to enable errors on STDERR, define in the Makefiles the macro `VERBOSE` using the
-compiler switch `-DVERBOSE`.
+Detailed documentation is available here: <a href="group__libinetsocket.html">libinetsocket</a>; <a
+href="group__libunixsocket.html">libunixsocket</a>.
 
 @section libsocketpp libsocket for C++
 
 libsocket++ should also be easy to understand but it has a <a href="classlibsocket_1_1socket.html">quite sophisticated class hierarchy</a>.
-
-@subsection lppconcepts Basic concepts
-
-You don't have to know too much to be able to use libsocket++; nevertheless you should know the basics.
 
 libsocket++ consists of many C++ classes. Only the following are intended for use in external applications:
 
@@ -44,6 +39,8 @@ void f(xyzsocket*);
 void f(xyzsocket&&);
 
 @endcode
+
+Detailed documentation can be found in this doxygen documentation; easier documentation is available [here](https://github.com/dermesser/libsocket/blob/master/doc/libsocket%2B%2B/DOCUMENTATION%2B%2B.mkd)
 
 */
 
