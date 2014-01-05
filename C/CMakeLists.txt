@@ -10,6 +10,7 @@ IF ( NOT IS_SUNOS )
 ELSE() # On SunOS (e.g. OpenIndiana) we have to link against the system's libsocket. The library is renamed to libsocket_hl (hl = high-level)
     FIND_LIBRARY(solaris_socket_lib socket)
     ADD_LIBRARY(socket_hl MODULE ${libsocket_src})
+    TARGET_LINK_LIBRARIES(socket_hl solaris_socket)
     INSTALL(TARGETS socket_hl DESTINATION ${LIB_DIR})
 ENDIF()
 

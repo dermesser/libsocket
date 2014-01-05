@@ -78,12 +78,6 @@ than those between Linux and FreeBSD/OpenIndiana-SunOS.
 
 If you're using libsocket successfully on other platforms, or ported it please let me know.
 
-On both Linux and FreeBSD the usual CMake approach does work:
-
-    cmake CMakeLists.txt
-    make
-    make install
-
 ##How to use the libsocket: static vs. dynamic
 
 ###Static Linkage
@@ -119,6 +113,7 @@ your program and install them along your program.
 If you want to install both libsocket and libsocket++, simply use this command:
 
     $ cmake CMakeLists.txt
+    $ make
     # make install
 
 This installs the SOs libsocket.so and libsocket++.so to /usr/lib/ and the header files to
