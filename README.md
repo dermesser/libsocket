@@ -50,11 +50,11 @@ become shorter and better readable.
 libsocket supports the important socket types: INET/INET6 with TCP and UDP; and UNIX DGRAM/STREAM.
 
 Almost every function working with sockets is wrapped by libsocket, e.g.:
-        - sendto
-        - recvfrom
-        - accept
-        - socket/connect - one function
-        - socket/bind    - one function
+* sendto
+* recvfrom
+* accept
+* socket/connect - one function
+* socket/bind    - one function
 
 libsocket is designed to not use a "proprietary" socket format (as libc does with its `FILE` type)
 giving you the possibility to operate on the raw file descriptor with functions other than those provided by
