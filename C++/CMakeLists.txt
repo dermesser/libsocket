@@ -2,9 +2,9 @@ cmake_minimum_required(VERSION 2.8)
 
 SET(CMAKE_CXX_FLAGS "-std=c++11") # -DVERBOSE")
 
-ADD_DEFINITIONS("-DMIXED")
+#ADD_DEFINITIONS("-DMIXED")
 
-SET(sources 
+SET(sources
 dgramclient.cpp
 inetbase.cpp
 inetclientstream.cpp
@@ -25,12 +25,14 @@ unixserverdgram.cpp
 )
 
 # Add libsocket
-SET(sources 
-${sources}
-../C/inet/libinetsocket.c
-../C/unix/libunixsocket.c
-)
+#SET(sources
+#${sources}
+#../C/inet/libinetsocket.c
+#../C/unix/libunixsocket.c
+#)
 
 ADD_LIBRARY(socket++ MODULE ${sources})
+
+TARGET_LINK_LIBRARIES(socket++ socket_int)
 
 INSTALL(TARGETS socket++ DESTINATION ${LIB_DIR})

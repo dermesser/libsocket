@@ -2,10 +2,15 @@ CMAKE_MINIMUM_REQUIRED(VERSION 2.6)
 
 SET(libsocket_src
 ./inet/libinetsocket.c
-./unix/libunixsocket.c)
+./unix/libunixsocket.c
+)
 
 IF ( NOT IS_SUNOS )
+    ADD_DEFINITIONS(-fPIC) # for the static library which needs to be linked into the shared libsocket++.so object.
+
     ADD_LIBRARY(socket MODULE ${libsocket_src})
+    ADD_LIBRARY(socket_int STATIC ${libsocket_src})
+
     INSTALL(TARGETS socket DESTINATION ${LIB_DIR})
 ELSE() # On SunOS (e.g. OpenIndiana) we have to link against the system's libsocket. The library is renamed to libsocket_hl (hl = high-level)
     ADD_LIBRARY(socket_hl MODULE ${libsocket_src})
