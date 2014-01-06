@@ -1,6 +1,6 @@
 #README for libsocket
 
-![Travis Build Status](https://api.travis-ci.org/dermesser/libsocket.png )
+[![Travis Build Status](https://api.travis-ci.org/dermesser/libsocket.png)](https://travis-ci.org/dermesser/libsocket/)
 
 (Pre-built documentation for libsocket developers can be found on [my
  server](http://lbo.spheniscida.de/doc/libsocket/doxygen/html/))
