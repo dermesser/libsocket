@@ -5,6 +5,22 @@
 (Pre-built documentation for libsocket developers can be found on [my
  server](http://lbo.spheniscida.de/doc/libsocket/doxygen/html/))
 
+##BUILDING libsocket
+
+If you want to install both libsocket and libsocket++, simply use this command:
+
+    $ cmake CMakeLists.txt
+    $ make
+    # make install
+
+This installs the SOs libsocket.so and libsocket++.so to /usr/lib/ and the header files to
+/usr/include/libsocket. You may change these paths in the CMakeLists.txt file in the project root.
+
+Note the changed library name on SunOS.
+
+CMake is required to support object libraries, which is the case in versions higher than or equal
+to 2.8.
+
 ## WHAT IS libsocket AND WHY SHOULD I USE IT?
 
 libsocket is a library with a C part and a C++ part making sockets usage easy and clean.
@@ -127,19 +143,6 @@ necessary functions.
 
 If you distribute your program in binary form, it's possible to distribute the library binaries along with
 your program and install them along your program.
-
-##BUILDING libsocket
-
-If you want to install both libsocket and libsocket++, simply use this command:
-
-    $ cmake CMakeLists.txt
-    $ make
-    # make install
-
-This installs the SOs libsocket.so and libsocket++.so to /usr/lib/ and the header files to
-/usr/include/libsocket. You may change these paths in the CMakeLists.txt file in the project root.
-
-Note the changed library name on SunOS.
 
 ##EXAMPLES
 
