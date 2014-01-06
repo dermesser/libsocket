@@ -52,7 +52,7 @@
 
 namespace libsocket
 {
-    int highestfd(std::vector<int>); ///< Determines the highest number in a vector of ints; necessary for select()
+    static int highestfd(std::vector<int>); ///< Determines the highest number in a vector of ints; necessary for select()
 
     /**
      * @brief Constructor.
@@ -107,7 +107,7 @@ namespace libsocket
      *
      * @returns A pair of vectors of pointers to sockets. Information about the type of socket is lost; use `dynamic_cast<>()` and check for `NULL` to re-convert it.
      */
-    std::pair<std::vector<socket*>, std::vector<socket*> > selectset::wait(long long microsecs)
+    ready_socks selectset::wait(long long microsecs)
     {
 	int n = 0;
 
@@ -128,7 +128,7 @@ namespace libsocket
 
 	n = select(highestfd(filedescriptors)+1,&readset,&writeset,NULL,timeout);
 
-	std::pair<std::vector<socket*>, std::vector<socket*> > rwfds;
+	ready_socks rwfds;
 
 	if ( n < 0 )
 	{

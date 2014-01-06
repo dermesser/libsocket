@@ -80,17 +80,15 @@
 # define LIBSOCKET_NUMERIC 1 ///< May be specified as flag for functions to signalize that the name resolution should not be performed.
 
 
-# ifdef VERBOSE
 /**
  * Writes an error to stderr without modifying errno.
  */
-#define debug_write(str,l)                \
-{                                      \
-    int verbose_errno_save = errno; \
-    write(2,str,l);	                  \
-    errno = verbose_errno_save;     \
-}
-# endif
+#define debug_write(str)                \
+    {                                      \
+	int verbose_errno_save = errno; \
+	write(2,str,strlen(str));	                  \
+	errno = verbose_errno_save;     \
+    }
 
 
 # ifdef __FreeBSD__
@@ -118,7 +116,7 @@ static inline signed int check_error(int return_value)
     {
 # ifdef VERBOSE
 	errbuf = strerror(errno);
-	debug_write(errbuf,strlen(errbuf));
+	debug_write(errbuf);
 # endif
 	return -1;
     }
@@ -174,7 +172,7 @@ int create_inet_stream_socket(const char* host, const char* service, char proto_
     {
 # ifdef VERBOSE
 	errstring = gai_strerror(return_value);
-	debug_write(errstring,strlen(errstring));
+	debug_write(errstring);
 # endif
 	return -1;
     }
@@ -199,7 +197,7 @@ int create_inet_stream_socket(const char* host, const char* service, char proto_
     if ( result_check == NULL ) // Have we?
     {
 # ifdef VERBOSE
-	debug_write("Could not connect to any address!\n",34);
+	debug_write("create_inet_stream_socket: Could not connect to any address!\n");
 # endif
 	return -1;
     }
@@ -230,7 +228,7 @@ int create_inet_dgram_socket(char proto_osi3, int flags)
     if (proto_osi3 != LIBSOCKET_IPv4 && proto_osi3 != LIBSOCKET_IPv6)
     {
 # ifdef VERBOSE
-	debug_write("create_inet_dgram_socket: osi3 argument invalid when using DGRAM sockets\n",48);
+	debug_write("create_inet_dgram_socket: osi3 argument invalid for DGRAM sockets\n");
 # endif
 	return -1;
     }
@@ -306,7 +304,7 @@ ssize_t sendto_inet_dgram_socket(int sfd, const void* buf, size_t size,const cha
     {
 # ifdef VERBOSE
 	errstring = gai_strerror(return_value);
-	debug_write(errstring,strlen(errstring));
+	debug_write(errstring);
 # endif
 	return -1;
     }
@@ -395,7 +393,7 @@ ssize_t recvfrom_inet_dgram_socket(int sfd, void* buffer, size_t size, char* src
 	{
 # ifdef VERBOSE
 	    errstr = gai_strerror(retval);
-	    debug_write(errstr,strlen(errstr));
+	    debug_write(errstr);
 # endif
 	    return -1;
 	}
@@ -491,7 +489,7 @@ int connect_inet_dgram_socket(int sfd, const char* host, const char* service)
     {
 # ifdef VERBOSE
 	errstring = gai_strerror(return_value);
-	debug_write(errstring,strlen(errstring));
+	debug_write(errstring);
 # endif
 	return -1;
     }
@@ -514,7 +512,7 @@ int connect_inet_dgram_socket(int sfd, const char* host, const char* service)
     if ( result_check == NULL ) // or not?
     {
 # ifdef VERBOSE
-	debug_write("Could not connect to any address!\n",34);
+	debug_write("connect_inet_dgram_socket: Could not connect to any address!\n");
 # endif
 	return -1;
     }
@@ -655,7 +653,7 @@ int create_inet_server_socket(const char* bind_addr, const char* bind_port, char
     {
 # ifdef VERBOSE
 	errstr = gai_strerror(retval);
-	debug_write(errstr,strlen(errstr));
+	debug_write(errstr);
 # endif
 	return -1;
     }
@@ -683,7 +681,7 @@ int create_inet_server_socket(const char* bind_addr, const char* bind_port, char
     if ( result_check == NULL )
     {
 # ifdef VERBOSE
-	debug_write("Could not bind to any address!\n",34);
+	debug_write("create_inet_server_socket: Could not bind to any address!\n");
 # endif
 	return -1;
     }
@@ -761,7 +759,7 @@ int accept_inet_stream_socket(int sfd, char* src_host, size_t src_host_len, char
 	{
 # ifdef VERBOSE
 	    errstr = gai_strerror(retval);
-	    debug_write(errstr,strlen(errstr));
+	    debug_write(errstr);
 # endif
 	    return -1;
 	}
@@ -834,7 +832,7 @@ int get_address_family(const char* hostname)
     {
 # ifdef VERBOSE
 	errstring = gai_strerror(return_value);
-	debug_write(errstring,strlen(errstring));
+	debug_write(errstring);
 # endif
 	return -1;
     }
@@ -858,4 +856,5 @@ int get_address_family(const char* hostname)
 /**
  * @}
  */
+
 #undef debug_write

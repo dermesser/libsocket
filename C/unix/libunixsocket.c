@@ -62,14 +62,12 @@
 # define LIBSOCKET_READ  1
 # define LIBSOCKET_WRITE 2
 
-# ifdef VERBOSE
-#define debug_write(str,l)                \
-    do {                                      \
+#define debug_write(str)                \
+    {                                      \
 	int verbose_errno_save = errno; \
-	write(2,str,l);	                  \
+	write(2,str,strlen(str));	                  \
 	errno = verbose_errno_save;     \
-    } while (0)
-# endif
+    }
 
 /**
  * @brief Checks return value for error.
@@ -92,7 +90,7 @@ static inline signed int check_error(int return_value)
     {
 # ifdef VERBOSE
 	errbuf = strerror(errno);
-	debug_write(errbuf,strlen(errbuf));
+	debug_write(errbuf);
 # endif
 	return -1;
     }
@@ -124,7 +122,7 @@ int create_unix_stream_socket(const char* path, int flags)
     if ( strlen(path) > (sizeof(saddr.sun_path)-1) )
     {
 # ifdef VERBOSE
-	debug_write("UNIX socket destination path too long\n",38);
+	debug_write("create_unix_stream_socket: UNIX socket destination path too long\n");
 # endif
 	return -1;
     }
@@ -168,7 +166,7 @@ int create_unix_dgram_socket(const char* bind_path, int flags)
 	if ( strlen(bind_path) > (sizeof(saddr.sun_path)-1) )
 	{
 # ifdef VERBOSE
-	    debug_write("UNIX socket path too long\n",26);
+	    debug_write("create_unix_dgram_socket: UNIX socket path too long\n");
 # endif
 	    return -1;
 	}
@@ -221,7 +219,7 @@ int connect_unix_dgram_socket(int sfd, const char* path)
     if ( strlen(path) > sizeof(new_addr.sun_path)-1 )
     {
 # ifdef VERBOSE
-	debug_write("Path too long\n",14);
+	debug_write("connect_unix_dgram_socket: Path too long\n");
 # endif
 	return -1;
     }
@@ -317,7 +315,7 @@ int create_unix_server_socket(const char* path, int socktype, int flags)
     if ( strlen(path) > (sizeof(saddr.sun_path)-1) )
     {
 # ifdef VERBOSE
-	debug_write("Path too long\n",14);
+	debug_write("create_unix_server_socket: Path too long\n",14);
 # endif
 	return -1;
     }
@@ -437,7 +435,7 @@ ssize_t sendto_unix_dgram_socket(int sfd, const void* buf, size_t size, const ch
     if ( strlen(path) > sizeof(saddr.sun_path)-1 )
     {
 # ifdef VERBOSE
-	debug_write("UNIX destination socket path too long\n",14);
+	debug_write("sendto_unix_dgram_socket: UNIX destination socket path too long\n");
 # endif
 	return -1;
     }

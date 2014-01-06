@@ -128,7 +128,7 @@ necessary functions.
 If you distribute your program in binary form, it's possible to distribute the library binaries along with
 your program and install them along your program.
 
-##BUILDING
+##BUILDING libsocket
 
 If you want to install both libsocket and libsocket++, simply use this command:
 
@@ -138,6 +138,8 @@ If you want to install both libsocket and libsocket++, simply use this command:
 
 This installs the SOs libsocket.so and libsocket++.so to /usr/lib/ and the header files to
 /usr/include/libsocket. You may change these paths in the CMakeLists.txt file in the project root.
+
+Note the changed library name on SunOS.
 
 ##EXAMPLES
 

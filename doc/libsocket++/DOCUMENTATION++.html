@@ -32,39 +32,34 @@ don't have to include <code>inetbase.hpp</code>, <code>socket.hpp</code>, <code>
 
 <h3>Dynamic</h3>
 
-<p>Build and install the library files using the Makefile and the documentation in README.md. Then link your program against libsocket using the instructions in LINKAGE.</p>
+<p>Build and install the library as described in the README file.</p>
 
 <h3>Static</h3>
 
-<p>If you want to build a stand-alone binary without the need to link the libsocket SO, you may compile libsocket into your application
-(the license permits this), but there are some pitfalls.</p>
+<p>If you want to build a stand-alone binary without the need to link against the libsocket shared object, you may
+compile libsocket into your application (the license permits this), but there are some pitfalls.</p>
 
 <ul>
 <li>libsocket++ is only an object-oriented wrapper around libsocket; you always have to compile C/libinetsocket.c or link against
 libsocket.so.</li>
-<li>If you compile the C files with a C compiler and the C++ files with a C++ compiler, you <strong>have to set the flag -DMIXED at the invocation
-of the C++ compiler!</strong> This macro enables <em>extern "C" { ... }</em> statements in the C headers. If you don't enable MIXED, the linker will
-not find the C functions.</li>
+<li>If you compile the C files with a C compiler and the C++ files with a C++ compiler, you <strong>have to set the flag
+-DMIXED when invoking of the C++ compiler!</strong> This macro enables <em>extern "C" { ... }</em> statements in the C headers; if you
+don't enable MIXED, the linker will not find the C functions.</li>
 </ul>
 
-<p>To reduce the size of the executables, it is recommended to compile your code only with that library files which are really necessary.
-For example, if you have a program which serves as client for a UDP based application:</p>
+<p>To reduce the size of the executables, it is recommended to compile your code only with that library files which are
+actually necessary. For example, if you have a program which serves as client for a UDP based application:</p>
 
 <pre><code>$ g++ -o client client.cpp /path/to/libsocket/C/libinetsocket.c /path/to/libsocket/C++/{socket,inetbase,inetdgram,inetclientdgram}.cpp
 </code></pre>
 
-<p>As each class has its own file, you may look in classes.svg which files to include (just follow the path from the class you want to use up to the
-root class and include the files. You find additional hints in LINKAGE.mkd)</p>
-
 <h2>Class Hierarchy and names</h2>
 
-<p>The class hierarchy is very complex. You may take a look at it by viewing <code>classes.svg</code> in this directory.</p>
+<p>The class hierarchy is quite complex. You may take a look at it by viewing <code>classes.svg</code> in this directory or the
+Doxygen inheritance diagrams for the <code>socket</code> class.</p>
 
-<p>To understand the library, you also have to understand the names.</p>
-
-<p>The classes have names which are made of three components: <code>&lt;domain&gt;_&lt;protocol&gt;_&lt;role&gt;</code>: E.g. <code>unix_stream_server</code> or <code>inet_dgram_client</code>.
-One exception: The TCP internet client class is called <code>inet_stream</code> (for historical reasons; in addition, every library needs an
-inconsistence ;)</p>
+<p>The classes have (in general) names made of three components: <code>&lt;domain&gt;_&lt;protocol&gt;_&lt;role&gt;</code>: E.g. <code>unix_stream_server</code> or <code>inet_dgram_client</code>.
+However, there's one exception: The TCP internet client class is called <code>inet_stream</code>.</p>
 
 <p>The files use another schema: <code>&lt;domain&gt;&lt;role&gt;&lt;protocol&gt;.(c|h)pp</code>, e.g. <code>inetclientstream.cpp</code> for the class <code>inet_stream_client</code>.</p>
 
@@ -90,7 +85,8 @@ objects from this classes although it's possible (they aren't abstract).</p>
             (1)             (2)       (3)                       (4)
 </code></pre>
 
-<p>It contains information about the file (1), the line (2), the function throwing the exception (3) and information about the cause for the exception (4) - here, a program tried to write to a TCP connection which did not exist at that time.</p>
+<p>It contains information about the file (1), the line (2), the function throwing the exception (3) and information about
+the cause for the exception (4) - here, a program tried to write to a TCP connection which did not exist at that time.</p>
 
 <p>Example for error handling:</p>
 
@@ -102,11 +98,12 @@ objects from this classes although it's possible (they aren't abstract).</p>
 }
 </code></pre>
 
-<p>Machine-readable information about errors are placed in the <code>errno</code> variable. Possible values are described in the syscall's manual pages, referenced from this document.</p>
+<p>Machine-readable information about errors are placed in the <code>errno</code> variable. Possible values are described in the
+man pages of the underlying system calls.</p>
 
 <h1>libinetsocket++</h1>
 
-<p>libinetsocket++ is the wrapper around (C) libinetsocket.</p>
+<p>libinetsocket++ is the wrapper around libinetsocket.</p>
 
 <h2><code>inet_stream</code> Class: Internet TCP Client Stream Sockets</h2>
 
@@ -119,8 +116,7 @@ objects from this classes although it's possible (they aren't abstract).</p>
 3: inet_stream(const std::string&amp; dsthost, const std::string&amp; dstport, int proto_osi3, int flags=0);
 </code></pre>
 
-<p>1: Only initializes the most important things. The socket remains unconnected
-and <em>must</em> be connected before use using <code>connect()</code>.</p>
+<p>1: Only initializes the most important things. The socket remains unconnected and <em>must</em> be connected before use using <code>connect()</code>.</p>
 
 <p>2,3: The constructor initializes the socket and connects it with the given host:</p>
 
@@ -173,7 +169,7 @@ has to be 0 to avoid errors)</li>
 
 <p>Closes the socket and destroys the connection. After a call to <code>destroy()</code>, you may connect the socket object again using <code>connect()</code>.</p>
 
-<p>Return value 0 if successfull, otherwise -1. This function is actually <code>noexcept</code>, but not declared as such to avoid problems with non-C++11-Compilers. (If you need one: GCC and LLVM/clang both support widely C++11)</p>
+<p>Return value 0 if successful, otherwise -1.</p>
 
 <h3>Output/Upload Functions</h3>
 
@@ -216,7 +212,9 @@ C strings (<code>const char*</code>, you may also use <code>char*</code>) and C+
 <pre><code>friend inet_stream&amp; operator&gt;&gt;(inet_stream&amp; sock, std::string&amp; dest);
 </code></pre>
 
-<p>Stream-like read from socket: Reads at most <code>dest.size()</code> bytes from socket and puts them to the string. If less than <code>dest.size()</code> characters could be read, the string is resized to the number of read characters so you can check (<code>string.empty()</code>) if the server is done with sending - either closed the socket on his side or shut it down for write access.</p>
+<p>Stream-like read from socket: Reads at most <code>dest.size()</code> bytes from socket and puts them to the string. If less than
+<code>dest.size()</code> characters could be read, the string is resized to the number of read characters so you can check
+(<code>string.empty()</code>) if the server is done with sending - either closed the socket on his side or shut it down for write access.</p>
 
 <h3>Getters</h3>
 
@@ -243,7 +241,8 @@ inet_stream_server(const std::string&amp; bindhost, const std::string&amp; bindp
 
 <p>Create an internet tcp server (passive) socket.</p>
 
-<p>If you use the first constructor, you have to <code>setup()</code> the socket before using it. The latter constructors binds the socket to <code>bindhost:bindport</code> using <code>proto_osi3</code> (<code>IPv4</code> or <code>IPv6</code> or <code>BOTH</code>).</p>
+<p>If you use the first constructor, you have to <code>setup()</code> the socket before using it. The latter constructors binds the
+socket to <code>bindhost:bindport</code> using <code>proto_osi3</code> (<code>IPv4</code> or <code>IPv6</code> or <code>BOTH</code>).</p>
 
 <p><code>flags</code> are supplied to the internal <code>socket(2)</code> call.</p>
 
@@ -253,7 +252,9 @@ inet_stream_server(const std::string&amp; bindhost, const std::string&amp; bindp
 void setup(const std::string&amp; bindhost, const std::string&amp; bindport, int proto_osi3, int flags=0);
 </code></pre>
 
-<p>If you used the <code>void</code>-Constructor, you have to setup the server socket to bind it, set it in listening state etc. Setup is done with this function (which is quite similar to the constructors). You may use this function also if you <code>close()</code>d the socket and want to reuse it.</p>
+<p>If you used the <code>void</code>-Constructor, you have to setup the server socket to bind it, set it in listening state etc.
+Setup is done with this function (which is quite similar to the constructors). You also may use this function if you
+<code>close(2)</code>d the socket and want to reuse it.</p>
 
 <h3><code>accept()</code></h3>
 
@@ -265,7 +266,8 @@ void setup(const std::string&amp; bindhost, const std::string&amp; bindport, int
 <p>Accept an incoming connection. <code>numeric</code> may be <code>NUMERIC</code> if you want to have the host and port as numbers.
 <code>accept_flags</code> are passed to <code>accept4()</code>.</p>
 
-<p>Returns a pointer to a dynamically allocated <code>inet_stream</code> object. Returns NULL if the server socket is marked as NONBLOCKing and there is not connection to accept.</p>
+<p>Returns a pointer to a dynamically allocated <code>inet_stream</code> object. Returns NULL if the server socket is marked as
+NONBLOCKing and there is no connection to accept.</p>
 
 <h3>Destroy</h3>
 
@@ -274,7 +276,8 @@ void setup(const std::string&amp; bindhost, const std::string&amp; bindport, int
 <pre><code>int destroy(void);
 </code></pre>
 
-<p>Closes the socket and destroys the connection. After a call to <code>destroy()</code>, you may re-bind the server socket object again using <code>setup()</code>.</p>
+<p>Closes the socket and destroys the connection. After a call to <code>destroy()</code>, you may re-bind the server socket
+object again using <code>setup()</code>.</p>
 
 <p>Return value 0 if successful, otherwise -1.</p>
 
@@ -309,8 +312,8 @@ it's mandatory to specify the address family at instantiation time. <code>proto_
 <code>IPv4</code> or <code>IPv6</code> or this information is used to create a socket with <code>create_inet_dgram_client_socket()</code> which uses <code>socket(2)</code>.</p>
 
 <p>The second form allows to specify a host and a port to which the UDP socket is connected.
-If an UDP socket is connected, calls to <code>snd()</code> and <code>rcv()</code> act like on a stream socket:
-The data is sent and received only to/from the host to which the socket is connected.
+If an UDP socket is connected, calls to <code>snd()</code> and <code>rcv()</code> act like on a stream socket;
+in this case the data is sent and received only to/from the host to which the socket is connected.
 Here, <code>proto_osi3</code> may be <code>IPv4</code>, <code>IPv6</code> or <code>BOTH</code> (in the latter case, <code>get_address_family()</code> is used to obtain the address family);</p>
 
 <h3>Setup functions</h3>
@@ -441,7 +444,8 @@ std::string getport(void) const;
 inet_dgram_server(const std::string&amp; host, const std::string&amp; port, int proto_osi3, int flags=0);
 </code></pre>
 
-<p>Create and bind a DGRAM socket to <code>host:port</code>. The only difference to <code>inet_dgram_client</code> is that this socket is explicitly bound to somewhere and that you may not connect this socket.</p>
+<p>Create and bind a DGRAM socket to <code>host:port</code>. The only difference to <code>inet_dgram_client</code> is that this socket is
+explicitly bound to somewhere and that you may not connect this socket.</p>
 
 <ul>
 <li><code>host</code> to bind to</li>
@@ -482,9 +486,14 @@ void setup(const string&amp; host, const string&amp; port, int proto_osi3, int f
 3: ssize_t rcvfrom(std::string&amp; buf, std::string&amp; srchost, std::string&amp; srcport, int rcvfrom_flags=0, bool numeric=false);
 </code></pre>
 
-<p>1, 2: Receive at most <code>len</code> bytes from the socket and place them in <code>buf</code>. The source host is placed in <code>host</code>, which is at least <code>hostlen</code> bytes long, the source port gets written to <code>port</code>, which is at least <code>portlen</code> bytes long. <code>recvfrom_flags</code> can take the flags described in <code>recvfrom(2)</code>, <code>numeric</code> is considered as <code>false</code>, but if you specify it as <code>true</code>, source host and source port are expressed in numerical form. This is recommended because it's faster than an additional (internal) rDNS query.</p>
+<p>1, 2: Receive at most <code>len</code> bytes from the socket and place them in <code>buf</code>. The source host is placed in <code>host</code>, which is
+at least <code>hostlen</code> bytes long, the source port gets written to <code>port</code>, which is at least <code>portlen</code> bytes long. <code>recvfrom_flags</code>
+can take the flags described in <code>recvfrom(2)</code>, <code>numeric</code> is considered as <code>false</code>, but if you specify it as <code>true</code>,
+source host and source port are expressed in numerical form. This is recommended because it's faster than an additional
+(internal) rDNS query.</p>
 
-<p>3: Receive at most <code>buf.size()</code> bytes and place them to <code>buf</code>. <code>buf</code> is resized to the number of received bytes if the function received less than <code>buf.size()</code> bytes.</p>
+<p>3: Receive at most <code>buf.size()</code> bytes and place them to <code>buf</code>. <code>buf</code> is resized to the number of received bytes if the
+function received less than <code>buf.size()</code> bytes.</p>
 
 <h3>Getters</h3>
 
@@ -505,7 +514,8 @@ std::string getport(void) const;
 <pre><code>int destroy(void);
 </code></pre>
 
-<p>0: Success, -1: Error (the only errors at <code>close()</code> occur if the file descriptor has been closed already). After <code>destroy()</code>, it's possible to "re-activate" the socket by calling <code>setup()</code>.</p>
+<p>0: Success, -1: Error (the only errors at <code>close()</code> occur if the file descriptor has been closed already).
+After <code>destroy()</code>, it's possible to "re-activate" the socket by calling <code>setup()</code>.</p>
 
 <h1>libunixsocket++</h1>
 
@@ -531,7 +541,8 @@ If you use the first form, you have to <code>connect()</code> your socket before
 void connect(const std::string&amp; path, int socket_flags=0);
 </code></pre>
 
-<p>Connect the socket to <code>path</code>. <code>socket_flags</code> are given to <code>socket(2)</code>. You may use this only on unconnected sockets, i.e. a socket constructed with the non-argument constructor or a socket on which you called before <code>destroy()</code>.</p>
+<p>Connect the socket to <code>path</code>. <code>socket_flags</code> are given to <code>socket(2)</code>. You may use this only on unconnected sockets,
+i.e. a socket constructed with the non-argument constructor or a socket on which you called before <code>destroy()</code>.</p>
 
 <h3><code>shutdown()</code></h3>
 
@@ -540,7 +551,9 @@ void connect(const std::string&amp; path, int socket_flags=0);
 <pre><code>void shutdown(int method=LIBSOCKET_WRITE);
 </code></pre>
 
-<p>Shuts the socket down (<code>shutdown(2)</code>). If you shut it down using the method <code>LIBSOCKET_WRITE</code>, the peer receives an <code>EOF</code> on his socket and you may not write to the socket anymore. If you shut it down using <code>LIBSOCKET_READ</code>, you may not read anymore from the socket.</p>
+<p>Shuts the socket down (<code>shutdown(2)</code>). If you shut it down using the method <code>LIBSOCKET_WRITE</code>, the peer receives an
+<code>EOF</code> on his socket and you may not write to the socket anymore. If you shut it down using <code>LIBSOCKET_READ</code>, you may
+not read anymore from the socket.</p>
 
 <p>Using <code>LIBSOCKET_READ|LIBSOCKET_WRITE</code> (bitwise OR) shuts the socket completely down.</p>
 
@@ -783,22 +796,27 @@ ssize_t rcvfrom(string&amp; buf, string&amp; source, int recvfrom_flags=0);
 <pre><code>void add_fd(socket&amp; sock, int method);
 </code></pre>
 
-<p>First, add just any socket class derived from <code>socket</code> to the new set. Do this multiple times if you have more than one socket (which
-is likely). <code>method</code> is either <code>LIBSOCKET_READ</code> or <code>LIBSOCKET_WRITE</code>, so if you want to be notified if some socket is ready to be read from it, specify <code>LIBSOCKET_READ</code>.
-<code>LIBSOCKET_READ</code> must also be specified for server sockets.</p>
+<p>First, add just any socket class derived from <code>socket</code> to the new set. Do this multiple times if you have more
+than one socket (which is likely). <code>method</code> is either <code>LIBSOCKET_READ</code> or <code>LIBSOCKET_WRITE</code>, so if you want
+to be notified if some socket is ready to be read from it, specify <code>LIBSOCKET_READ</code>. <code>LIBSOCKET_READ</code> must also be
+specified for server sockets.</p>
 
 <pre><code>std::pair&lt;std::vector&lt;socket*&gt;, std::vector&lt;socket*&gt; &gt; wait(long long microsecs=0);
 </code></pre>
 
-<p>Then call <code>wait()</code>. The argument is a timeout in microseconds after that the function returns, defaulting to 0 (infinite).
-And yes, I know, it's a gorgeous return type. Don't panic, there's a typedef in <code>select.hpp</code>:</p>
+<p>Then call <code>wait()</code>. The argument is a timeout in microseconds after that the function returns, defaulting to 0 (infinite).</p>
+
+<p>The return type is a <code>std::pair</code> consisting of two vectors of socket pointers. Don't panic, there's a typedef in <code>select.hpp</code>:</p>
 
 <pre><code>namespace libsocket {
-    typedef std::pair&lt;std::vector&lt;libsocket::socket*&gt;, std::vector&lt;libsocket::socket*&gt; &gt; ready_socks;
+    typedef std::pair&lt;
+                std::vector&lt;libsocket::socket*&gt;, // Sockets ready for reading
+                std::vector&lt;libsocket::socket*&gt;  // Sockets ready for writing.
+             &gt; ready_socks;
 }
 </code></pre>
 
-<p>If you take a closer look at the return type, you'll notice that it is a <code>std::pair</code> consisting of two <code>std::vectors</code> consisting of pointers to the <code>socket</code> base class. The first vector contains pointers to all sockets which are ready for reading, the second vector contains pointers to all sockets ready for writing.</p>
+<p>If a socket is ready for both reading and writing, it may be a member of both vectors vector.</p>
 
 <p>A typical program snippet using this class could look like this example:</p>
 
@@ -819,6 +837,3 @@ inet_stream* ready_smtp_sock = dynamic_cast&lt;inet_stream*&gt;(rs.first[0]);
 
 <p>The <code>dynamic_cast</code> is necessary, because (you'll remember if you look at the return type) the vectors consist of <code>socket*</code>, so you
 have to perform a downcast to reenable all the <code>inet_stream</code> methods, like reading/writing etc.</p>
-
-<p>Some Meta-stuff: If you put a socket object into the class (via <code>add_fd()</code>), and you re-get it at the end using the described procedure, the
-object is still the same because the class uses references and pointers all the time.</p>
