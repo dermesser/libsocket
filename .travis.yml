@@ -1,4 +1,14 @@
 language: cpp
 compiler:
     - clang
-script: "cmake -DCMAKE_CXX_COMPILER=clang++ && make"
+before_install:
+    - sudo apt-get update
+    - sudo apt-get install aria2
+    - sudo apt-get install lib32stdc++6 -qq
+    - aria2c -x 16 http://www.cmake.org/files/v2.8/cmake-2.8.12.1-Linux-i386.sh
+    - chmod a+x cmake-2.8.12.1-Linux-i386.sh
+    - sudo ./cmake-2.8.12.1-Linux-i386.sh --skip-license --prefix=/usr
+script:
+    - cmake -DCMAKE_CXX_COMPILER=clang++
+    - make
+    - sudo make install
