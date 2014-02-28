@@ -5,6 +5,7 @@
 # include <unistd.h>
 # include <stdio.h>
 # include <utility>
+# include <memory>
 # include "../headers/socket.hpp"
 # include "../headers/select.hpp"
 
@@ -15,6 +16,8 @@
  * When a client connects it first sends a message and
  * receives the client's answer afterwards.
  */
+
+using std::unique_ptr;
 
 int main(void)
 {
@@ -30,7 +33,7 @@ int main(void)
 
     try {
 	inet_stream_server srv(host,port,LIBSOCKET_IPv6);
-	inet_stream* cl1;
+	unique_ptr<inet_stream> cl1;
 
 	selectset set1;
 	set1.add_fd(srv,LIBSOCKET_READ);

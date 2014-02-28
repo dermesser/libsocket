@@ -1,7 +1,3 @@
-# include <string.h>
-# include <string>
-# include <memory>
-
 
 /*
    The committers of the libsocket project, all rights reserved
@@ -37,6 +33,9 @@
  */
 
 # include <conf.h>
+
+# include <cstring>
+# include <string>
 
 # include <libinetsocket.h>
 # include <inetclientstream.hpp>
@@ -158,7 +157,7 @@ namespace libsocket
      *
      * @returns A pointer to a connected TCP/IP client socket object.
      */
-    inet_stream* inet_stream_server::accept(int numeric,int accept_flags)
+    unique_ptr<inet_stream> inet_stream_server::accept(int numeric,int accept_flags)
     {
 	if ( sfd < 0 )
 	    throw socket_exception(__FILE__,__LINE__,"inet_stream_server::accept() - stream server socket is not in listening state -- please call first setup()!\n");
@@ -171,7 +170,7 @@ namespace libsocket
 	memset(src_port.get(),0,32);
 
 	int client_sfd;
-	inet_stream* client = new inet_stream;
+	unique_ptr<inet_stream> client(new inet_stream);
 
 	if ( -1 == (client_sfd = accept_inet_stream_socket(sfd,src_host.get(),1023,src_port.get(),31,numeric,accept_flags)) )
 	{
