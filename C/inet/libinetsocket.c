@@ -669,13 +669,18 @@ int create_inet_server_socket(const char* bind_addr, const char* bind_port, char
 	retval = bind(sfd,result_check->ai_addr,(socklen_t)result_check->ai_addrlen);
 
 	if ( retval != 0 ) // Error at bind()!!!
+        {
+            close(sfd);
 	    continue;
+        }
 
 	if (type == LIBSOCKET_TCP)
 	    retval = listen(sfd,LIBSOCKET_BACKLOG);
 
 	if ( retval == 0 ) // If we came until here, there wasn't an error anywhere. It is safe to cancel the loop here
 	    break;
+        else
+            close(sfd);
     }
 
     if ( result_check == NULL )
