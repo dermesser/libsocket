@@ -2,7 +2,7 @@
 # define _GNU_SOURCE
 # endif
 
-# include <conf.h>
+//# include <conf.h>
 
 # include <stdlib.h>
 # include <stdio.h>
@@ -200,6 +200,7 @@ int create_inet_stream_socket(const char* host, const char* service, char proto_
 	debug_write("create_inet_stream_socket: Could not connect to any address!\n");
 # endif
 	return -1;
+        close(sfd);
     }
     // Yes :)
 
@@ -857,6 +858,113 @@ int get_address_family(const char* hostname)
     }
 
     return af;
+}
+
+/**
+ * @brief Create a datagram socket belonging to the multicast group `address`.
+ *
+ * @param address The group's address
+ * @param port The UDP port.
+ * @param local For IPv4 multicast groups: The address of the interface to be used. Ignored for IPv6, NULL for kernel's choice
+ *
+ * @retval <0 Error (Check errno or use `LIBSOCKET_VERBOSE`)
+ * @retval >=0 A valid file descriptor. Now use `read` or `recvfrom`.
+ *
+ */
+
+int create_multicast_socket(const char* address, const char* port, const char* local)
+{
+    int sfd, return_value;
+    struct sockaddr_storage oldsock;
+    struct sockaddr maddr, localif;
+    struct addrinfo hints, *result;
+    struct ip_mreqn mreq4;
+    struct ipv6_mreq mreq6;
+    struct in_addr any;
+    struct in6_addr any6;
+
+    memset(&maddr,0,sizeof(maddr));
+    memset(&localif,0,sizeof(localif));
+    memset(&mreq4,0,sizeof(mreq4));
+    memset(&mreq6,0,sizeof(mreq6));
+    memset(&any,0,sizeof(any));
+    memset(&any6,0,sizeof(any6));
+
+    if ( -1 == check_error(sfd = create_inet_server_socket(address,port,LIBSOCKET_UDP,LIBSOCKET_BOTH,0)) )
+    {
+        return -1;
+    }
+
+    hints.ai_socktype = SOCK_DGRAM;
+    hints.ai_family = AF_UNSPEC;
+
+    if ( 0 != (return_value = getaddrinfo(address,port,&hints,&result)) )
+    {
+# ifdef VERBOSE
+	errstring = gai_strerror(return_value);
+	debug_write(errstring);
+# endif
+        close(sfd);
+        return -1;
+    }
+
+    if ( result->ai_family == AF_INET )
+    {
+        // Result is IPv4 address.
+        mreq4.imr_multiaddr = ((struct sockaddr_in*)result->ai_addr)->sin_addr;
+        any.s_addr = INADDR_ANY;
+        mreq4.imr_address = any;
+
+        if ( local != NULL )
+        {
+            // interface address is specified.
+            if ( 0 != (return_value = getaddrinfo(local,port,&hints,&result)) )
+            {
+# ifdef VERBOSE
+                errstring = gai_strerror(return_value);
+                debug_write(errstring);
+# endif
+                close(sfd);
+                return -1;
+            }
+
+            if ( result != NULL && result->ai_family == AF_INET )
+            {
+                mreq4.imr_address = ((struct sockaddr_in*)result->ai_addr)->sin_addr;
+            }
+
+        }
+
+        mreq4.imr_ifindex = 0;
+
+        if ( -1 == check_error(setsockopt(sfd,IPPROTO_IP,IP_ADD_MEMBERSHIP,&mreq4,sizeof(struct ip_mreq))) )
+        {
+            close(sfd);
+            return -1;
+        }
+
+        if ( -1 == check_error(setsockopt(sfd,IPPROTO_IP,IP_MULTICAST_IF,&mreq4,sizeof(struct ip_mreqn))) )
+        {
+            close(sfd);
+            return -1;
+        }
+        // Setup finished.
+        //
+    } else if ( result->ai_family == AF_INET6 )
+    {
+
+        mreq6.ipv6mr_multiaddr = ((struct sockaddr_in6*)result->ai_addr)->sin6_addr;
+        mreq6.ipv6mr_interface = 0;
+
+        if ( -1 == check_error(setsockopt(sfd,IPPROTO_IPV6,IPV6_ADD_MEMBERSHIP,&mreq6,sizeof(struct ipv6_mreq))) )
+        {
+            close(sfd);
+            return -1;
+        }
+
+    }
+
+    return sfd;
 }
 /**
  * @}
