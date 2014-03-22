@@ -889,6 +889,7 @@ int create_multicast_socket(const char* address, const char* port, const char* l
     memset(&mreq6,0,sizeof(mreq6));
     memset(&any,0,sizeof(any));
     memset(&any6,0,sizeof(any6));
+    memset(&hints,0,sizeof(hints));
 
     if ( -1 == check_error(sfd = create_inet_server_socket(address,port,LIBSOCKET_UDP,LIBSOCKET_BOTH,0)) )
     {
@@ -901,7 +902,7 @@ int create_multicast_socket(const char* address, const char* port, const char* l
     if ( 0 != (return_value = getaddrinfo(address,port,&hints,&result)) )
     {
 # ifdef VERBOSE
-	errstring = gai_strerror(return_value);
+	const char* errstring = gai_strerror(return_value);
 	debug_write(errstring);
 # endif
         close(sfd);
@@ -921,7 +922,7 @@ int create_multicast_socket(const char* address, const char* port, const char* l
             if ( 0 != (return_value = getaddrinfo(local,port,&hints,&result)) )
             {
 # ifdef VERBOSE
-                errstring = gai_strerror(return_value);
+                const char* errstring = gai_strerror(return_value);
                 debug_write(errstring);
 # endif
                 close(sfd);

@@ -23,7 +23,7 @@ CONFIGURE_FILE(headers/conf.h.in headers/conf.h)
 # Compiler configuration
 INCLUDE_DIRECTORIES(BEFORE headers/)
 SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
-#ADD_DEFINITIONS(-DVERBOSE)
+ADD_DEFINITIONS(-DVERBOSE)
 
 # Install directories
 SET(HEADER_DIR /usr/include/libsocket)
