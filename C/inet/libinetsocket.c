@@ -13,7 +13,8 @@
 # include <netdb.h> // getaddrinfo()
 # include <string.h>
 # include <errno.h>
-
+# include <sys/ioctl.h>
+# include <net/if.h>
 # include <netinet/in.h> // e.g. struct sockaddr_in on OpenBSD
 
 /**
@@ -872,7 +873,7 @@ int get_address_family(const char* hostname)
  *
  */
 
-int create_multicast_socket(const char* address, const char* port, const char* local)
+int create_multicast_socket(const char* address, const char* port, const char* if_name)
 {
     int sfd, return_value;
     struct sockaddr_storage oldsock;
@@ -882,14 +883,14 @@ int create_multicast_socket(const char* address, const char* port, const char* l
     struct ipv6_mreq mreq6;
     struct in_addr any;
     struct in6_addr any6;
+    struct ifreq interface;
 
     memset(&maddr,0,sizeof(maddr));
     memset(&localif,0,sizeof(localif));
     memset(&mreq4,0,sizeof(mreq4));
     memset(&mreq6,0,sizeof(mreq6));
-    memset(&any,0,sizeof(any));
-    memset(&any6,0,sizeof(any6));
     memset(&hints,0,sizeof(hints));
+    memset(&interface,0,sizeof(interface));
 
     if ( -1 == check_error(sfd = create_inet_server_socket(address,port,LIBSOCKET_UDP,LIBSOCKET_BOTH,0)) )
     {
@@ -913,30 +914,23 @@ int create_multicast_socket(const char* address, const char* port, const char* l
     {
         // Result is IPv4 address.
         mreq4.imr_multiaddr = ((struct sockaddr_in*)result->ai_addr)->sin_addr;
-        any.s_addr = INADDR_ANY;
-        mreq4.imr_address = any;
 
-        if ( local != NULL )
+        if ( if_name == NULL )
         {
-            // interface address is specified.
-            if ( 0 != (return_value = getaddrinfo(local,port,&hints,&result)) )
+            mreq4.imr_ifindex = 0;
+            any.s_addr = INADDR_ANY;
+            mreq4.imr_address = any;
+        } else
+        {
+            memcpy(interface.ifr_name,if_name,strlen(if_name) > IFNAMSIZ ? IFNAMSIZ : strlen(if_name));
+
+            if ( -1 == check_error(ioctl(sfd,SIOCGIFADDR,&interface)) )
             {
-# ifdef VERBOSE
-                const char* errstring = gai_strerror(return_value);
-                debug_write(errstring);
-# endif
-                close(sfd);
                 return -1;
             }
 
-            if ( result != NULL && result->ai_family == AF_INET )
-            {
-                mreq4.imr_address = ((struct sockaddr_in*)result->ai_addr)->sin_addr;
-            }
-
+            mreq4.imr_address = ((struct sockaddr_in*)&interface.ifr_addr)->sin_addr;
         }
-
-        mreq4.imr_ifindex = 0;
 
         if ( -1 == check_error(setsockopt(sfd,IPPROTO_IP,IP_ADD_MEMBERSHIP,&mreq4,sizeof(struct ip_mreq))) )
         {
@@ -944,11 +938,6 @@ int create_multicast_socket(const char* address, const char* port, const char* l
             return -1;
         }
 
-        if ( -1 == check_error(setsockopt(sfd,IPPROTO_IP,IP_MULTICAST_IF,&mreq4,sizeof(struct ip_mreqn))) )
-        {
-            close(sfd);
-            return -1;
-        }
         // Setup finished.
         //
     } else if ( result->ai_family == AF_INET6 )
@@ -956,6 +945,20 @@ int create_multicast_socket(const char* address, const char* port, const char* l
 
         mreq6.ipv6mr_multiaddr = ((struct sockaddr_in6*)result->ai_addr)->sin6_addr;
         mreq6.ipv6mr_interface = 0;
+
+        if ( if_name == NULL )
+            mreq6.ipv6mr_interface = 0;
+        else
+        {
+            memcpy(interface.ifr_name,if_name,strlen(if_name) > IFNAMSIZ ? IFNAMSIZ : strlen(if_name));
+
+            if ( -1 == check_error(ioctl(sfd,SIOCGIFINDEX,&interface)) )
+            {
+                return -1;
+            }
+
+            mreq6.ipv6mr_interface = interface.ifr_ifindex;
+        }
 
         if ( -1 == check_error(setsockopt(sfd,IPPROTO_IPV6,IPV6_ADD_MEMBERSHIP,&mreq6,sizeof(struct ipv6_mreq))) )
         {
