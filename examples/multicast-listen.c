@@ -6,14 +6,14 @@
 # include <unistd.h>
 # include <string.h>
 
-int main(int argc, char** argv)
+int main(void)
 {
 
     int c = 0;
     char* buffer = malloc(8192);
 
     //int sfd = create_multicast_socket("225.1.2.3","1230","eth0");
-    int sfd = create_multicast_socket("239.255.255.250","1900","wlan0"); // This group/port is used by UPnP devices. Maybe you see something?
+    int sfd = create_multicast_socket("239.255.255.250","1900","eth0"); // This group/port is used by UPnP devices. Maybe you see something?
     //int sfd = create_multicast_socket("ff00::abcd","1900","eth0");
 
     ssize_t received = 0;
@@ -27,6 +27,7 @@ int main(int argc, char** argv)
     while ( 0 <= (received = read(sfd,buffer,8191)) )
     {
         write(0,buffer,received);
+        sendto_inet_dgram_socket(sfd,"Hi back",7,"239.255.255.250","1900",0);
     }
 
     return 0;
