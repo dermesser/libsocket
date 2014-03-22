@@ -177,3 +177,9 @@ You should have a look at the length of the code; while `http.c` is complete wit
         lines of code) - the quite similar client simple-http
 (https://github.com/dermesser/Simple-HTTP-client) uses almost 70 lines of code.
 
+##TODO
+
+* Add IPv4/IPv6 multicast support to libinetsocket.
+
+
+
