@@ -315,7 +315,7 @@ int create_unix_server_socket(const char* path, int socktype, int flags)
     if ( strlen(path) > (sizeof(saddr.sun_path)-1) )
     {
 # ifdef VERBOSE
-	debug_write("create_unix_server_socket: Path too long\n",14);
+	debug_write("create_unix_server_socket: Path too long\n");
 # endif
 	return -1;
     }
