@@ -2,7 +2,7 @@
 # define _GNU_SOURCE
 # endif
 
-//# include <conf.h>
+# include <conf.h>
 
 # include <stdlib.h>
 # include <stdio.h>
@@ -873,6 +873,8 @@ int get_address_family(const char* hostname)
  *
  */
 
+# ifdef LIBSOCKET_LINUX
+
 int create_multicast_socket(const char* address, const char* port, const char* if_name)
 {
     int sfd, return_value;
@@ -970,6 +972,9 @@ int create_multicast_socket(const char* address, const char* port, const char* i
 
     return sfd;
 }
+
+# endif
+
 /**
  * @}
  */
