@@ -861,8 +861,21 @@ int get_address_family(const char* hostname)
     return af;
 }
 
+# ifdef LIBSOCKET_LINUX
 /**
  * @brief Create a datagram socket belonging to the multicast group `address`.
+ *
+ * This function creates a multicast socket bound to `address`. The only option set is
+ * the `IP_MULTICAST_IF` (`IPV6_MULTICAST_IF`) option to avoid an explicit routing
+ * entry for the multicast address.
+ *
+ * An option you want to set very likely is `IP_MULTICAST_LOOP`. Refer to `ip(7)` respectively
+ * `ipv6(7)` for `setsockopt()` options; for example:
+ *
+ * 
+ *     int c = 0;
+ *     setsockopt(sfd,IPPROTO_IP,IP_MULTICAST_LOOP,&c,4);
+ * 
  *
  * @param address The group's address
  * @param port The UDP port.
@@ -873,7 +886,6 @@ int get_address_family(const char* hostname)
  *
  */
 
-# ifdef LIBSOCKET_LINUX
 
 int create_multicast_socket(const char* address, const char* port, const char* if_name)
 {
@@ -926,15 +938,20 @@ int create_multicast_socket(const char* address, const char* port, const char* i
         {
             memcpy(interface.ifr_name,if_name,strlen(if_name) > IFNAMSIZ ? IFNAMSIZ : strlen(if_name));
 
-            if ( -1 == check_error(ioctl(sfd,SIOCGIFADDR,&interface)) )
+            if ( -1 == check_error(ioctl(sfd,SIOCGIFINDEX,&interface)) )
             {
                 return -1;
             }
 
-            mreq4.imr_address = ((struct sockaddr_in*)&interface.ifr_addr)->sin_addr;
+            mreq4.imr_ifindex = interface.ifr_ifindex;
         }
 
-        if ( -1 == check_error(setsockopt(sfd,IPPROTO_IP,IP_ADD_MEMBERSHIP,&mreq4,sizeof(struct ip_mreq))) )
+        if ( -1 == check_error(setsockopt(sfd,IPPROTO_IP,IP_ADD_MEMBERSHIP,&mreq4,sizeof(struct ip_mreqn))) )
+        {
+            close(sfd);
+            return -1;
+        }
+        if ( -1 == check_error(setsockopt(sfd,IPPROTO_IP,IP_MULTICAST_IF,&mreq4,sizeof(struct ip_mreqn))) )
         {
             close(sfd);
             return -1;
@@ -963,6 +980,11 @@ int create_multicast_socket(const char* address, const char* port, const char* i
         }
 
         if ( -1 == check_error(setsockopt(sfd,IPPROTO_IPV6,IPV6_ADD_MEMBERSHIP,&mreq6,sizeof(struct ipv6_mreq))) )
+        {
+            close(sfd);
+            return -1;
+        }
+        if ( -1 == check_error(setsockopt(sfd,IPPROTO_IPV6,IPV6_MULTICAST_IF,&mreq6.ipv6mr_interface,sizeof(mreq6.ipv6mr_interface))) )
         {
             close(sfd);
             return -1;
