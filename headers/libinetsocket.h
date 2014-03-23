@@ -62,7 +62,7 @@ extern int accept_inet_stream_socket(int sfd, char* src_host, size_t src_host_le
 extern int get_address_family(const char* hostname);
 
 # ifdef __linux__
-extern int create_multicast_socket(const char* address, const char* bport, const char* group, const char* port, const char* local);
+extern int create_multicast_socket(const char* group, const char* port, const char* local);
 # endif
 
 # ifdef __cplusplus
