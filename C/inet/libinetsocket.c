@@ -861,9 +861,8 @@ int get_address_family(const char* hostname)
     return af;
 }
 
-# ifdef LIBSOCKET_LINUX
 /**
- * @brief Create a datagram socket belonging to the multicast group `address`.
+ * @brief Create a datagram socket and join to the multicast group `address`.
  *
  * This function creates a multicast socket bound to `address`. The only option set is
  * the `IP_MULTICAST_IF` (`IPV6_MULTICAST_IF`) option to avoid an explicit routing
@@ -871,22 +870,22 @@ int get_address_family(const char* hostname)
  *
  * An option you want to set very likely is `IP_MULTICAST_LOOP`. Refer to `ip(7)` respectively
  * `ipv6(7)` for `setsockopt()` options; for example:
- *
  * 
  *     int c = 0;
  *     setsockopt(sfd,IPPROTO_IP,IP_MULTICAST_LOOP,&c,4);
- * 
+ *
+ * The group address and port is also used as arguments to `bind(2)`. After creating this socket, you
+ * may use the usual I/O functions on it.
+ *
  * @param group Group address. This address is also used to bind the socket
  * @param port Multicast port.
  * @param local For IPv4 multicast groups: The address of the interface to be used. Ignored for IPv6, NULL for kernel's choice
- *
  *
  * @retval <0 Error (Check errno or use `LIBSOCKET_VERBOSE`)
  * @retval >=0 A valid file descriptor. Now use `read` or `recvfrom`.
  *
  */
-
-
+# ifdef LIBSOCKET_LINUX
 int create_multicast_socket(const char* group, const char* port, const char* if_name)
 {
     int sfd, return_value;
