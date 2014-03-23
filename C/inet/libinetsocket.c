@@ -877,9 +877,14 @@ int get_address_family(const char* hostname)
  *     setsockopt(sfd,IPPROTO_IP,IP_MULTICAST_LOOP,&c,4);
  * 
  *
- * @param address The group's address
- * @param port The UDP port.
+ * @param address The address to bind the socket to (source address for outgoing packets).
+ * @param bport Bind port.
+ * @param group Group address
+ * @param port Multicast port.
  * @param local For IPv4 multicast groups: The address of the interface to be used. Ignored for IPv6, NULL for kernel's choice
+ *
+ *
+ * `address` and `bport` may be `NULL`; in this case the group address and port are used.
  *
  * @retval <0 Error (Check errno or use `LIBSOCKET_VERBOSE`)
  * @retval >=0 A valid file descriptor. Now use `read` or `recvfrom`.
@@ -887,7 +892,7 @@ int get_address_family(const char* hostname)
  */
 
 
-int create_multicast_socket(const char* address, const char* port, const char* if_name)
+int create_multicast_socket(const char* address, const char* bport, const char* group, const char* port, const char* if_name)
 {
     int sfd, return_value;
     struct sockaddr_storage oldsock;
@@ -906,7 +911,7 @@ int create_multicast_socket(const char* address, const char* port, const char* i
     memset(&hints,0,sizeof(hints));
     memset(&interface,0,sizeof(interface));
 
-    if ( -1 == check_error(sfd = create_inet_server_socket(address,port,LIBSOCKET_UDP,LIBSOCKET_BOTH,0)) )
+    if ( -1 == check_error(sfd = create_inet_server_socket(address ? address : group,bport ? bport : port,LIBSOCKET_UDP,LIBSOCKET_BOTH,0)) )
     {
         return -1;
     }
@@ -914,7 +919,7 @@ int create_multicast_socket(const char* address, const char* port, const char* i
     hints.ai_socktype = SOCK_DGRAM;
     hints.ai_family = AF_UNSPEC;
 
-    if ( 0 != (return_value = getaddrinfo(address,port,&hints,&result)) )
+    if ( 0 != (return_value = getaddrinfo(group,port,&hints,&result)) )
     {
 # ifdef VERBOSE
 	const char* errstring = gai_strerror(return_value);
