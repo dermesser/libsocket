@@ -37,8 +37,9 @@ namespace libsocket
 {
     /**
      * @brief Constructor. Sets `sfd` to -1.
+     *
      */
-    socket::socket() : sfd(-1) {}
+    socket::socket(void) : sfd(-1), close_on_destructor(true) {}
 
     /**
      * @brief Destructor: closes socket.
@@ -48,7 +49,8 @@ namespace libsocket
         /*
          * This is possible because socket::~socket(const socket&) is deleted.
          */
-	destroy();
+	if ( close_on_destructor )
+	    destroy();
     }
 
     /**

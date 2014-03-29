@@ -64,20 +64,23 @@ namespace libsocket
      */
     class socket
     {
+
 	protected:
 	    /// sfd is the sockets API file descriptor
 	    int sfd;
 
 	public:
 
-	    socket();
-            socket(const socket&) = delete;
+	    socket(void);
+	    socket(const socket&) = delete;
 
 	    virtual ~socket();
 
 	    virtual int destroy(void);
 
 	    int getfd(void) const;
+            /// Default is true; if set to false, the file descriptor is not closed when the destructor is called.
+	    bool close_on_destructor;
     };
     /**
      * @}
