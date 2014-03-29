@@ -49,6 +49,7 @@ namespace libsocket
 	    inet_dgram_server(const char* host, const char* port, int proto_osi3, int flags=0);
 	    inet_dgram_server(const string& host, const string& port, int proto_osi3, int flags=0);
 
+	private:
 	    void setup(const char* host, const char* port, int proto_osi3, int flags=0);
 	    void setup(const string& host, const string& port, int proto_osi3, int flags=0);
     };
