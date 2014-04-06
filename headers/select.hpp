@@ -7,13 +7,35 @@
 # include <list>
 # include <cstring>
 
+# include <unistd.h>
+# include <sys/select.h>
+# include <errno.h>
+# include <sys/time.h>
+# include <sys/types.h>
+
+# include "exception.hpp"
 # include <sys/select.h>
 
 /**
  * @file select.hpp
  *
- * The class selectset provides a possibility to wait for data on multiple sockets.
- */
+ * @brief Contains the class selectset which provides a neat interface for watching several sockets
+ *
+ * The class selectset implements a wrapper for the syscall select() which allows
+ * to accept connections on more than one socket or communicate with multiple clients
+ * without multithreading.
+ *
+ * New sockets may be added with add_fd(), accepting a child class of libsocket::socket.
+ *
+ * When all sockets are added, the select() call can be triggered by calling wait(). This
+ * function returns a pair of vector<int>s, the first with the sockets ready for reading and
+ * the second containing the sockets ready for writing.
+ *
+ * This is a template class; use the appropriate socket class as template argument. If you want to
+ * select on several different sockets (e.g. an INET server and an INET client), use some superclass
+ * and `dynamic_cast` to cast the pointers returned by `wait()`.
+*/
+
 /*
    The committers of the libsocket project, all rights reserved
    (c) 2012, dermesser <lbo@spheniscida.de>
@@ -40,7 +62,8 @@
 
 namespace libsocket
 {
-    /** @addtogroup libsocketplusplus
+    /**
+     * @addtogroup libsocketplusplus
      * @{
      */
     /**
@@ -50,14 +73,17 @@ namespace libsocket
      * this class. It is rather simple to use; add file descriptors (socket ids) using `add_fd()` specifying
      * whether to watch them for reading or writing and then call `wait()`; once there's data to be read or written
      * it returns a std::pair with vectors of `libsocket::socket*`, the first vector contains sockets ready for reading,
-     * the second one contains those sockets ready for writing. Usually it's necessary to cast them to the actual socket type
-     * using `dynamic_cast<>()`.
+     * the second one contains those sockets ready for writing.
+     *
+     * If you select on multiple sockets, you will need to use a superclass as template argument (e.g. `socket` or `inet_socket`)
+     * and `dynamic_cast`.
      */
+    template<typename SocketT>
     class selectset
     {
 	private:
 	    std::vector<int> filedescriptors; ///< All file descriptors from the socket objects
-	    std::map<int,socket*> fdsockmap;  ///< A map containing the relations between the filedescriptors and the socket objects
+	    std::map<int,SocketT*> fdsockmap;  ///< A map containing the relations between the filedescriptors and the socket objects
 
 	    bool set_up; ///< Stores if the class has been initiated
 
@@ -68,12 +94,120 @@ namespace libsocket
 
 	    selectset();
 
-	    void add_fd(socket& sock, int method);
+	    void add_fd(SocketT& sock, int method);
 
-	    std::pair<std::vector<socket*>, std::vector<socket*> > wait(long long microsecs=0);
+	    std::pair<std::vector<SocketT*>, std::vector<SocketT*> > wait(long long microsecs=0);
+	    typedef std::pair<std::vector<SocketT*>, std::vector<SocketT*> > ready_socks;
     };
 
-    typedef std::pair<std::vector<libsocket::socket*>, std::vector<libsocket::socket*> > ready_socks;
+    extern int highestfd(const std::vector<int>& v);
+
+    /**
+     * @brief Constructor.
+     *
+     * Initializes the sets.
+     */
+    template<typename SockT>
+    selectset<SockT>::selectset(void)
+	: filedescriptors(0), set_up(false)
+    {
+	FD_ZERO(&readset);
+	FD_ZERO(&writeset);
+    }
+
+    /**
+     * @brief Add a socket to the internal sets
+     *
+     * @param sock Some socket. May be server or client socket.
+     * @param method `LIBSOCKET_READ`/`LIBSOCKET_WRITE` or an `OR`ed combination thereof. Determines if the socket is checked on the possibility to read or to write.
+     *
+     */
+    template<typename SockT>
+    void selectset<SockT>::add_fd(SockT& sock, int method)
+    {
+	int fd = sock.getfd();
+
+	if ( method == LIBSOCKET_READ )
+	{
+	    FD_SET(fd,&readset);
+	    filedescriptors.push_back(fd);
+	    fdsockmap[fd] = &sock;
+	    set_up = true;
+
+	} else if ( method == LIBSOCKET_WRITE )
+	{
+	    FD_SET(fd,&writeset);
+	    filedescriptors.push_back(fd);
+	    fdsockmap[fd] = &sock;
+	    set_up = true;
+	} else if ( method == (LIBSOCKET_READ|LIBSOCKET_WRITE) )
+	{ // don't put the fd in our data structures twice.
+	    FD_SET(fd,&readset);
+	    FD_SET(fd,&writeset);
+	    filedescriptors.push_back(fd);
+	    fdsockmap[fd] = &sock;
+	    set_up = true;
+	}
+    }
+
+    /**
+     * @brief Waits for a possibility to read or write data to emerge.
+     *
+     * @param microsecs A timeout in microseconds (for 5 seconds simply write 5e6, for ten seconds 10e6 and so on)
+     *
+     * @returns A pair of vectors of pointers to sockets. Information about the type of socket is lost; use `dynamic_cast<>()` and check for `NULL` to re-convert it.
+     */
+    template<typename SockT>
+    typename selectset<SockT>::ready_socks selectset<SockT>::wait(long long microsecs)
+    {
+	int n = 0;
+
+	struct timeval *timeout = NULL;
+
+	if ( microsecs != 0 )
+	{
+	    struct timeval _timeout;
+
+	    timeout = &_timeout;
+
+	    long long micropart = microsecs % 1000000;
+	    long long secpart   = microsecs - micropart;
+
+	    _timeout.tv_sec  = secpart;
+	    _timeout.tv_usec = microsecs;
+	}
+
+	n = select(highestfd(filedescriptors)+1,&readset,&writeset,NULL,timeout);
+
+	ready_socks rwfds;
+
+	if ( n < 0 )
+	{
+	    std::string err(strerror(errno));
+
+	    throw socket_exception(__FILE__,__LINE__,"selectset::wait(): Error at select(): " + err);
+
+	} else if ( n == 0 ) // time is over, no filedescriptor is ready
+	{
+	    rwfds.first.resize(0);
+	    rwfds.second.resize(0);
+
+	    return rwfds;
+	}
+
+	std::vector<int>::iterator end = filedescriptors.end();
+
+	for ( std::vector<int>::iterator cur = filedescriptors.begin(); cur != end; cur++ )
+	{
+	    if ( FD_ISSET(*cur,&readset) )
+		rwfds.first.push_back(fdsockmap[*cur]);
+
+	    if ( FD_ISSET(*cur,&writeset) )
+		rwfds.second.push_back(fdsockmap[*cur]);
+	}
+
+	return rwfds;
+    }
 
     /**
      * @}

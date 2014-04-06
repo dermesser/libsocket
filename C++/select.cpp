@@ -1,15 +1,3 @@
-# include <vector>
-# include <map>
-# include <utility>
-# include <list>
-# include <cstring>
-
-# include <unistd.h>
-# include <sys/select.h>
-# include <errno.h>
-# include <sys/time.h>
-# include <sys/types.h>
-
 /*
    The committers of the libsocket project, all rights reserved
    (c) 2012, dermesser <lbo@spheniscida.de>
@@ -34,138 +22,25 @@
 
 /**
  * @file select.cpp
- * @brief Contains the class selectset which provides a neat interface for watching several sockets
  *
- * The class selectset implements a wrapper for the syscall select() which allows
- * to accept connections on more than one socket or communicate with multiple clients
- * without multithreading.
- *
- * New sockets may be added with add_fd(), accepting a child class of libsocket::socket.
- *
- * When all sockets are added, the select() call can be triggered by calling wait(). This
- * function returns a pair of vector<int>s, the first with the sockets ready for reading and
- * the second containing the sockets ready for writing.
+ * @brief Contains non-template pieces of the select logic.
  */
 
 # include <exception.hpp>
-# include <select.hpp>
+# include <vector>
 
 namespace libsocket
 {
-    static int highestfd(std::vector<int>); ///< Determines the highest number in a vector of ints; necessary for select()
-
-    /**
-     * @brief Constructor.
-     *
-     * Initializes the sets.
-     */
-    selectset::selectset(void)
-	: filedescriptors(0), set_up(false)
-    {
-	FD_ZERO(&readset);
-	FD_ZERO(&writeset);
-    }
-
-    /**
-     * @brief Add a socket to the internal sets
-     *
-     * @param sock Some socket. May be server or client socket.
-     * @param method `LIBSOCKET_READ`/`LIBSOCKET_WRITE` or an `OR`ed combination thereof. Determines if the socket is checked on the possibility to read or to write.
-     *
-     */
-    void selectset::add_fd(socket& sock, int method)
-    {
-	int fd = sock.getfd();
-
-	if ( method == LIBSOCKET_READ )
-	{
-	    FD_SET(fd,&readset);
-	    filedescriptors.push_back(fd);
-	    fdsockmap[fd] = &sock;
-	    set_up = true;
-
-	} else if ( method == LIBSOCKET_WRITE )
-	{
-	    FD_SET(fd,&writeset);
-	    filedescriptors.push_back(fd);
-	    fdsockmap[fd] = &sock;
-	    set_up = true;
-	} else if ( method == (LIBSOCKET_READ|LIBSOCKET_WRITE) )
-	{ // don't put the fd in our data structures twice.
-	    FD_SET(fd,&readset);
-	    FD_SET(fd,&writeset);
-	    filedescriptors.push_back(fd);
-	    fdsockmap[fd] = &sock;
-	    set_up = true;
-	}
-    }
-
-    /**
-     * @brief Waits for a possibility to read or write data to emerge.
-     *
-     * @param microsecs A timeout in microseconds (for 5 seconds simply write 5e6, for ten seconds 10e6 and so on)
-     *
-     * @returns A pair of vectors of pointers to sockets. Information about the type of socket is lost; use `dynamic_cast<>()` and check for `NULL` to re-convert it.
-     */
-    ready_socks selectset::wait(long long microsecs)
-    {
-	int n = 0;
-
-	struct timeval *timeout = NULL;
-
-	if ( microsecs != 0 )
-	{
-	    struct timeval _timeout;
-
-	    timeout = &_timeout;
-
-	    long long micropart = microsecs % 1000000;
-	    long long secpart   = microsecs - micropart;
-
-	    _timeout.tv_sec  = secpart;
-	    _timeout.tv_usec = microsecs;
-	}
-
-	n = select(highestfd(filedescriptors)+1,&readset,&writeset,NULL,timeout);
-
-	ready_socks rwfds;
-
-	if ( n < 0 )
-	{
-	    std::string err(strerror(errno));
-
-	    throw socket_exception(__FILE__,__LINE__,"selectset::wait(): Error at select(): " + err);
-
-	} else if ( n == 0 ) // time is over, no filedescriptor is ready
-	{
-	    rwfds.first.resize(0);
-	    rwfds.second.resize(0);
-
-	    return rwfds;
-	}
-
-	std::vector<int>::iterator end = filedescriptors.end();
-
-	for ( std::vector<int>::iterator cur = filedescriptors.begin(); cur != end; cur++ )
-	{
-	    if ( FD_ISSET(*cur,&readset) )
-		rwfds.first.push_back(fdsockmap[*cur]);
-
-	    if ( FD_ISSET(*cur,&writeset) )
-		rwfds.second.push_back(fdsockmap[*cur]);
-	}
-
-	return rwfds;
-    }
-
     /***** UTIL *****/
-
-    int highestfd(std::vector<int> v)
+    /**
+     * @brief Utility function to find the highest number in a vector (typically, the highest file descriptor)
+     */
+    int highestfd(const std::vector<int>& v)
     {
-	std::vector<int>::iterator end = v.end();
+	std::vector<int>::const_iterator end = v.end();
 	int highestfd = 0;
 
-	for ( std::vector<int>::iterator cur = v.begin(); cur != end; cur++ )
+	for ( std::vector<int>::const_iterator cur = v.begin(); cur != end; cur++ )
 	{
 	    if ( *cur > highestfd )
 		highestfd = *cur;
