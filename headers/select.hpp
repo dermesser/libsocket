@@ -72,7 +72,7 @@ namespace libsocket
      * To watch different sockets for new data to read or a possibility to write without using threads, use
      * this class. It is rather simple to use; add file descriptors (socket ids) using `add_fd()` specifying
      * whether to watch them for reading or writing and then call `wait()`; once there's data to be read or written
-     * it returns a std::pair with vectors of `libsocket::socket*`, the first vector contains sockets ready for reading,
+     * it returns a std::pair with vectors of `SocketT*`; the first vector contains sockets ready for reading,
      * the second one contains those sockets ready for writing.
      *
      * If you select on multiple sockets, you will need to use a superclass as template argument (e.g. `socket` or `inet_socket`)
@@ -99,6 +99,9 @@ namespace libsocket
 	    std::pair<std::vector<SocketT*>, std::vector<SocketT*> > wait(long long microsecs=0);
 	    typedef std::pair<std::vector<SocketT*>, std::vector<SocketT*> > ready_socks;
     };
+    /**
+     * @}
+     */
 
     extern int highestfd(const std::vector<int>& v);
 
@@ -153,9 +156,11 @@ namespace libsocket
     /**
      * @brief Waits for a possibility to read or write data to emerge.
      *
-     * @param microsecs A timeout in microseconds (for 5 seconds simply write 5e6, for ten seconds 10e6 and so on)
+     * @param microsecs A timeout in microseconds (for 5 seconds simply write 5e6, for ten seconds 10e6 and so on). 0 for no timeout (possibly infinite waiting)
      *
      * @returns A pair of vectors of pointers to sockets. Information about the type of socket is lost; use `dynamic_cast<>()` and check for `NULL` to re-convert it.
+     * 
+     * *Hint*: Save pointers to the added objects to be able to compare and distinguish them after `wait()`.
      */
     template<typename SockT>
     typename selectset<SockT>::ready_socks selectset<SockT>::wait(long long microsecs)
@@ -209,9 +214,6 @@ namespace libsocket
 	return rwfds;
     }
 
-    /**
-     * @}
-     */
 }
 
 #endif
