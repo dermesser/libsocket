@@ -32,7 +32,7 @@ int main(void)
 	inet_stream_server srv(host,port,LIBSOCKET_IPv6);
 	inet_stream* cl1;
 
-	selectset set1;
+	selectset<inet_stream_server> set1;
 	set1.add_fd(srv,LIBSOCKET_READ);
 
 	for ( ;; )
@@ -40,7 +40,7 @@ int main(void)
 	    /********* SELECT PART **********/
 	    std::cout << "Called select()\n";
 
-	    libsocket::ready_socks readypair; // Create pair (libsocket::fd_struct is the return type of selectset::wait()
+	    libsocket::selectset<inet_stream_server>::ready_socks readypair; // Create pair (libsocket::fd_struct is the return type of selectset::wait()
 
 	    readypair = set1.wait(); // Wait for a connection and save the pair to the var
 
