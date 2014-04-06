@@ -22,10 +22,8 @@ SET(headers
 ./inetdgram.hpp
 )
 
-SET(excluded
-./config.h
-./config.h.in
-)
-
+IF(IS_LINUX)
+    SET(headers ${headers} ./epoll.hpp)
+ENDIF()
 
 INSTALL(FILES ${headers} DESTINATION ${HEADER_DIR})
