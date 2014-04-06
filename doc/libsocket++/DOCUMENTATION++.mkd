@@ -666,28 +666,35 @@ Call `close()` on the underlying file descriptor. You may work with the socket a
 # Other Classes
 ## `selectset` class
 
-	selectset(void)
+        selectset(void)
 
-The `selectset` class makes the use of multiple sockets at once easy. It wraps the syscall select using a very C++ish way ;)
+The `selectset` class makes the use of multiple sockets at once easy. It is implemented as template class, this means you
+have to specify a socket class as parameter. This is fine as long as you just select between multiple sockets of one type; however,
+if you want to use select on different socket types, you have to specify any shared superclass of the sockets, that is in most cases
+`socket`.
 
-	void add_fd(socket& sock, int method);
+        template<typename SocketT>
+        void add_fd(const SocketT& sock, int method);
 
 First, add just any socket class derived from `socket` to the new set. Do this multiple times if you have more
 than one socket (which is likely). `method` is either `LIBSOCKET_READ` or `LIBSOCKET_WRITE`, so if you want
 to be notified if some socket is ready to be read from it, specify `LIBSOCKET_READ`. `LIBSOCKET_READ` must also be
 specified for server sockets.
 
-	std::pair<std::vector<socket*>, std::vector<socket*> > wait(long long microsecs=0);
+        template<typename SocketT>
+	std::pair<std::vector<SocketT*>, std::vector<SocketT*> > wait(long long microsecs=0);
 
 Then call `wait()`. The argument is a timeout in microseconds after that the function returns, defaulting to 0 (infinite).
 
 The return type is a `std::pair` consisting of two vectors of socket pointers. Don't panic, there's a typedef in `select.hpp`:
 
 	namespace libsocket {
+            class selectset {
 		typedef std::pair<
 				    std::vector<libsocket::socket*>, // Sockets ready for reading
 				    std::vector<libsocket::socket*>  // Sockets ready for writing.
 				 > ready_socks;
+            }
 	}
 
 If a socket is ready for both reading and writing, it may be a member of both vectors vector.
@@ -697,16 +704,17 @@ A typical program snippet using this class could look like this example:
 	inet_stream sock1("spheniscida.de","80",IPv6);
 	inet_stream sock2("spheniscida.de","25",IPv6);
 
-	selectset socks;
+	selectset<inet_stream> socks;
 	socks.add_fd(sock1,LIBSOCKET_WRITE);
 	socks.add_fd(sock2,LIBSOCKET_READ);
 
-	ready_socks rs = socks.wait();
+	selectset<inet_stream>::ready_socks rs = socks.wait();
 
-	inet_stream* ready_http_sock = dynamic_cast<inet_stream*>(rs.second[0]);
-	inet_stream* ready_smtp_sock = dynamic_cast<inet_stream*>(rs.first[0]);
+        // In case both sockets became available.
+
+	inet_stream* ready_http_sock = rs.second[0];
+	inet_stream* ready_smtp_sock = rs.first[0];
 
 	// Do something with the sockets...
 
-The `dynamic_cast` is necessary, because (you'll remember if you look at the return type) the vectors consist of `socket*`, so you
-have to perform a downcast to reenable all the `inet_stream` methods, like reading/writing etc.
+

@@ -788,12 +788,16 @@ ssize_t rcvfrom(string&amp; buf, string&amp; source, int recvfrom_flags=0);
 
 <h2><code>selectset</code> class</h2>
 
-<pre><code>selectset(void)
+<pre><code>    selectset(void)
 </code></pre>
 
-<p>The <code>selectset</code> class makes the use of multiple sockets at once easy. It wraps the syscall select using a very C++ish way ;)</p>
+<p>The <code>selectset</code> class makes the use of multiple sockets at once easy. It is implemented as template class, this means you
+have to specify a socket class as parameter. This is fine as long as you just select between multiple sockets of one type; however,
+if you want to use select on different socket types, you have to specify any shared superclass of the sockets, that is in most cases
+<code>socket</code>.</p>
 
-<pre><code>void add_fd(socket&amp; sock, int method);
+<pre><code>    template&lt;typename SocketT&gt;
+    void add_fd(const SocketT&amp; sock, int method);
 </code></pre>
 
 <p>First, add just any socket class derived from <code>socket</code> to the new set. Do this multiple times if you have more
@@ -801,7 +805,8 @@ than one socket (which is likely). <code>method</code> is either <code>LIBSOCKET
 to be notified if some socket is ready to be read from it, specify <code>LIBSOCKET_READ</code>. <code>LIBSOCKET_READ</code> must also be
 specified for server sockets.</p>
 
-<pre><code>std::pair&lt;std::vector&lt;socket*&gt;, std::vector&lt;socket*&gt; &gt; wait(long long microsecs=0);
+<pre><code>    template&lt;typename SocketT&gt;
+std::pair&lt;std::vector&lt;SocketT*&gt;, std::vector&lt;SocketT*&gt; &gt; wait(long long microsecs=0);
 </code></pre>
 
 <p>Then call <code>wait()</code>. The argument is a timeout in microseconds after that the function returns, defaulting to 0 (infinite).</p>
@@ -809,10 +814,12 @@ specified for server sockets.</p>
 <p>The return type is a <code>std::pair</code> consisting of two vectors of socket pointers. Don't panic, there's a typedef in <code>select.hpp</code>:</p>
 
 <pre><code>namespace libsocket {
+        class selectset {
     typedef std::pair&lt;
                 std::vector&lt;libsocket::socket*&gt;, // Sockets ready for reading
                 std::vector&lt;libsocket::socket*&gt;  // Sockets ready for writing.
              &gt; ready_socks;
+        }
 }
 </code></pre>
 
@@ -823,17 +830,16 @@ specified for server sockets.</p>
 <pre><code>inet_stream sock1("spheniscida.de","80",IPv6);
 inet_stream sock2("spheniscida.de","25",IPv6);
 
-selectset socks;
+selectset&lt;inet_stream&gt; socks;
 socks.add_fd(sock1,LIBSOCKET_WRITE);
 socks.add_fd(sock2,LIBSOCKET_READ);
 
-ready_socks rs = socks.wait();
+selectset&lt;inet_stream&gt;::ready_socks rs = socks.wait();
 
-inet_stream* ready_http_sock = dynamic_cast&lt;inet_stream*&gt;(rs.second[0]);
-inet_stream* ready_smtp_sock = dynamic_cast&lt;inet_stream*&gt;(rs.first[0]);
+    // In case both sockets became available.
+
+inet_stream* ready_http_sock = rs.second[0];
+inet_stream* ready_smtp_sock = rs.first[0];
 
 // Do something with the sockets...
 </code></pre>
-
-<p>The <code>dynamic_cast</code> is necessary, because (you'll remember if you look at the return type) the vectors consist of <code>socket*</code>, so you
-have to perform a downcast to reenable all the <code>inet_stream</code> methods, like reading/writing etc.</p>

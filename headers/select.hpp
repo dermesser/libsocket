@@ -94,7 +94,7 @@ namespace libsocket
 
 	    selectset();
 
-	    void add_fd(SocketT& sock, int method);
+	    void add_fd(const SocketT& sock, int method);
 
 	    std::pair<std::vector<SocketT*>, std::vector<SocketT*> > wait(long long microsecs=0);
 	    typedef std::pair<std::vector<SocketT*>, std::vector<SocketT*> > ready_socks;
@@ -126,7 +126,7 @@ namespace libsocket
      *
      */
     template<typename SockT>
-    void selectset<SockT>::add_fd(SockT& sock, int method)
+    void selectset<SockT>::add_fd( const SocketT& sock, int method )
     {
 	int fd = sock.getfd();
 
@@ -158,7 +158,9 @@ namespace libsocket
      *
      * @param microsecs A timeout in microseconds (for 5 seconds simply write 5e6, for ten seconds 10e6 and so on). 0 for no timeout (possibly infinite waiting)
      *
-     * @returns A pair of vectors of pointers to sockets. Information about the type of socket is lost; use `dynamic_cast<>()` and check for `NULL` to re-convert it.
+     * @returns A pair of vectors of pointers to sockets. Information about the type of socket is lost;
+     * use `dynamic_cast<>()` and check for `NULL` to re-convert it. The first vector contains sockets available for reading,
+     * the second one those available for writing.
      * 
      * *Hint*: Save pointers to the added objects to be able to compare and distinguish them after `wait()`.
      */
