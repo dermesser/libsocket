@@ -125,8 +125,8 @@ namespace libsocket
      * @param method `LIBSOCKET_READ`/`LIBSOCKET_WRITE` or an `OR`ed combination thereof. Determines if the socket is checked on the possibility to read or to write.
      *
      */
-    template<typename SockT>
-    void selectset<SockT>::add_fd( const SocketT& sock, int method )
+    template<typename SocketT>
+    void selectset<SocketT>::add_fd(const SocketT& sock, int method )
     {
 	int fd = sock.getfd();
 
@@ -134,21 +134,21 @@ namespace libsocket
 	{
 	    FD_SET(fd,&readset);
 	    filedescriptors.push_back(fd);
-	    fdsockmap[fd] = &sock;
+	    fdsockmap[fd] = const_cast<SocketT*>(&sock);
 	    set_up = true;
 
 	} else if ( method == LIBSOCKET_WRITE )
 	{
 	    FD_SET(fd,&writeset);
 	    filedescriptors.push_back(fd);
-	    fdsockmap[fd] = &sock;
+	    fdsockmap[fd] = const_cast<SocketT*>(&sock);
 	    set_up = true;
 	} else if ( method == (LIBSOCKET_READ|LIBSOCKET_WRITE) )
 	{ // don't put the fd in our data structures twice.
 	    FD_SET(fd,&readset);
 	    FD_SET(fd,&writeset);
 	    filedescriptors.push_back(fd);
-	    fdsockmap[fd] = &sock;
+	    fdsockmap[fd] = const_cast<SocketT*>(&sock);
 	    set_up = true;
 	}
     }
@@ -178,7 +178,7 @@ namespace libsocket
 	    timeout = &_timeout;
 
 	    long long micropart = microsecs % 1000000;
-	    long long secpart   = microsecs - micropart;
+	    long long secpart   = (microsecs - micropart) / 1000000;
 
 	    _timeout.tv_sec  = secpart;
 	    _timeout.tv_usec = microsecs;
