@@ -172,9 +172,9 @@ int create_unix_dgram_socket(const char* bind_path, int flags)
 	}
 
 	saddr.sun_family = AF_UNIX;
-	strncpy(saddr.sun_path,bind_path,sizeof(saddr.sun_path));
+	strncpy(saddr.sun_path,bind_path,strlen(bind_path));
 
-	bind(sfd,(struct sockaddr*)&saddr,sizeof(struct sockaddr));
+	bind(sfd,(struct sockaddr*)&saddr,sizeof(saddr.sun_family) + strlen(saddr.sun_path));
     }
 
     return sfd;
