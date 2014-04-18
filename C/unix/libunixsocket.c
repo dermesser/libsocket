@@ -130,7 +130,7 @@ int create_unix_stream_socket(const char* path, int flags)
     saddr.sun_family = AF_UNIX;
     strncpy(saddr.sun_path,path,sizeof(saddr.sun_path)-1);
 
-    if ( -1 == check_error(connect(sfd,(struct sockaddr*)&saddr,sizeof saddr)) )
+    if ( -1 == check_error(connect(sfd,(struct sockaddr*)&saddr,sizeof(saddr.sun_family) + strlen(saddr.sun_path)) ) )
 	return -1;
 
     return sfd;
@@ -172,7 +172,7 @@ int create_unix_dgram_socket(const char* bind_path, int flags)
 	}
 
 	saddr.sun_family = AF_UNIX;
-	strncpy(saddr.sun_path,bind_path,strlen(bind_path));
+	strncpy(saddr.sun_path,bind_path,sizeof(saddr.sun_path)-1);
 
 	bind(sfd,(struct sockaddr*)&saddr,sizeof(saddr.sun_family) + strlen(saddr.sun_path));
     }
@@ -226,7 +226,7 @@ int connect_unix_dgram_socket(int sfd, const char* path)
 
     strncpy(new_addr.sun_path,path,sizeof(new_addr.sun_path)-1);
 
-    if ( -1 == check_error(connect(sfd,(struct sockaddr*)&new_addr,sizeof(struct sockaddr_un))) )
+    if ( -1 == check_error(connect(sfd,(struct sockaddr*)&new_addr,sizeof(new_addr.sun_family) + strlen(new_addr.sun_path))) )
 	return -1;
 
     return 0;
@@ -345,9 +345,9 @@ int create_unix_server_socket(const char* path, int socktype, int flags)
 
     saddr.sun_family = AF_UNIX;
 
-    strncpy(saddr.sun_path,path,sizeof(saddr.sun_path) - 1);
+    strncpy(saddr.sun_path,path,sizeof(saddr.sun_path)-1);
 
-    if ( -1 == check_error(bind(sfd,(struct sockaddr*)&saddr,sizeof(struct sockaddr_un))) )
+    if ( -1 == check_error(bind(sfd,(struct sockaddr*)&saddr,sizeof(saddr.sun_family) + strlen(saddr.sun_path))) )
 	return -1;
 
     if ( type == SOCK_STREAM )
