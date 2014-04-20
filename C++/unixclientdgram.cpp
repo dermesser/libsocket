@@ -50,7 +50,7 @@ namespace libsocket
     void unix_dgram_client::setup(const char* path, int flags)
     {
 	if ( sfd != -1 )
-	    throw socket_exception(__FILE__,__LINE__,"unix_dgram_client::unix_dgram_client: Socket is already set up!\n");
+	    throw socket_exception(__FILE__,__LINE__,"unix_dgram_client::unix_dgram_client: Socket has already been set up!");
 
 	sfd = create_unix_dgram_socket(path,flags);
 
@@ -58,8 +58,9 @@ namespace libsocket
 	    _path.assign(path);
 
 	if ( sfd < 0 )
-	    throw socket_exception(__FILE__,__LINE__,"unix_dgram_client::unix_dgram_client: Could not create unix dgram client socket!\n");
+	    throw socket_exception(__FILE__,__LINE__,"unix_dgram_client::unix_dgram_client: Could not create unix dgram client socket!");
 
+	is_nonblocking = flags & SOCK_NONBLOCK;
     }
 
     /**
@@ -69,7 +70,7 @@ namespace libsocket
      */
     unix_dgram_client::unix_dgram_client(int flags)
     {
-	setup(0,flags); // bind to nowhere
+	setup(NULL,flags); // bind to nowhere
     }
 
     /**
@@ -110,9 +111,9 @@ namespace libsocket
     void unix_dgram_client::connect(const char* path)
     {
 	if ( sfd == -1 )
-	    throw socket_exception(__FILE__,__LINE__,"unix_dgram_client::connect() - Socket has already been closed!\n");
+	    throw socket_exception(__FILE__,__LINE__,"unix_dgram_client::connect() - Socket has already been closed!");
 	if ( connect_unix_dgram_socket(sfd,path) < 0 )
-	    throw socket_exception(__FILE__,__LINE__,"unix_dgram_client::connect: Could not connect dgram socket!\n");
+	    throw socket_exception(__FILE__,__LINE__,"unix_dgram_client::connect: Could not connect dgram socket!");
 
 	_path.assign(path);
 
@@ -142,7 +143,7 @@ namespace libsocket
     void unix_dgram_client::deconnect(void)
     {
 	if ( connect_unix_dgram_socket(sfd,0) < 0 )
-	    throw socket_exception(__FILE__,__LINE__,"unix_dgram_client::deconnect: Could not disconnect dgram socket!\n");
+	    throw socket_exception(__FILE__,__LINE__,"unix_dgram_client::deconnect: Could not disconnect dgram socket!");
 
 	_path.clear();
 

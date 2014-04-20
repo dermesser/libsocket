@@ -1,6 +1,8 @@
 # include <string>
 # include <stdio.h>
 # include <errno.h>
+# include <sstream>
+# include <cstring>
 
 /*
    The committers of the libsocket project, all rights reserved
@@ -61,21 +63,14 @@ namespace libsocket
      */
     socket_exception::socket_exception(string f, int l, string m)
     {
-	char line[5];
-
-	line[4] = 0;
+	std::ostringstream message_stream;
 
 	// Saving errno here should be safe
 	err = errno;
 
-	sprintf(line,"%i",l); // Yes, there are C++ stringstreams, but it's simpler ;)
+	message_stream << f << ":" << l << ": " << m << " (" << std::strerror(errno) << ")\n";
 
-	m.insert(0,": ");
-	m.insert(0,line);
-	m.insert(0,":");
-	m.insert(0,f);
-
-	mesg = m;
+	mesg = message_stream.str();
     }
 }
 
