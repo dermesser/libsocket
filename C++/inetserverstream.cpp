@@ -51,7 +51,6 @@ namespace libsocket
      * @brief Void constructor; don't forget to setup() the socket before use!
      */
     inet_stream_server::inet_stream_server(void)
-	: nonblock(false)
     {
     }
 
@@ -66,7 +65,6 @@ namespace libsocket
      * @param flags Flags for `socket(2)`
      */
     inet_stream_server::inet_stream_server(const char* bindhost, const char* bindport, int proto_osi3, int flags)
-	: nonblock(false)
     {
 	setup(bindhost,bindport,proto_osi3,flags);
     }
@@ -82,7 +80,6 @@ namespace libsocket
      * @param flags Flags for `socket(2)`
      */
     inet_stream_server::inet_stream_server(const string& bindhost, const string& bindport, int proto_osi3, int flags)
-	: nonblock(false)
     {
 	setup(bindhost,bindport,proto_osi3,flags);
     }
@@ -101,20 +98,16 @@ namespace libsocket
     void inet_stream_server::setup(const char* bindhost, const char* bindport, int proto_osi3, int flags)
     {
 	if ( sfd != -1 )
-	    throw socket_exception(__FILE__,__LINE__,"inet_stream_server::inet_stream_server() - already bound and listening!\n");
+	    throw socket_exception(__FILE__,__LINE__,"inet_stream_server::inet_stream_server() - already bound and listening!");
 	if ( bindhost == 0 || bindport == 0 )
-	    throw socket_exception(__FILE__,__LINE__,"inet_stream_server::inet_stream_server() - at least one bind argument invalid!\n");
+	    throw socket_exception(__FILE__,__LINE__,"inet_stream_server::inet_stream_server() - at least one bind argument invalid!");
 	if ( -1 == (sfd = create_inet_server_socket(bindhost,bindport,LIBSOCKET_TCP,proto_osi3,flags)) )
-	    throw socket_exception(__FILE__,__LINE__,"inet_stream_server::inet_stream_server() - could not create server socket!\n");
+	    throw socket_exception(__FILE__,__LINE__,"inet_stream_server::inet_stream_server() - could not create server socket!");
 
 	host = string(bindhost);
 	port = string(bindport);
 
-	nonblock = false;
-# if LIBSOCKET_LINUX
-	if (flags & SOCK_NONBLOCK)
-	    nonblock = true;
-# endif
+	is_nonblocking = flags & SOCK_NONBLOCK;
     }
 
     /**
@@ -131,20 +124,16 @@ namespace libsocket
     void inet_stream_server::setup(const string& bindhost, const string& bindport, int proto_osi3, int flags)
     {
 	if ( sfd != -1 )
-	    throw socket_exception(__FILE__,__LINE__,"inet_stream_server::inet_stream_server() - already bound and listening!\n");
+	    throw socket_exception(__FILE__,__LINE__,"inet_stream_server::inet_stream_server() - already bound and listening!");
 	if ( bindhost.empty() || bindport.empty() )
-	    throw socket_exception(__FILE__,__LINE__,"inet_stream_server::inet_stream_server() - at least one bind argument invalid!\n");
+	    throw socket_exception(__FILE__,__LINE__,"inet_stream_server::inet_stream_server() - at least one bind argument invalid!");
 	if ( -1 == (sfd = create_inet_server_socket(bindhost.c_str(),bindport.c_str(),LIBSOCKET_TCP,proto_osi3,flags)) )
-	    throw socket_exception(__FILE__,__LINE__,"inet_stream_server::inet_stream_server() - could not create server socket!\n");
+	    throw socket_exception(__FILE__,__LINE__,"inet_stream_server::inet_stream_server() - could not create server socket!");
 
 	host = string(bindhost);
 	port = string(bindport);
 
-	nonblock = false;
-# if LIBSOCKET_LINUX
-	if (flags & SOCK_NONBLOCK)
-	    nonblock = true;
-# endif
+	is_nonblocking = flags & SOCK_NONBLOCK;
     }
 
     /**
@@ -161,7 +150,7 @@ namespace libsocket
     inet_stream* inet_stream_server::accept(int numeric,int accept_flags)
     {
 	if ( sfd < 0 )
-	    throw socket_exception(__FILE__,__LINE__,"inet_stream_server::accept() - stream server socket is not in listening state -- please call first setup()!\n");
+	    throw socket_exception(__FILE__,__LINE__,"inet_stream_server::accept() - stream server socket is not in listening state -- please call first setup()!");
 
 	using std::unique_ptr;
 	unique_ptr<char[]> src_host(new char[1024]);
@@ -175,12 +164,12 @@ namespace libsocket
 
 	if ( -1 == (client_sfd = accept_inet_stream_socket(sfd,src_host.get(),1023,src_port.get(),31,numeric,accept_flags)) )
 	{
-	    if ( nonblock == false )
+	    if ( ! is_nonblocking && errno != EWOULDBLOCK )
 	    {
-		throw socket_exception(__FILE__,__LINE__,"inet_stream_server::accept() - could not accept new connection on stream server socket!\n");
+		throw socket_exception(__FILE__,__LINE__,"inet_stream_server::accept() - could not accept new connection on stream server socket!");
 	    } else
 	    {
-		return NULL; // Only return NULL but don't throw an exception if the socket is nonblocking
+		return nullptr; // Only return NULL but don't throw an exception if the socket is nonblocking
 	    }
 	}
 
@@ -191,5 +180,14 @@ namespace libsocket
 
 	return client;
     }
-}
 
+    string inet_stream_server::getbindhost(void)
+    {
+	return gethost();
+    }
+
+    string inet_stream_server::getbindport(void)
+    {
+	return getport();
+    }
+}

@@ -39,7 +39,7 @@ namespace libsocket
      * @brief Constructor. Sets `sfd` to -1.
      *
      */
-    socket::socket(void) : sfd(-1), close_on_destructor(true) {}
+    socket::socket(void) : sfd(-1), close_on_destructor(true), is_nonblocking(false) {}
 
     /**
      * @brief Destructor: closes socket.

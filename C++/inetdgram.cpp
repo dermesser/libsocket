@@ -68,6 +68,7 @@ namespace libsocket
      *
      * @retval >0 n bytes of data were read into `buf`.
      * @retval 0 Peer sent EOF
+     * @retval -1 Socket is non-blocking and returned without any data.
      *
      * Every error makes the function throw an exception.
      */
@@ -77,10 +78,15 @@ namespace libsocket
 	int num = ((numeric == true) ? LIBSOCKET_NUMERIC : 0);
 
 	if ( -1 == sfd )
-	    throw socket_exception(__FILE__,__LINE__,"inet_dgram::rcvfrom() - Socket already closed!\n");
+	    throw socket_exception(__FILE__,__LINE__,"inet_dgram::rcvfrom() - Socket already closed!");
 
 	if ( -1 == (bytes = recvfrom_inet_dgram_socket(sfd,buf,len,hostbuf,hostbuflen,portbuf,portbuflen,rcvfrom_flags,num)) )
-	    throw socket_exception(__FILE__,__LINE__,"inet_dgram::rcvfrom() - recvfrom() failed!\n");
+	{
+	    if ( is_nonblocking && errno == EWOULDBLOCK )
+		return -1;
+	    else
+		throw socket_exception(__FILE__,__LINE__,"inet_dgram::rcvfrom() - recvfrom() failed -- could not receive data from peer!");
+	}
 
 	return bytes;
     }
@@ -100,6 +106,7 @@ namespace libsocket
      *
      * @retval >0 n bytes of data were read into `buf`.
      * @retval 0 Peer sent EOF
+     * @retval -1 Socket is non-blocking and returned without any data.
      *
      * Every error makes the function throw an exception.
      */
@@ -115,10 +122,8 @@ namespace libsocket
 	memset(from_port.get(),0,32);
 	memset(buf,0,len);
 
+	// Error checking already done in rcvfrom() method.
 	bytes = rcvfrom(buf,len,from_host.get(),1023,from_port.get(),31,rcvfrom_flags,numeric);
-
-	if ( bytes < 0 )
-	    throw socket_exception(__FILE__,__LINE__,"inet_dgram::rcvfrom: Could not receive data from peer!\n");
 
 	srchost.resize(strlen(from_host.get()));
 	srcport.resize(strlen(from_port.get()));
@@ -143,6 +148,7 @@ namespace libsocket
 
      * @retval >0 n bytes of data were read into `buf`.
      * @retval 0 Peer sent EOF
+     * @retval -1 Socket is non-blocking and returned without any data.
      *
      * Every error makes the function throw an exception.
      */
@@ -156,9 +162,6 @@ namespace libsocket
         memset(cbuf.get(),0,buf.size());
 
 	bytes = rcvfrom(cbuf.get(),static_cast<size_t>(buf.size()),srchost,srcport,rcvfrom_flags,numeric); // calling inet_dgram::rcvfrom(void*, size_t, string&, string&, int, bool)
-
-	if ( bytes < 0 )
-	    throw socket_exception(__FILE__,__LINE__,"inet_dgram::rcvfrom: Could not receive data from peer!\n");
 
 	buf.resize(bytes);
 
@@ -182,6 +185,7 @@ namespace libsocket
      *
      * @retval >0 n bytes of data were sent.
      * @retval 0 Nothing was sent
+     * @retval -1 Socket is non-blocking and didn't send any data.
      *
      * Every error makes the function throw an exception.
      */
@@ -190,10 +194,15 @@ namespace libsocket
 	ssize_t bytes;
 
 	if ( -1 == sfd )
-	    throw socket_exception(__FILE__,__LINE__,"inet_dgram::sendto() - Socket already closed!\n");
+	    throw socket_exception(__FILE__,__LINE__,"inet_dgram::sendto() - Socket already closed!");
 
 	if ( -1 == (bytes = sendto_inet_dgram_socket(sfd,buf,len,dsthost,dstport,sndto_flags)) )
-	    throw socket_exception(__FILE__,__LINE__,"inet_dgram::sndto() - Error at sendto\n");
+	{
+	    if ( is_nonblocking && errno == EWOULDBLOCK )
+		return -1;
+	    else
+		throw socket_exception(__FILE__,__LINE__,"inet_dgram::sndto() - Error at sendto");
+	}
 
 	return bytes;
     }
@@ -209,7 +218,9 @@ namespace libsocket
      * @param dstport Target port
      * @param sndto_flags Flags for `sendto(2)`
      *
-     * Every error makes the function throw an exception.
+     * Every error makes the function throw an exception, except for EWOULDBLOCK.
+     *
+     * @retval -1 Socket is non-blocking and didn't send any data.
      */
     ssize_t inet_dgram::sndto(const void* buf, size_t len, const string& dsthost, const string& dstport, int sndto_flags)
     {
@@ -231,6 +242,8 @@ namespace libsocket
      * @param sndto_flags Flags for `sendto(2)`
      *
      * Every error makes the function throw an exception.
+     *
+     * @retval -1 Socket is non-blocking and didn't send any data.
      */
     ssize_t inet_dgram::sndto(const string& buf, const string& dsthost, const string& dstport, int sndto_flags)
     {

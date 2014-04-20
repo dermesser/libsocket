@@ -3,6 +3,7 @@
 
 # include <sys/socket.h>
 # include <sys/types.h>
+# include <errno.h>
 
 # include "exception.hpp"
 
@@ -68,6 +69,9 @@ namespace libsocket
 	protected:
 	    /// sfd is the sockets API file descriptor
 	    int sfd;
+	    bool is_nonblocking;
+            /// Default is true; if set to false, the file descriptor is not closed when the destructor is called.
+	    bool close_on_destructor;
 
 	public:
 
@@ -79,8 +83,6 @@ namespace libsocket
 	    virtual int destroy(void);
 
 	    int getfd(void) const;
-            /// Default is true; if set to false, the file descriptor is not closed when the destructor is called.
-	    bool close_on_destructor;
     };
     /**
      * @}

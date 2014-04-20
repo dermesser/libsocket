@@ -50,17 +50,22 @@ namespace libsocket
      * @param path Path of destination
      * @param sendto_flags Flags for `sendto(2)`
      *
-     * @returns How many bytes were sent.
+     * @returns How many bytes were sent. Returns -1 if the socket was created with SOCK_NONBLOCK and errno is EWOULDBLOCK.
      */
     ssize_t unix_dgram::sndto(const void* buf, size_t length, const char* path, int sendto_flags)
     {
 	if ( buf == NULL )
-	    throw socket_exception(__FILE__,__LINE__,"unix_dgram::sndto: Buffer is NULL!\n");
+	    throw socket_exception(__FILE__,__LINE__,"unix_dgram::sndto: Buffer is NULL!");
 
 	ssize_t bytes;
 
 	if ( 0 > (bytes = sendto_unix_dgram_socket(sfd,buf,length,path,sendto_flags)) )
-	    throw socket_exception(__FILE__,__LINE__,"unix_dgram::sndto: Could not send data to peer!\n");
+	{
+	    if ( is_nonblocking && errno == EWOULDBLOCK )
+		return -1;
+	    else
+		throw socket_exception(__FILE__,__LINE__,"unix_dgram::sndto: Could not send data to peer!");
+	}
 
 	return bytes;
     }
@@ -73,7 +78,7 @@ namespace libsocket
      * @param path Path of destination
      * @param sendto_flags Flags for `sendto(2)`
      *
-     * @returns How many bytes were sent.
+     * @returns How many bytes were sent. Returns -1 if the socket was created with SOCK_NONBLOCK and errno is EWOULDBLOCK.
      */
     ssize_t unix_dgram::sndto(const void* buf, size_t length, const string& path, int sendto_flags)
     {
@@ -87,7 +92,7 @@ namespace libsocket
      * @param path Path of destination
      * @param sendto_flags Flags for `sendto(2)`
      *
-     * @returns How many bytes were sent.
+     * @returns How many bytes were sent. Returns -1 if the socket was created with SOCK_NONBLOCK and errno is EWOULDBLOCK.
      */
     ssize_t unix_dgram::sndto(const string& buf, const string& path, int sendto_flags)
     {
@@ -103,19 +108,24 @@ namespace libsocket
      * @param source_len `source`'s length
      * @param recvfrom_flags Flags for `recvfrom(2)`
      *
-     * @returns How many bytes were received.
+     * @returns How many bytes were received. Returns -1 if the socket was created with SOCK_NONBLOCK and errno is EWOULDBLOCK.
      */
     ssize_t unix_dgram::rcvfrom(void* buf, size_t length, char* source, size_t source_len, int recvfrom_flags)
     {
 	if ( buf == NULL )
-	    throw socket_exception(__FILE__,__LINE__,"unix_dgram::rcvfrom: Buffer is NULL!\n");
+	    throw socket_exception(__FILE__,__LINE__,"unix_dgram::rcvfrom: Buffer is NULL!");
 
 	ssize_t bytes;
 
 	bytes = recvfrom_unix_dgram_socket(sfd,buf,length,source,source_len,recvfrom_flags);
 
 	if ( bytes < 0 )
-	    throw socket_exception(__FILE__,__LINE__,"unix_dgram::rcvfrom: Could not receive data from peer!\n");
+	{
+	    if ( is_nonblocking && errno == EWOULDBLOCK )
+		return -1;
+	    else
+		throw socket_exception(__FILE__,__LINE__,"unix_dgram::rcvfrom: Could not receive data from peer!");
+	}
 
 	return bytes;
     }
@@ -128,12 +138,12 @@ namespace libsocket
      * @param source Buffer for sender's path. The path is truncated to `source.size()` characters.
      * @param recvfrom_flags Flags for `recvfrom(2)`
      *
-     * @returns How many bytes were received.
+     * @returns How many bytes were received. Returns -1 if the socket was created with SOCK_NONBLOCK and errno is EWOULDBLOCK.
      */
     ssize_t unix_dgram::rcvfrom(void* buf, size_t length, string& source, int recvfrom_flags)
     {
 	if ( buf == NULL )
-	    throw socket_exception(__FILE__,__LINE__,"unix_dgram::rcvfrom: Buffer is NULL!\n");
+	    throw socket_exception(__FILE__,__LINE__,"unix_dgram::rcvfrom: Buffer is NULL!");
 
 	ssize_t bytes;
 
@@ -147,7 +157,12 @@ namespace libsocket
 	bytes = recvfrom_unix_dgram_socket(sfd,buf,length,source_cstr.get(),107,recvfrom_flags);
 
 	if ( bytes < 0 )
-	    throw socket_exception(__FILE__,__LINE__,"unix_dgram::rcvfrom: Could not receive data from peer!\n");
+	{
+	    if ( is_nonblocking && errno == EWOULDBLOCK )
+		return -1;
+	    else
+		throw socket_exception(__FILE__,__LINE__,"unix_dgram::rcvfrom: Could not receive data from peer!");
+	}
 
 	source_cstr_len = strlen(source_cstr.get());
 
@@ -165,12 +180,12 @@ namespace libsocket
      * @param source Buffer for sender's path. The path is truncated to `source.size()` characters.
      * @param recvfrom_flags Flags for `recvfrom(2)`
      *
-     * @returns How many bytes were received.
+     * @returns How many bytes were received. Returns -1 if the socket was created with SOCK_NONBLOCK and errno is EWOULDBLOCK.
      */
     ssize_t unix_dgram::rcvfrom(string& buf, string& source, int recvfrom_flags)
     {
 	if ( buf.empty() )
-	    throw socket_exception(__FILE__,__LINE__,"unix_dgram::rcvfrom: Buffer is empty!\n");
+	    throw socket_exception(__FILE__,__LINE__,"unix_dgram::rcvfrom: Buffer is empty!");
 
 	ssize_t bytes;
 
@@ -186,7 +201,12 @@ namespace libsocket
 	bytes = recvfrom_unix_dgram_socket(sfd,cbuf.get(),buf.size(),source_cstr.get(),107,recvfrom_flags);
 
 	if ( bytes < 0 )
-	    throw socket_exception(__FILE__,__LINE__,"unix_dgram::rcvfrom: Could not receive data from peer!\n");
+	{
+	    if ( is_nonblocking && errno == EWOULDBLOCK )
+		return -1;
+	    else
+		throw socket_exception(__FILE__,__LINE__,"unix_dgram::rcvfrom: Could not receive data from peer!");
+	}
 
 	source_cstr_len = strlen(source_cstr.get());
 

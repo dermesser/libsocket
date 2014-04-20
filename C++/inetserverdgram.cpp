@@ -80,10 +80,11 @@ namespace libsocket
 	// No separate call to get_address_family()
 
 	if ( -1 == (sfd = create_inet_server_socket(bhost,bport,LIBSOCKET_UDP,proto_osi3,flags)) )
-	    throw socket_exception(__FILE__,__LINE__,"inet_dgram_server::inet_dgram_server() - could not create server socket!\n");
+	    throw socket_exception(__FILE__,__LINE__,"inet_dgram_server::inet_dgram_server() - could not create server socket!");
 
 	host = string(bhost);
 	port = string(bport);
+	is_nonblocking = flags & SOCK_NONBLOCK;
     }
 
     /**

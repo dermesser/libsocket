@@ -78,14 +78,14 @@ namespace libsocket
     void unix_stream_server::setup(const char* path, int flags)
     {
 	if ( sfd != -1 )
-	    throw socket_exception(__FILE__,__LINE__,"unix_stream_server::setup: Socket already set up!\n");
+	    throw socket_exception(__FILE__,__LINE__,"unix_stream_server::setup: Socket already set up!");
 	if ( path == NULL )
-	    throw socket_exception(__FILE__,__LINE__,"unix_stream_server::setup: Path is NULL!\n");
+	    throw socket_exception(__FILE__,__LINE__,"unix_stream_server::setup: Path is NULL!");
 
 	sfd = create_unix_server_socket(path,LIBSOCKET_STREAM,flags);
 
 	if ( sfd < 0 )
-	    throw socket_exception(__FILE__,__LINE__,"unix_stream_server::setup: Error at creating UNIX stream server socket!\n");
+	    throw socket_exception(__FILE__,__LINE__,"unix_stream_server::setup: Error at creating UNIX stream server socket!");
 
 	_path.assign(path);
     }
@@ -111,14 +111,19 @@ namespace libsocket
 	int cfd;
 
 	if ( sfd == -1 )
-	    throw socket_exception(__FILE__,__LINE__,"unix_stream_server::accept: Socket not set up yet!\n");
+	    throw socket_exception(__FILE__,__LINE__,"unix_stream_server::accept: Socket not set up yet!");
 
 	unix_stream_client* client = new unix_stream_client;
 
 	cfd = accept_unix_stream_socket(sfd,flags);
 
 	if ( cfd < 0 )
-	    throw socket_exception(__FILE__,__LINE__,"unix_stream_server::accept: Error at accepting new connection!\n");
+	{
+	    if ( is_nonblocking && errno == EWOULDBLOCK )
+		return nullptr;
+	    else
+		throw socket_exception(__FILE__,__LINE__,"unix_stream_server::accept: Error at accepting new connection!");
+	}
 
 	client->sfd = cfd;
 
