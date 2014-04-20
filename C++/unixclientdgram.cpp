@@ -50,15 +50,16 @@ namespace libsocket
     void unix_dgram_client::setup(const char* path, int flags)
     {
 	if ( sfd != -1 )
-	    throw socket_exception(__FILE__,__LINE__,"unix_dgram_client::unix_dgram_client: Socket has already been set up!");
+	    throw socket_exception(__FILE__,__LINE__,"unix_dgram_client::unix_dgram_client: Socket has already been set up!",false);
 
 	sfd = create_unix_dgram_socket(path,flags);
+
+	if ( sfd < 0 )
+	    throw socket_exception(__FILE__,__LINE__,"unix_dgram_client::unix_dgram_client: Could not create unix dgram client socket!");
 
 	if ( path )
 	    _path.assign(path);
 
-	if ( sfd < 0 )
-	    throw socket_exception(__FILE__,__LINE__,"unix_dgram_client::unix_dgram_client: Could not create unix dgram client socket!");
 
 	is_nonblocking = flags & SOCK_NONBLOCK;
     }
@@ -111,7 +112,7 @@ namespace libsocket
     void unix_dgram_client::connect(const char* path)
     {
 	if ( sfd == -1 )
-	    throw socket_exception(__FILE__,__LINE__,"unix_dgram_client::connect() - Socket has already been closed!");
+	    throw socket_exception(__FILE__,__LINE__,"unix_dgram_client::connect() - Socket has already been closed!",false);
 	if ( connect_unix_dgram_socket(sfd,path) < 0 )
 	    throw socket_exception(__FILE__,__LINE__,"unix_dgram_client::connect: Could not connect dgram socket!");
 

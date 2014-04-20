@@ -78,9 +78,9 @@ namespace libsocket
     void unix_stream_server::setup(const char* path, int flags)
     {
 	if ( sfd != -1 )
-	    throw socket_exception(__FILE__,__LINE__,"unix_stream_server::setup: Socket already set up!");
+	    throw socket_exception(__FILE__,__LINE__,"unix_stream_server::setup: Socket already set up!",false);
 	if ( path == NULL )
-	    throw socket_exception(__FILE__,__LINE__,"unix_stream_server::setup: Path is NULL!");
+	    throw socket_exception(__FILE__,__LINE__,"unix_stream_server::setup: Path is NULL!",false);
 
 	sfd = create_unix_server_socket(path,LIBSOCKET_STREAM,flags);
 
@@ -111,7 +111,7 @@ namespace libsocket
 	int cfd;
 
 	if ( sfd == -1 )
-	    throw socket_exception(__FILE__,__LINE__,"unix_stream_server::accept: Socket not set up yet!");
+	    throw socket_exception(__FILE__,__LINE__,"unix_stream_server::accept: Socket not set up yet!",false);
 
 	unix_stream_client* client = new unix_stream_client;
 

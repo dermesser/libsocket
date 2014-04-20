@@ -78,7 +78,7 @@ namespace libsocket
 	int num = ((numeric == true) ? LIBSOCKET_NUMERIC : 0);
 
 	if ( -1 == sfd )
-	    throw socket_exception(__FILE__,__LINE__,"inet_dgram::rcvfrom() - Socket already closed!");
+	    throw socket_exception(__FILE__,__LINE__,"inet_dgram::rcvfrom() - Socket is closed!",false);
 
 	if ( -1 == (bytes = recvfrom_inet_dgram_socket(sfd,buf,len,hostbuf,hostbuflen,portbuf,portbuflen,rcvfrom_flags,num)) )
 	{
@@ -194,7 +194,7 @@ namespace libsocket
 	ssize_t bytes;
 
 	if ( -1 == sfd )
-	    throw socket_exception(__FILE__,__LINE__,"inet_dgram::sendto() - Socket already closed!");
+	    throw socket_exception(__FILE__,__LINE__,"inet_dgram::sendto() - Socket already closed!",false);
 
 	if ( -1 == (bytes = sendto_inet_dgram_socket(sfd,buf,len,dsthost,dstport,sndto_flags)) )
 	{

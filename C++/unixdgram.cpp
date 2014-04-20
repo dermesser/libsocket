@@ -55,7 +55,7 @@ namespace libsocket
     ssize_t unix_dgram::sndto(const void* buf, size_t length, const char* path, int sendto_flags)
     {
 	if ( buf == NULL )
-	    throw socket_exception(__FILE__,__LINE__,"unix_dgram::sndto: Buffer is NULL!");
+	    throw socket_exception(__FILE__,__LINE__,"unix_dgram::sndto: Buffer is NULL!",false);
 
 	ssize_t bytes;
 
@@ -113,7 +113,7 @@ namespace libsocket
     ssize_t unix_dgram::rcvfrom(void* buf, size_t length, char* source, size_t source_len, int recvfrom_flags)
     {
 	if ( buf == NULL )
-	    throw socket_exception(__FILE__,__LINE__,"unix_dgram::rcvfrom: Buffer is NULL!");
+	    throw socket_exception(__FILE__,__LINE__,"unix_dgram::rcvfrom: Buffer is NULL!",false);
 
 	ssize_t bytes;
 
@@ -143,7 +143,7 @@ namespace libsocket
     ssize_t unix_dgram::rcvfrom(void* buf, size_t length, string& source, int recvfrom_flags)
     {
 	if ( buf == NULL )
-	    throw socket_exception(__FILE__,__LINE__,"unix_dgram::rcvfrom: Buffer is NULL!");
+	    throw socket_exception(__FILE__,__LINE__,"unix_dgram::rcvfrom: Buffer is NULL!",false);
 
 	ssize_t bytes;
 
@@ -185,7 +185,7 @@ namespace libsocket
     ssize_t unix_dgram::rcvfrom(string& buf, string& source, int recvfrom_flags)
     {
 	if ( buf.empty() )
-	    throw socket_exception(__FILE__,__LINE__,"unix_dgram::rcvfrom: Buffer is empty!");
+	    throw socket_exception(__FILE__,__LINE__,"unix_dgram::rcvfrom: Buffer is empty!",false);
 
 	ssize_t bytes;
 

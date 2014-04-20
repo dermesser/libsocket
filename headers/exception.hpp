@@ -52,7 +52,7 @@ namespace libsocket
 		     //!< It contains 1. why the error occurred 2. in which file it occurred 3. in which line it occurred. It's a bit like rsync.
 		     //!< A typical message looks like the following one: "../C++/inetclientstream.cpp:167: <<(std::string) output: Socket not connected!"
 
-	socket_exception(string,int,string);
+	socket_exception(const string& file,int line,const string& message, bool show_errno = true);
     };
     /**
      * @}

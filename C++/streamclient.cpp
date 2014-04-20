@@ -68,18 +68,23 @@ namespace libsocket
 	ssize_t recvd;
 
 	if ( shut_rd == true )
-	    throw socket_exception(__FILE__,__LINE__,"stream_client_socket::rcv() - Socket has already been shut down!");
+	    throw socket_exception(__FILE__,__LINE__,"stream_client_socket::rcv() - Socket has already been shut down!",false);
 
 	if ( sfd == -1 )
-	    throw socket_exception(__FILE__,__LINE__,"stream_client_socket::rcv() - Socket is not connected!");
+	    throw socket_exception(__FILE__,__LINE__,"stream_client_socket::rcv() - Socket is not connected!",false);
 
 	if ( buf == NULL || len == 0 )
-	    throw socket_exception(__FILE__,__LINE__,"stream_client_socket::rcv() - Buffer or length is null!");
+	    throw socket_exception(__FILE__,__LINE__,"stream_client_socket::rcv() - Buffer or length is null!",false);
 
 	memset(buf,0,len);
 
 	if ( -1 == (recvd = BERKELEY::recv(sfd,buf,len,flags)) )
-	    throw socket_exception(__FILE__,__LINE__,"stream_client_socket::rcv() - Error while reading!");
+	{
+	    if ( is_nonblocking && errno == EWOULDBLOCK )
+		return -1;
+	    else
+		throw socket_exception(__FILE__,__LINE__,"stream_client_socket::rcv() - Error while reading!");
+	}
 
 	return recvd;
     }
@@ -95,13 +100,15 @@ namespace libsocket
      * @param dest the destination string. Its length determines how much data is received.
      *
      * @returns the same socket which was given as parameter. (See "Application")
+     *
+     * The dest string is resized to 0 if the socket is non-blocking and no data could be received.
      */
     stream_client_socket& operator>>(stream_client_socket& sock, string& dest)
     {
 	ssize_t read_bytes;
 
 	if ( sock.shut_rd == true )
-	    throw socket_exception(__FILE__,__LINE__,"stream_client_socket::operator>>(std::string) - Socket has already been shut down!");
+	    throw socket_exception(__FILE__,__LINE__,"stream_client_socket::operator>>(std::string) - Socket has already been shut down!",false);
 
         using std::unique_ptr;
         unique_ptr<char[]> buffer(new char[dest.size()]);
@@ -110,12 +117,17 @@ namespace libsocket
 
 	if ( sock.sfd == -1 )
 	{
-	    throw socket_exception(__FILE__,__LINE__,">>(std::string) input: Socket not connected!");
+	    throw socket_exception(__FILE__,__LINE__,">>(std::string) input: Socket not connected!",false);
 	}
 
 	if ( -1 == (read_bytes = read(sock.sfd,buffer.get(),dest.size())) )
 	{
-	    throw socket_exception(__FILE__,__LINE__,">>(std::string) input: Error while reading!\n");
+	    if ( sock.is_nonblocking && errno == EWOULDBLOCK )
+	    {
+		dest.clear();
+		return sock;
+	    } else
+	    throw socket_exception(__FILE__,__LINE__,">>(std::string) input: Error while reading!");
 	}
 
 	if ( read_bytes < static_cast<ssize_t>(dest.size()) )
@@ -145,11 +157,11 @@ namespace libsocket
     stream_client_socket& operator<<(stream_client_socket& sock, const char* str)
     {
 	if ( sock.shut_wr == true )
-	    throw socket_exception(__FILE__,__LINE__,"stream_client_socket::operator<<(const char*) - Socket has already been shut down!");
+	    throw socket_exception(__FILE__,__LINE__,"stream_client_socket::operator<<(const char*) - Socket has already been shut down!",false);
 	if ( sock.sfd == -1 )
-	    throw socket_exception(__FILE__,__LINE__,"<<(const char*) output: Socket not connected!");
+	    throw socket_exception(__FILE__,__LINE__,"<<(const char*) output: Socket not connected!",false);
 	if ( str == NULL )
-	    throw socket_exception(__FILE__,__LINE__,"<<(const char*) output: Null buffer given!");
+	    throw socket_exception(__FILE__,__LINE__,"<<(const char*) output: Null buffer given!",false);
 
 	size_t len = strlen(str);
 
@@ -169,15 +181,15 @@ namespace libsocket
      * Important: Only overloaded for C and C++ strings, not for numbers, chars etc.!
      *
      * @param sock A socket.
-     * @param str Data to be sent; do a `static_cast<>()` to send raw data.
+     * @param str Data.
      *
      */
     stream_client_socket& operator<<(stream_client_socket& sock, string& str)
     {
 	if ( sock.shut_wr == true )
-	    throw socket_exception(__FILE__,__LINE__,"stream_client_socket::operator<<(std::string) - Socket has already been shut down!");
+	    throw socket_exception(__FILE__,__LINE__,"stream_client_socket::operator<<(std::string) - Socket has already been shut down!",false);
 	if ( sock.sfd == -1 )
-	    throw socket_exception(__FILE__,__LINE__,"<<(std::string) output: Socket not connected!");
+	    throw socket_exception(__FILE__,__LINE__,"<<(std::string) output: Socket not connected!",false);
 
 	if ( -1 == write(sock.sfd,str.c_str(),str.size()) )
 	    throw socket_exception(__FILE__,__LINE__,"<<(std::string) output: Write failed!");
@@ -192,7 +204,7 @@ namespace libsocket
      * @param len Length of `buf`
      * @param flags Flags for `send(2)`. WARNING: Throws an exception if `send()` returns -1; this may be the case if the flag `MSG_DONTWAIT` is used.
      *
-     * @returns The number of bytes sent to the peer.
+     * @returns The number of bytes sent to the peer. -1 if the socket is non-blocking and no data was sent.
      *
      */
     ssize_t stream_client_socket::snd(const void* buf, size_t len, int flags)
@@ -200,14 +212,19 @@ namespace libsocket
 	ssize_t snd_bytes;
 
 	if ( shut_wr == true )
-	    throw socket_exception(__FILE__,__LINE__,"stream_client_socket::snd() - Socket has already been shut down!");
+	    throw socket_exception(__FILE__,__LINE__,"stream_client_socket::snd() - Socket has already been shut down!",false);
 	if ( sfd == -1 )
-	    throw socket_exception(__FILE__,__LINE__,"stream_client_socket::snd() - Socket not connected!");
+	    throw socket_exception(__FILE__,__LINE__,"stream_client_socket::snd() - Socket not connected!",false);
 	if ( buf == NULL || len == 0 )
-	    throw socket_exception(__FILE__,__LINE__,"stream_client_socket::snd() - Buffer or length is null!");
+	    throw socket_exception(__FILE__,__LINE__,"stream_client_socket::snd() - Buffer or length is null!",false);
 
 	if ( -1 == (snd_bytes = BERKELEY::send(sfd,buf,len,flags)) )
-	    throw socket_exception(__FILE__,__LINE__,"stream_client_socket::snd() - Error while sending");
+	{
+	    if ( is_nonblocking && errno == EWOULDBLOCK )
+		return -1;
+	    else
+		throw socket_exception(__FILE__,__LINE__,"stream_client_socket::snd() - Error while sending");
+	}
 
 	return snd_bytes;
     }

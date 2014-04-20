@@ -61,14 +61,19 @@ namespace libsocket
      * @param	l   Line (__LINE__)
      * @param	m   Description of the error.
      */
-    socket_exception::socket_exception(string f, int l, string m)
+    socket_exception::socket_exception(const string& file, int line, const string& message, bool show_errno)
     {
 	std::ostringstream message_stream;
 
 	// Saving errno here should be safe
 	err = errno;
 
-	message_stream << f << ":" << l << ": " << m << " (" << std::strerror(errno) << ")\n";
+	message_stream << file << ":" << line << ": " << message;
+
+	if ( show_errno )
+	    message_stream << " (" << std::strerror(errno) << ")";
+
+	message_stream << "\n";
 
 	mesg = message_stream.str();
     }

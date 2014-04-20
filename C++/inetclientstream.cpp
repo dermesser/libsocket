@@ -96,7 +96,7 @@ namespace libsocket
     void inet_stream::connect(const char* dsthost, const char* dstport, int proto_osi3, int flags)
     {
 	if ( sfd != -1 )
-	    throw socket_exception(__FILE__,__LINE__,"inet_stream::connect() - Already connected!");
+	    throw socket_exception(__FILE__,__LINE__,"inet_stream::connect() - Already connected!",false);
 
 	sfd = create_inet_stream_socket(dsthost,dstport,proto_osi3,flags);
 

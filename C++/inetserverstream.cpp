@@ -98,9 +98,9 @@ namespace libsocket
     void inet_stream_server::setup(const char* bindhost, const char* bindport, int proto_osi3, int flags)
     {
 	if ( sfd != -1 )
-	    throw socket_exception(__FILE__,__LINE__,"inet_stream_server::inet_stream_server() - already bound and listening!");
+	    throw socket_exception(__FILE__,__LINE__,"inet_stream_server::inet_stream_server() - already bound and listening!",false);
 	if ( bindhost == 0 || bindport == 0 )
-	    throw socket_exception(__FILE__,__LINE__,"inet_stream_server::inet_stream_server() - at least one bind argument invalid!");
+	    throw socket_exception(__FILE__,__LINE__,"inet_stream_server::inet_stream_server() - at least one bind argument invalid!",false);
 	if ( -1 == (sfd = create_inet_server_socket(bindhost,bindport,LIBSOCKET_TCP,proto_osi3,flags)) )
 	    throw socket_exception(__FILE__,__LINE__,"inet_stream_server::inet_stream_server() - could not create server socket!");
 
@@ -124,9 +124,9 @@ namespace libsocket
     void inet_stream_server::setup(const string& bindhost, const string& bindport, int proto_osi3, int flags)
     {
 	if ( sfd != -1 )
-	    throw socket_exception(__FILE__,__LINE__,"inet_stream_server::inet_stream_server() - already bound and listening!");
+	    throw socket_exception(__FILE__,__LINE__,"inet_stream_server::inet_stream_server() - already bound and listening!",false);
 	if ( bindhost.empty() || bindport.empty() )
-	    throw socket_exception(__FILE__,__LINE__,"inet_stream_server::inet_stream_server() - at least one bind argument invalid!");
+	    throw socket_exception(__FILE__,__LINE__,"inet_stream_server::inet_stream_server() - at least one bind argument invalid!",false);
 	if ( -1 == (sfd = create_inet_server_socket(bindhost.c_str(),bindport.c_str(),LIBSOCKET_TCP,proto_osi3,flags)) )
 	    throw socket_exception(__FILE__,__LINE__,"inet_stream_server::inet_stream_server() - could not create server socket!");
 

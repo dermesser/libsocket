@@ -87,7 +87,7 @@ namespace libsocket
     void unix_stream_client::connect(const char* path, int socket_flags)
     {
 	if ( sfd != -1 )
-	    throw socket_exception(__FILE__,__LINE__,"unix_stream_client::connect: Already connected!");
+	    throw socket_exception(__FILE__,__LINE__,"unix_stream_client::connect: Already connected!",false);
 
 	sfd = create_unix_stream_socket(path,socket_flags);
 

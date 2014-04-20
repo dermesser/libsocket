@@ -73,9 +73,6 @@ namespace libsocket
     {
 	ssize_t bytes;
 
-	if ( connected != true )
-	    throw socket_exception(__FILE__,__LINE__,"dgram_client_socket::rcv() - Socket is not connected!");
-
 	memset(buf,0,len);
 
 	if ( -1 == (bytes = recv(sfd,buf,len,flags)) )
@@ -96,9 +93,6 @@ namespace libsocket
     {
 	ssize_t read_bytes;
 
-	if ( sock.connected != true )
-	    throw socket_exception(__FILE__,__LINE__,">>(dgram_client_socket, std::string) - Socket is not connected!");
-
 	char* buffer = new char[dest.size()];
 
 	memset(buffer,0,dest.size());
@@ -106,7 +100,12 @@ namespace libsocket
 	if ( -1 == (read_bytes = read(sock.sfd,buffer,dest.size())) )
 	{
 	    delete[] buffer;
-	    throw socket_exception(__FILE__,__LINE__,">>(dgram_client_socket, std::string) input: Error while reading!");
+	    if ( sock.is_nonblocking && errno == EWOULDBLOCK )
+	    {
+		dest.clear();
+		return sock;
+	    } else
+		throw socket_exception(__FILE__,__LINE__,">>(dgram_client_socket, std::string) input: Error while reading!");
 	}
 
 	if ( read_bytes < static_cast<ssize_t>(dest.size()) )
@@ -135,7 +134,7 @@ namespace libsocket
 	ssize_t bytes;
 
 	if ( connected != true )
-	    throw socket_exception(__FILE__,__LINE__,"dgram_client_socket::snd() - Socket is not connected!");
+	    throw socket_exception(__FILE__,__LINE__,"dgram_client_socket::snd() - Socket is not connected!", false);
 
 	if ( -1 == (bytes = send(sfd,buf,len,flags)) )
 	    throw socket_exception(__FILE__,__LINE__,"dgram_client_socket::snd() - send() failed!");
