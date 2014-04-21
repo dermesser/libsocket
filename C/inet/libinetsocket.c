@@ -200,8 +200,10 @@ int create_inet_stream_socket(const char* host, const char* service, char proto_
 # ifdef VERBOSE
 	debug_write("create_inet_stream_socket: Could not connect to any address!\n");
 # endif
-	return -1;
+        int errno_saved = errno;
         close(sfd);
+        errno = errno_saved;
+	return -1;
     }
     // Yes :)
 
@@ -213,7 +215,7 @@ int create_inet_stream_socket(const char* host, const char* service, char proto_
 /**
  * @brief Creates a new UDP/IP socket
  *
- * Returns an integer describing a DGRAM (UDP) socket.
+ * Returns an integer describing a DGRAM (UDP) socket. The socket is automatically bound to some port.
  *
  * @param proto_osi3 is LIBSOCKET_IPv4 (AF_INET) or LIBSOCKET_IPv6 (AF_INET6). 
  * @param flags may be the flags specified in socket(2), i.e. SOCK_NONBLOCK and/or SOCK_CLOEXEC. More than one
@@ -875,14 +877,14 @@ int get_address_family(const char* hostname)
  *     setsockopt(sfd,IPPROTO_IP,IP_MULTICAST_LOOP,&c,4);
  *
  * The group address and port is also used as arguments to `bind(2)`. After creating this socket, you
- * may use the usual I/O functions on it.
+ * may use the usual I/O functions on it, i.e. sendto_inet_dgram_socket and recvfrom_inet_dgram_socket.
  *
  * @param group Group address. This address is also used to bind the socket
  * @param port Multicast port.
  * @param local For IPv4 multicast groups: The address of the interface to be used. Ignored for IPv6, NULL for kernel's choice
  *
  * @retval <0 Error (Check errno or use `LIBSOCKET_VERBOSE`)
- * @retval >=0 A valid file descriptor. Now use `read` or `recvfrom`.
+ * @retval >=0 A valid file descriptor.
  *
  */
 # ifdef LIBSOCKET_LINUX
@@ -915,11 +917,14 @@ int create_multicast_socket(const char* group, const char* port, const char* if_
 
     if ( 0 != (return_value = getaddrinfo(group,port,&hints,&result)) )
     {
+        int errno_saved = errno;
 # ifdef VERBOSE
 	const char* errstring = gai_strerror(return_value);
 	debug_write(errstring);
 # endif
         close(sfd);
+        errno = errno_saved;
+
         return -1;
     }
 
@@ -939,6 +944,9 @@ int create_multicast_socket(const char* group, const char* port, const char* if_
 
             if ( -1 == check_error(ioctl(sfd,SIOCGIFINDEX,&interface)) )
             {
+                int errno_saved = errno;
+                close(sfd);
+                errno = errno_saved;
                 return -1;
             }
 
@@ -947,12 +955,16 @@ int create_multicast_socket(const char* group, const char* port, const char* if_
 
         if ( -1 == check_error(setsockopt(sfd,IPPROTO_IP,IP_ADD_MEMBERSHIP,&mreq4,sizeof(struct ip_mreqn))) )
         {
+            int errno_saved = errno;
             close(sfd);
+            errno = errno_saved;
             return -1;
         }
         if ( -1 == check_error(setsockopt(sfd,IPPROTO_IP,IP_MULTICAST_IF,&mreq4,sizeof(struct ip_mreqn))) )
         {
+            int errno_saved = errno;
             close(sfd);
+            errno = errno_saved;
             return -1;
         }
 
@@ -972,6 +984,9 @@ int create_multicast_socket(const char* group, const char* port, const char* if_
 
             if ( -1 == check_error(ioctl(sfd,SIOCGIFINDEX,&interface)) )
             {
+                int errno_saved = errno;
+                close(sfd);
+                errno = errno_saved;
                 return -1;
             }
 
@@ -980,12 +995,16 @@ int create_multicast_socket(const char* group, const char* port, const char* if_
 
         if ( -1 == check_error(setsockopt(sfd,IPPROTO_IPV6,IPV6_ADD_MEMBERSHIP,&mreq6,sizeof(struct ipv6_mreq))) )
         {
+            int errno_saved = errno;
             close(sfd);
+            errno = errno_saved;
             return -1;
         }
         if ( -1 == check_error(setsockopt(sfd,IPPROTO_IPV6,IPV6_MULTICAST_IF,&mreq6.ipv6mr_interface,sizeof(mreq6.ipv6mr_interface))) )
         {
+            int errno_saved = errno;
             close(sfd);
+            errno = errno_saved;
             return -1;
         }
 
