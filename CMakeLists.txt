@@ -18,12 +18,12 @@ ELSEIF( CMAKE_SYSTEM_NAME STREQUAL "SunOS" )
     SET(IS_SUNOS 1)
 ENDIF()
 
-CONFIGURE_FILE(headers/conf.h.in headers/conf.h)
+CONFIGURE_FILE(headers/conf.h.in ${CMAKE_SOURCE_DIR}/headers/conf.h)
 
 # Compiler configuration
-INCLUDE_DIRECTORIES(BEFORE headers/)
+INCLUDE_DIRECTORIES(BEFORE ${CMAKE_SOURCE_DIR}/headers/)
 SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
-ADD_DEFINITIONS(-DVERBOSE)
+#ADD_DEFINITIONS(-DVERBOSE)
 
 # Install directories
 SET(HEADER_DIR /usr/include/libsocket)
