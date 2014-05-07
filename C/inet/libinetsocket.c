@@ -19,7 +19,7 @@
 
 /**
  * @file    libinetsocket.c
- * 
+ *
  * @brief Contains all C libinetsocket functions.
  *
  * This is the main file for libinetsocket. It contains all functions
@@ -217,7 +217,7 @@ int create_inet_stream_socket(const char* host, const char* service, char proto_
  *
  * Returns an integer describing a DGRAM (UDP) socket. The socket is automatically bound to some port.
  *
- * @param proto_osi3 is LIBSOCKET_IPv4 (AF_INET) or LIBSOCKET_IPv6 (AF_INET6). 
+ * @param proto_osi3 is LIBSOCKET_IPv4 (AF_INET) or LIBSOCKET_IPv6 (AF_INET6).
  * @param flags may be the flags specified in socket(2), i.e. SOCK_NONBLOCK and/or SOCK_CLOEXEC. More than one
  * flags may be ORed. This argument is only sensible on Linux >= 2.6.27!
  *
@@ -225,8 +225,8 @@ int create_inet_stream_socket(const char* host, const char* service, char proto_
  *
  * To send and receive data with this socket use the functions explained below, sendto_inet_dgram_socket() and recvfrom_inet_dgram_socket().
  */
-int create_inet_dgram_socket(char proto_osi3, int flags) 
-{ 
+int create_inet_dgram_socket(char proto_osi3, int flags)
+{
     int sfd;
 
     if (proto_osi3 != LIBSOCKET_IPv4 && proto_osi3 != LIBSOCKET_IPv6)
@@ -257,7 +257,7 @@ int create_inet_dgram_socket(char proto_osi3, int flags)
 
 /**
  * @brief This function is the equivalent to `sendto(2)`
- * 
+ *
  * @param sfd is the *Socket File Descriptor* (every socket file descriptor argument in libsocket is called sfd) which
  * you got from create_inet_dgram_socket(). *The usage with STREAM sockets is not recommended and the result is undefined!*
  * @param buf is a pointer to some data.
@@ -273,7 +273,7 @@ int create_inet_dgram_socket(char proto_osi3, int flags)
  * @retval n *n* bytes of data could be sent.
  * @retval -1 Error.
  */
-ssize_t sendto_inet_dgram_socket(int sfd, const void* buf, size_t size,const char* host, const char* service, int sendto_flags)
+ssize_t sendto_inet_dgram_socket(int sfd, const void* buf, size_t size, const char* host, const char* service, int sendto_flags)
 {
     struct sockaddr_storage oldsock;
     struct addrinfo *result, *result_check, hint;
@@ -286,11 +286,15 @@ ssize_t sendto_inet_dgram_socket(int sfd, const void* buf, size_t size,const cha
     if ( sfd < 0 )
 	return -1;
 
-    if ( buf == NULL || size == 0)
+    if ( buf == NULL )
 	return -1;
+
+    if ( size == 0 )
+	return 0;
 
     if ( host == NULL || service == NULL )
 	return -1;
+
     if ( -1 == check_error(getsockname(sfd,(struct sockaddr*)&oldsock,(socklen_t*)&oldsocklen)) )
 	return -1;
 
@@ -374,10 +378,13 @@ ssize_t recvfrom_inet_dgram_socket(int sfd, void* buffer, size_t size, char* src
 
     if ( buffer == NULL || size == 0)
 	return -1;
+    else
+	memset(buffer,0,size);
 
-    memset(buffer,0,size);
-    memset(src_host,0,src_host_len);
-    memset(src_service,0,src_service_len);
+    if ( src_host )
+	memset(src_host,0,src_host_len);
+    if ( src_service )
+	memset(src_service,0,src_service_len);
 
     socklen_t stor_addrlen = sizeof(struct sockaddr_storage);
 
@@ -872,7 +879,7 @@ int get_address_family(const char* hostname)
  *
  * An option you want to set very likely is `IP_MULTICAST_LOOP`. Refer to `ip(7)` respectively
  * `ipv6(7)` for `setsockopt()` options; for example:
- * 
+ *
  *     int c = 0;
  *     setsockopt(sfd,IPPROTO_IP,IP_MULTICAST_LOOP,&c,4);
  *
