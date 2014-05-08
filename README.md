@@ -1,11 +1,11 @@
-#README for libsocket
+# README for libsocket
 
 [![Travis Build Status](https://api.travis-ci.org/dermesser/libsocket.png)](https://travis-ci.org/dermesser/libsocket/)
 
 (Pre-built documentation for libsocket developers can be found on [my
  server](http://lbo.spheniscida.de/doc/libsocket/doxygen/html/))
 
-##BUILDING libsocket
+## BUILDING libsocket
 
 If you want to install both libsocket and libsocket++, simply use this command:
 
@@ -45,7 +45,7 @@ applications or libraries.
 destructor to safely close the socket when it leaves the visible scope. Some functions are internally using
 `unique_ptr`s to enable safe deallocation.
 
-##FEATURES AND ADVANTAGES
+## FEATURES AND ADVANTAGES
 
 The libsocket library supports following things and protocols:
 
@@ -57,6 +57,7 @@ The libsocket library supports following things and protocols:
 * IPv4/IPv6 multicast (only in C)
 * Abstraction classes for `select(2)` and `epoll(7)` (C++)
 * Easy use (one function call to get a socket up and running, another one to close it)
+* RAII, no-copy classes -- resource leaks are hard to do.
 * Proper error processing (using `errno`, `gai_strerror()` etc.) and C++ exceptions.
 
 One of the main advantages of libsocket is that you don't have to write the complex and error-prone
@@ -76,7 +77,7 @@ libsocket is designed to not use a "proprietary" socket format (as libc does wit
 giving you the possibility to operate on the raw file descriptor with functions other than those provided by
 libsocket.
 
-##PLATFORMS
+## PLATFORMS
 
 ### GNU/Linux
 
@@ -115,18 +116,18 @@ than those between Linux and FreeBSD/OpenIndiana-SunOS.
 ### Other OSs
 If you're using libsocket successfully on other platforms (or even ported it), please let me know.
 
-##How to use the libsocket: static vs. dynamic
+## How to use the libsocket: static vs. dynamic
 
-###Static Linkage
+### Static Linkage
 
-It's possible to compile libsocket statically into your program (by placing the .c[pp] and .h[pp]
-files in your source tree). You don't have to mind legal issues because libsocket is licensed by
+It's possible to link libsocket statically into your program (by placing the .c[pp] and .h[pp]
+files in your source tree or linking against a `.a` file). You don't have to mind legal issues because libsocket is licensed by
 a slightly modified 2-clause BSD license which permits any use, as long as you include the license
 text in your product (so it's clear that libsocket is licensed by this License) and the notice that
 *we* wrote libsocket (as described in the license). It's ok to mention libsocket in your product's
 Readme or advertisements anyway.
 
-###Dynamic Linkage
+### Dynamic Linkage
 
 The recommended method to use libsocket is to link your program against the libsocket SO (DLL). Using this
 method is quite easy; you have to compile the dynamic libraries (libsocket and libsocket++) using
@@ -145,7 +146,7 @@ necessary functions.
 If you distribute your program in binary form, it's possible to distribute the library binaries along with
 your program and install them along your program.
 
-##EXAMPLES
+## EXAMPLES
 
 You may test libsocket and make some experiences by playing with the examples provided in the
 standard libsocket distribution in examples/ and examples++. More detailed descriptions can be found
@@ -160,6 +161,7 @@ sockets, but also showing the use of `reconnect_isocket()`
 server/client
 * `unix_dgram_client.c`, `unix_dgram_server.c`: Demonstrating UNIX DGRAM sockets as simple
 server/client transmitting text.
+* `multicast-listen.c`: Demonstrating how to use libinetsocket for multicast networking.
 
 Build these with `gcc -o <outfile> -lsocket <example-name>`.
 
@@ -178,9 +180,7 @@ You should have a look at the length of the code; while `http.c` is complete wit
         lines of code) - the quite similar client simple-http
 (https://github.com/dermesser/Simple-HTTP-client) uses almost 70 lines of code.
 
-##TODO
-
-* Add IPv4/IPv6 multicast support to libinetsocket.
+## TODO
 
 
 
