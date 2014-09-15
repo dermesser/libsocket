@@ -81,7 +81,7 @@ This function creates, connects and returns a inet stream socket (TCP socket) wh
 
 * `host`: Destination host
 * `service`: Destination host's port
-* `proto_osi3`: OSI layer 3 protocol: either `IPv4` or `IPv6` (defined in `libinetsocket.h`).
+* `proto_osi3`: OSI layer 3 protocol: either `LIBSOCKET_IPv4` or `LIBSOCKET_IPv6` (defined in `libinetsocket.h`). `LIBSOCKET_BOTH` lets the resolver choose.
 * specifying `flags` **has only an effect on Linux >= 2.6.27 - elsewise, specify 0 to avoid errors**. The flags are described
     below.
 
@@ -327,7 +327,7 @@ The arguments:
 * `bind_addr`: The address to which the socket is bound to. E.g.: "127.0.0.1" for localhost, "0.0.0.0" for all available addresses
 * `bind_port`: The port to bind to.
 * `proto_osi4`: `LIBSOCKET_UDP` or `LIBSOCKET_TCP` (defined in headers)
-* `proto_osi3`: `LIBSOCKET_IPv4` or `LIBSOCKET_IPv6`.
+* `proto_osi3`: `LIBSOCKET_IPv4` or `LIBSOCKET_IPv6`. `LIBSOCKET_BOTH` lets the resolver choose.
 * `flags`: `SOCK_NONBLOCK` or `SOCK_CLOEXEC` (like in `create_inet_stream_socket()` etc, on non-linux systems, specify it as 0)
 
 Internals: The `backlog` argument of `listen(2)` when using TCP sockets is set to `LIBSOCKET_BACKLOG`,

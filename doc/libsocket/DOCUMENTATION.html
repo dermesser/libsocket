@@ -89,7 +89,7 @@ application that wants to use these functions has to include the header files, e
 <ul>
 <li><code>host</code>: Destination host</li>
 <li><code>service</code>: Destination host's port</li>
-<li><code>proto_osi3</code>: OSI layer 3 protocol: either <code>IPv4</code> or <code>IPv6</code> (defined in <code>libinetsocket.h</code>).</li>
+<li><code>proto_osi3</code>: OSI layer 3 protocol: either <code>LIBSOCKET_IPv4</code> or <code>LIBSOCKET_IPv6</code> (defined in <code>libinetsocket.h</code>). <code>LIBSOCKET_BOTH</code> lets the resolver choose.</li>
 <li>specifying <code>flags</code> <strong>has only an effect on Linux >= 2.6.27 - elsewise, specify 0 to avoid errors</strong>. The flags are described
 below.</li>
 </ul>
@@ -361,7 +361,7 @@ simply bind a UDP socket; if you use it as UDP "server" socket, it's almost the 
 <li><code>bind_addr</code>: The address to which the socket is bound to. E.g.: "127.0.0.1" for localhost, "0.0.0.0" for all available addresses</li>
 <li><code>bind_port</code>: The port to bind to.</li>
 <li><code>proto_osi4</code>: <code>LIBSOCKET_UDP</code> or <code>LIBSOCKET_TCP</code> (defined in headers)</li>
-<li><code>proto_osi3</code>: <code>LIBSOCKET_IPv4</code> or <code>LIBSOCKET_IPv6</code>.</li>
+<li><code>proto_osi3</code>: <code>LIBSOCKET_IPv4</code> or <code>LIBSOCKET_IPv6</code>. <code>LIBSOCKET_BOTH</code> lets the resolver choose.</li>
 <li><code>flags</code>: <code>SOCK_NONBLOCK</code> or <code>SOCK_CLOEXEC</code> (like in <code>create_inet_stream_socket()</code> etc, on non-linux systems, specify it as 0)</li>
 </ul>
 
