@@ -23,7 +23,7 @@ CONFIGURE_FILE(headers/conf.h.in ${CMAKE_SOURCE_DIR}/headers/conf.h)
 # Compiler configuration
 INCLUDE_DIRECTORIES(BEFORE ${CMAKE_SOURCE_DIR}/headers/)
 SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
-ADD_DEFINITIONS(-Wall)
+ADD_DEFINITIONS(-Wall -Wextra)
 #ADD_DEFINITIONS(-DVERBOSE)
 
 # Install directories
