@@ -22,7 +22,7 @@ int main(void)
 
     try {
 	std::cout << sock.gethost();
-    } catch (libsocket::socket_exception exc)
+    } catch (const libsocket::socket_exception& exc)
     {
 	std::cerr << exc.mesg;
     }
@@ -40,7 +40,7 @@ int main(void)
 
 	    sock.deconnect();
 	}
-    } catch ( libsocket::socket_exception exc )
+    } catch ( const libsocket::socket_exception& exc )
     {
 	std::cerr << exc.mesg;
     }

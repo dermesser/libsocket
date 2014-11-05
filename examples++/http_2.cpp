@@ -25,7 +25,7 @@ int main(void)
 
 	while ( 0 != (len=sock.rcv(buf,10000)) )
 	    std::cout << string(buf,len); // write only as many characters as we read
-    } catch (libsocket::socket_exception exc)
+    } catch (const libsocket::socket_exception& exc)
     {
 	std::cerr << exc.mesg;
     }

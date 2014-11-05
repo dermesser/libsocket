@@ -47,7 +47,7 @@ int main(void)
 	}
 
 	//sock.destroy(); // socket is also destroyed by the constructor
-    } catch (libsocket::socket_exception exc)
+    } catch (const libsocket::socket_exception& exc)
     {
 	std::cerr << exc.mesg;
     }

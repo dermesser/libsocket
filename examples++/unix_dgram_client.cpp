@@ -25,7 +25,7 @@ int main(void)
 
 	cl.destroy();
 
-    } catch (libsocket::socket_exception exc)
+    } catch (const libsocket::socket_exception& exc)
     {
 	std::cerr << exc.mesg;
     }

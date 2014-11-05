@@ -23,7 +23,7 @@ int main(void)
 	sock.rcv(answer,127);
 
 	std::cout << answer;
-    } catch (libsocket::socket_exception exc)
+    } catch (const libsocket::socket_exception& exc)
     {
 	std::cerr << exc.mesg;
     }
