@@ -21,6 +21,7 @@ int main(void)
     if ( 0 > setsockopt(sfd,IPPROTO_IP,IP_MULTICAST_LOOP,&c,4) )
     {
         fprintf(stderr,"setsockopt failed.");
+        free(buffer);
         exit(1);
     }
 
@@ -29,6 +30,8 @@ int main(void)
         write(0,buffer,received);
         sendto_inet_dgram_socket(sfd,"Hi back",7,"239.255.255.250","1900",0);
     }
+
+    free(buffer);
 
     return 0;
 }

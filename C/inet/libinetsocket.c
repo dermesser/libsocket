@@ -898,13 +898,11 @@ int get_address_family(const char* hostname)
 int create_multicast_socket(const char* group, const char* port, const char* if_name)
 {
     int sfd, return_value;
-    struct sockaddr_storage oldsock;
     struct sockaddr maddr, localif;
     struct addrinfo hints, *result;
     struct ip_mreqn mreq4;
     struct ipv6_mreq mreq6;
     struct in_addr any;
-    struct in6_addr any6;
     struct ifreq interface;
 
     memset(&maddr,0,sizeof(maddr));
