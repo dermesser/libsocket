@@ -178,10 +178,10 @@ namespace libsocket
 	    timeout = &_timeout;
 
 	    long long micropart = microsecs % 1000000;
-	    long long secpart   = (microsecs - micropart) / 1000000;
+	    long long secpart   = microsecs / 1000000;
 
 	    _timeout.tv_sec  = secpart;
-	    _timeout.tv_usec = microsecs;
+	    _timeout.tv_usec = micropart;
 	}
 
 	n = select(highestfd(filedescriptors)+1,&readset,&writeset,NULL,timeout);
