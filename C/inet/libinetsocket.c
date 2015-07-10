@@ -777,8 +777,6 @@ int accept_inet_stream_socket(int sfd, char* src_host, size_t src_host_len, char
 	    errstr = gai_strerror(retval);
 	    debug_write(errstr);
 # endif
-            if ( errno != 0 )
-                return -1;
 	}
 # endif
 
