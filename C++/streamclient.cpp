@@ -184,7 +184,7 @@ namespace libsocket
      * @param str Data.
      *
      */
-    stream_client_socket& operator<<(stream_client_socket& sock, string& str)
+    stream_client_socket& operator<<(stream_client_socket& sock, const string& str)
     {
 	if ( sock.shut_wr == true )
 	    throw socket_exception(__FILE__,__LINE__,"stream_client_socket::operator<<(std::string) - Socket has already been shut down!",false);

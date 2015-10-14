@@ -57,7 +57,7 @@ namespace libsocket
 	    dgram_client_socket(void);
 
 	    friend dgram_client_socket& operator<<(dgram_client_socket& sock, const char* str);
-	    friend dgram_client_socket& operator<<(dgram_client_socket& sock, string& str);
+	    friend dgram_client_socket& operator<<(dgram_client_socket& sock, const string& str);
 
 	    ssize_t snd(const void* buf, size_t len, int flags=0); // flags: send()
 

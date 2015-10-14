@@ -167,7 +167,7 @@ namespace libsocket
      *
      * Usage: `socket << "Abcde";`
      */
-    dgram_client_socket& operator<<(dgram_client_socket& sock, string& str)
+    dgram_client_socket& operator<<(dgram_client_socket& sock, const string& str)
     {
 	if ( sock.connected == false )
 	    throw socket_exception(__FILE__,__LINE__,"dgram_client_socket <<(std::string) output: DGRAM socket not connected!");
