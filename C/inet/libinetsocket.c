@@ -777,7 +777,6 @@ int accept_inet_stream_socket(int sfd, char* src_host, size_t src_host_len, char
 	    errstr = gai_strerror(retval);
 	    debug_write(errstr);
 # endif
-	    return -1;
 	}
 # endif
 
@@ -803,7 +802,7 @@ int accept_inet_stream_socket(int sfd, char* src_host, size_t src_host_len, char
 	if ( NULL == (he = gethostbyaddr(addrptr,in_addrlen,oldsockaddr.ss_family) ) )
 	{
 	    check_error(-1);
-	    return -1;
+            // Don't return with error on name resolution failure
 	}
 
 	strncpy(src_host,he->h_name,src_host_len);
