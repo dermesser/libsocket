@@ -92,6 +92,13 @@
     }
 
 
+#ifdef __FreeBSD__
+#	if !defined(IPV6_ADD_MEMBERSHIP) && defined(IPV6_JOIN_GROUP)
+#		define IPV6_ADD_MEMBERSHIP	IPV6_JOIN_GROUP
+#		define IPV6_DROP_MEMBERSHIP	IPV6_LEAVE_GROUP
+#	endif
+#endif
+
 # ifdef __FreeBSD__
 # define _TRADITIONAL_RDNS
 # endif
@@ -953,8 +960,13 @@ int create_multicast_socket(const char* group, const char* port, const char* if_
                 errno = errno_saved;
                 return -1;
             }
-
-            mreq4.imr_ifindex = interface.ifr_ifindex;
+		
+		# ifdef __FreeBSD__
+		mreq4.imr_ifindex = interface.ifr_index;
+		#else		
+		mreq4.imr_ifindex = interface.ifr_ifindex;
+		# endif
+            
         }
 
         if ( -1 == check_error(setsockopt(sfd,IPPROTO_IP,IP_ADD_MEMBERSHIP,&mreq4,sizeof(struct ip_mreqn))) )
@@ -993,8 +1005,13 @@ int create_multicast_socket(const char* group, const char* port, const char* if_
                 errno = errno_saved;
                 return -1;
             }
+		
+		# ifdef __FreeBSD__
+		mreq6.ipv6mr_interface = interface.ifr_index;
+		#else		
+		mreq6.ipv6mr_interface = interface.ifr_ifindex;
+		# endif
 
-            mreq6.ipv6mr_interface = interface.ifr_ifindex;
         }
 
         if ( -1 == check_error(setsockopt(sfd,IPPROTO_IPV6,IPV6_ADD_MEMBERSHIP,&mreq6,sizeof(struct ipv6_mreq))) )
