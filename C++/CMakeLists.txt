@@ -24,14 +24,7 @@ unixclientstream.cpp
 unixserverdgram.cpp
 )
 
-# Add libsocket
-#SET(sources
-#${sources}
-#../C/inet/libinetsocket.c
-#../C/unix/libunixsocket.c
-#)
-
-ADD_LIBRARY(socket++ MODULE ${sources})
+ADD_LIBRARY(socket++ SHARED ${sources})
 
 TARGET_LINK_LIBRARIES(socket++ socket_int)
 
