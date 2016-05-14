@@ -155,8 +155,8 @@ in the source files. The collection of examples contain (among others):
 (C)
 
 * `http.c`: A simple http client
-* `echo_reconnect.c`, `echo_srv.c`: Less echo server than simple transmit of text using INET UDP
-sockets, but also showing the use of `reconnect_isocket()`
+* `echo_dgram_server.c`, `echo_dgram_client.c`, `echo_dgram_connect_client.c`: Shows how to use
+UDP sockets, both in connected and unconnected mode.
 * `unix_stream_client.c`, `unix_stream_server.c`: Demonstrating UNIX STREAM sockets as echo
 server/client
 * `unix_dgram_client.c`, `unix_dgram_server.c`: Demonstrating UNIX DGRAM sockets as simple
