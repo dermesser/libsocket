@@ -2,7 +2,16 @@
 # define _GNU_SOURCE
 # endif
 
-# include <conf.h>
+//# include "conf.h"
+#define LIBSOCKET_VERSION 2.4
+#ifdef BD_ANDROID
+#define LIBSOCKET_LINUX 0
+#else
+#define LIBSOCKET_LINUX 1
+#endif
+#define LIBSOCKET_FREEBSD 0
+#define LIBSOCKET_SUNOS 0
+
 
 # include <stdlib.h>
 # include <stdio.h>

@@ -248,7 +248,7 @@ namespace libsocket
 	if ( (method & LIBSOCKET_WRITE) && (shut_wr == true) )
 	    return;
 
-#if LIBSOCKET_LINUX
+#if LIBSOCKET_LINUX || BD_ANDROID
         using BERKELEY::SHUT_RDWR;
         using BERKELEY::SHUT_RD;
         using BERKELEY::SHUT_WR;

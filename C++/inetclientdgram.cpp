@@ -46,6 +46,11 @@
 # include <exception.hpp>
 # include <inetclientdgram.hpp>
 
+#include <fcntl.h>
+#ifndef SOCK_NONBLOCK
+# define SOCK_NONBLOCK O_NONBLOCK
+#endif
+
 namespace libsocket
 {
     using std::string;

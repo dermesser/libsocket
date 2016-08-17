@@ -39,6 +39,11 @@ using std::string;
 # include <libunixsocket.h>
 # include <unixclientdgram.hpp>
 
+#include <fcntl.h>
+#ifndef SOCK_NONBLOCK
+# define SOCK_NONBLOCK O_NONBLOCK
+#endif
+
 namespace libsocket
 {
     /**
