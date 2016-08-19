@@ -170,10 +170,10 @@ namespace libsocket
 	int n = 0;
 
 	struct timeval *timeout = NULL;
+	struct timeval _timeout;
 
 	if ( microsecs != 0 )
 	{
-	    struct timeval _timeout;
 
 	    timeout = &_timeout;
 
