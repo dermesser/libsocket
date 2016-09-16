@@ -178,11 +178,21 @@ namespace libsocket
     }
 
     /**
+     * @deprecated (use is_connected())
+     *
      * Look up if socket is connected.
      */
     bool dgram_client_socket::getconn(void) const
     {
-	return connected;
+	return is_connected();
+    }
+
+    /**
+     * Returns true if the socket is in a connected state.
+     */
+    bool dgram_client_socket::is_connected(void) const
+    {
+        return connected;
     }
 }
 

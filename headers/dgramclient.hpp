@@ -66,9 +66,10 @@ namespace libsocket
 
 	    ssize_t rcv(void* buf, size_t len, int flags=0);
 
-	    // Getters
+            // @deprecated
+            bool getconn(void) const;
 
-	    bool getconn(void) const;
+            bool is_connected(void) const;
     };
 
     /**
