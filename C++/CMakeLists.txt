@@ -6,6 +6,8 @@ ADD_DEFINITIONS("-DMIXED")
 
 SET(sources
 dgramclient.cpp
+dgramoverstream.cpp
+framing.cpp
 inetbase.cpp
 inetclientstream.cpp
 inetserverdgram.cpp
