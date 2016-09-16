@@ -3,6 +3,7 @@
 
 # include <sys/socket.h>
 # include <sys/types.h>
+
 # include <errno.h>
 
 # include "exception.hpp"
@@ -83,6 +84,8 @@ namespace libsocket
 	    virtual int destroy(void);
 
 	    int getfd(void) const;
+
+            int set_sock_opt(int level, int optname, const char* optval, socklen_t optlen) const;
     };
     /**
      * @}
