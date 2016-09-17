@@ -112,7 +112,7 @@ namespace libsocket {
             size_t rest_len = expected - len;
 
             do {
-                size_t to_receive;
+                size_t to_receive = rest_len;
 
                 if (rest_len > devnull_size)
                     to_receive = devnull_size;
