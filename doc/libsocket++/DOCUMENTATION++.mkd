@@ -664,6 +664,30 @@ Get the socket path (to which the socket is bound).
 Call `close()` on the underlying file descriptor. You may work with the socket again after calling `setup()`.
 
 # Other Classes
+
+## `dgram_over_stream` class
+
+`dgram_over_stream` enables you to send discrete packets of data over a reliable stream socket.
+This is achieved by prefixing every packet with its length, so the other side knows how many bytes
+to expect.
+
+The API is quite simple; the constructor takes any socket implementing stream semantics:
+
+        dgram_over_stream(const stream_client_socket& inner);
+
+It then adds a datagram-oriented API on top of that:
+
+        ssize_t sndmsg(const void* buf, size_t len);
+        ssize_t rcvmsg(void* buf, size_t len);
+
+`sndmsg()` sends `len` bytes from `buf` on the socket. If the receiver is using a `dgram_over_stream` socket as well,
+it will receive only the entire message upon calling `rcvmsg()`. If `len` in `rcvmsg()` is smaller than the incoming
+frame, then the surplus will be discarded silently.
+
+There are two caveats to using this wrapper; 1) Do not use sockets that are in non-blocking mode. The internal state machine
+assumes that the socket is blocking. 2) Do not use the `dgram_over_stream` beyond the scope of the socket you used for constructing
+it; because every socket's destructor will close it, this would lead to `dgram_over_stream` containing a dangling file descriptor.
+
 ## `selectset` class
 
         selectset(void)
