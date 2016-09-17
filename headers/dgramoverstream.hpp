@@ -63,6 +63,8 @@ namespace libsocket
      *
      * AS THE STREAM SOCKET WILL BE CLOSED ON DESTRUCTION, IT IS NOT PERMITTED TO USE A dgram_over_stream OUTSIDE THE SCOPE
      * OF THE ORIGINAL SOCKET.
+     *
+     * THIS CLASS IS IN BETA STATE: IT HAS NOT BEEN TESTED EXTENSIVELY, BUT IS EXPECTED TO WORK.
      */
     class dgram_over_stream {
         public:

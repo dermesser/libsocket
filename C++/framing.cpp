@@ -46,6 +46,8 @@ namespace libsocket
     uint32_t decode_uint32(const char* src)
     {
         uint32_t result = 0;
+        // We store unsigned numbers in signed chars; convert, otherwise the MSB being
+        // set would be interpreted as sign and taken over to uint32_t's MSB.
         const unsigned char* src_ = (const unsigned char*)src;
 
         for ( int i = 3; i >= 0; i-- )
