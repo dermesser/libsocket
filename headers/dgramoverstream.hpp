@@ -60,12 +60,14 @@ namespace libsocket
      * you can enable it again using enable_nagle().
      *
      * THIS CLASS IS NOT THREADSAFE.
+     *
+     * AS THE STREAM SOCKET WILL BE CLOSED ON DESTRUCTION, IT IS NOT PERMITTED TO USE A dgram_over_stream OUTSIDE THE SCOPE
+     * OF THE ORIGINAL SOCKET.
      */
-    template<typename Inner>
     class dgram_over_stream {
         public:
             dgram_over_stream(void) = delete;
-            dgram_over_stream(Inner inner);
+            dgram_over_stream(const stream_client_socket& inner);
 
 
             void enable_nagle(bool enable) const;
@@ -77,106 +79,10 @@ namespace libsocket
             static const size_t devnull_size = 256;
 
             // The underlying stream.
-            Inner inner;
+            stream_client_socket inner;
             char prefix_buffer[FRAMING_PREFIX_LENGTH];
             char devnull[devnull_size];
     };
-
-    template<typename Inner>
-    dgram_over_stream<Inner>::dgram_over_stream(Inner inner)
-        : inner(inner)
-    {
-        enable_nagle(false);
-    }
-    
-    /**
-     * @brief Set TCP_NODELAY to `!enabled` on the underlying socket.
-     *
-     * TCP_NODELAY causes writes to the socket to be pushed to the network immediately. This
-     * emulates the behavior of datagram sockets, and is very useful for datagram-like use of
-     * streams, like this class implements. However, it creates slight overhead as data are not
-     * batched.
-     *
-     * (clarification: If Nagle's algorithm is *enabled*, that means that `TCP_NODELAY` is *disabled*,
-     * and vice versa)
-     */
-    template<typename Inner>
-    void dgram_over_stream<Inner>::enable_nagle(bool enabled) const {
-        int enabled_ = int(!enabled);
-        inner.set_sock_opt(IPPROTO_TCP, TCP_NODELAY, &enabled_, sizeof(int));
-    }
-
-    /**
-     * @brief Send the message in buf with length len as one frame.
-     * @returns The total number of bytes sent.
-     * @throws A socket_exception.
-     */
-    template<typename Inner>
-    ssize_t dgram_over_stream<Inner>::sndmsg(const void* buf, size_t len)
-    {
-        encode_uint32(uint32_t(len), prefix_buffer);
-        ssize_t result = inner.snd(prefix_buffer, FRAMING_PREFIX_LENGTH, 0);
-
-        if (result < 0)
-            return result;
-
-        result = inner.snd(buf, len, 0);
-
-        if (result < 0)
-            return result;
-
-        return result;
-    }
-
-    /**
-     * @brief Receive a message and store the first `len` bytes into `buf`.
-     * @returns The number of bytes received.
-     * @throws A socket_exception.
-     *
-     * Bytes in the message beyond `len` are discarded.
-     */
-    template<typename Inner>
-    ssize_t dgram_over_stream<Inner>::rcvmsg(void* dst, size_t len)
-    {
-        ssize_t result = inner.rcv(prefix_buffer, FRAMING_PREFIX_LENGTH, 0);
-
-        if (result < 0)
-            throw socket_exception(__FILE__, __LINE__, "dgram_over_stream::rcvmsg(): Could not receive length prefix!", false);
-
-        uint32_t expected = decode_uint32(prefix_buffer);
-
-        if (len >= expected)
-        {
-            result = inner.rcv(dst, expected, 0);
-
-            if (result < 0)
-                throw socket_exception(__FILE__, __LINE__, "dgram_over_stream::rcvmsg(): Could not receive message!", false);
-        } else
-        {
-            result = inner.rcv(dst, expected, 0);
-
-            if (result < 0)
-                throw socket_exception(__FILE__, __LINE__, "dgram_over_stream::rcvmsg(): Could not receive message!", false);
-
-            // Ignore rest of message.
-            ssize_t rest_len = expected - len;
-
-            do {
-                size_t to_receive;
-
-                if (rest_len > devnull_size)
-                    to_receive = devnull_size;
-
-                ssize_t recvd = inner.rcv(devnull, to_receive, 0);
-
-                if (recvd < 0)
-                    return result;
-
-                rest_len -= recvd;
-            } while (rest_len > 0);
-        }
-        return result;
-    }
 }
 
 #endif
