@@ -1,0 +1,5 @@
+<map id="libsocket::inet_stream" name="libsocket::inet_stream">
+<area shape="rect" id="node2" href="$classlibsocket_1_1inet__socket.html" title="Internet&#45;socket base class This class provides some fields for all internet sockets, like remote host and port and the used protocol version. " alt="" coords="5,87,155,114"/>
+<area shape="rect" id="node3" href="$classlibsocket_1_1socket.html" title="socket is the base class of every other libsocket++ object. " alt="" coords="109,5,230,32"/>
+<area shape="rect" id="node4" href="$classlibsocket_1_1stream__client__socket.html" title="Generic socket for active stream sockets (TCP client sockets, UNIX Stream clients) ..." alt="" coords="179,80,339,121"/>
+</map>

@@ -1,0 +1,6 @@
+<map id="libsocket::unix_dgram" name="libsocket::unix_dgram">
+<area shape="rect" id="node4" href="$classlibsocket_1_1unix__dgram__client.html" title="Class for UNIX datagram sockets. " alt="" coords="5,229,155,271"/>
+<area shape="rect" id="node5" href="$classlibsocket_1_1unix__dgram__server.html" title="Provides an interface to UNIX&#45;domain datagram sockets. " alt="" coords="179,229,328,271"/>
+<area shape="rect" id="node2" href="$classlibsocket_1_1unix__socket.html" title="Base class for all UNIX socket classes. " alt="" coords="91,80,243,107"/>
+<area shape="rect" id="node3" href="$classlibsocket_1_1socket.html" title="socket is the base class of every other libsocket++ object. " alt="" coords="106,5,227,32"/>
+</map>

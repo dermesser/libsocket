@@ -1,0 +1,4 @@
+<map id="libsocket::inet_dgram_client::connect" name="libsocket::inet_dgram_client::connect">
+<area shape="rect" id="node2" href="$group__libinetsocket.html#ga10304769ea75add0f18d4c9caf8e2c30" title="Connect a UDP socket. " alt="" coords="200,5,339,47"/>
+<area shape="rect" id="node3" href="$group__libinetsocket.html#gac85fdb9dc1530a93835e527ae0002652" title="Checks return value for error. " alt="" coords="387,13,477,39"/>
+</map>

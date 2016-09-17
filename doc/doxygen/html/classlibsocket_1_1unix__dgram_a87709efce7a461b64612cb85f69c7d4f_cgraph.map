@@ -1,0 +1,4 @@
+<map id="libsocket::unix_dgram::rcvfrom" name="libsocket::unix_dgram::rcvfrom">
+<area shape="rect" id="node2" href="$group__libunixsocket.html#gac5df3bd88cc0ee3e34f94d859ab21085" title="Receive datagram from another UNIX socket. " alt="" coords="203,5,349,47"/>
+<area shape="rect" id="node3" href="$group__libunixsocket.html#gac85fdb9dc1530a93835e527ae0002652" title="Checks return value for error. " alt="" coords="397,13,488,39"/>
+</map>

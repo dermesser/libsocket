@@ -1,0 +1,542 @@
+<h1>Documentation for libsocket</h1>
+
+<h2>Introduction/Explanations</h2>
+
+<p>libsocket is a library written in C for the purpose of simplifying the usage of <code>AF_INET/AF_INET6</code> (internet domain)
+and <code>AF_UNIX</code> (unix domain) sockets. With many specialized functions in the API, it's hard to do things really wrong.
+And with the excellent error processing with optional verbosity on <code>stderr</code>,
+it's also quite easy to debug your applications.</p>
+
+<p>libsocket is targeted at advanced/experienced/professional C-on-Linux programmers which don't like
+the traditional BSD sockets API. libsocket is not targeted at programmers which do their first experiences
+with C or sockets! To understand the library, you SHALL have experience with the underlying syscalls.</p>
+
+<p>libsocket is the name for the whole project. libinetsocket is the part for <code>INET</code>/<code>INET6</code> sockets, libunixsocket for <code>UNIX</code> sockets.</p>
+
+<p>If you want to see some examples using the library, take a look at the example programs in examples/. Compile them either
+together with the C source files in C/inet and C/unix or link them against an already installed copy with <code>-lsocket</code> (or
+<code>-lsocket_hl</code> on SunOS).</p>
+
+<p>Note: The manpage extracts are from the manpages delivered with Debian (Linux manpages), usually created by
+the man-pages project. The OpenBSD manpage extracts are taken from <a href="http://www.openbsd.org/cgi-bin/man.cgi">the OpenBSD website</a></p>
+
+<h3>Compile time configuration</h3>
+
+<p>If the macro <code>VERBOSE</code> is defined, libsocket prints verbose error messages on STDERR device. The error messages come
+from functions like <code>strerror</code> or <code>gai_strerror</code>. This is <strong>VERY</strong> useful when there are problems in your program or
+the library itself. Typically, you specify it in the CMakeLists file:</p>
+
+<pre><code>ADD_DEFINITIONS(-DVERBOSE)
+</code></pre>
+
+<p>Another compile-time option is <code>_TRADITIONAL_RDNS</code>. It specifies if the library should use <code>getnameinfo()</code> or
+<code>gethostbyaddr()</code> for reverse DNS queries. The latter possibility may be needed on FreeBSD or other systems were
+getnameinfo is not an option.</p>
+
+<h3>Usage of flags</h3>
+
+<p>The usage of the flags for some functions is described for every function. If you don't need any flags,
+you may specify <code>0</code> for every flag argument.</p>
+
+<h3>Errors and return values</h3>
+
+<p>If you don't enable the <code>VERBOSE</code> macro, the library knows another way to notify you if there was an error;
+if anything went wrong, the return value will be <code>-1</code>. Every function behaves this way, so it's
+strongly recommended to check the return values of the API functions. To obtain more information about what exactly caused
+an error, check <code>errno</code>; the man pages of the underlying syscalls (described in this document) contain information about
+possible <code>errno</code> values.</p>
+
+<h3>libinetsocket</h3>
+
+<p>As the name says, libinetsocket is the part for internet domain sockets. All important features are supported and
+it's possible to give flags to the system calls, e.g. it's possible to give the flag <code>MSG_DONTROUTE</code> to the wrapper
+function of <code>sendto()</code>.</p>
+
+<p>libinetsocket is adapted for multi-platform usage. It's mainly tested on Linux and FreeBSD, but the client functions
+work also on SunOS (OpenIndiana).</p>
+
+<h3>libunixsocket</h3>
+
+<p>libunixsocket is responsible for UNIX domain sockets. The calls are similar to the libinetsocket calls.</p>
+
+<p>libunixsocket works on Linux, but as well on FreeBSD and SunOS.</p>
+
+<h1>Usage in your application</h1>
+
+<h2>Dynamic</h2>
+
+<p>Build and install the library following the instructions in <code>README.md</code> and link your application against it using the documentation in <code>LINKAGE</code>.</p>
+
+<h2>Static</h2>
+
+<p>Static linking is <strong>not</strong> recommended. That means, copy a checkout of the library files (C/, headers/) to the
+source tree of your application. Then, simply compile the files together with the other files
+(as if they were just a part of your application).</p>
+
+<p><em>Details about dependancies:</em> The actual code is in <code>libinetsocket.c</code> resp. <code>libunixsocket.c</code>. Every file of your
+application that wants to use these functions has to include the header files, e.g.:</p>
+
+<h1>API calls</h1>
+
+<h2>libinetsocket</h2>
+
+<h3><code>create_inet_stream_socket()</code></h3>
+
+<p><code>int create_inet_stream_socket(const char* host, const char* service, char proto_osi3, int flags)</code></p>
+
+<p>This function creates, connects and returns a inet stream socket (TCP socket) which is connected to <code>host</code>:<code>service</code>.</p>
+
+<ul>
+<li><code>host</code>: Destination host</li>
+<li><code>service</code>: Destination host's port</li>
+<li><code>proto_osi3</code>: OSI layer 3 protocol: either <code>LIBSOCKET_IPv4</code> or <code>LIBSOCKET_IPv6</code> (defined in <code>libinetsocket.h</code>). <code>LIBSOCKET_BOTH</code> lets the resolver choose.</li>
+<li>specifying <code>flags</code> <strong>has only an effect on Linux >= 2.6.27 - elsewise, specify 0 to avoid errors</strong>. The flags are described
+below.</li>
+</ul>
+
+<p>Returns the socket file descriptor number, on error -1.</p>
+
+<p><code>SOCK_NONBLOCK</code> does not let you wait when read()ing or write()ing; instead of blocking (if there's nothing available) read()/write()
+return -1.</p>
+
+<p><code>SOCK_CLOEXEC</code> closes the socket if you call a syscall from the <code>exec()</code> family (to execute another program).</p>
+
+<p>The underlying protocol will be TCP.</p>
+
+<p>For sending and receiving data, use <code>read()/write()</code> or <code>send()/recv()</code>.</p>
+
+<h3><code>create_inet_dgram_socket()</code></h3>
+
+<p><code>int create_inet_dgram_socket(char proto_osi3, int flags)</code></p>
+
+<p>Returns an integer describing a DGRAM (UDP) socket.</p>
+
+<ul>
+<li><code>proto_osi3</code> may take <code>LIBSOCKET_IPv4</code> (<code>AF_INET</code>) or <code>LIBSOCKET_IPv6</code> (<code>AF_INET6</code>).</li>
+<li><code>flags</code> may be the flags specified in <code>socket(2)</code>, i.e. <code>SOCK_NONBLOCK</code> and/or <code>SOCK_CLOEXEC</code>.
+Multiple flags may be ORed. Specify this argument as 0 on systems other than Linux >= 2.6.27.</li>
+</ul>
+
+<p>Returns the socket file descriptor number, on error -1.</p>
+
+<p>The protocol used for communication is UDP.</p>
+
+<p>To send and receive data on this socket, you may use the functions explained below, <code>sendto_inet_dgram_socket()</code> and
+<code>recvfrom_inet_dgram_socket()</code>.</p>
+
+<h3><code>sendto_inet_dgram_socket()</code></h3>
+
+<p><code>ssize_t sendto_inet_dgram_socket(int sfd, void* buf, size_t size, char* host, char* service, int sendto_flags)</code></p>
+
+<p>It returns the number of bytes sent; this number may be lower than <code>size</code>.</p>
+
+<ul>
+<li><code>sfd</code> is the <em>Socket File Descriptor</em> from <code>create_inet_dgram_socket()</code>. <strong>The usage with STREAM sockets will result in
+undefined behavior, the call will most likely fail.</strong></li>
+<li><code>buf</code> is a pointer to some data.</li>
+<li><code>size</code> is the length of the buffer to which buf points.</li>
+<li><code>host</code> is the host to which we want to send the data. It's a string so you may specify everything what's resolved by
+<code>getaddrinfo()</code>, i.e. an IP ("193.21.34.21") or a hostname ("example.net").</li>
+<li><code>service</code> is the port on the remote host. Like in <code>host</code>, you may specify the port either as number ("123") or as service string ("ntp", "http", "gopher").</li>
+<li><code>sendto_flags</code> is available on all platforms. The value given here goes directly to the internal <code>sendto()</code> call.
+The available flags differ between the platforms.</li>
+</ul>
+
+<p>Returns the number of bytes sent, on error -1.</p>
+
+<p>Linux specifies the following flags:</p>
+
+<pre><code>   "The flags argument is the bitwise OR of zero or more of the following flags.
+
+   MSG_CONFIRM (Since Linux 2.3.15)
+          Tell the link layer that forward progress happened: you got a successful reply from  the  other  side.   If  the  link  layer
+          doesn't  get  this  it  will regularly reprobe the neighbor (e.g., via a unicast ARP).  Only valid on SOCK_DGRAM and SOCK_RAW
+          sockets and currently only implemented for IPv4 and IPv6.  See arp(7) for details.
+
+   MSG_DONTROUTE
+          Don't use a gateway to send out the packet, only send to hosts on directly connected networks.  This is usually used only  by
+          diagnostic or routing programs.  This is only defined for protocol families that route; packet sockets don't.
+
+   MSG_DONTWAIT (since Linux 2.2)
+          Enables  nonblocking  operation;  if  the  operation would block, EAGAIN or EWOULDBLOCK is returned (this can also be enabled
+          using the O_NONBLOCK flag with the F_SETFL fcntl(2)).
+
+   MSG_EOR (since Linux 2.2)
+          Terminates a record (when this notion is supported, as for sockets of type SOCK_SEQPACKET).
+
+   MSG_MORE (Since Linux 2.4.4)
+          The caller has more data to send.  This flag is used with TCP sockets to obtain the same effect as the TCP_CORK socket option
+          (see tcp(7)), with the difference that this flag can be set on a per-call basis.
+
+          Since Linux 2.6, this flag is also supported for UDP sockets, and informs the kernel to package all of the data sent in calls
+          with this flag set into a single datagram which is only transmitted when a call is performed that does not specify this flag.
+          (See also the UDP_CORK socket option described in udp(7).)
+
+   MSG_NOSIGNAL (since Linux 2.2)
+          Requests  not to send SIGPIPE on errors on stream oriented sockets when the other end breaks the connection.  The EPIPE error
+          is still returned.
+
+   MSG_OOB
+          Sends out-of-band data on sockets that support this notion (e.g., of type SOCK_STREAM); the  underlying  protocol  must  also
+          support out-of-band data."
+</code></pre>
+
+<p>FreeBSD has this flags available (<code>sendto(2)</code>):</p>
+
+<pre><code>The flags argument may include one or more of the following:
+
+ #define MSG_OOB         0x00001 /* process out-of-band data */
+ #define MSG_DONTROUTE   0x00004 /* bypass routing, use direct interface */
+ #define MSG_EOR         0x00008 /* data completes record */
+ #define MSG_EOF         0x00100 /* data completes transaction */
+ #define MSG_NOSIGNAL    0x20000 /* do not generate SIGPIPE on EOF */
+</code></pre>
+
+<p>If it is not possible to send data at the moment, this call blocks excepted you specified <code>SOCK_NONBLOCK</code> when creating the socket.
+In this case the function will return -1; errno will be set to <code>EAGAIN</code> or <code>EWOULDBLOCK</code>.</p>
+
+<h3><code>recvfrom_inet_dgram_socket()</code></h3>
+
+<p><code>ssize_t recvfrom_inet_dgram_socket(int sfd, void* buffer, size_t size, char* src_host, size_t src_host_len, char* src_service, size_t src_service_len, int recvfrom_flags, int numeric)</code></p>
+
+<ul>
+<li><code>sfd</code> - socket file descriptor</li>
+<li><code>buffer</code>: Memory area to which the received data is written</li>
+<li><code>size</code>: Size (in bytes) of the buffer</li>
+<li><code>src_host</code>: Buffer to which the source host is written. May be 0, then the source is discarded</li>
+<li><code>src_host_len</code>: Length of the <code>src_host</code> buffer</li>
+<li><code>src_service</code>: Buffer to which the source port is written. May be 0, then the source port is discarded.</li>
+<li><code>src_service_len</code>: Length of <code>src_service</code> buffer</li>
+<li><code>recvfrom_flags</code> is a ORed combination of the flags below (Linux)</li>
+<li><code>numeric</code>: May be <code>LIBSOCKET_NUMERIC</code> (defined in header files, then source port and host are given back numeric.</li>
+</ul>
+
+<p>Returns the number of bytes received, or -1 if an error occurred.</p>
+
+<p>Flags for Linux:</p>
+
+<pre><code>       MSG_CMSG_CLOEXEC (recvmsg() only; since Linux 2.6.23)
+          Set the close-on-exec flag for the file descriptor received via a UNIX domain file descriptor using the SCM_RIGHTS  operation
+          (described in unix(7)).  This flag is useful for the same reasons as the O_CLOEXEC flag of open(2).
+
+       MSG_DONTWAIT (since Linux 2.2)
+          Enables  nonblocking  operation;  if the operation would block, the call fails with the error EAGAIN or EWOULDBLOCK (this can
+          also be enabled using the O_NONBLOCK flag with the F_SETFL fcntl(2)).
+
+       MSG_ERRQUEUE (since Linux 2.2)
+          This flag specifies that queued errors should be received from the socket error queue.  The error is passed in  an  ancillary
+          message  with  a  type  dependent on the protocol (for IPv4 IP_RECVERR).  The user should supply a buffer of sufficient size.
+          See cmsg(3) and ip(7) for more information.  The payload of the original packet that caused the error  is  passed  as  normal
+          data via msg_iovec.  The original destination address of the datagram that caused the error is supplied via msg_name.
+
+          For  local  errors,  no address is passed (this can be checked with the cmsg_len member of the cmsghdr).  For error receives,
+          the MSG_ERRQUEUE is set in the msghdr.  After an error has been passed, the pending socket error is regenerated based on  the
+          next queued error and will be passed on the next socket operation.
+
+          The error is supplied in a sock_extended_err structure:
+
+          #define SO_EE_ORIGIN_NONE    0
+          #define SO_EE_ORIGIN_LOCAL   1
+          #define SO_EE_ORIGIN_ICMP    2
+          #define SO_EE_ORIGIN_ICMP6   3
+
+          struct sock_extended_err
+          {
+              uint32_t ee_errno;   /* error number */
+              uint8_t  ee_origin;  /* where the error originated */
+              uint8_t  ee_type;    /* type */
+              uint8_t  ee_code;    /* code */
+              uint8_t  ee_pad;     /* padding */
+              uint32_t ee_info;    /* additional information */
+              uint32_t ee_data;    /* other data */
+              /* More data may follow */
+          };
+
+          struct sockaddr *SO_EE_OFFENDER(struct sock_extended_err *);
+
+          ee_errno  contains  the  errno  number of the queued error.  ee_origin is the origin code of where the error originated.  The
+          other fields are protocol-specific.  The macro SOCK_EE_OFFENDER returns a pointer to the address of the network object  where
+          the  error  originated  from given a pointer to the ancillary message.  If this address is not known, the sa_family member of
+          the sockaddr contains AF_UNSPEC and the other fields of the sockaddr are undefined.  The payload of the  packet  that  caused
+          the error is passed as normal data.
+
+          For  local  errors,  no address is passed (this can be checked with the cmsg_len member of the cmsghdr).  For error receives,
+          the MSG_ERRQUEUE is set in the msghdr.  After an error has been passed, the pending socket error is regenerated based on  the
+          next queued error and will be passed on the next socket operation.
+
+       MSG_OOB
+          This  flag  requests  receipt of out-of-band data that would not be received in the normal data stream.  Some protocols place
+          expedited data at the head of the normal data queue, and thus this flag cannot be used with such protocols.
+
+       MSG_PEEK
+          This flag causes the receive operation to return data from the beginning of the receive queue without removing that data from
+          the queue.  Thus, a subsequent receive call will return the same data.
+
+       MSG_TRUNC (since Linux 2.2)
+          For  raw (AF_PACKET), Internet datagram (since Linux 2.4.27/2.6.8), and netlink (since Linux 2.6.22) sockets: return the real
+          length of the packet or datagram, even when it was longer than the passed buffer.  Not implemented for UNIX domain  (unix(7))
+          sockets.
+
+          For use with Internet stream sockets, see tcp(7).
+
+       MSG_WAITALL (since Linux 2.2)
+          This  flag  requests  that  the operation block until the full request is satisfied.  However, the call may still return less
+          data than requested if a signal is caught, an error or disconnect occurs, or the next data to be received is of  a  different
+          type than that returned.
+</code></pre>
+
+<p>Flags on FreeBSD:</p>
+
+<pre><code>The flags argument to a recv() function is formed by or'ing
+one or more of the values:
+
+   MSG_OOB     process out-of-band data
+   MSG_PEEK    peek at incoming message
+   MSG_WAITALL     wait for full request or error
+   MSG_DONTWAIT    do not block
+</code></pre>
+
+<h3><code>connect_inet_dgram_socket()</code></h3>
+
+<p><code>int connect_inet_dgram_socket(int sfd, char* host, char* service)</code></p>
+
+<p>Calls to <code>read(2)</code> and <code>write(2)</code> on a connected socket will receive and send data only to/from the host and service
+you connected to. Sending/receiving to/from other hosts is still possible with <code>{recvfrom,sendto}_inet_dgram_socket()</code>.
+An example covering this is available at <code>examples/echo_dgram_connected_client.c</code>.</p>
+
+<ul>
+<li><code>sfd</code> is the file descriptor</li>
+<li><code>host</code> and <code>service</code> are the target address parameters, as in <code>create_inet_stream_socket()</code>.</li>
+</ul>
+
+<p>You may call this function multiple times on the same socket to reconnect it.</p>
+
+<p>A socket can be disconnected by calling <code>connect()</code> with the arguments set to 0.</p>
+
+<pre><code>connect_inet_dgram_socket(socket,0,0);
+</code></pre>
+
+<p>Returns 0 on success, -1 on error.</p>
+
+<h3><code>destroy_inet_socket()</code></h3>
+
+<p><code>int destroy_inet_socket(int sfd)</code></p>
+
+<p>Simply calls <code>close(2)</code> on <code>sfd</code>.</p>
+
+<p>Returns 0 on success, -1 on error.</p>
+
+<h3><code>shutdown_inet_stream_socket()</code></h3>
+
+<p><code>int shutdown_inet_stream_socket(int sfd, int method)</code></p>
+
+<p>Calls <code>shutdown(2)</code> on <code>sfd</code>.</p>
+
+<ul>
+<li><code>sfd</code>: Socket file descriptor</li>
+<li><code>method</code> is either <code>LIBSOCKET_READ</code>, <code>LIBSOCKET_WRITE</code> or the ORed combination <code>LIBSOCKET_READ|LIBSOCKET_WRITE</code>.</li>
+</ul>
+
+<p>Calling <code>shutdown_inet_stream_socket()</code> on a socket has the following effects:</p>
+
+<ul>
+<li>if <code>method</code> is <code>LIBSOCKET_READ</code>: Disallow subsequent calls to <code>read()</code></li>
+<li>if <code>method</code> is <code>LIBSOCKET_WRITE</code>: Disallow subsequent calls to <code>write()</code> and send an EOF-like signal to the remote host</li>
+<li>if <code>method</code> is <code>LIBSOCKET_READ|LIBSOCKET_WRITE</code>: Combination of the two actions before.</li>
+</ul>
+
+<p>Returns 0 upon success, -1 on error.</p>
+
+<h3><code>create_inet_server_socket()</code></h3>
+
+<p><code>int create_inet_server_socket(const char* bind_addr, const char* bind_port, char proto_osi4, char proto_osi3, int flags)</code></p>
+
+<p>Creates a server socket, also known as <em>Passive Socket</em>. With such a socket you may accept connections (STREAM) or
+simply bind a UDP socket; if you use it as UDP "server" socket, it's almost the same as a socket created with
+<code>create_inet_dgram_socket()</code>, but it's bound (<code>bind(2)</code>) to a specified address.</p>
+
+<p>The arguments:</p>
+
+<ul>
+<li><code>bind_addr</code>: The address to which the socket is bound to. E.g.: "127.0.0.1" for localhost, "0.0.0.0" for all available addresses</li>
+<li><code>bind_port</code>: The port to bind to.</li>
+<li><code>proto_osi4</code>: <code>LIBSOCKET_UDP</code> or <code>LIBSOCKET_TCP</code> (defined in headers)</li>
+<li><code>proto_osi3</code>: <code>LIBSOCKET_IPv4</code> or <code>LIBSOCKET_IPv6</code>. <code>LIBSOCKET_BOTH</code> lets the resolver choose.</li>
+<li><code>flags</code>: <code>SOCK_NONBLOCK</code> or <code>SOCK_CLOEXEC</code> (like in <code>create_inet_stream_socket()</code> etc, on non-linux systems, specify it as 0)</li>
+</ul>
+
+<p>Internals: The <code>backlog</code> argument of <code>listen(2)</code> when using TCP sockets is set to <code>LIBSOCKET_BACKLOG</code>,
+defined at the beginning of src/libinetsocket.c. Default is 128, the maximum value on Linux. This may differ on other platforms.</p>
+
+<p>Returns a valid socket file descriptor on success, on error, -1 is returned.</p>
+
+<h3><code>accept_inet_stream_socket()</code></h3>
+
+<p><code>int accept_inet_stream_socket(int sfd, char* src_host, size_t src_host_len, char* src_service, size_t src_service_len, int flags, int accept_flags)</code></p>
+
+<p>Accept incoming connections on server sockets created with <code>create_inet_server_socket()</code>.</p>
+
+<ul>
+<li><code>sfd</code>: Socket</li>
+<li><code>src_host</code>: Buffer to which the source host is written</li>
+<li><code>src_host_len</code>: Length of the previous buffer</li>
+<li><code>src_service</code>: Buffer to which the source port is written</li>
+<li><code>src_service_len</code>: Length of the previous buffer</li>
+<li><code>flags</code>: may be <code>LIBSOCKET_NUMERIC</code>.</li>
+<li><code>accept_flags</code> are passed to <code>accept4()</code>.</li>
+</ul>
+
+<p>This function will block until there's an incoming connection.</p>
+
+<p>Returns a stream file descriptor connected to the connecting client. On error, -1 is returned.</p>
+
+<h3>Other functions</h3>
+
+<h4><code>get_address_family()</code></h4>
+
+<p><code>int get_address_family(const char* host)</code></p>
+
+<p>Returns the available libsocket address family for the given <code>host</code>. The address family is either
+<code>LIBSOCKET_IPv4</code> or <code>LIBSOCKET_IPv6</code> (defined in libinetsocket header file). If a host is reachable
+via IPv6, <code>LIBSOCKET_IPv6</code> will be returned.</p>
+
+<p>This function is very useful when creating a UDP socket for a certain destination (<code>host</code>); without this function
+it would be impossible to obtain the address family to use for such a socket (UDP sockets do not have the <code>BOTH</code>
+address family available for the send call)</p>
+
+<h2>libunixsocket</h2>
+
+<p>As mentioned in the introduction, libunixsocket is Linux-specific. Until now, it did not run on other Unixes than Linux.</p>
+
+<h3><code>create_unix_stream_socket()</code></h3>
+
+<p><code>int create_unix_stream_socket(const char* path, int flags)</code></p>
+
+<p>Creates a UNIX STREAM socket and connects it to <code>path</code>.</p>
+
+<ul>
+<li><code>path</code>: The socket is connected to the path given with this argument.</li>
+<li><code>flags</code>: Optional flags for <code>socket(2)</code>: <code>SOCK_CLOEXEC</code> and <code>SOCK_NONBLOCK</code></li>
+</ul>
+
+<p>Returns a valid socket descriptor on success or -1 on error.</p>
+
+<h3><code>create_unix_dgram_socket()</code></h3>
+
+<p><code>int create_unix_dgram_socket(const char* bind_path, int flags)</code></p>
+
+<p>Creates a UNIX DGRAM socket and binds it optionally to <code>bind_path</code>.</p>
+
+<ul>
+<li><code>bind_path</code>: If this is not 0, the socket is bound to this path, i.e. a socket file is created with this name.</li>
+<li><code>flags</code>: Optional flags for <code>socket(2)</code>: <code>SOCK_CLOEXEC</code> and <code>SOCK_NONBLOCK</code></li>
+</ul>
+
+<p>Returns a valid socket descriptor on success or -1 on error.</p>
+
+<h3><code>connect_unix_dgram_socket()</code></h3>
+
+<p><code>int connect_unix_dgram_socket(int sfd, const char* path)</code></p>
+
+<p>Connect a UNIX DGRAM socket.</p>
+
+<ul>
+<li><code>sfd</code>: The socket</li>
+<li><code>path</code>: The path of the socket to which we want to connect the socket.</li>
+</ul>
+
+<p>Returns 0 on success and -1 on error.</p>
+
+<h3><code>destroy_unix_socket()</code></h3>
+
+<p><code>int destroy_unix_socket(int sfd)</code></p>
+
+<p>Destroy (close) a socket.</p>
+
+<ul>
+<li><code>sfd</code>: The socket file descriptor.</li>
+</ul>
+
+<p>Returns 0 on success and -1 on error.</p>
+
+<h3><code>shutdown_unix_stream_socket()</code></h3>
+
+<p><code>int shutdown_unix_stream_socket(int sfd, int method)</code></p>
+
+<ul>
+<li><code>sfd</code>: Socket file descriptor</li>
+<li><code>method</code>: <code>LIBSOCKET_READ</code>/<code>LIBSOCKET_WRITE</code>/<code>LIBSOCKET_READ|LIBSOCKET_WRITE</code></li>
+</ul>
+
+<p>Calling <code>shutdown_inet_stream_socket()</code> on a socket has the following effects:</p>
+
+<ul>
+<li>if <code>method</code> is <code>LIBSOCKET_READ</code>: Disallow subsequent calls to <code>read()</code></li>
+<li>if <code>method</code> is <code>LIBSOCKET_WRITE</code>: Disallow subsequent calls to <code>write()</code> and send an EOF-like signal to the remote host</li>
+<li>if <code>method</code> is <code>LIBSOCKET_READ|LIBSOCKET_WRITE</code>: Combination of the two actions before.</li>
+</ul>
+
+<p>Returns 0 upon success, -1 on error.</p>
+
+<h3><code>create_unix_server_socket()</code></h3>
+
+<p><code>int create_unix_server_socket(const char* path, int socktype, int flags)</code></p>
+
+<p>Creates a new UNIX server (passive) socket.</p>
+
+<ul>
+<li><code>path</code>: Path to which the new socket is bound to.</li>
+<li><code>socktype</code>: <code>LIBSOCKET_STREAM</code> or <code>LIBSOCKET_DGRAM</code> (symbolic constants from header files)</li>
+<li><code>flags</code>: Flags for <code>socket(2)</code>: <code>SOCK_NONBLOCK</code> or <code>SOCK_CLOEXEC</code></li>
+</ul>
+
+<p>Returns a valid passive socket descriptor or -1 on error.</p>
+
+<p>If you specify <code>DGRAM</code> as socktype, you get the same result like with <code>create_unix_dgram_socket("path",0)</code> because there's
+no difference between server and client when using DGRAM sockets.</p>
+
+<h3><code>accept_unix_stream_socket()</code></h3>
+
+<p><code>int accept_unix_stream_socket(int sfd, int flags)</code></p>
+
+<p>Accepts a connection on UNIX stream sockets.</p>
+
+<ul>
+<li><code>sfd</code> is the passive socket, generated by <code>create_unix_server_socket()</code>.</li>
+<li><code>flags</code> is a combination of <code>SOCK_CLOEXEC</code> and/or <code>SOCK_NONBLOCK</code> for the new (client) socket.</li>
+</ul>
+
+<p>Returns a socket connected to the client, or -1 on error.</p>
+
+<h3><code>recvfrom_unix_dgram_socket()</code></h3>
+
+<p><code>ssize_t recvfrom_unix_dgram_socket(int sfd, void* buf, size_t size, char* from, size_t from_size, int recvfrom_flags)</code></p>
+
+<p>Receives a datagram which is sent to the socket <code>sfd</code> which should be bound to somewhere.</p>
+
+<ul>
+<li><code>sfd</code> is the socket</li>
+<li><code>buf</code> is a buffer to which the data is written</li>
+<li><code>size</code> is its size</li>
+<li><code>from</code> is a buffer to which the source address is written</li>
+<li><code>from_size</code> is its size</li>
+<li><code>recvfrom_flags</code> is a combination of flags for <code>recvfrom()</code> (see section <code>recvfrom_inet_dgram_socket()</code>)</li>
+</ul>
+
+<p>Returns the number of received bytes, or -1 on error.</p>
+
+<h3><code>sendto_unix_dgram_socket()</code></h3>
+
+<p><code>ssize_t sendto_unix_dgram_socket(int sfd, void* buf, size_t size, const char* path, int sendto_flags)</code></p>
+
+<p>Sends a message to another socket.</p>
+
+<ul>
+<li><code>sfd</code>: Socket</li>
+<li><code>buf</code>: Buffer</li>
+<li><code>size</code>: Its length</li>
+<li><code>path</code>: The path of the other socket</li>
+<li><code>sendto_flags</code>: Combination of flags, as described at <code>sendto_inet_dgram_socket()</code>.</li>
+</ul>
+
+<p>Returns number of sent bytes or -1.</p>

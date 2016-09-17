@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created by diasvg.py -->
+<svg width="68.656cm" height="25.555cm" viewBox="0.831 0.750 69.488 26.305"
+ xmlns="http://www.w3.org/2000/svg"
+ xmlns:xlink="http://www.w3.org/1999/xlink">
+<rect x="32.900" y="0.800" width="4.150" height="1.900" fill="#FFFFFF" stroke="none" stroke-width="0"/>
+<rect x="32.900" y="0.800" width="4.150" height="1.900" fill="none" stroke="#000000" stroke-width="0.100" />
+<text x="34.975" y="1.903"  fill="#000000" text-anchor="middle" font-size="0.63" font-family="sans" font-style="normal" font-weight="400">
+socket</text>
+<rect x="10.150" y="6.025" width="4.717" height="1.900" fill="#FFFFFF" stroke="none" stroke-width="0"/>
+<rect x="10.150" y="6.025" width="4.717" height="1.900" fill="none" stroke="#000000" stroke-width="0.100" />
+<text x="12.509" y="7.128"  fill="#000000" text-anchor="middle" font-size="0.63" font-family="sans" font-style="normal" font-weight="400">
+inet_socket</text>
+<rect x="1.032" y="11.100" width="7.235" height="1.900" fill="#7AF176" stroke="none" stroke-width="0"/>
+<rect x="1.032" y="11.100" width="7.235" height="1.900" fill="none" stroke="#000000" stroke-width="0.100" />
+<text x="4.650" y="12.203"  fill="#000000" text-anchor="middle" font-size="0.63" font-family="sans" font-style="normal" font-weight="400">
+inet_stream_server</text>
+<line x1="12.509" y1="6.025" x2="34.975" y2="2.700" stroke="#000000" stroke-width="0.100" />
+<line x1="4.650" y1="11.100" x2="12.509" y2="7.925" stroke="#000000" stroke-width="0.100" />
+<rect x="22.121" y="6.100" width="7.808" height="1.900" fill="#FFFFFF" stroke="none" stroke-width="0"/>
+<rect x="22.121" y="6.100" width="7.808" height="1.900" fill="none" stroke="#000000" stroke-width="0.100" />
+<text x="26.025" y="7.203"  fill="#000000" text-anchor="middle" font-size="0.63" font-family="sans" font-style="normal" font-weight="400">
+stream_client_socket</text>
+<rect x="40.100" y="6.000" width="7.660" height="1.900" fill="#FFFFFF" stroke="none" stroke-width="0"/>
+<rect x="40.100" y="6.000" width="7.660" height="1.900" fill="none" stroke="#000000" stroke-width="0.100" />
+<text x="43.930" y="7.103"  fill="#000000" text-anchor="middle" font-size="0.63" font-family="sans" font-style="normal" font-weight="400">
+dgram_client_socket</text>
+<rect x="55.100" y="6.100" width="4.858" height="1.900" fill="#FFFFFF" stroke="none" stroke-width="0"/>
+<rect x="55.100" y="6.100" width="4.858" height="1.900" fill="none" stroke="#000000" stroke-width="0.100" />
+<text x="57.529" y="7.203"  fill="#000000" text-anchor="middle" font-size="0.63" font-family="sans" font-style="normal" font-weight="400">
+unix_socket</text>
+<line x1="34.975" y1="2.700" x2="26.025" y2="6.100" stroke="#000000" stroke-width="0.100" />
+<line x1="43.930" y1="6.000" x2="34.975" y2="2.700" stroke="#000000" stroke-width="0.100" />
+<line x1="57.529" y1="6.100" x2="34.975" y2="2.700" stroke="#000000" stroke-width="0.100" />
+<rect x="17.150" y="11.100" width="4.888" height="1.900" fill="#7AF176" stroke="none" stroke-width="0"/>
+<rect x="17.150" y="11.100" width="4.888" height="1.900" fill="none" stroke="#000000" stroke-width="0.100" />
+<text x="19.594" y="12.203"  fill="#000000" text-anchor="middle" font-size="0.63" font-family="sans" font-style="normal" font-weight="400">
+inet_stream</text>
+<line x1="12.509" y1="7.925" x2="19.594" y2="11.100" stroke="#000000" stroke-width="0.100" />
+<line x1="26.025" y1="8.000" x2="19.594" y2="11.100" stroke="#000000" stroke-width="0.100" />
+<rect x="10.100" y="15.100" width="4.740" height="1.900" fill="#FFFFFF" stroke="none" stroke-width="0"/>
+<rect x="10.100" y="15.100" width="4.740" height="1.900" fill="none" stroke="#000000" stroke-width="0.100" />
+<text x="12.470" y="16.203"  fill="#000000" text-anchor="middle" font-size="0.63" font-family="sans" font-style="normal" font-weight="400">
+inet_dgram</text>
+<line x1="12.509" y1="7.925" x2="12.475" y2="15.050" stroke="#000000" stroke-width="0.100" />
+<rect x="0.881" y="20.000" width="7.088" height="1.900" fill="#7AF176" stroke="none" stroke-width="0"/>
+<rect x="0.881" y="20.000" width="7.088" height="1.900" fill="none" stroke="#000000" stroke-width="0.100" />
+<text x="4.425" y="21.103"  fill="#000000" text-anchor="middle" font-size="0.63" font-family="sans" font-style="normal" font-weight="400">
+inet_dgram_server</text>
+<line x1="12.470" y1="17.000" x2="4.425" y2="20.000" stroke="#000000" stroke-width="0.100" />
+<rect x="17.091" y="20.000" width="6.818" height="1.900" fill="#7AF176" stroke="none" stroke-width="0"/>
+<rect x="17.091" y="20.000" width="6.818" height="1.900" fill="none" stroke="#000000" stroke-width="0.100" />
+<text x="20.500" y="21.103"  fill="#000000" text-anchor="middle" font-size="0.63" font-family="sans" font-style="normal" font-weight="400">
+inet_dgram_client</text>
+<line x1="12.470" y1="17.000" x2="20.500" y2="20.000" stroke="#000000" stroke-width="0.100" />
+<line x1="43.930" y1="7.900" x2="20.500" y2="20.000" stroke="#000000" stroke-width="0.100" />
+<rect x="62.062" y="11.100" width="7.375" height="1.900" fill="#7AF176" stroke="none" stroke-width="0"/>
+<rect x="62.062" y="11.100" width="7.375" height="1.900" fill="none" stroke="#000000" stroke-width="0.100" />
+<text x="65.750" y="12.203"  fill="#000000" text-anchor="middle" font-size="0.63" font-family="sans" font-style="normal" font-weight="400">
+unix_stream_server</text>
+<line x1="57.529" y1="8.000" x2="65.750" y2="11.100" stroke="#000000" stroke-width="0.100" />
+<rect x="45.823" y="11.050" width="7.105" height="1.900" fill="#7AF176" stroke="none" stroke-width="0"/>
+<rect x="45.823" y="11.050" width="7.105" height="1.900" fill="none" stroke="#000000" stroke-width="0.100" />
+<text x="49.375" y="12.153"  fill="#000000" text-anchor="middle" font-size="0.63" font-family="sans" font-style="normal" font-weight="400">
+unix_stream_client</text>
+<line x1="49.375" y1="11.050" x2="57.529" y2="8.000" stroke="#000000" stroke-width="0.100" />
+<line x1="26.025" y1="8.000" x2="49.375" y2="11.050" stroke="#000000" stroke-width="0.100" />
+<rect x="55.050" y="15.100" width="4.880" height="1.900" fill="#FFFFFF" stroke="none" stroke-width="0"/>
+<rect x="55.050" y="15.100" width="4.880" height="1.900" fill="none" stroke="#000000" stroke-width="0.100" />
+<text x="57.490" y="16.203"  fill="#000000" text-anchor="middle" font-size="0.63" font-family="sans" font-style="normal" font-weight="400">
+unix_dgram</text>
+<line x1="57.529" y1="8.000" x2="57.490" y2="15.100" stroke="#000000" stroke-width="0.100" />
+<rect x="62.111" y="20.000" width="7.228" height="1.900" fill="#7AF176" stroke="none" stroke-width="0"/>
+<rect x="62.111" y="20.000" width="7.228" height="1.900" fill="none" stroke="#000000" stroke-width="0.100" />
+<text x="65.725" y="21.103"  fill="#000000" text-anchor="middle" font-size="0.63" font-family="sans" font-style="normal" font-weight="400">
+unix_dgram_server</text>
+<line x1="57.490" y1="17.000" x2="65.725" y2="20.000" stroke="#000000" stroke-width="0.100" />
+<rect x="42.746" y="20.050" width="6.958" height="1.900" fill="#7AF176" stroke="none" stroke-width="0"/>
+<rect x="42.746" y="20.050" width="6.958" height="1.900" fill="none" stroke="#000000" stroke-width="0.100" />
+<text x="46.225" y="21.153"  fill="#000000" text-anchor="middle" font-size="0.63" font-family="sans" font-style="normal" font-weight="400">
+unix_dgram_client</text>
+<line x1="57.490" y1="17.000" x2="46.225" y2="20.050" stroke="#000000" stroke-width="0.100" />
+<line x1="43.930" y1="7.900" x2="46.225" y2="20.050" stroke="#000000" stroke-width="0.100" />
+<text x="18.100" y="25.550"  fill="#000000" text-anchor="start" font-size="0.63" font-family="sans" font-style="normal" font-weight="400">
+Green classes are the only classes which you may instantiate.</text>
+<text x="18.100" y="26.185"  fill="#000000" text-anchor="start" font-size="0.63" font-family="sans" font-style="normal" font-weight="400">
+It makes no sense to instantiate a white class</text>
+</svg>

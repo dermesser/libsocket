@@ -1,0 +1,20 @@
+<map id="check_error" name="check_error">
+<area shape="rect" id="node2" href="$group__libinetsocket.html#ga309e2c8bc69f56905d97d6a578e6ab2b" title="Creates a new UDP/IP socket. " alt="" coords="146,85,321,111"/>
+<area shape="rect" id="node6" href="$group__libinetsocket.html#ga6f93c2a528fa384895be9175389002eb" title="This function is the equivalent to sendto(2) " alt="" coords="144,145,323,171"/>
+<area shape="rect" id="node9" href="$group__libinetsocket.html#gad816061c898fe8b1f0d8edfee3f5786d" title="Receive data from a UDP/IP socket. " alt="" coords="161,199,305,240"/>
+<area shape="rect" id="node12" href="$group__libinetsocket.html#ga10304769ea75add0f18d4c9caf8e2c30" title="Connect a UDP socket. " alt="" coords="164,264,303,305"/>
+<area shape="rect" id="node15" href="$group__libinetsocket.html#ga9c4e366b938b60a8c669c2a82448a6cf" title="Close a socket. " alt="" coords="164,330,303,357"/>
+<area shape="rect" id="node16" href="$group__libinetsocket.html#gac66a538a20eaea51b83d48b1922f2997" title="Perform a shutdown(2) call on a socket. " alt="" coords="157,381,310,423"/>
+<area shape="rect" id="node17" href="$group__libinetsocket.html#gabb6e135b0ac29de9e98cb53a87a67795" title="Accept a connection attempt on a server socket. " alt="" coords="165,447,301,488"/>
+<area shape="rect" id="node19" href="$group__libinetsocket.html#ga8643c39daab90241ebf53b43b86c5d96" title="Create a datagram socket and join to the multicast group address. " alt="" coords="151,513,315,539"/>
+<area shape="rect" id="node3" href="$classlibsocket_1_1inet__dgram__client.html#a3ad41617932a8fe961faed2e68a877f3" title="Set up normal datagram socket (connectable). [NOT FOR EXTERNAL USE]. " alt="" coords="373,71,519,112"/>
+<area shape="rect" id="node4" href="$classlibsocket_1_1inet__dgram__client.html#a2097f8e5faee6db0aac1618b96e4b960" title="Create normal datagram socket (connectable). " alt="" coords="569,5,740,47"/>
+<area shape="rect" id="node5" href="$classlibsocket_1_1inet__dgram__client.html#a779433b82a3bab7dc6de5061e185dca6" title="Set up datagram socket and connect it immediately to the given host and port. [NOT FOR EXTERNAL USE]..." alt="" coords="581,71,728,112"/>
+<area shape="rect" id="node7" href="$classlibsocket_1_1inet__dgram.html#ac02e4c0a18a36644fb4b0c8f03505132" title="Send data to UDP peer. " alt="" coords="373,136,519,177"/>
+<area shape="rect" id="node8" href="$classlibsocket_1_1inet__dgram.html#a91cec633db75d5bdf3bf19b241d4546b" title="Send data to UDP peer; C++ string host and port. " alt="" coords="581,136,728,177"/>
+<area shape="rect" id="node10" href="$classlibsocket_1_1inet__dgram.html#a0ca91d481cc1a06da2bdcb13e9137c9d" title="Receives data from peer. " alt="" coords="373,201,519,243"/>
+<area shape="rect" id="node11" href="$classlibsocket_1_1inet__dgram.html#ac703e443e67d369abc6ff5d0ff383fb3" title="rcvfrom for C++ strings " alt="" coords="581,201,728,243"/>
+<area shape="rect" id="node13" href="$classlibsocket_1_1inet__dgram__client.html#ad44fb388d21aa6aa1d5a3935b82e4b0f" title="Connect datagram socket. " alt="" coords="373,267,519,308"/>
+<area shape="rect" id="node14" href="$classlibsocket_1_1inet__dgram__client.html#af503904c52648c31c5ce611e49f97b27" title="Set up datagram socket and connect it immediately to the given host and port. [NOT FOR EXTERNAL USE]..." alt="" coords="581,267,728,308"/>
+<area shape="rect" id="node18" href="$classlibsocket_1_1inet__stream__server.html#acb9d0315f72b3455a010e150e2bb53a6" title="Accept a connection and return a socket connected to the client. " alt="" coords="371,447,521,488"/>
+</map>

@@ -1,0 +1,4 @@
+<map id="libsocket::unix_stream_client::connect" name="libsocket::unix_stream_client::connect">
+<area shape="rect" id="node2" href="$classlibsocket_1_1unix__stream__client.html#af41e0619dc5fbd34b031ffcef5e53d78" title="Constructor, setting up a connection. " alt="" coords="207,5,384,47"/>
+<area shape="rect" id="node3" href="$classlibsocket_1_1unix__stream__client.html#a10cbba2f58481f997c431d7f503d27ee" title="Connect socket. " alt="" coords="219,71,372,112"/>
+</map>

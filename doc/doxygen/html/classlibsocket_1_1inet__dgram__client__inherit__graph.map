@@ -1,0 +1,6 @@
+<map id="libsocket::inet_dgram_client" name="libsocket::inet_dgram_client">
+<area shape="rect" id="node2" href="$classlibsocket_1_1inet__dgram.html" title="Base class for UDP/IP sockets. " alt="" coords="5,162,152,189"/>
+<area shape="rect" id="node3" href="$classlibsocket_1_1inet__socket.html" title="Internet&#45;socket base class This class provides some fields for all internet sockets, like remote host and port and the used protocol version. " alt="" coords="36,80,185,107"/>
+<area shape="rect" id="node4" href="$classlibsocket_1_1socket.html" title="socket is the base class of every other libsocket++ object. " alt="" coords="114,5,235,32"/>
+<area shape="rect" id="node5" href="$classlibsocket_1_1dgram__client__socket.html" title="Represents a generic &quot;client&quot; datagram socket, i.e. a datagram socket which can be connected..." alt="" coords="177,155,333,196"/>
+</map>

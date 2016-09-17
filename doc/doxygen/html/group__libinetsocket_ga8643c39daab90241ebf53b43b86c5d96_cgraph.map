@@ -1,0 +1,4 @@
+<map id="create_multicast_socket" name="create_multicast_socket">
+<area shape="rect" id="node2" href="$group__libinetsocket.html#gac85fdb9dc1530a93835e527ae0002652" title="Checks return value for error. " alt="" coords="237,5,327,32"/>
+<area shape="rect" id="node3" href="$group__libinetsocket.html#gab5e00a5a7ba456d8a4b22012e3e2ce92" title="Create a TCP or UDP server socket. " alt="" coords="217,57,347,98"/>
+</map>

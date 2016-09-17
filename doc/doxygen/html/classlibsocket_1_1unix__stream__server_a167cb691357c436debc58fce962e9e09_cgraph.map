@@ -1,0 +1,5 @@
+<map id="libsocket::unix_stream_server::setup" name="libsocket::unix_stream_server::setup">
+<area shape="rect" id="node2" href="$classlibsocket_1_1unix__stream__server.html#a5c8241e3709e7f39884f36db19fdd4f5" title="Sets a server socket up. " alt="" coords="207,5,360,47"/>
+<area shape="rect" id="node3" href="$group__libunixsocket.html#gafe85c76892f9c9478b59008363a382ab" title="Create a passive UNIX socket. " alt="" coords="408,5,540,47"/>
+<area shape="rect" id="node4" href="$group__libunixsocket.html#gac85fdb9dc1530a93835e527ae0002652" title="Checks return value for error. " alt="" coords="588,13,679,39"/>
+</map>

@@ -1,0 +1,4 @@
+<map id="libsocket::inet_dgram_server::setup" name="libsocket::inet_dgram_server::setup">
+<area shape="rect" id="node2" href="$classlibsocket_1_1inet__dgram__server.html#a2d79dff72dbc93d9208f584d791f2f8a" title="Create datagram socket and bind it. " alt="" coords="200,5,380,47"/>
+<area shape="rect" id="node3" href="$classlibsocket_1_1inet__dgram__server.html#a4229f6941c8fcba86195268ff02c9bf1" title="Set up socket. NOT FOR EXTERNAL USE " alt="" coords="217,71,363,112"/>
+</map>
