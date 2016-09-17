@@ -20,6 +20,8 @@ SET(headers
 ./unixbase.hpp
 ./unixserverdgram.hpp
 ./inetdgram.hpp
+./dgramoverstream.hpp
+./framing.hpp
 )
 
 IF(IS_LINUX)

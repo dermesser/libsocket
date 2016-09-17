@@ -34,6 +34,8 @@ using std::string;
 
 namespace libsocket
 {
+    class dgram_over_stream;
+
     /** @addtogroup libsocketplusplus
      * @{
      */
@@ -44,14 +46,16 @@ namespace libsocket
      */
     class stream_client_socket : public virtual socket
     {
+        private:
+            // For dgram_over_stream
+            stream_client_socket(const stream_client_socket& other) : socket(), shut_rd(false), shut_wr(false) { sfd = other.sfd; }
 	protected:
 
 	    bool shut_rd; ///< If the socket was shut down for reading (-> no reads anymore)
 	    bool shut_wr; ///< If the socket was shut down for writing (-> no writes anymore)
 
 	public:
-
-	    stream_client_socket();
+            stream_client_socket();
 
 	    ssize_t snd(const void* buf, size_t len, int flags=0); // flags: send()
 	    ssize_t rcv(void* buf, size_t len, int flags=0); // flags: recv()
@@ -59,6 +63,7 @@ namespace libsocket
 	    friend stream_client_socket& operator<<(stream_client_socket& sock, const char* str);
 	    friend stream_client_socket& operator<<(stream_client_socket& sock, const string& str);
 	    friend stream_client_socket& operator>>(stream_client_socket& sock, string& dest);
+            friend class dgram_over_stream;
 
 	    void shutdown(int method=LIBSOCKET_WRITE);
     };

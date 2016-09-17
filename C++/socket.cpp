@@ -82,4 +82,16 @@ namespace libsocket
     {
 	return sfd;
     }
+
+    /**
+     * @brief Set socket options on the underlying socket.
+     * 
+     * @return The return value of setsockopt(2).
+     *
+     * Sets socket options using setsockopt(2). See setsockopt(2), tcp(7), udp(7), unix(7) for documentation
+     * on how to use this function.
+     */
+    int socket::set_sock_opt(int level, int optname, const char* optval, socklen_t optlen) const {
+        return setsockopt(sfd, level, optname, optval, optlen);
+    }
 }
