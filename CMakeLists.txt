@@ -27,8 +27,14 @@ ADD_DEFINITIONS(-Wall -Wextra)
 ADD_DEFINITIONS(-DVERBOSE)
 
 # Install directories
+#For FreeBSD installed files should be stored at /usr/local
+IF( CMAKE_SYSTEM_NAME STREQUAL "FreeBSD" )
+SET(HEADER_DIR /usr/local/include/libsocket)
+SET(LIB_DIR /usr/local/lib)
+ELSE()
 SET(HEADER_DIR /usr/include/libsocket)
 SET(LIB_DIR /usr/lib)
+ENDIF()
 
 ADD_SUBDIRECTORY(C/)
 ADD_SUBDIRECTORY(headers/)
