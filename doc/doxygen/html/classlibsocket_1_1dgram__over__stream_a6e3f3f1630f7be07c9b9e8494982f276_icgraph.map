@@ -1,0 +1,3 @@
+<map id="libsocket::dgram_over_stream::sndmsg" name="libsocket::dgram_over_stream::sndmsg">
+<area shape="rect" id="node2" href="$classlibsocket_1_1dgram__over__stream.html#a52977764f3a1134f821a49bd75056290" title="Set TCP_NODELAY to !enabled on the underlying socket. " alt="" coords="204,5,357,47"/>
+</map>

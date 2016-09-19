@@ -91,6 +91,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="header">
   <div class="summary">
 <a href="#pub-methods">Public Member Functions</a> &#124;
+<a href="#pri-methods">Private Member Functions</a> &#124;
 <a href="#pri-attribs">Private Attributes</a> &#124;
 <a href="#pri-static-attribs">Static Private Attributes</a> &#124;
 <a href="classlibsocket_1_1dgram__over__stream-members.html">List of all members</a>  </div>
@@ -98,6 +99,9 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="title">libsocket::dgram_over_stream Class Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
+
+<p>Wraps a stream socket and provides a message-based API on top of it.  
+ <a href="classlibsocket_1_1dgram__over__stream.html#details">More...</a></p>
 
 <p><code>#include &lt;<a class="el" href="dgramoverstream_8hpp_source.html">dgramoverstream.hpp</a>&gt;</code></p>
 <table class="memberdecls">
@@ -115,6 +119,27 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a14d8073583cc15740011453b1c5fb73f"><td class="memItemLeft" align="right" valign="top">ssize_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlibsocket_1_1dgram__over__stream.html#a14d8073583cc15740011453b1c5fb73f">rcvmsg</a> (void *dst, size_t len)</td></tr>
 <tr class="memdesc:a14d8073583cc15740011453b1c5fb73f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Receive a message and store the first <code>len</code> bytes into <code>buf</code>.  <a href="#a14d8073583cc15740011453b1c5fb73f">More...</a><br /></td></tr>
 <tr class="separator:a14d8073583cc15740011453b1c5fb73f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7248e9a223c0e32d90e9b593d6887127"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a7248e9a223c0e32d90e9b593d6887127"></a>
+ssize_t&#160;</td><td class="memItemRight" valign="bottom"><b>sndmsg</b> (const std::string &amp;msg)</td></tr>
+<tr class="separator:a7248e9a223c0e32d90e9b593d6887127"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a119563f5f7f0261c2c4eec9145b1b919"><td class="memItemLeft" align="right" valign="top">ssize_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlibsocket_1_1dgram__over__stream.html#a119563f5f7f0261c2c4eec9145b1b919">rcvmsg</a> (std::string *dst)</td></tr>
+<tr class="memdesc:a119563f5f7f0261c2c4eec9145b1b919"><td class="mdescLeft">&#160;</td><td class="mdescRight">Receive a message and place it into dst.  <a href="#a119563f5f7f0261c2c4eec9145b1b919">More...</a><br /></td></tr>
+<tr class="separator:a119563f5f7f0261c2c4eec9145b1b919"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a12ddf3123ff0937fc5b50e0ebc615681"><td class="memItemLeft" align="right" valign="top">ssize_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlibsocket_1_1dgram__over__stream.html#a12ddf3123ff0937fc5b50e0ebc615681">sndmsg</a> (const std::vector&lt; uint8_t &gt; &amp;msg)</td></tr>
+<tr class="memdesc:a12ddf3123ff0937fc5b50e0ebc615681"><td class="mdescLeft">&#160;</td><td class="mdescRight">Send the message <code>msg</code> as one frame.  <a href="#a12ddf3123ff0937fc5b50e0ebc615681">More...</a><br /></td></tr>
+<tr class="separator:a12ddf3123ff0937fc5b50e0ebc615681"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af026bd974a644dec4bc9d493ed6cbb90"><td class="memItemLeft" align="right" valign="top">ssize_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlibsocket_1_1dgram__over__stream.html#af026bd974a644dec4bc9d493ed6cbb90">rcvmsg</a> (std::vector&lt; uint8_t &gt; *dst)</td></tr>
+<tr class="memdesc:af026bd974a644dec4bc9d493ed6cbb90"><td class="mdescLeft">&#160;</td><td class="mdescRight">Receive up to <code>dst.size()</code> bytes and store them in <code>dst</code>.  <a href="#af026bd974a644dec4bc9d493ed6cbb90">More...</a><br /></td></tr>
+<tr class="separator:af026bd974a644dec4bc9d493ed6cbb90"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-methods"></a>
+Private Member Functions</h2></td></tr>
+<tr class="memitem:a5dc381411310e167f026c7ec907f109b"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a5dc381411310e167f026c7ec907f109b"></a>
+ssize_t&#160;</td><td class="memItemRight" valign="bottom"><b>receive_bytes</b> (size_t)</td></tr>
+<tr class="separator:a5dc381411310e167f026c7ec907f109b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a308ff7010c04bad553bc44024dce332b"><td class="memItemLeft" align="right" valign="top">uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlibsocket_1_1dgram__over__stream.html#a308ff7010c04bad553bc44024dce332b">receive_header</a> (void)</td></tr>
+<tr class="memdesc:a308ff7010c04bad553bc44024dce332b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Receive and decode length header.  <a href="#a308ff7010c04bad553bc44024dce332b">More...</a><br /></td></tr>
+<tr class="separator:a308ff7010c04bad553bc44024dce332b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-attribs"></a>
 Private Attributes</h2></td></tr>
@@ -124,28 +149,27 @@ Private Attributes</h2></td></tr>
 <tr class="memitem:ae1772bdad843f7cac150e1f29f16aab7"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ae1772bdad843f7cac150e1f29f16aab7"></a>
 char&#160;</td><td class="memItemRight" valign="bottom"><b>prefix_buffer</b> [FRAMING_PREFIX_LENGTH]</td></tr>
 <tr class="separator:ae1772bdad843f7cac150e1f29f16aab7"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a595adb8c70d3cc8c45eddebcaca3ba6f"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a595adb8c70d3cc8c45eddebcaca3ba6f"></a>
-char&#160;</td><td class="memItemRight" valign="bottom"><b>devnull</b> [devnull_size]</td></tr>
-<tr class="separator:a595adb8c70d3cc8c45eddebcaca3ba6f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a80f05b817ba9535073bdf89ed639b2e6"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a80f05b817ba9535073bdf89ed639b2e6"></a>
+char&#160;</td><td class="memItemRight" valign="bottom"><b>RECV_BUF</b> [RECV_BUF_SIZE]</td></tr>
+<tr class="separator:a80f05b817ba9535073bdf89ed639b2e6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-static-attribs"></a>
 Static Private Attributes</h2></td></tr>
-<tr class="memitem:acd31772f893babc5dfc26c9a37737f87"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="acd31772f893babc5dfc26c9a37737f87"></a>
-static const size_t&#160;</td><td class="memItemRight" valign="bottom"><b>devnull_size</b> = 256</td></tr>
-<tr class="separator:acd31772f893babc5dfc26c9a37737f87"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1d4bc39ad6615ada024b7529ed619b1b"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a1d4bc39ad6615ada024b7529ed619b1b"></a>
+static const size_t&#160;</td><td class="memItemRight" valign="bottom"><b>RECV_BUF_SIZE</b> = 256</td></tr>
+<tr class="separator:a1d4bc39ad6615ada024b7529ed619b1b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>Wraps a stream socket and provides a message API on top of it.</p>
+<div class="textblock"><p>Wraps a stream socket and provides a message-based API on top of it. </p>
 <p>Inner has to implement stream and socket methods; those are: snd(), rcv(), setsockopt(). It may not be non-blocking, as EWOULDBLOCK is not handled gracefully.</p>
-<p>This means that if you use <a class="el" href="classlibsocket_1_1dgram__over__stream.html#a6e3f3f1630f7be07c9b9e8494982f276" title="Send the message in buf with length len as one frame. ">sndmsg()</a> to send a frame, then the entire frame will be delivered; and the receiver will (provided it uses a <a class="el" href="classlibsocket_1_1dgram__over__stream.html">dgram_over_stream</a> socket as well) receive only the entire message (not parts of it).</p>
-<p>The internally used format is relatively simple; it uses NBO (big-endian) fixed-size 32bit integers as prefix. The prefix encodes how many bytes are coming after it. This means that the maximum message length is 4GiB.</p>
-<p>Schema: [4* u8, *u8]</p>
+<p>This means that if you use <a class="el" href="classlibsocket_1_1dgram__over__stream.html#a6e3f3f1630f7be07c9b9e8494982f276" title="Send the message in buf with length len as one frame. ">sndmsg()</a> to send a frame, then the entire frame will be delivered; and the receiver will (provided it uses a <a class="el" href="classlibsocket_1_1dgram__over__stream.html" title="Wraps a stream socket and provides a message-based API on top of it. ">dgram_over_stream</a> socket as well) receive only the entire message (not parts of it).</p>
+<p>The internally used format is relatively simple; it uses NBO (big-endian) fixed-size 32bit integers as prefix. The prefix encodes how many bytes are coming after it. The maximum supported frame size is 2GiB. Schema: [4* u8, *u8]</p>
 <p>By default, Nagle's algorithm is disabled on the inner stream. This is necessary so that a message frame is sent as soon as it is written to the socket. If you send a lot of small messages and can accept smaller delays, you can enable it again using <a class="el" href="classlibsocket_1_1dgram__over__stream.html#a52977764f3a1134f821a49bd75056290" title="Set TCP_NODELAY to !enabled on the underlying socket. ">enable_nagle()</a>.</p>
 <p>THIS CLASS IS NOT THREADSAFE.</p>
-<p>AS THE STREAM SOCKET WILL BE CLOSED ON DESTRUCTION, IT IS NOT PERMITTED TO USE A <a class="el" href="classlibsocket_1_1dgram__over__stream.html">dgram_over_stream</a> OUTSIDE THE SCOPE OF THE ORIGINAL SOCKET.</p>
+<p>AS THE STREAM SOCKET WILL BE CLOSED ON DESTRUCTION, IT IS NOT PERMITTED TO USE A <a class="el" href="classlibsocket_1_1dgram__over__stream.html" title="Wraps a stream socket and provides a message-based API on top of it. ">dgram_over_stream</a> OUTSIDE THE SCOPE OF THE ORIGINAL SOCKET.</p>
 <p>THIS CLASS IS IN BETA STATE: IT HAS NOT BEEN TESTED EXTENSIVELY, BUT IS EXPECTED TO WORK. </p>
 
-<p>Definition at line <a class="el" href="dgramoverstream_8hpp_source.html#l00069">69</a> of file <a class="el" href="dgramoverstream_8hpp_source.html">dgramoverstream.hpp</a>.</p>
+<p>Definition at line <a class="el" href="dgramoverstream_8hpp_source.html#l00070">70</a> of file <a class="el" href="dgramoverstream_8hpp_source.html">dgramoverstream.hpp</a>.</p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
 <a class="anchor" id="a52977764f3a1134f821a49bd75056290"></a>
 <div class="memitem">
@@ -166,6 +190,16 @@ static const size_t&#160;</td><td class="memItemRight" valign="bottom"><b>devnul
 <p>(clarification: If Nagle's algorithm is <em>enabled</em>, that means that <code>TCP_NODELAY</code> is <em>disabled</em>, and vice versa) </p>
 
 <p>Definition at line <a class="el" href="dgramoverstream_8cpp_source.html#l00056">56</a> of file <a class="el" href="dgramoverstream_8cpp_source.html">dgramoverstream.cpp</a>.</p>
+
+<p><div class="dynheader">
+Here is the call graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><img src="classlibsocket_1_1dgram__over__stream_a52977764f3a1134f821a49bd75056290_cgraph.png" border="0" usemap="#classlibsocket_1_1dgram__over__stream_a52977764f3a1134f821a49bd75056290_cgraph" alt=""/></div>
+<map name="classlibsocket_1_1dgram__over__stream_a52977764f3a1134f821a49bd75056290_cgraph" id="classlibsocket_1_1dgram__over__stream_a52977764f3a1134f821a49bd75056290_cgraph">
+<area shape="rect" id="node2" href="classlibsocket_1_1dgram__over__stream.html#a6e3f3f1630f7be07c9b9e8494982f276" title="Send the message in buf with length len as one frame. " alt="" coords="207,5,357,47"/>
+</map>
+</div>
+</p>
 
 </div>
 </div>
@@ -202,7 +236,17 @@ static const size_t&#160;</td><td class="memItemRight" valign="bottom"><b>devnul
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="dgramoverstream_8cpp_source.html#l00066">66</a> of file <a class="el" href="dgramoverstream_8cpp_source.html">dgramoverstream.cpp</a>.</p>
+<p>Definition at line <a class="el" href="dgramoverstream_8cpp_source.html#l00154">154</a> of file <a class="el" href="dgramoverstream_8cpp_source.html">dgramoverstream.cpp</a>.</p>
+
+<p><div class="dynheader">
+Here is the caller graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><img src="classlibsocket_1_1dgram__over__stream_a6e3f3f1630f7be07c9b9e8494982f276_icgraph.png" border="0" usemap="#classlibsocket_1_1dgram__over__stream_a6e3f3f1630f7be07c9b9e8494982f276_icgraph" alt=""/></div>
+<map name="classlibsocket_1_1dgram__over__stream_a6e3f3f1630f7be07c9b9e8494982f276_icgraph" id="classlibsocket_1_1dgram__over__stream_a6e3f3f1630f7be07c9b9e8494982f276_icgraph">
+<area shape="rect" id="node2" href="classlibsocket_1_1dgram__over__stream.html#a52977764f3a1134f821a49bd75056290" title="Set TCP_NODELAY to !enabled on the underlying socket. " alt="" coords="204,5,357,47"/>
+</map>
+</div>
+</p>
 
 </div>
 </div>
@@ -240,7 +284,117 @@ static const size_t&#160;</td><td class="memItemRight" valign="bottom"><b>devnul
 </dl>
 <p>Bytes in the message beyond <code>len</code> are discarded. </p>
 
-<p>Definition at line <a class="el" href="dgramoverstream_8cpp_source.html#l00089">89</a> of file <a class="el" href="dgramoverstream_8cpp_source.html">dgramoverstream.cpp</a>.</p>
+<p>Definition at line <a class="el" href="dgramoverstream_8cpp_source.html#l00177">177</a> of file <a class="el" href="dgramoverstream_8cpp_source.html">dgramoverstream.cpp</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a119563f5f7f0261c2c4eec9145b1b919"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">ssize_t libsocket::dgram_over_stream::rcvmsg </td>
+          <td>(</td>
+          <td class="paramtype">std::string *&#160;</td>
+          <td class="paramname"><em>dst</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Receive a message and place it into dst. </p>
+<p>No more than dst.size() bytes will be received and placed into dst. </p>
+
+<p>Definition at line <a class="el" href="dgramoverstream_8cpp_source.html#l00072">72</a> of file <a class="el" href="dgramoverstream_8cpp_source.html">dgramoverstream.cpp</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a12ddf3123ff0937fc5b50e0ebc615681"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">ssize_t libsocket::dgram_over_stream::sndmsg </td>
+          <td>(</td>
+          <td class="paramtype">const std::vector&lt; uint8_t &gt; &amp;&#160;</td>
+          <td class="paramname"><em>msg</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Send the message <code>msg</code> as one frame. </p>
+<dl class="section return"><dt>Returns</dt><dd>How many bytes were sent; should be <code>msg.size()</code>. </dd></dl>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname"><a class="el" href="structlibsocket_1_1socket__exception.html" title="This class is instantiated and thrown when an error occurs. If there&#39;s an error somewhere in libsocke...">socket_exception</a></td><td></td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p>Definition at line <a class="el" href="dgramoverstream_8cpp_source.html#l00106">106</a> of file <a class="el" href="dgramoverstream_8cpp_source.html">dgramoverstream.cpp</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="af026bd974a644dec4bc9d493ed6cbb90"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">ssize_t libsocket::dgram_over_stream::rcvmsg </td>
+          <td>(</td>
+          <td class="paramtype">std::vector&lt; uint8_t &gt; *&#160;</td>
+          <td class="paramname"><em>dst</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Receive up to <code>dst.size()</code> bytes and store them in <code>dst</code>. </p>
+<dl class="section return"><dt>Returns</dt><dd>Number of bytes actually received. </dd></dl>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname"><a class="el" href="structlibsocket_1_1socket__exception.html" title="This class is instantiated and thrown when an error occurs. If there&#39;s an error somewhere in libsocke...">socket_exception</a></td><td>Resize <code>dst</code> before calling in order to adjust the number of bytes you will receive. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p>Definition at line <a class="el" href="dgramoverstream_8cpp_source.html#l00118">118</a> of file <a class="el" href="dgramoverstream_8cpp_source.html">dgramoverstream.cpp</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a308ff7010c04bad553bc44024dce332b"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">uint32_t libsocket::dgram_over_stream::receive_header </td>
+          <td>(</td>
+          <td class="paramtype">void&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Receive and decode length header. </p>
+<dl class="section return"><dt>Returns</dt><dd>The expected length received. </dd></dl>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname"><a class="el" href="structlibsocket_1_1socket__exception.html" title="This class is instantiated and thrown when an error occurs. If there&#39;s an error somewhere in libsocke...">socket_exception</a></td><td></td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p>Definition at line <a class="el" href="dgramoverstream_8cpp_source.html#l00230">230</a> of file <a class="el" href="dgramoverstream_8cpp_source.html">dgramoverstream.cpp</a>.</p>
 
 </div>
 </div>
@@ -251,7 +405,7 @@ static const size_t&#160;</td><td class="memItemRight" valign="bottom"><b>devnul
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Sat Sep 17 2016 18:16:31 for libsocket by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Mon Sep 19 2016 15:56:53 for libsocket by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.11
 </small></address>
