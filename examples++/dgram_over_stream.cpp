@@ -1,8 +1,10 @@
+# include <algorithm>
+# include <assert.h>
 # include <iostream>
 # include <stdio.h>
-# include <string>
 # include <string.h>
-# include <assert.h>
+# include <string>
+# include <vector>
 
 # include <libsocket/exception.hpp>
 # include <libsocket/dgramoverstream.hpp>
@@ -26,6 +28,8 @@ static const string HOST = "localhost";
 static const string PORT = "4445";
 
 void run_client(void);
+void run_string_client(void);
+void run_vec_client(void);
 void run_server(void);
 
 enum MODE {
@@ -53,6 +57,8 @@ int main(int argc, char** argv)
     try {
         if (mode == MODE_CLIENT) {
             run_client();
+            run_string_client();
+            run_vec_client();
         } else if (mode == MODE_SERVER) {
             run_server();
         }
@@ -74,6 +80,36 @@ void run_client(void) {
     dgram_cl.sndmsg("Hello", 5);
     std::cout << "Client received " << dgram_cl.rcvmsg(buf, bufsize) << " bytes.\n";
     std::cout << buf << std::endl;
+
+    return;
+}
+
+void run_string_client(void) {
+    libsocket::inet_stream client(HOST, PORT, LIBSOCKET_IPv4);
+    libsocket::dgram_over_stream dgram_cl(client);
+
+    std::string recvbuf(0, 'a');
+    recvbuf.resize(3);
+
+    dgram_cl.sndmsg(std::string("Hello"));
+    std::cout << "Client received " << dgram_cl.rcvmsg(&recvbuf) << " bytes into std::string.\n";
+    std::cout << recvbuf << std::endl;
+
+    return;
+}
+
+void run_vec_client(void) {
+    libsocket::inet_stream client(HOST, PORT, LIBSOCKET_IPv4);
+    libsocket::dgram_over_stream dgram_cl(client);
+
+    std::vector<uint8_t> recvbuf;
+    recvbuf.resize(15);
+
+    dgram_cl.sndmsg(std::string("Hello"));
+    std::cout << "Client received " << dgram_cl.rcvmsg(&recvbuf) << " bytes into std::vec.\n";
+
+    std::for_each(recvbuf.begin(), recvbuf.end(), [](uint8_t b) { std::cout << static_cast<char>(b); });
+    std::cout << std::endl;
 
     return;
 }

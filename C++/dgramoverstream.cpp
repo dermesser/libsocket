@@ -36,97 +36,212 @@
 
 namespace libsocket {
 
-    dgram_over_stream::dgram_over_stream(const stream_client_socket& inner)
-        : inner(inner)
-    {
-        enable_nagle(false);
-    }
-    
-    /**
-     * @brief Set TCP_NODELAY to `!enabled` on the underlying socket.
-     *
-     * TCP_NODELAY causes writes to the socket to be pushed to the network immediately. This
-     * emulates the behavior of datagram sockets, and is very useful for datagram-like use of
-     * streams, like this class implements. However, it creates slight overhead as data are not
-     * batched.
-     *
-     * (clarification: If Nagle's algorithm is *enabled*, that means that `TCP_NODELAY` is *disabled*,
-     * and vice versa)
-     */
-    void dgram_over_stream::enable_nagle(bool enabled) const {
-        int enabled_ = int(!enabled);
-        inner.set_sock_opt(IPPROTO_TCP, TCP_NODELAY, (const char*)&enabled_, sizeof(int));
-    }
-
-    /**
-     * @brief Send the message in buf with length len as one frame.
-     * @returns The total number of bytes sent.
-     * @throws A socket_exception.
-     */
-    ssize_t dgram_over_stream::sndmsg(const void* buf, size_t len)
-    {
-        encode_uint32(uint32_t(len), prefix_buffer);
-        ssize_t result = inner.snd(prefix_buffer, FRAMING_PREFIX_LENGTH, 0);
-
-        if (result < 0)
-            return result;
-
-        result = inner.snd(buf, len, 0);
-
-        if (result < 0)
-            return result;
-
-        return result;
-    }
-
-    /**
-     * @brief Receive a message and store the first `len` bytes into `buf`.
-     * @returns The number of bytes received.
-     * @throws A socket_exception.
-     *
-     * Bytes in the message beyond `len` are discarded.
-     */
-    ssize_t dgram_over_stream::rcvmsg(void* dst, size_t len)
-    {
-        ssize_t result = inner.rcv(prefix_buffer, FRAMING_PREFIX_LENGTH, 0);
-
-        if (result < 0)
-            throw socket_exception(__FILE__, __LINE__, "dgram_over_stream::rcvmsg(): Could not receive length prefix!", false);
-
-        uint32_t expected = decode_uint32(prefix_buffer);
-
-        if (len >= expected)
+        dgram_over_stream::dgram_over_stream(const stream_client_socket& inner)
+                : inner(inner)
         {
-            result = inner.rcv(dst, expected, 0);
-
-            if (result < 0)
-                throw socket_exception(__FILE__, __LINE__, "dgram_over_stream::rcvmsg(): Could not receive message!", false);
-        } else
-        {
-            result = inner.rcv(dst, expected, 0);
-
-            if (result < 0)
-                throw socket_exception(__FILE__, __LINE__, "dgram_over_stream::rcvmsg(): Could not receive message!", false);
-
-            // Ignore rest of message.
-            size_t rest_len = expected - len;
-
-            do {
-                size_t to_receive = rest_len;
-
-                if (rest_len > devnull_size)
-                    to_receive = devnull_size;
-
-                ssize_t recvd = inner.rcv(devnull, to_receive, 0);
-
-                if (recvd < 0)
-                    return result;
-
-                rest_len -= recvd;
-            } while (rest_len > 0);
+                enable_nagle(false);
         }
-        return result;
-    }
+
+        /**
+         * @brief Set TCP_NODELAY to `!enabled` on the underlying socket.
+         *
+         * TCP_NODELAY causes writes to the socket to be pushed to the network immediately. This
+         * emulates the behavior of datagram sockets, and is very useful for datagram-like use of
+         * streams, like this class implements. However, it creates slight overhead as data are not
+         * batched.
+         *
+         * (clarification: If Nagle's algorithm is *enabled*, that means that `TCP_NODELAY` is *disabled*,
+         * and vice versa)
+         */
+        void dgram_over_stream::enable_nagle(bool enabled) const
+        {
+                int enabled_ = int(!enabled);
+                inner.set_sock_opt(IPPROTO_TCP, TCP_NODELAY, (const char*)&enabled_, sizeof(int));
+        }
+
+        ssize_t dgram_over_stream::sndmsg(const std::string& msg)
+        {
+                return sndmsg(msg.c_str(), msg.size());
+        }
+
+        /**
+         * @brief Receive a message and place it into dst.
+         *
+         * No more than dst.size() bytes will be received and placed into dst.
+         */
+        ssize_t dgram_over_stream::rcvmsg(std::string* dst)
+        {
+                uint32_t expected = receive_header();
+
+                if (expected <= dst->size())
+                        dst->resize(expected);
+
+                size_t to_receive = dst->size();
+                size_t received = 0;
+
+                do {
+                        ssize_t result = receive_bytes(to_receive);
+
+                        if (result < 0)
+                                throw socket_exception(__FILE__, __LINE__, "dgram_over_stream::rcvmsg(): Could not receive message!", false);
+
+                        dst->replace(received, result, RECV_BUF);
+
+                        received += (size_t) result;
+                } while (received < to_receive);
+
+                ssize_t rest = expected - to_receive;
+                do {
+                        rest -= receive_bytes(rest);
+                } while (rest > 0);
+
+                return received;
+        }
+
+        /**
+         * @brief Send the message `msg` as one frame.
+         * @returns How many bytes were sent; should be `msg.size()`.
+         * @throws socket_exception
+         */
+        ssize_t dgram_over_stream::sndmsg(const std::vector<uint8_t>& msg)
+        {
+                return sndmsg(static_cast<const void*>(msg.data()), msg.size());
+        }
+
+        /**
+         * @brief Receive up to `dst.size()` bytes and store them in `dst`.
+         * @returns Number of bytes actually received.
+         * @throws socket_exception
+         *
+         * Resize `dst` before calling in order to adjust the number of bytes you will receive.
+         */
+        ssize_t dgram_over_stream::rcvmsg(std::vector<uint8_t>* dst)
+        {
+                uint32_t expected = receive_header();
+
+                if (expected <= dst->size())
+                        dst->resize(expected);
+
+                size_t to_receive = dst->size();
+                size_t received = 0;
+                std::vector<uint8_t>::iterator dst_iter = dst->begin();
+
+                do {
+                        ssize_t result = receive_bytes(to_receive);
+
+                        if (result < 0)
+                                throw socket_exception(__FILE__, __LINE__, "dgram_over_stream::rcvmsg(): Could not receive message!", false);
+
+                        for ( ssize_t i = 0; i < result; i++, dst_iter++ )
+                                *dst_iter = RECV_BUF[i];
+
+                        received += result;
+                } while (received < to_receive);
+
+                ssize_t rest = expected - to_receive;
+                do {
+                        rest -= receive_bytes(rest);
+                } while (rest > 0);
+
+                return received;
+        }
+
+        /**
+         * @brief Send the message in buf with length len as one frame.
+         * @returns The total number of bytes sent.
+         * @throws A socket_exception.
+         */
+        ssize_t dgram_over_stream::sndmsg(const void* buf, size_t len)
+        {
+                encode_uint32(uint32_t(len), prefix_buffer);
+                ssize_t result = inner.snd(prefix_buffer, FRAMING_PREFIX_LENGTH, 0);
+
+                if (result < 0)
+                        return result;
+
+                result = inner.snd(buf, len, 0);
+
+                if (result < 0)
+                        return result;
+
+                return result;
+        }
+
+        /**
+         * @brief Receive a message and store the first `len` bytes into `buf`.
+         * @returns The number of bytes received.
+         * @throws A socket_exception.
+         *
+         * Bytes in the message beyond `len` are discarded.
+         */
+        ssize_t dgram_over_stream::rcvmsg(void* dst, size_t len)
+        {
+                uint32_t expected = receive_header();
+
+                size_t to_receive = len < expected ? len : expected;
+                size_t received = 0;
+
+                do {
+                        ssize_t result = receive_bytes(to_receive);
+
+                        if (result < 0)
+                                throw socket_exception(__FILE__, __LINE__, "dgram_over_stream::rcvmsg(): Could not receive message!", false);
+
+                        memcpy(dst+received, RECV_BUF, result);
+                        received += result;
+                } while (received < to_receive);
+
+                ssize_t rest = expected - to_receive;
+                do {
+                        rest -= receive_bytes(rest);
+                } while (rest > 0);
+
+                return received;
+        }
+
+        // Places up to n bytes into this->RECV_BUF.
+        ssize_t dgram_over_stream::receive_bytes(size_t n)
+        {
+                if (n == 0)
+                        return 0;
+
+                // Ignore rest of message.
+                ssize_t rest_len = n > RECV_BUF_SIZE ? RECV_BUF_SIZE : n;
+                size_t pos = 0;
+
+                do {
+                        ssize_t recvd = inner.rcv(RECV_BUF+pos, rest_len, 0);
+
+                        if (recvd <= 0)
+                                return n - rest_len;
+
+                        rest_len -= recvd;
+                        pos += recvd;
+                } while (rest_len > 0);
+
+                return pos;
+        }
+
+        /**
+         * @brief Receive and decode length header.
+         * @returns The expected length received.
+         * @throws socket_exception
+         */
+        uint32_t dgram_over_stream::receive_header(void)
+        {
+                ssize_t pos = 0;
+
+                do {
+                        ssize_t result = inner.rcv(prefix_buffer + pos, FRAMING_PREFIX_LENGTH, 0);
+
+                        if (result < 0)
+                                throw socket_exception(__FILE__, __LINE__, "dgram_over_stream::receive_header(): Could not receive length prefix!", false);
+
+                        pos += result;
+                } while (pos < 4);
+
+                return decode_uint32(prefix_buffer);
+        }
 }
 
 /**
