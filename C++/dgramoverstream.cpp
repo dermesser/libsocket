@@ -187,7 +187,8 @@ namespace libsocket {
                         if (result < 0)
                                 throw socket_exception(__FILE__, __LINE__, "dgram_over_stream::rcvmsg(): Could not receive message!", false);
 
-                        memcpy(dst+received, RECV_BUF, result);
+                        memcpy(dst, RECV_BUF, result);
+                        dst = static_cast<void*>(static_cast<char*>(dst) + received);
                         received += result;
                 } while (received < to_receive);
 
