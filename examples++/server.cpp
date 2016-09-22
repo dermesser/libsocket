@@ -5,6 +5,7 @@
 # include <unistd.h>
 # include <stdio.h>
 # include <utility>
+# include <memory>
 # include "../headers/socket.hpp"
 # include "../headers/select.hpp"
 
@@ -19,6 +20,7 @@
 int main(void)
 {
     using std::string;
+    using std::unique_ptr;
 
     using libsocket::inet_stream_server;
     using libsocket::inet_stream;
@@ -30,7 +32,6 @@ int main(void)
 
     try {
 	inet_stream_server srv(host,port,LIBSOCKET_IPv6);
-	inet_stream* cl1;
 
 	selectset<inet_stream_server> set1;
 	set1.add_fd(srv,LIBSOCKET_READ);
@@ -52,7 +53,7 @@ int main(void)
 
 	    /*******************************/
 
-	    cl1 = ready_srv->accept();
+	    unique_ptr<inet_stream> cl1 = ready_srv->accept2();
 
 	    *cl1 << "Hello\n";
 
@@ -62,7 +63,7 @@ int main(void)
 
 	    std::cout << answ;
 
-	    cl1->destroy();
+            // cl1 is closed automatically when leaving the scope!
 	}
 
 	srv.destroy();

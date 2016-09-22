@@ -22,6 +22,7 @@ int main(void)
 
     try {
 	libsocket::inet_dgram_server srv(host,port,LIBSOCKET_BOTH);
+
 	for (;;)
 	{
 	    srv.rcvfrom(buf,from,fromport);

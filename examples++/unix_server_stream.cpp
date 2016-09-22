@@ -2,8 +2,11 @@
 # include "../headers/unixclientstream.hpp"
 # include "../headers/exception.hpp"
 # include <string>
+# include <memory>
 # include <iostream>
 # include <string.h>
+
+using std::unique_ptr;
 
 // Accepts a connection, prints the received message and responds with another message.
 
@@ -21,8 +24,8 @@ int main(void)
     try {
 	unix_stream_server srv(bindpath);
 
-	unix_stream_client* client;
-	client = srv.accept();
+	unique_ptr<unix_stream_client> client;
+	client = srv.accept2();
 
 	client->rcv(answer,127);
 	// Alternatively:
@@ -33,10 +36,6 @@ int main(void)
 	std::cout << answer;
 
 	*client << "Hello back from server!\n";
-
-	delete client;
-
-	srv.destroy();
 
     } catch (const libsocket::socket_exception& exc)
     {
