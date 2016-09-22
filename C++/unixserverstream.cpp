@@ -129,4 +129,16 @@ namespace libsocket
 
 	return client;
     }
+
+    /**
+     * @brief Accepts an incoming connection on a UNIX domain stream server socket and returns an owned pointer.
+     *
+     * The owned pointer will be closed on destruction.
+     *
+     * @param flags Flags for `accept4()`; useless on other implementations.
+     */
+    unique_ptr<unix_stream_client> unix_stream_server::accept2(int flags)
+    {
+        return unique_ptr<unix_stream_client>(accept(flags));
+    }
 }

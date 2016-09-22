@@ -1,6 +1,7 @@
 #ifndef LIBSOCKET_UNIXSERVERSTREAM_H_DBD900942A364273A5E9C89F0096D9AF
 #define LIBSOCKET_UNIXSERVERSTREAM_H_DBD900942A364273A5E9C89F0096D9AF
 
+# include <memory>
 # include <string>
 
 # include "unixbase.hpp"
@@ -36,6 +37,7 @@
 namespace libsocket
 {
     using std::string;
+    using std::unique_ptr;
 
     /** @addtogroup libsocketplusplus
      * @{
@@ -55,6 +57,7 @@ namespace libsocket
 	    void setup(const string& path, int flags=0);
 
 	    unix_stream_client* accept(int flags=0);
+            unique_ptr<unix_stream_client> accept2(int flags=0);
     };
     /**
      * @}
