@@ -186,12 +186,12 @@ namespace libsocket
 	return client;
     }
 
-    string inet_stream_server::getbindhost(void)
+    const string& inet_stream_server::getbindhost(void)
     {
 	return gethost();
     }
 
-    string inet_stream_server::getbindport(void)
+    const string& string inet_stream_server::getbindport(void)
     {
 	return getport();
     }

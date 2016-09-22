@@ -59,8 +59,8 @@ namespace libsocket
 
 	    inet_socket();
 
-	    string gethost(void) const;
-	    string getport(void) const;
+	    const string& gethost(void) const;
+	    const string& getport(void) const;
     };
     /**
      * @}

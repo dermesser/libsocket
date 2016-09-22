@@ -52,7 +52,7 @@ namespace libsocket
      * For sockets behaving as client: Returns the remote host.
      * For sockets behaving as server: Returns the address bound to.
      */
-    string inet_socket::gethost(void) const
+    const string& inet_socket::gethost(void) const
     {
 	return host;
     }
@@ -61,7 +61,7 @@ namespace libsocket
      * For sockets behaving as client: Returns the remote port.
      * For sockets behaving as server: Returns the port bound to.
      */
-    string inet_socket::getport(void) const
+    const string& inet_socket::getport(void) const
     {
 	return port;
     }

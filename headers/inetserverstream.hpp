@@ -59,8 +59,8 @@ namespace libsocket
 
 	    inet_stream* accept(int numeric=0,int accept_flags=0);
 
-	    string getbindhost(void);
-	    string getbindport(void);
+	    const string& getbindhost(void);
+	    const string& getbindport(void);
     };
     /**
      * @}
