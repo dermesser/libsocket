@@ -4,6 +4,8 @@
 # include "inetbase.hpp"
 # include "inetclientstream.hpp"
 
+# include <memory>
+
 /**
  * @file inetserverstream.hpp
  *
@@ -33,6 +35,8 @@
 
 namespace libsocket
 {
+    using std::unique_ptr;
+
     /**
      * @addtogroup libsocketplusplus
      * @{
@@ -58,6 +62,7 @@ namespace libsocket
 	    void setup(const string& bindhost, const string& bindport, int proto_osi3, int flags=0);
 
 	    inet_stream* accept(int numeric=0,int accept_flags=0);
+            unique_ptr<inet_stream> accept2(int numeric=0, int accept_flags=0);
 
 	    const string& getbindhost(void);
 	    const string& getbindport(void);

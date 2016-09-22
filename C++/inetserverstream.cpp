@@ -186,12 +186,27 @@ namespace libsocket
 	return client;
     }
 
+    /**
+     * @brief Accept a connection and return a socket connected to the client.
+     *
+     * The caller owns the client socket.
+     *
+     * @param numeric Specifies if the client's parameter (IP address, port) should be delivered numerically in the src_host/src_port parameters.
+     * @param accept_flags Flags specified in `accept(2)`
+     *
+     * @returns An owned pointer to a connected TCP/IP client socket object.
+     */
+    unique_ptr<inet_stream> inet_stream_server::accept2(int numeric, int accept_flags)
+    {
+        return unique_ptr<inet_stream>(accept(numeric, accept_flags));
+    }
+
     const string& inet_stream_server::getbindhost(void)
     {
 	return gethost();
     }
 
-    const string& string inet_stream_server::getbindport(void)
+    const string& inet_stream_server::getbindport(void)
     {
 	return getport();
     }
