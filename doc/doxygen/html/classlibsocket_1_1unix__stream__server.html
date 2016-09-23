@@ -132,6 +132,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a67b1a20eff49e57d36b15a938774115e"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classlibsocket_1_1unix__stream__client.html">unix_stream_client</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlibsocket_1_1unix__stream__server.html#a67b1a20eff49e57d36b15a938774115e">accept</a> (int flags=0)</td></tr>
 <tr class="memdesc:a67b1a20eff49e57d36b15a938774115e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Accepts incoming connections on a UNIX domain stream server socket.  <a href="#a67b1a20eff49e57d36b15a938774115e">More...</a><br /></td></tr>
 <tr class="separator:a67b1a20eff49e57d36b15a938774115e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a64f48f0ad4cc09fbf907006fbb21ddee"><td class="memItemLeft" align="right" valign="top">unique_ptr&lt; <a class="el" href="classlibsocket_1_1unix__stream__client.html">unix_stream_client</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlibsocket_1_1unix__stream__server.html#a64f48f0ad4cc09fbf907006fbb21ddee">accept2</a> (int flags=0)</td></tr>
+<tr class="memdesc:a64f48f0ad4cc09fbf907006fbb21ddee"><td class="mdescLeft">&#160;</td><td class="mdescRight">Accepts an incoming connection on a UNIX domain stream server socket and returns an owned pointer.  <a href="#a64f48f0ad4cc09fbf907006fbb21ddee">More...</a><br /></td></tr>
+<tr class="separator:a64f48f0ad4cc09fbf907006fbb21ddee"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a45c88937a7f5a211340bd580bc60ceeb"><td class="memItemLeft" align="right" valign="top">string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlibsocket_1_1unix__socket.html#a45c88937a7f5a211340bd580bc60ceeb">get_path</a> (void)</td></tr>
 <tr class="memdesc:a45c88937a7f5a211340bd580bc60ceeb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the path we're bound or connected to.  <a href="#a45c88937a7f5a211340bd580bc60ceeb">More...</a><br /></td></tr>
 <tr class="separator:a45c88937a7f5a211340bd580bc60ceeb"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -163,7 +166,7 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>is_nonblocking</b></t
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Socket class for UNIX-domain STREAM socket server. </p>
 
-<p>Definition at line <a class="el" href="unixserverstream_8hpp_source.html#l00046">46</a> of file <a class="el" href="unixserverstream_8hpp_source.html">unixserverstream.hpp</a>.</p>
+<p>Definition at line <a class="el" href="unixserverstream_8hpp_source.html#l00048">48</a> of file <a class="el" href="unixserverstream_8hpp_source.html">unixserverstream.hpp</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a class="anchor" id="a1c60840c8010b378f68f4f8892ab85fd"></a>
 <div class="memitem">
@@ -427,6 +430,55 @@ Here is the call graph for this function:</div>
 </div>
 </p>
 
+<p><div class="dynheader">
+Here is the caller graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><img src="classlibsocket_1_1unix__stream__server_a67b1a20eff49e57d36b15a938774115e_icgraph.png" border="0" usemap="#classlibsocket_1_1unix__stream__server_a67b1a20eff49e57d36b15a938774115e_icgraph" alt=""/></div>
+<map name="classlibsocket_1_1unix__stream__server_a67b1a20eff49e57d36b15a938774115e_icgraph" id="classlibsocket_1_1unix__stream__server_a67b1a20eff49e57d36b15a938774115e_icgraph">
+<area shape="rect" id="node2" href="classlibsocket_1_1unix__stream__server.html#a64f48f0ad4cc09fbf907006fbb21ddee" title="Accepts an incoming connection on a UNIX domain stream server socket and returns an owned pointer..." alt="" coords="207,5,360,47"/>
+</map>
+</div>
+</p>
+
+</div>
+</div>
+<a class="anchor" id="a64f48f0ad4cc09fbf907006fbb21ddee"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">unique_ptr&lt; <a class="el" href="classlibsocket_1_1unix__stream__client.html">unix_stream_client</a> &gt; libsocket::unix_stream_server::accept2 </td>
+          <td>(</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>flags</em> = <code>0</code></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Accepts an incoming connection on a UNIX domain stream server socket and returns an owned pointer. </p>
+<p>The owned pointer will be closed on destruction.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">flags</td><td>Flags for <code>accept4()</code>; useless on other implementations. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p>Definition at line <a class="el" href="unixserverstream_8cpp_source.html#l00140">140</a> of file <a class="el" href="unixserverstream_8cpp_source.html">unixserverstream.cpp</a>.</p>
+
+<p><div class="dynheader">
+Here is the call graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><img src="classlibsocket_1_1unix__stream__server_a64f48f0ad4cc09fbf907006fbb21ddee_cgraph.png" border="0" usemap="#classlibsocket_1_1unix__stream__server_a64f48f0ad4cc09fbf907006fbb21ddee_cgraph" alt=""/></div>
+<map name="classlibsocket_1_1unix__stream__server_a64f48f0ad4cc09fbf907006fbb21ddee_cgraph" id="classlibsocket_1_1unix__stream__server_a64f48f0ad4cc09fbf907006fbb21ddee_cgraph">
+<area shape="rect" id="node2" href="classlibsocket_1_1unix__stream__server.html#a67b1a20eff49e57d36b15a938774115e" title="Accepts incoming connections on a UNIX domain stream server socket. " alt="" coords="207,5,360,47"/>
+<area shape="rect" id="node3" href="group__libunixsocket.html#ga32e8343f2b6c02b406fea290da7f9645" title="Accept connections on a passive UNIX socket. " alt="" coords="408,5,547,47"/>
+<area shape="rect" id="node4" href="group__libunixsocket.html#gac85fdb9dc1530a93835e527ae0002652" title="Checks return value for error. " alt="" coords="595,13,685,39"/>
+</map>
+</div>
+</p>
+
 </div>
 </div>
 <a class="anchor" id="a45c88937a7f5a211340bd580bc60ceeb"></a>
@@ -664,7 +716,7 @@ Here is the caller graph for this function:</div>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Mon Sep 19 2016 15:56:53 for libsocket by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Fri Sep 23 2016 12:09:59 for libsocket by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.11
 </small></address>

@@ -1,0 +1,5 @@
+<map id="libsocket::unix_stream_server::accept2" name="libsocket::unix_stream_server::accept2">
+<area shape="rect" id="node2" href="$classlibsocket_1_1unix__stream__server.html#a67b1a20eff49e57d36b15a938774115e" title="Accepts incoming connections on a UNIX domain stream server socket. " alt="" coords="207,5,360,47"/>
+<area shape="rect" id="node3" href="$group__libunixsocket.html#ga32e8343f2b6c02b406fea290da7f9645" title="Accept connections on a passive UNIX socket. " alt="" coords="408,5,547,47"/>
+<area shape="rect" id="node4" href="$group__libunixsocket.html#gac85fdb9dc1530a93835e527ae0002652" title="Checks return value for error. " alt="" coords="595,13,685,39"/>
+</map>
