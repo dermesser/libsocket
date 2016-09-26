@@ -46,9 +46,6 @@ namespace libsocket
      */
     class stream_client_socket : public virtual socket
     {
-        private:
-            // For dgram_over_stream
-            stream_client_socket(const stream_client_socket& other) : socket(), shut_rd(false), shut_wr(false) { sfd = other.sfd; }
 	protected:
 
 	    bool shut_rd; ///< If the socket was shut down for reading (-> no reads anymore)
@@ -56,6 +53,8 @@ namespace libsocket
 
 	public:
             stream_client_socket();
+            stream_client_socket(const stream_client_socket&) = delete;
+            stream_client_socket(stream_client_socket&& other) : socket(std::move(other)), shut_rd(false), shut_wr(false) { }
 
 	    ssize_t snd(const void* buf, size_t len, int flags=0); // flags: send()
 	    ssize_t rcv(void* buf, size_t len, int flags=0); // flags: recv()

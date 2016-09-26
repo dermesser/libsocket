@@ -39,7 +39,14 @@ namespace libsocket
      * @brief Constructor. Sets `sfd` to -1.
      *
      */
-    socket::socket(void) : sfd(-1), is_nonblocking(false), close_on_destructor(true) {}
+    socket::socket(void) : sfd(-1), is_nonblocking(false), close_on_destructor(true) { }
+
+    /**
+     * @brief Move constructor.
+     */
+    socket::socket(socket&& other) : sfd(other.sfd), is_nonblocking(false), close_on_destructor(true) {
+        other.sfd = -1;
+    }
 
     /**
      * @brief Destructor: closes socket.
@@ -61,6 +68,9 @@ namespace libsocket
      */
     int socket::destroy(void)
     {
+        if ( 0 > sfd )
+            return 0;
+
 	if ( 0 > close(sfd))
 	    return -1;
 
