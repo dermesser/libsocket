@@ -75,7 +75,7 @@ void run_client(void) {
     memset(buf, 0, bufsize);
 
     libsocket::inet_stream client(HOST, PORT, LIBSOCKET_IPv4);
-    libsocket::dgram_over_stream dgram_cl(client);
+    libsocket::dgram_over_stream dgram_cl(std::move(client));
 
     dgram_cl.sndmsg("Hello", 5);
     std::cout << "Client received " << dgram_cl.rcvmsg(buf, bufsize) << " bytes.\n";
@@ -86,7 +86,7 @@ void run_client(void) {
 
 void run_string_client(void) {
     libsocket::inet_stream client(HOST, PORT, LIBSOCKET_IPv4);
-    libsocket::dgram_over_stream dgram_cl(client);
+    libsocket::dgram_over_stream dgram_cl(std::move(client));
 
     std::string recvbuf(0, 'a');
     recvbuf.resize(3);
@@ -100,7 +100,7 @@ void run_string_client(void) {
 
 void run_vec_client(void) {
     libsocket::inet_stream client(HOST, PORT, LIBSOCKET_IPv4);
-    libsocket::dgram_over_stream dgram_cl(client);
+    libsocket::dgram_over_stream dgram_cl(std::move(client));
 
     std::vector<uint8_t> recvbuf;
     recvbuf.resize(15);
@@ -123,7 +123,7 @@ void run_server(void) {
 
     while (true) {
         libsocket::inet_stream* client = srv.accept(1);
-        libsocket::dgram_over_stream dgram_cl(*client);
+        libsocket::dgram_over_stream dgram_cl(std::move(*client));
         ssize_t len = 0;
 
         std::cout << "Server received " << (len = dgram_cl.rcvmsg(buf, bufsize)) << " bytes.\n";

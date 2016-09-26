@@ -45,7 +45,7 @@ namespace libsocket
      * @brief Move constructor.
      */
     socket::socket(socket&& other) : sfd(other.sfd), is_nonblocking(false), close_on_destructor(true) {
-        other.sfd = -1;
+            other.sfd = -1;
     }
 
     /**
@@ -57,7 +57,7 @@ namespace libsocket
          * This is possible because socket::~socket(const socket&) is deleted.
          */
 	if ( close_on_destructor )
-	    destroy();
+                destroy();
     }
 
     /**

@@ -8,6 +8,8 @@
 
 # include <string>
 # include <vector>
+# include <memory>
+
 
 # include <netinet/ip.h>
 # include <netinet/tcp.h>
@@ -70,8 +72,8 @@ namespace libsocket
         class dgram_over_stream {
                 public:
                         dgram_over_stream(void) = delete;
-                        dgram_over_stream(const stream_client_socket& inner);
-
+                        dgram_over_stream(const dgram_over_stream&) = delete;
+                        dgram_over_stream(stream_client_socket&& inner);
 
                         void enable_nagle(bool enable) const;
 
@@ -88,7 +90,7 @@ namespace libsocket
                         static const size_t RECV_BUF_SIZE = 256;
 
                         // The underlying stream.
-                        stream_client_socket inner;
+                        std::unique_ptr<stream_client_socket> inner;
                         char prefix_buffer[FRAMING_PREFIX_LENGTH];
                         char RECV_BUF[RECV_BUF_SIZE];
 
