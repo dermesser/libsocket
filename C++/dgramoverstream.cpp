@@ -36,8 +36,8 @@
 
 namespace libsocket {
 
-        dgram_over_stream::dgram_over_stream(const stream_client_socket& inner)
-                : inner(inner)
+        dgram_over_stream::dgram_over_stream(stream_client_socket&& socket)
+                : inner(std::unique_ptr<stream_client_socket>(new stream_client_socket(std::move(socket))))
         {
                 enable_nagle(false);
         }
@@ -56,7 +56,7 @@ namespace libsocket {
         void dgram_over_stream::enable_nagle(bool enabled) const
         {
                 int enabled_ = int(!enabled);
-                inner.set_sock_opt(IPPROTO_TCP, TCP_NODELAY, (const char*)&enabled_, sizeof(int));
+                inner->set_sock_opt(IPPROTO_TCP, TCP_NODELAY, (const char*)&enabled_, sizeof(int));
         }
 
         ssize_t dgram_over_stream::sndmsg(const std::string& msg)
@@ -154,12 +154,12 @@ namespace libsocket {
         ssize_t dgram_over_stream::sndmsg(const void* buf, size_t len)
         {
                 encode_uint32(uint32_t(len), prefix_buffer);
-                ssize_t result = inner.snd(prefix_buffer, FRAMING_PREFIX_LENGTH, 0);
+                ssize_t result = inner->snd(prefix_buffer, FRAMING_PREFIX_LENGTH, 0);
 
                 if (result < 0)
                         return result;
 
-                result = inner.snd(buf, len, 0);
+                result = inner->snd(buf, len, 0);
 
                 if (result < 0)
                         return result;
@@ -211,7 +211,7 @@ namespace libsocket {
                 size_t pos = 0;
 
                 do {
-                        ssize_t recvd = inner.rcv(RECV_BUF+pos, rest_len, 0);
+                        ssize_t recvd = inner->rcv(RECV_BUF+pos, rest_len, 0);
 
                         if (recvd <= 0)
                                 return n - rest_len;
@@ -233,7 +233,7 @@ namespace libsocket {
                 ssize_t pos = 0;
 
                 do {
-                        ssize_t result = inner.rcv(prefix_buffer + pos, FRAMING_PREFIX_LENGTH, 0);
+                        ssize_t result = inner->rcv(prefix_buffer + pos, FRAMING_PREFIX_LENGTH, 0);
 
                         if (result < 0)
                                 throw socket_exception(__FILE__, __LINE__, "dgram_over_stream::receive_header(): Could not receive length prefix!", false);
