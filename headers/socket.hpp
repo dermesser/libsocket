@@ -35,18 +35,20 @@
 
 */
 
-# define LIBSOCKET_TCP 1
-# define LIBSOCKET_UDP 2
+enum {
+    LIBSOCKET_TCP = 1,
+    LIBSOCKET_UDP,    
 
-# define LIBSOCKET_IPv4 3
-# define LIBSOCKET_IPv6 4
+    LIBSOCKET_IPv4,
+    LIBSOCKET_IPv6,
 
-# define LIBSOCKET_BOTH 5 // what fits best (TCP/UDP or IPv4/6)
+    LIBSOCKET_BOTH, // what fits best (TCP/UDP or IPv4/6)
 
-# define LIBSOCKET_READ 1
-# define LIBSOCKET_WRITE 2
+    LIBSOCKET_READ = 1,
+    LIBSOCKET_WRITE,
 
-# define LIBSOCKET_NUMERIC 1
+    LIBSOCKET_NUMERIC = 1
+}
 
 /**
  * @brief Contains libsocket elements
