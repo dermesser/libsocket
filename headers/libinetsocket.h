@@ -27,11 +27,11 @@
 	POSSIBILITY OF SUCH DAMAGE.
 */
 
-// Headers (e.g. for flags)
+/* Headers (e.g. for flags) */
 # include <sys/types.h>
 # include <sys/socket.h>
 
-// Macro definitions
+/* Macro definitions */
 
 # define LIBSOCKET_TCP 1
 # define LIBSOCKET_UDP 2
@@ -39,7 +39,7 @@
 # define LIBSOCKET_IPv4 3
 # define LIBSOCKET_IPv6 4
 
-# define LIBSOCKET_BOTH 5 // what fits best (TCP/UDP or IPv4/6)
+# define LIBSOCKET_BOTH 5 /* let the resolver/library choose (TCP/UDP or IPv4/6) */
 
 # define LIBSOCKET_READ 1
 # define LIBSOCKET_WRITE 2

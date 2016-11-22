@@ -26,11 +26,11 @@
 
 */
 
-// Headers (e.g. for flags)
+/* Headers (e.g. for flags) */
 # include <sys/types.h>
 # include <sys/socket.h>
 
-// Macro definitions
+/* Macro definitions */
 
 # define LIBSOCKET_STREAM 1
 # define LIBSOCKET_DGRAM  2

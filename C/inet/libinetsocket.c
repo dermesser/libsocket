@@ -2,7 +2,7 @@
 # define _GNU_SOURCE
 # endif
 
-//# include "conf.h"
+# include "conf.h"
 #define LIBSOCKET_VERSION 2.4
 #ifdef BD_ANDROID
 #define LIBSOCKET_LINUX 0
@@ -70,9 +70,11 @@
  *
  */
 
-// Macro definitions
+/* Macro definitions */
 
-//# define VERBOSE // Write errors on stderr?
+/*
+# define VERBOSE // Write errors on stderr?
+*/
 
 # define LIBSOCKET_BACKLOG 128 ///< Linux accepts a backlog value at listen() up to 128
 
