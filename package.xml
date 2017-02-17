@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<package format="2">
+  <name>libsocket</name>
+  <version>0.0.0</version>
+  <description>The libsocket package</description>
+
+  <maintainer email="lbo@spheniscida.de">dermesser</maintainer>
+
+  <license>2-clause BSD</license>
+
+  <buildtool_depend>catkin</buildtool_depend>
+
+  <export>
+    <build_type>cmake</build_type>
+  </export>
+
+</package>
