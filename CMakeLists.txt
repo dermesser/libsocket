@@ -83,7 +83,8 @@ export(PACKAGE libsocket)
 file(RELATIVE_PATH REL_INCLUDE_DIR "${INSTALL_CMAKE_DIR}"
    "${INSTALL_INCLUDE_DIR}")
 
-set(CONF_INCLUDE_DIRS "${PROJECT_SOURCE_DIR}" "${PROJECT_BINARY_DIR}")
+set(CONF_INCLUDE_DIRS "${PROJECT_SOURCE_DIR}/headers")
+
 configure_file(libsocketConfig.cmake.in
   "${PROJECT_BINARY_DIR}/libsocketConfig.cmake" @ONLY)
 
