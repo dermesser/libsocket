@@ -89,5 +89,5 @@ configure_file(libsocketConfig.cmake.in
   "${PROJECT_BINARY_DIR}/libsocketConfig.cmake" @ONLY)
 
 configure_file(libsocketConfigVersion.cmake.in
-  "${PROJECT_BINARY_DIR}/FooBarConfigVersion.cmake" @ONLY)
+  "${PROJECT_BINARY_DIR}/libsocketConfigVersion.cmake" @ONLY)
 
