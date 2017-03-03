@@ -1,4 +1,4 @@
-PROJECT(Libsocket)
+PROJECT(libsocket)
 CMAKE_MINIMUM_REQUIRED(VERSION 2.8)
 
 # Header conf
@@ -62,4 +62,32 @@ IF(EXISTS "${CMAKE_ROOT}/Modules/CPack.cmake")
 	# List executables
 	INCLUDE(CPack)
 ENDIF(EXISTS "${CMAKE_ROOT}/Modules/CPack.cmake")
+
+set(INSTALL_LIB_DIR lib CACHE PATH "Installation directory for libraries")
+set(INSTALL_BIN_DIR bin CACHE PATH "Installation directory for executables")
+set(INSTALL_INCLUDE_DIR include CACHE PATH "Installation directory for header files")
+set(DEF_INSTALL_CMAKE_DIR lib/CMake/libsocket)
+
+foreach(p LIB BIN INCLUDE CMAKE)
+  set(var INSTALL_${p}_DIR)
+  if(NOT IS_ABSOLUTE "${${var}}")
+    set(${var} "${CMAKE_INSTALL_PREFIX}/${${var}}")
+  endif()
+endforeach()
+
+export(TARGETS socket++ socket_int
+  FILE "${PROJECT_BINARY_DIR}/libsocketTargets.cmake")
+
+export(PACKAGE libsocket)
+
+file(RELATIVE_PATH REL_INCLUDE_DIR "${INSTALL_CMAKE_DIR}"
+   "${INSTALL_INCLUDE_DIR}")
+
+set(CONF_INCLUDE_DIRS "${PROJECT_SOURCE_DIR}/headers")
+
+configure_file(libsocketConfig.cmake.in
+  "${PROJECT_BINARY_DIR}/libsocketConfig.cmake" @ONLY)
+
+configure_file(libsocketConfigVersion.cmake.in
+  "${PROJECT_BINARY_DIR}/libsocketConfigVersion.cmake" @ONLY)
 
