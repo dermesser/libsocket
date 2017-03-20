@@ -339,6 +339,8 @@ ssize_t sendto_inet_dgram_socket(int sfd, const void* buf, size_t size, const ch
 	}
     }
 
+    freeaddrinfo(result);
+
     return return_value;
 }
 
