@@ -12,7 +12,10 @@
 # include <errno.h>
 # include <sys/time.h>
 # include <sys/types.h>
+
+namespace poll {
 # include <poll.h>
+}
 
 # include "exception.hpp"
 
@@ -87,7 +90,7 @@ namespace libsocket
 
 	    bool set_up; ///< Stores if the class has been initiated
             
-            std::vector<struct pollfd> pollfd_set; // Set of pollfd structs to poll
+            std::vector<poll::pollfd> pollfd_set; // Set of pollfd structs to poll
 
 	public:
 
@@ -129,20 +132,20 @@ namespace libsocket
 
 	if ( method == LIBSOCKET_READ )
 	{
-            struct pollfd fdinfo{fd, POLLIN, 0};
+            poll::pollfd fdinfo{fd, POLLIN, 0};
             pollfd_set.push_back(fdinfo);
 	    fdsockmap[fd] = const_cast<SocketT*>(&sock);
 	    set_up = true;
 
 	} else if ( method == LIBSOCKET_WRITE )
 	{
-            struct pollfd fdinfo{fd, POLLOUT, 0};
+            poll::pollfd fdinfo{fd, POLLOUT, 0};
             pollfd_set.push_back(fdinfo);
 	    fdsockmap[fd] = const_cast<SocketT*>(&sock);
 	    set_up = true;
 	} else if ( method == (LIBSOCKET_READ|LIBSOCKET_WRITE) )
 	{ // don't put the fd in our data structures twice.
-            struct pollfd fdinfo{fd, (POLLIN|POLLOUT), 0};
+            poll::pollfd fdinfo{fd, (POLLIN|POLLOUT), 0};
             pollfd_set.push_back(fdinfo);
 	    fdsockmap[fd] = const_cast<SocketT*>(&sock);
 	    set_up = true;
@@ -180,7 +183,7 @@ namespace libsocket
             _timeout.tv_nsec = nanopart;
         }
 
-        n = ppoll((struct pollfd *)pollfd_set.data(), pollfd_set.size(),
+        n = ppoll((poll::pollfd *)pollfd_set.data(), pollfd_set.size(),
                   timeout, NULL);
                 
 	ready_socks rwfds;
@@ -199,9 +202,9 @@ namespace libsocket
 	    return rwfds;
 	}
         
-        std::vector<struct pollfd>::iterator end = pollfd_set.end();
+        std::vector<poll::pollfd>::iterator end = pollfd_set.end();
         
-        for (std::vector<struct pollfd>::iterator iter = pollfd_set.begin(); iter != end; ++iter)
+        for (std::vector<poll::pollfd>::iterator iter = pollfd_set.begin(); iter != end; ++iter)
         {
             if (iter->revents & POLLIN)
                 rwfds.first.push_back(fdsockmap[iter->fd]);
