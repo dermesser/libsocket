@@ -13,21 +13,25 @@
 # include <sys/time.h>
 # include <sys/types.h>
 
+namespace poll {
+# include <poll.h>
+}
+
 # include "exception.hpp"
-# include <sys/select.h>
+
 
 /**
  * @file select.hpp
  *
  * @brief Contains the class selectset which provides a neat interface for watching several sockets
  *
- * The class selectset implements a wrapper for the syscall select() which allows
+ * The class selectset implements a wrapper for the syscall poll() (formerly select()) which allows
  * to accept connections on more than one socket or communicate with multiple clients
  * without multithreading.
  *
  * New sockets may be added with add_fd(), accepting a child class of libsocket::socket.
  *
- * When all sockets are added, the select() call can be triggered by calling wait(). This
+ * When all sockets are added, the poll() call can be triggered by calling wait(). This
  * function returns a pair of vector<int>s, the first with the sockets ready for reading and
  * the second containing the sockets ready for writing.
  *
@@ -82,13 +86,11 @@ namespace libsocket
     class selectset
     {
 	private:
-	    std::vector<int> filedescriptors; ///< All file descriptors from the socket objects
 	    std::map<int,SocketT*> fdsockmap;  ///< A map containing the relations between the filedescriptors and the socket objects
 
 	    bool set_up; ///< Stores if the class has been initiated
-
-	    fd_set readset; ///< The fd_set for select with the descriptors waiting for read
-	    fd_set writeset; ///< and the descriptors waiting for write
+            
+            std::vector<poll::pollfd> pollfd_set; // Set of pollfd structs to poll
 
 	public:
 
@@ -112,10 +114,8 @@ namespace libsocket
      */
     template<typename SockT>
     selectset<SockT>::selectset(void)
-	: filedescriptors(0), set_up(false)
+        : set_up(false)
     {
-	FD_ZERO(&readset);
-	FD_ZERO(&writeset);
     }
 
     /**
@@ -132,22 +132,21 @@ namespace libsocket
 
 	if ( method == LIBSOCKET_READ )
 	{
-	    FD_SET(fd,&readset);
-	    filedescriptors.push_back(fd);
+            poll::pollfd fdinfo{fd, POLLIN, 0};
+            pollfd_set.push_back(fdinfo);
 	    fdsockmap[fd] = const_cast<SocketT*>(&sock);
 	    set_up = true;
 
 	} else if ( method == LIBSOCKET_WRITE )
 	{
-	    FD_SET(fd,&writeset);
-	    filedescriptors.push_back(fd);
+            poll::pollfd fdinfo{fd, POLLOUT, 0};
+            pollfd_set.push_back(fdinfo);
 	    fdsockmap[fd] = const_cast<SocketT*>(&sock);
 	    set_up = true;
 	} else if ( method == (LIBSOCKET_READ|LIBSOCKET_WRITE) )
 	{ // don't put the fd in our data structures twice.
-	    FD_SET(fd,&readset);
-	    FD_SET(fd,&writeset);
-	    filedescriptors.push_back(fd);
+            poll::pollfd fdinfo{fd, (POLLIN|POLLOUT), 0};
+            pollfd_set.push_back(fdinfo);
 	    fdsockmap[fd] = const_cast<SocketT*>(&sock);
 	    set_up = true;
 	}
@@ -168,31 +167,32 @@ namespace libsocket
     typename selectset<SockT>::ready_socks selectset<SockT>::wait(long long microsecs)
     {
 	int n = 0;
-
-	struct timeval *timeout = NULL;
-	struct timeval _timeout;
-
-	if ( microsecs != 0 )
+        
+        struct timespec *timeout = NULL;
+        struct timespec _timeout;
+        
+        if ( microsecs != 0 )
 	{
-
 	    timeout = &_timeout;
+        
+            long long nanosecs = microsecs * 1000;
+            long long nanopart = nanosecs % 1000000000;
+            long long secpart  = (nanosecs - nanopart) / 1000000000;
+            
+            _timeout.tv_sec = secpart;
+            _timeout.tv_nsec = nanopart;
+        }
 
-	    long long micropart = microsecs % 1000000;
-	    long long secpart   = microsecs / 1000000;
-
-	    _timeout.tv_sec  = secpart;
-	    _timeout.tv_usec = micropart;
-	}
-
-	n = select(highestfd(filedescriptors)+1,&readset,&writeset,NULL,timeout);
-
+        n = ppoll((poll::pollfd *)pollfd_set.data(), pollfd_set.size(),
+                  timeout, NULL);
+                
 	ready_socks rwfds;
 
 	if ( n < 0 )
 	{
 	    std::string err(strerror(errno));
 
-	    throw socket_exception(__FILE__,__LINE__,"selectset::wait(): Error at select(): " + err);
+	    throw socket_exception(__FILE__,__LINE__,"selectset::wait(): Error at ppoll(): " + err);
 
 	} else if ( n == 0 ) // time is over, no filedescriptor is ready
 	{
@@ -201,17 +201,17 @@ namespace libsocket
 
 	    return rwfds;
 	}
-
-	std::vector<int>::iterator end = filedescriptors.end();
-
-	for ( std::vector<int>::iterator cur = filedescriptors.begin(); cur != end; cur++ )
-	{
-	    if ( FD_ISSET(*cur,&readset) )
-		rwfds.first.push_back(fdsockmap[*cur]);
-
-	    if ( FD_ISSET(*cur,&writeset) )
-		rwfds.second.push_back(fdsockmap[*cur]);
-	}
+        
+        std::vector<poll::pollfd>::iterator end = pollfd_set.end();
+        
+        for (std::vector<poll::pollfd>::iterator iter = pollfd_set.begin(); iter != end; ++iter)
+        {
+            if (iter->revents & POLLIN)
+                rwfds.first.push_back(fdsockmap[iter->fd]);
+            
+            if (iter->revents & POLLOUT)
+                rwfds.second.push_back(fdsockmap[iter->fd]);
+        }
 
 	return rwfds;
     }
