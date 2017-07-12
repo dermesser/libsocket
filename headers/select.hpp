@@ -71,16 +71,25 @@ namespace libsocket
      * @{
      */
     /**
-     * @brief selectset provides a simple interface to the system call select(3).
+     * @brief selectset provides a simple abstraction over -- contrary to its name -- poll(2).
      *
-     * To watch different sockets for new data to read or a possibility to write without using threads, use
-     * this class. It is rather simple to use; add file descriptors (socket ids) using `add_fd()` specifying
-     * whether to watch them for reading or writing and then call `wait()`; once there's data to be read or written
-     * it returns a std::pair with vectors of `SocketT*`; the first vector contains sockets ready for reading,
-     * the second one contains those sockets ready for writing.
+     * To watch different sockets for new data to read or a possibility to
+     * write without using threads, use this class. It is rather simple to use;
+     * add file descriptors (socket ids) using `add_fd()` specifying whether to
+     * watch them for reading or writing and then call `wait()`; once there's
+     * data to be read or written it returns a std::pair with vectors of
+     * `SocketT*`; the first vector contains sockets ready for reading, the
+     * second one contains those sockets ready for writing.
      *
-     * If you select on multiple sockets, you will need to use a superclass as template argument (e.g. `socket` or `inet_socket`)
-     * and `dynamic_cast`.
+     * If you poll sockets of different types, you need to use a superclass as
+     * template argument to selectset (usually `socket` or `inet_socket`) and
+     * then `dynamic_cast` the sockets returned in the ready_socks structure
+     * (see `examples++/server.cpp` for an (artificial) example).
+     *
+     * In order to determine which socket in a ready_socks set belongs to which
+     * connection/server/etc., you should either use the pointer values of
+     * submitted sockets or the file descriptors managed by your sockets (via
+     * `Socket::getfd()`).
      */
     template<typename SocketT>
     class selectset
