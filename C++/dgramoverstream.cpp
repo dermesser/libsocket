@@ -36,10 +36,16 @@
 
 namespace libsocket {
 
-        dgram_over_stream::dgram_over_stream(stream_client_socket&& socket)
+        dgram_over_stream::dgram_over_stream(stream_client_socket socket)
                 : inner(std::unique_ptr<stream_client_socket>(new stream_client_socket(std::move(socket))))
         {
                 enable_nagle(false);
+        }
+
+        dgram_over_stream::dgram_over_stream(std::unique_ptr<stream_client_socket> inner_)
+            : inner(std::move(inner_))
+        {
+            enable_nagle(false);
         }
 
         /**
@@ -79,8 +85,8 @@ namespace libsocket {
                 size_t to_receive = dst->size();
                 size_t received = 0;
 
-                do {
-                        ssize_t result = receive_bytes(to_receive);
+                while (received < to_receive) {
+                        ssize_t result = receive_bytes(to_receive-received);
 
                         if (result < 0)
                                 throw socket_exception(__FILE__, __LINE__, "dgram_over_stream::rcvmsg(): Could not receive message!", false);
@@ -88,12 +94,13 @@ namespace libsocket {
                         dst->replace(received, result, RECV_BUF);
 
                         received += (size_t) result;
-                } while (received < to_receive);
+                }
 
+                // Consume remaining frame that doesn't fit into dst.
                 ssize_t rest = expected - to_receive;
-                do {
+                while (rest > 0) {
                         rest -= receive_bytes(rest);
-                } while (rest > 0);
+                }
 
                 return received;
         }
@@ -126,8 +133,8 @@ namespace libsocket {
                 size_t received = 0;
                 std::vector<uint8_t>::iterator dst_iter = dst->begin();
 
-                do {
-                        ssize_t result = receive_bytes(to_receive);
+                while (received < to_receive) {
+                        ssize_t result = receive_bytes(to_receive-received);
 
                         if (result < 0)
                                 throw socket_exception(__FILE__, __LINE__, "dgram_over_stream::rcvmsg(): Could not receive message!", false);
@@ -136,12 +143,13 @@ namespace libsocket {
                                 *dst_iter = RECV_BUF[i];
 
                         received += result;
-                } while (received < to_receive);
+                }
 
+                // Consume remaining frame that doesn't fit into dst.
                 ssize_t rest = expected - to_receive;
-                do {
+                while (rest > 0) {
                         rest -= receive_bytes(rest);
-                } while (rest > 0);
+                }
 
                 return received;
         }
@@ -181,22 +189,22 @@ namespace libsocket {
                 size_t to_receive = len < expected ? len : expected;
                 size_t received = 0;
 
-                do {
-                        ssize_t result = receive_bytes(to_receive);
+                while (received < to_receive) {
+                        ssize_t result = receive_bytes(to_receive-received);
 
                         if (result < 0)
                                 throw socket_exception(__FILE__, __LINE__, "dgram_over_stream::rcvmsg(): Could not receive message!", false);
 
                         memcpy(dst, RECV_BUF, result);
-                        dst = static_cast<void*>(static_cast<char*>(dst) + received);
+                        dst = static_cast<void*>(static_cast<char*>(dst) + result);
                         received += result;
-                } while (received < to_receive);
+                }
 
+                // Consume remaining frame that doesn't fit into dst.
                 ssize_t rest = expected - to_receive;
-                do {
+                while (rest > 0) {
                         rest -= receive_bytes(rest);
-                } while (rest > 0);
-
+                }
                 return received;
         }
 
@@ -210,7 +218,7 @@ namespace libsocket {
                 ssize_t rest_len = n > RECV_BUF_SIZE ? RECV_BUF_SIZE : n;
                 size_t pos = 0;
 
-                do {
+                while (rest_len > 0) {
                         ssize_t recvd = inner->rcv(RECV_BUF+pos, rest_len, 0);
 
                         if (recvd <= 0)
@@ -218,7 +226,7 @@ namespace libsocket {
 
                         rest_len -= recvd;
                         pos += recvd;
-                } while (rest_len > 0);
+                }
 
                 return pos;
         }
