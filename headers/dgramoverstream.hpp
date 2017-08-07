@@ -73,7 +73,8 @@ namespace libsocket
                 public:
                         dgram_over_stream(void) = delete;
                         dgram_over_stream(const dgram_over_stream&) = delete;
-                        dgram_over_stream(stream_client_socket&& inner);
+                        dgram_over_stream(stream_client_socket inner);
+                        dgram_over_stream(std::unique_ptr<stream_client_socket> inner);
 
                         void enable_nagle(bool enable) const;
 
