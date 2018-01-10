@@ -127,6 +127,23 @@ text in your product (so it's clear that libsocket is licensed by this License) 
 *we* wrote libsocket (as described in the license). It's ok to mention libsocket in your product's
 Readme or advertisements anyway.
 
+#### Static Linkage in CMake Projects
+
+It is possible to produce static libraries for linking by setting the cmake
+configuration option, `BUILD_STATIC_LIBS=ON`. This can be done from command
+line or in your CMakeLists.txt.
+
+```cmake
+SET(BUILD_SHARED_LIBS ON)
+add_subdirectory(libsocket)
+
+target_link_libraries(MyProject libsocket_int) # C linking
+target_link_libraries(MyProject libsocket++_int) # C++ linking
+```
+
+Please note the cmake targets for static libraries are \<libname>\_int, but
+the produced libraries will have the libsocket(++).a name on disk.
+
 ### Dynamic Linkage
 
 The recommended method to use libsocket is to link your program against the libsocket SO (DLL). Using this

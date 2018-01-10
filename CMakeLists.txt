@@ -18,6 +18,9 @@ ELSEIF( CMAKE_SYSTEM_NAME STREQUAL "SunOS" )
     SET(IS_SUNOS 1)
 ENDIF()
 
+OPTION(BUILD_STATIC_LIBS "Build the static library" OFF)
+OPTION(BUILD_SHARED_LIBS "Build the shared library" ON)
+
 CONFIGURE_FILE(headers/conf.h.in ${CMAKE_CURRENT_BINARY_DIR}/headers/conf.h)
 
 # Compiler configuration
