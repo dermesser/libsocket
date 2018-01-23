@@ -30,10 +30,10 @@
    POSSIBILITY OF SUCH DAMAGE.
 
 */
-using std::string;
 
 namespace libsocket
 {
+    using std::string;
     class dgram_over_stream;
 
     /** @addtogroup libsocketplusplus

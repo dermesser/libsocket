@@ -32,9 +32,9 @@
 
  */
 
-using std::string;
 namespace libsocket
 {
+    using std::string;
     /**
      * @addtogroup libsocketplusplus
      * @{
