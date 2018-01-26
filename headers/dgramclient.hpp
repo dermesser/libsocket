@@ -6,8 +6,6 @@
 # include <unistd.h>
 # include <string.h>
 
-using std::string;
-
 /**
  * @file dgramclient.hpp
  *
@@ -38,6 +36,8 @@ using std::string;
 
 namespace libsocket
 {
+    using std::string;
+
     /**
      * @addtogroup libsocketplusplus
      * @{
