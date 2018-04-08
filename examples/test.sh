@@ -15,8 +15,8 @@ echo "Starting test suite examples/..."
 
 echo "Testing TCP client/server (transmission*.c)..."
 
-gcc -I$HEADERPATH -L$LIBPATH -o cl -lsocket transmission_client.c
-gcc -I$HEADERPATH -L$LIBPATH -o srv -lsocket transmission_server.c
+gcc -I$HEADERPATH -L$LIBPATH -o cl transmission_client.c -lsocket
+gcc -I$HEADERPATH -L$LIBPATH -o srv transmission_server.c -lsocket
 
 ./srv > /dev/null &
 sleep 1
@@ -28,9 +28,9 @@ rm srv cl
 
 echo "Testing echo UDP programs..."
 
-gcc -I$HEADERPATH -L$LIBPATH -o cl -lsocket echo_dgram_client.c
-gcc -I$HEADERPATH -L$LIBPATH -o clc -lsocket echo_dgram_connect_client.c
-gcc -I$HEADERPATH -L$LIBPATH -o srv -lsocket echo_dgram_server.c
+gcc -I$HEADERPATH -L$LIBPATH -o cl echo_dgram_client.c -lsocket
+gcc -I$HEADERPATH -L$LIBPATH -o clc echo_dgram_connect_client.c -lsocket
+gcc -I$HEADERPATH -L$LIBPATH -o srv echo_dgram_server.c -lsocket
 
 ./srv > /dev/null &
 sleep 1
@@ -43,7 +43,7 @@ rm srv clc cl
 
 echo "Testing HTTP client..."
 
-gcc -o http -lsocket http.c
+gcc -o http http.c -lsocket
 
 ./http > /dev/null
 
@@ -51,9 +51,9 @@ rm http
 
 echo "Testing UNIX dgram client/server..."
 
-gcc -I$HEADERPATH -L$LIBPATH -o cl -lsocket unix_dgram_client.c
-gcc -I$HEADERPATH -L$LIBPATH -o clc -lsocket unix_dgram_connected_client.c
-gcc -I$HEADERPATH -L$LIBPATH -o srv  -lsocket unix_dgram_server.c
+gcc -I$HEADERPATH -L$LIBPATH -o cl unix_dgram_client.c -lsocket
+gcc -I$HEADERPATH -L$LIBPATH -o clc unix_dgram_connected_client.c -lsocket
+gcc -I$HEADERPATH -L$LIBPATH -o srv  unix_dgram_server.c -lsocket
 
 ./srv > /dev/null &
 sleep 1
@@ -66,8 +66,8 @@ rm srv clc cl
 
 echo "Testing UNIX stream client/server..."
 
-gcc -I$HEADERPATH -L$LIBPATH -o srv -lsocket unix_stream_server.c
-gcc -I$HEADERPATH -L$LIBPATH -o cl -lsocket unix_stream_client.c
+gcc -I$HEADERPATH -L$LIBPATH -o srv unix_stream_server.c -lsocket
+gcc -I$HEADERPATH -L$LIBPATH -o cl unix_stream_client.c -lsocket
 
 ./srv > /dev/null &
 sleep 1
