@@ -130,8 +130,10 @@ int create_unix_stream_socket(const char* path, int flags)
     saddr.sun_family = AF_UNIX;
     strncpy(saddr.sun_path,path,sizeof(saddr.sun_path)-1);
 
-    if ( -1 == check_error(connect(sfd,(struct sockaddr*)&saddr,sizeof(saddr.sun_family) + strlen(saddr.sun_path)) ) )
+    if ( -1 == check_error(connect(sfd,(struct sockaddr*)&saddr,sizeof(saddr.sun_family) + strlen(saddr.sun_path)) ) ) {
+        close(sfd);
 	return -1;
+    }
 
     return sfd;
 }
