@@ -214,6 +214,7 @@ int create_inet_stream_socket(const char* host, const char* service, char proto_
         int errno_saved = errno;
         close(sfd);
         errno = errno_saved;
+        freeaddrinfo(result);
 	return -1;
     }
     // Yes :)
@@ -538,6 +539,7 @@ int connect_inet_dgram_socket(int sfd, const char* host, const char* service)
 # ifdef VERBOSE
 	debug_write("connect_inet_dgram_socket: Could not connect to any address!\n");
 # endif
+        freeaddrinfo(result);
 	return -1;
     }
 
@@ -712,6 +714,7 @@ int create_inet_server_socket(const char* bind_addr, const char* bind_port, char
 # ifdef VERBOSE
 	debug_write("create_inet_server_socket: Could not bind to any address!\n");
 # endif
+        freeaddrinfo(result);
 	return -1;
     }
 
