@@ -5,9 +5,9 @@ before_install:
     - sudo apt-get update
     - sudo apt-get install lib32stdc++6 wget ca-certificates -qq
 # I know and I don't care.
-    - wget --no-check-certificate https://cmake.org/files/v2.8/cmake-2.8.12.1-Linux-i386.sh
-    - chmod a+x cmake-2.8.12.1-Linux-i386.sh
-    - sudo ./cmake-2.8.12.1-Linux-i386.sh --skip-license --prefix=/usr
+    - wget --no-check-certificate https://cmake.org/files/v3.12/cmake-3.12.4-Linux-x86_64.sh
+    - chmod a+x cmake-3.12.4-Linux-x86_64.sh
+    - sudo ./cmake-3.12.4-Linux-x86_64.sh --skip-license --prefix=/usr
 script:
     - cmake -DCMAKE_CXX_COMPILER=clang++
     - make
