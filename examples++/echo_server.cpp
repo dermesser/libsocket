@@ -32,7 +32,7 @@ int main(void)
 	    srv.sndto(answer,from,fromport);
 	}
 
-	srv.destroy();
+	//srv.destroy(); //libsocket::inet_dgram_server has destructor
     } catch (const libsocket::socket_exception& exc)
     {
 	std::cerr << exc.mesg;
