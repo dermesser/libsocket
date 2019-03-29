@@ -31,7 +31,7 @@ int main(void)
 
 	    srv.sndto(answer,from,fromport);
 	}
-	//libsocket::inet_dgram_server also has a destructor doing this for us, so we are doing explicitly and can reuse the socket. This line is part of build test suite.
+	//libsocket::inet_dgram_server also has a destructor doing this for us, so we are doing explicitly and can reuse the socket.
 	srv.destroy();
     } catch (const libsocket::socket_exception& exc)
     {
