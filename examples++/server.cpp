@@ -1,13 +1,13 @@
-# include <iostream>
-# include <string>
-# include "../headers/inetserverstream.hpp"
-# include "../headers/exception.hpp"
-# include <unistd.h>
-# include <stdio.h>
-# include <utility>
-# include <memory>
-# include "../headers/socket.hpp"
-# include "../headers/select.hpp"
+#include <stdio.h>
+#include <unistd.h>
+#include <iostream>
+#include <memory>
+#include <string>
+#include <utility>
+#include "../headers/exception.hpp"
+#include "../headers/inetserverstream.hpp"
+#include "../headers/select.hpp"
+#include "../headers/socket.hpp"
 
 /*
  * This server is a bit more complicated than
@@ -17,13 +17,12 @@
  * receives the client's answer afterwards.
  */
 
-int main(void)
-{
+int main(void) {
     using std::string;
     using std::unique_ptr;
 
-    using libsocket::inet_stream_server;
     using libsocket::inet_stream;
+    using libsocket::inet_stream_server;
     using libsocket::selectset;
 
     string host = "::1";
@@ -31,46 +30,51 @@ int main(void)
     string answ;
 
     try {
-	inet_stream_server srv(host,port,LIBSOCKET_IPv6);
+        inet_stream_server srv(host, port, LIBSOCKET_IPv6);
 
-	selectset<inet_stream_server> set1;
-	set1.add_fd(srv,LIBSOCKET_READ);
+        selectset<inet_stream_server> set1;
+        set1.add_fd(srv, LIBSOCKET_READ);
 
-	for ( ;; )
-	{
-	    /********* SELECT PART **********/
-	    std::cout << "Called select()\n";
+        for (;;) {
+            /********* SELECT PART **********/
+            std::cout << "Called select()\n";
 
-	    libsocket::selectset<inet_stream_server>::ready_socks readypair; // Create pair (libsocket::fd_struct is the return type of selectset::wait()
+            libsocket::selectset<inet_stream_server>::ready_socks
+                readypair;  // Create pair (libsocket::fd_struct is the return
+                            // type of selectset::wait()
 
-	    readypair = set1.wait(); // Wait for a connection and save the pair to the var
+            readypair = set1.wait();  // Wait for a connection and save the pair
+                                      // to the var
 
-	    inet_stream_server* ready_srv = dynamic_cast<inet_stream_server*>(readypair.first.back()); // Get the last fd of the LIBSOCKET_READ vector (.first) of the pair and cast the socket* to inet_stream_server*
+            inet_stream_server* ready_srv = dynamic_cast<inet_stream_server*>(
+                readypair.first
+                    .back());  // Get the last fd of the LIBSOCKET_READ vector
+                               // (.first) of the pair and cast the socket* to
+                               // inet_stream_server*
 
-	    readypair.first.pop_back(); // delete the fd from the pair
+            readypair.first.pop_back();  // delete the fd from the pair
 
-	    std::cout << "Ready for accepting\n";
+            std::cout << "Ready for accepting\n";
 
-	    /*******************************/
+            /*******************************/
 
-	    unique_ptr<inet_stream> cl1 = ready_srv->accept2();
+            unique_ptr<inet_stream> cl1 = ready_srv->accept2();
 
-	    *cl1 << "Hello\n";
+            *cl1 << "Hello\n";
 
-	    answ.resize(100);
+            answ.resize(100);
 
-	    *cl1 >> answ;
+            *cl1 >> answ;
 
-	    std::cout << answ;
+            std::cout << answ;
 
             // cl1 is closed automatically when leaving the scope!
-	}
+        }
 
-	srv.destroy();
+        srv.destroy();
 
-    } catch (const libsocket::socket_exception& exc)
-    {
-	std::cerr << exc.mesg << std::endl;
+    } catch (const libsocket::socket_exception& exc) {
+        std::cerr << exc.mesg << std::endl;
     }
     return 0;
 }

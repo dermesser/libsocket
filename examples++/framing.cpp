@@ -1,13 +1,12 @@
-# include <iostream>
-# include <stdio.h>
-# include <unistd.h>
-# include <stdint.h>
-# include <string.h>
+#include <stdint.h>
+#include <stdio.h>
+#include <string.h>
+#include <unistd.h>
+#include <iostream>
 
-# include <libsocket/framing.hpp>
+#include <libsocket/framing.hpp>
 
-int main(void)
-{
+int main(void) {
     char dest[4];
     memset(dest, 0, 4);
     uint32_t number = (1 << 30) + 123;

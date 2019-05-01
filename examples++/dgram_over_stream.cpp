@@ -1,21 +1,22 @@
-# include <algorithm>
-# include <assert.h>
-# include <iostream>
-# include <stdio.h>
-# include <string.h>
-# include <string>
-# include <vector>
+#include <assert.h>
+#include <stdio.h>
+#include <string.h>
+#include <algorithm>
+#include <iostream>
+#include <string>
+#include <vector>
 
-# include <libsocket/exception.hpp>
-# include <libsocket/dgramoverstream.hpp>
-# include <libsocket/inetclientstream.hpp>
-# include <libsocket/inetserverstream.hpp>
+#include <libsocket/dgramoverstream.hpp>
+#include <libsocket/exception.hpp>
+#include <libsocket/inetclientstream.hpp>
+#include <libsocket/inetserverstream.hpp>
 
 /*
- * This example demonstrates the use of the dgram_over_stream class. As you can read in
- * that classes documentation, it simplifies sending discrete packets of data over a
- * stream connection. This is achieved by framing; concretely, the length of a packet
- * is sent first, so the receiver knows how many bytes to expect.
+ * This example demonstrates the use of the dgram_over_stream class. As you can
+ * read in that classes documentation, it simplifies sending discrete packets of
+ * data over a stream connection. This is achieved by framing; concretely, the
+ * length of a packet is sent first, so the receiver knows how many bytes to
+ * expect.
  *
  * Usage:
  *   ./dgram_over_stream -c # client
@@ -48,8 +49,7 @@ MODE get_mode(char** argv) {
     }
 }
 
-int main(int argc, char** argv)
-{
+int main(int argc, char** argv) {
     assert(argc > 1);
 
     MODE mode = get_mode(argv);
@@ -78,7 +78,8 @@ void run_client(void) {
     libsocket::dgram_over_stream dgram_cl(std::move(client));
 
     dgram_cl.sndmsg("Hello", 5);
-    std::cout << "Client received " << dgram_cl.rcvmsg(buf, bufsize) << " bytes.\n";
+    std::cout << "Client received " << dgram_cl.rcvmsg(buf, bufsize)
+              << " bytes.\n";
     std::cout << buf << std::endl;
 
     return;
@@ -92,7 +93,8 @@ void run_string_client(void) {
     recvbuf.resize(3);
 
     dgram_cl.sndmsg(std::string("Hello"));
-    std::cout << "Client received " << dgram_cl.rcvmsg(&recvbuf) << " bytes into std::string.\n";
+    std::cout << "Client received " << dgram_cl.rcvmsg(&recvbuf)
+              << " bytes into std::string.\n";
     std::cout << recvbuf << std::endl;
 
     return;
@@ -106,9 +108,11 @@ void run_vec_client(void) {
     recvbuf.resize(15);
 
     dgram_cl.sndmsg(std::string("Hello"));
-    std::cout << "Client received " << dgram_cl.rcvmsg(&recvbuf) << " bytes into std::vec.\n";
+    std::cout << "Client received " << dgram_cl.rcvmsg(&recvbuf)
+              << " bytes into std::vec.\n";
 
-    std::for_each(recvbuf.begin(), recvbuf.end(), [](uint8_t b) { std::cout << static_cast<char>(b); });
+    std::for_each(recvbuf.begin(), recvbuf.end(),
+                  [](uint8_t b) { std::cout << static_cast<char>(b); });
     std::cout << std::endl;
 
     return;
@@ -126,7 +130,8 @@ void run_server(void) {
         libsocket::dgram_over_stream dgram_cl(std::move(*client));
         ssize_t len = 0;
 
-        std::cout << "Server received " << (len = dgram_cl.rcvmsg(buf, bufsize)) << " bytes.\n";
+        std::cout << "Server received " << (len = dgram_cl.rcvmsg(buf, bufsize))
+                  << " bytes.\n";
         std::cout << buf << std::endl;
         dgram_cl.sndmsg("Hello back", 10);
 

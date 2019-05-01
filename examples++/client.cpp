@@ -1,10 +1,10 @@
-# include <iostream>
-# include <string>
-# include "../headers/inetclientstream.hpp"
-# include "../headers/exception.hpp"
+#include <iostream>
+#include <string>
+#include "../headers/exception.hpp"
+#include "../headers/inetclientstream.hpp"
 
-# include <unistd.h>
-# include <stdlib.h>
+#include <stdlib.h>
+#include <unistd.h>
 
 /*
  * This program connects to host:port (usually localhost),
@@ -13,8 +13,7 @@
  * a message from the server and sends a message back.
  */
 
-int main(void)
-{
+int main(void) {
     using std::string;
 
     using libsocket::inet_stream;
@@ -26,18 +25,17 @@ int main(void)
     answer.resize(32);
 
     try {
-	libsocket::inet_stream sock(host,port,LIBSOCKET_IPv6);
+        libsocket::inet_stream sock(host, port, LIBSOCKET_IPv6);
 
-	sock >> answer;
+        sock >> answer;
 
-	std::cout << answer;
+        std::cout << answer;
 
-	sock << "Hello back!\n";
+        sock << "Hello back!\n";
 
         // sock is closed here automatically!
-    } catch (const libsocket::socket_exception& exc)
-    {
-	std::cerr << exc.mesg;
+    } catch (const libsocket::socket_exception& exc) {
+        std::cerr << exc.mesg;
     }
 
     return 0;

@@ -1,12 +1,11 @@
-# include <string>
-# include <iostream>
-# include "../headers/exception.hpp"
-# include "../headers/unixclientdgram.hpp"
+#include <iostream>
+#include <string>
+#include "../headers/exception.hpp"
+#include "../headers/unixclientdgram.hpp"
 
 // Sends a little log message via DGRAM to the syslogd
 
-int main(void)
-{
+int main(void) {
     std::string sock = "/tmp/srvsock";
     std::string logmsg = "Hello, server!";
     std::string answer, peer;
@@ -15,19 +14,19 @@ int main(void)
     peer.resize(64);
 
     try {
-	libsocket::unix_dgram_client cl("/tmp/clsock");
+        libsocket::unix_dgram_client cl("/tmp/clsock");
 
-	cl.sndto(logmsg,sock);
+        cl.sndto(logmsg, sock);
 
-	cl.rcvfrom(answer,peer);
+        cl.rcvfrom(answer, peer);
 
-	std::cout << "[client process] " << answer << " from " << peer << std::endl;
+        std::cout << "[client process] " << answer << " from " << peer
+                  << std::endl;
 
-	cl.destroy();
+        cl.destroy();
 
-    } catch (const libsocket::socket_exception& exc)
-    {
-	std::cerr << exc.mesg;
+    } catch (const libsocket::socket_exception& exc) {
+        std::cerr << exc.mesg;
     }
 
     return 0;
