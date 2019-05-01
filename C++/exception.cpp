@@ -1,28 +1,32 @@
-# include <string>
-# include <stdio.h>
-# include <errno.h>
-# include <sstream>
-# include <cstring>
+#include <errno.h>
+#include <stdio.h>
+#include <cstring>
+#include <sstream>
+#include <string>
 
 /*
    The committers of the libsocket project, all rights reserved
    (c) 2012, dermesser <lbo@spheniscida.de>
 
-   Redistribution and use in source and binary forms, with or without modification, are permitted provided that the
-   following conditions are met:
+   Redistribution and use in source and binary forms, with or without
+   modification, are permitted provided that the following conditions are met:
 
-   1. Redistributions of source code must retain the above copyright notice, this list of conditions and the following
-   disclaimer.
-   2. Redistributions in binary form must reproduce the above copyright notice, this list of conditions and the following
-   disclaimer in the documentation and/or other materials provided with the distribution.
+   1. Redistributions of source code must retain the above copyright notice,
+   this list of conditions and the following disclaimer.
+   2. Redistributions in binary form must reproduce the above copyright notice,
+   this list of conditions and the following disclaimer in the documentation
+   and/or other materials provided with the distribution.
 
-   THIS SOFTWARE IS PROVIDED BY THE REGENTS AND CONTRIBUTORS “AS IS” AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT
-   NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO
-   EVENT SHALL THE REGENTS OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
-   CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR
-   PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
-   OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
-   POSSIBILITY OF SUCH DAMAGE.
+   THIS SOFTWARE IS PROVIDED BY THE REGENTS AND CONTRIBUTORS “AS IS” AND ANY
+   EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+   WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+   DISCLAIMED. IN NO EVENT SHALL THE REGENTS OR CONTRIBUTORS BE LIABLE FOR ANY
+   DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+   (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+   LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
+   ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+   (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+   SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 */
 
@@ -46,38 +50,36 @@
  * @{
  */
 
-# include <exception.hpp>
+#include <exception.hpp>
 
-namespace libsocket
-{
-    using std::string;
+namespace libsocket {
+using std::string;
 
-    /**
-     * @brief	Constructor of a socket_exception object
-     *
-     * This constructor creates a new socket_exception object.
-     *
-     * @param	f   File in which the error comes (__FILE__)
-     * @param	l   Line (__LINE__)
-     * @param	m   Description of the error.
-     */
-    socket_exception::socket_exception(const string& file, int line, const string& message, bool show_errno)
-    {
-	std::ostringstream message_stream;
+/**
+ * @brief	Constructor of a socket_exception object
+ *
+ * This constructor creates a new socket_exception object.
+ *
+ * @param	f   File in which the error comes (__FILE__)
+ * @param	l   Line (__LINE__)
+ * @param	m   Description of the error.
+ */
+socket_exception::socket_exception(const string& file, int line,
+                                   const string& message, bool show_errno) {
+    std::ostringstream message_stream;
 
-	// Saving errno here should be safe
-	err = errno;
+    // Saving errno here should be safe
+    err = errno;
 
-	message_stream << file << ":" << line << ": " << message;
+    message_stream << file << ":" << line << ": " << message;
 
-	if ( show_errno )
-	    message_stream << " (" << std::strerror(errno) << ")";
+    if (show_errno) message_stream << " (" << std::strerror(errno) << ")";
 
-	message_stream << "\n";
+    message_stream << "\n";
 
-	mesg = message_stream.str();
-    }
+    mesg = message_stream.str();
 }
+}  // namespace libsocket
 
 /**
  * @}
