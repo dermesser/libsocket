@@ -1,3 +1,4 @@
 <map id="libsocket::unix_dgram::sndto" name="libsocket::unix_dgram::sndto">
-<area shape="rect" id="node2" href="$classlibsocket_1_1unix__dgram.html#a4d5c00323ef7f6ea2aed0d4a7484f6e2" title="Send data to datagram socket. " alt="" coords="203,5,352,47"/>
+<area shape="rect" id="node1" title="Send data to datagram socket." alt="" coords="203,5,352,47"/>
+<area shape="rect" id="node2" href="$classlibsocket_1_1unix__dgram.html#a4d5c00323ef7f6ea2aed0d4a7484f6e2" title="Send data to datagram socket." alt="" coords="5,5,155,47"/>
 </map>

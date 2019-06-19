@@ -1,5 +1,6 @@
 <map id="libsocket::unix_dgram_client::unix_dgram_client" name="libsocket::unix_dgram_client::unix_dgram_client">
-<area shape="rect" id="node2" href="$classlibsocket_1_1unix__dgram__client.html#a0090c0d52f28b228d1526f4e93968f97" title="Set a UNIX domain datagram socket up. " alt="" coords="227,5,376,47"/>
-<area shape="rect" id="node3" href="$group__libunixsocket.html#ga7e8237c355edaecdd0f4960011d5d70d" title="Create a UNIX DGRAM socket. " alt="" coords="424,13,603,39"/>
-<area shape="rect" id="node4" href="$group__libunixsocket.html#gac85fdb9dc1530a93835e527ae0002652" title="Checks return value for error. " alt="" coords="651,13,741,39"/>
+<area shape="rect" id="node1" title="Constructor with only socket() flags." alt="" coords="5,5,179,47"/>
+<area shape="rect" id="node2" href="$classlibsocket_1_1unix__dgram__client.html#a0090c0d52f28b228d1526f4e93968f97" title="Set a UNIX domain datagram socket up." alt="" coords="227,5,376,47"/>
+<area shape="rect" id="node3" href="$group__libunixsocket.html#ga7e8237c355edaecdd0f4960011d5d70d" title="Create a UNIX DGRAM socket." alt="" coords="424,13,603,39"/>
+<area shape="rect" id="node4" href="$group__libunixsocket.html#gac85fdb9dc1530a93835e527ae0002652" title="Checks return value for error." alt="" coords="651,13,741,39"/>
 </map>

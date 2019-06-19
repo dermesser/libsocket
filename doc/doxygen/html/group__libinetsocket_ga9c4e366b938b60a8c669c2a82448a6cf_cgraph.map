@@ -1,3 +1,4 @@
 <map id="destroy_inet_socket" name="destroy_inet_socket">
-<area shape="rect" id="node2" href="$group__libinetsocket.html#gac85fdb9dc1530a93835e527ae0002652" title="Checks return value for error. " alt="" coords="192,5,283,32"/>
+<area shape="rect" id="node1" title="Close a socket." alt="" coords="5,5,144,32"/>
+<area shape="rect" id="node2" href="$group__libinetsocket.html#gac85fdb9dc1530a93835e527ae0002652" title="Checks return value for error." alt="" coords="192,5,283,32"/>
 </map>

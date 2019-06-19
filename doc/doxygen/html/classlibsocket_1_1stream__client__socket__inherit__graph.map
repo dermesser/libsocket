@@ -1,5 +1,6 @@
 <map id="libsocket::stream_client_socket" name="libsocket::stream_client_socket">
-<area shape="rect" id="node3" href="$classlibsocket_1_1inet__stream.html" title="Provides TCP/IP client sockets. This class is the most used socket class in libsocket++. It provides plain TCP client sockets which can be used for almost everything. " alt="" coords="5,177,156,203"/>
-<area shape="rect" id="node4" href="$classlibsocket_1_1unix__stream__client.html" title="Provides an interface for working with UNIX STREAM sockets. " alt="" coords="180,169,333,211"/>
-<area shape="rect" id="node2" href="$classlibsocket_1_1socket.html" title="socket is the base class of every other libsocket++ object. " alt="" coords="108,5,229,32"/>
+<area shape="rect" id="node1" title="Generic socket for active stream sockets (TCP client sockets, UNIX Stream clients)" alt="" coords="89,80,249,121"/>
+<area shape="rect" id="node3" href="$classlibsocket_1_1inet__stream.html" title="Provides TCP/IP client sockets. This class is the most used socket class in libsocket++...." alt="" coords="5,177,156,203"/>
+<area shape="rect" id="node4" href="$classlibsocket_1_1unix__stream__client.html" title="Provides an interface for working with UNIX STREAM sockets." alt="" coords="180,169,333,211"/>
+<area shape="rect" id="node2" href="$classlibsocket_1_1socket.html" title="socket is the base class of every other libsocket++ object." alt="" coords="108,5,229,32"/>
 </map>

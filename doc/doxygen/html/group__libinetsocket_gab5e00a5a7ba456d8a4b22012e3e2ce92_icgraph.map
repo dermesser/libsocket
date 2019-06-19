@@ -1,8 +1,0 @@
-<map id="create_inet_server_socket" name="create_inet_server_socket">
-<area shape="rect" id="node2" href="$classlibsocket_1_1inet__dgram__server.html#aa05de1796816a6d2e244bed835ac1529" title="Set up socket. NOT FOR EXTERNAL USE " alt="" coords="191,71,338,112"/>
-<area shape="rect" id="node5" href="$classlibsocket_1_1inet__stream__server.html#a4f2d9e767cf5abf20ef8833a53b20151" title="Set up a server socket. " alt="" coords="189,136,340,177"/>
-<area shape="rect" id="node7" href="$group__libinetsocket.html#ga8643c39daab90241ebf53b43b86c5d96" title="Create a datagram socket and join to the multicast group address. " alt="" coords="183,202,347,229"/>
-<area shape="rect" id="node3" href="$classlibsocket_1_1inet__dgram__server.html#a2d79dff72dbc93d9208f584d791f2f8a" title="Create datagram socket and bind it. " alt="" coords="397,5,577,47"/>
-<area shape="rect" id="node4" href="$classlibsocket_1_1inet__dgram__server.html#a4229f6941c8fcba86195268ff02c9bf1" title="Set up socket. NOT FOR EXTERNAL USE " alt="" coords="413,71,560,112"/>
-<area shape="rect" id="node6" href="$classlibsocket_1_1inet__stream__server.html#a47f13bfa7224842dba5281aa760fb454" title="Set up a server socket. " alt="" coords="395,136,579,177"/>
-</map>

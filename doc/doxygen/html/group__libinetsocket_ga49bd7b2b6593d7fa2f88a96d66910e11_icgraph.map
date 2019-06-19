@@ -1,5 +1,0 @@
-<map id="create_inet_stream_socket" name="create_inet_stream_socket">
-<area shape="rect" id="node2" href="$classlibsocket_1_1inet__stream.html#a44babc5672842fe0793500eca10e5484" title="Set up socket if not already done. " alt="" coords="187,39,337,80"/>
-<area shape="rect" id="node3" href="$classlibsocket_1_1inet__stream.html#ae9004ac317a6fafcde1466c3bd7ef0e7" title="Connecting constructor. " alt="" coords="385,5,536,47"/>
-<area shape="rect" id="node4" href="$classlibsocket_1_1inet__stream.html#a3e488071ec8416973aeb355dbe839cb7" title="Set up socket if not already done. " alt="" coords="385,71,536,112"/>
-</map>

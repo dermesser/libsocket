@@ -1,3 +1,4 @@
 <map id="libsocket::inet_stream::connect" name="libsocket::inet_stream::connect">
-<area shape="rect" id="node2" href="$group__libinetsocket.html#ga49bd7b2b6593d7fa2f88a96d66910e11" title="Create and connect a new TCP/IP socket. " alt="" coords="204,5,337,47"/>
+<area shape="rect" id="node1" title="Set up socket if not already done." alt="" coords="5,5,156,47"/>
+<area shape="rect" id="node2" href="$group__libinetsocket.html#ga49bd7b2b6593d7fa2f88a96d66910e11" title="Create and connect a new TCP/IP socket." alt="" coords="204,5,337,47"/>
 </map>

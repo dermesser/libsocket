@@ -1,5 +1,6 @@
 <map id="libsocket::unix_dgram_server::setup" name="libsocket::unix_dgram_server::setup">
-<area shape="rect" id="node2" href="$classlibsocket_1_1unix__dgram__server.html#ae7e823d0375e113361bc5ee9ae251f81" title="Binds a socket. " alt="" coords="203,5,352,47"/>
-<area shape="rect" id="node3" href="$group__libunixsocket.html#gafe85c76892f9c9478b59008363a382ab" title="Create a passive UNIX socket. " alt="" coords="400,5,532,47"/>
-<area shape="rect" id="node4" href="$group__libunixsocket.html#gac85fdb9dc1530a93835e527ae0002652" title="Checks return value for error. " alt="" coords="580,13,671,39"/>
+<area shape="rect" id="node1" title="Binds a socket." alt="" coords="5,5,155,47"/>
+<area shape="rect" id="node2" href="$classlibsocket_1_1unix__dgram__server.html#ae7e823d0375e113361bc5ee9ae251f81" title="Binds a socket." alt="" coords="203,5,352,47"/>
+<area shape="rect" id="node3" href="$group__libunixsocket.html#gafe85c76892f9c9478b59008363a382ab" title="Create a passive UNIX socket." alt="" coords="400,5,532,47"/>
+<area shape="rect" id="node4" href="$group__libunixsocket.html#gac85fdb9dc1530a93835e527ae0002652" title="Checks return value for error." alt="" coords="580,13,671,39"/>
 </map>

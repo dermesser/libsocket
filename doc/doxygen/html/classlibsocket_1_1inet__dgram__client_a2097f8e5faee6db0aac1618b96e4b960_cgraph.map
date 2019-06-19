@@ -1,5 +1,6 @@
 <map id="libsocket::inet_dgram_client::inet_dgram_client" name="libsocket::inet_dgram_client::inet_dgram_client">
-<area shape="rect" id="node2" href="$classlibsocket_1_1inet__dgram__client.html#a3ad41617932a8fe961faed2e68a877f3" title="Set up normal datagram socket (connectable). [NOT FOR EXTERNAL USE]. " alt="" coords="224,5,371,47"/>
-<area shape="rect" id="node3" href="$group__libinetsocket.html#ga309e2c8bc69f56905d97d6a578e6ab2b" title="Creates a new UDP/IP socket. " alt="" coords="419,13,593,39"/>
-<area shape="rect" id="node4" href="$group__libinetsocket.html#gac85fdb9dc1530a93835e527ae0002652" title="Checks return value for error. " alt="" coords="641,13,732,39"/>
+<area shape="rect" id="node1" title="Create normal datagram socket (connectable)." alt="" coords="5,5,176,47"/>
+<area shape="rect" id="node2" href="$classlibsocket_1_1inet__dgram__client.html#a3ad41617932a8fe961faed2e68a877f3" title="Set up normal datagram socket (connectable). [NOT FOR EXTERNAL USE]." alt="" coords="224,5,371,47"/>
+<area shape="rect" id="node3" href="$group__libinetsocket.html#ga309e2c8bc69f56905d97d6a578e6ab2b" title="Creates a new UDP/IP socket." alt="" coords="419,13,593,39"/>
+<area shape="rect" id="node4" href="$group__libinetsocket.html#gac85fdb9dc1530a93835e527ae0002652" title="Checks return value for error." alt="" coords="641,13,732,39"/>
 </map>

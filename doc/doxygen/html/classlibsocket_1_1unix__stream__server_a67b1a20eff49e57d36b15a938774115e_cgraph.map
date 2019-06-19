@@ -1,4 +1,5 @@
 <map id="libsocket::unix_stream_server::accept" name="libsocket::unix_stream_server::accept">
-<area shape="rect" id="node2" href="$group__libunixsocket.html#ga32e8343f2b6c02b406fea290da7f9645" title="Accept connections on a passive UNIX socket. " alt="" coords="207,5,345,47"/>
-<area shape="rect" id="node3" href="$group__libunixsocket.html#gac85fdb9dc1530a93835e527ae0002652" title="Checks return value for error. " alt="" coords="393,13,484,39"/>
+<area shape="rect" id="node1" title="Accepts incoming connections on a UNIX domain stream server socket." alt="" coords="5,5,159,47"/>
+<area shape="rect" id="node2" href="$group__libunixsocket.html#ga32e8343f2b6c02b406fea290da7f9645" title="Accept connections on a passive UNIX socket." alt="" coords="207,5,345,47"/>
+<area shape="rect" id="node3" href="$group__libunixsocket.html#gac85fdb9dc1530a93835e527ae0002652" title="Checks return value for error." alt="" coords="393,13,484,39"/>
 </map>

@@ -1,3 +1,4 @@
 <map id="create_unix_server_socket" name="create_unix_server_socket">
-<area shape="rect" id="node2" href="$group__libunixsocket.html#gac85fdb9dc1530a93835e527ae0002652" title="Checks return value for error. " alt="" coords="185,13,276,39"/>
+<area shape="rect" id="node1" title="Create a passive UNIX socket." alt="" coords="5,5,137,47"/>
+<area shape="rect" id="node2" href="$group__libunixsocket.html#gac85fdb9dc1530a93835e527ae0002652" title="Checks return value for error." alt="" coords="185,13,276,39"/>
 </map>

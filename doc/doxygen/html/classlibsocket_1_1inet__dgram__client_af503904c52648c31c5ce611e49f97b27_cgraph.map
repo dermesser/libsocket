@@ -1,7 +1,8 @@
 <map id="libsocket::inet_dgram_client::setup" name="libsocket::inet_dgram_client::setup">
-<area shape="rect" id="node2" href="$group__libinetsocket.html#ga6acc9e6975d1c0ed0608f3b49c709cb1" title="Look up which address families a host supports. " alt="" coords="206,5,341,32"/>
-<area shape="rect" id="node3" href="$group__libinetsocket.html#ga309e2c8bc69f56905d97d6a578e6ab2b" title="Creates a new UDP/IP socket. " alt="" coords="395,56,569,83"/>
-<area shape="rect" id="node5" href="$classlibsocket_1_1inet__dgram__client.html#ad44fb388d21aa6aa1d5a3935b82e4b0f" title="Connect datagram socket. " alt="" coords="200,107,347,149"/>
-<area shape="rect" id="node4" href="$group__libinetsocket.html#gac85fdb9dc1530a93835e527ae0002652" title="Checks return value for error. " alt="" coords="617,85,708,112"/>
-<area shape="rect" id="node6" href="$group__libinetsocket.html#ga10304769ea75add0f18d4c9caf8e2c30" title="Connect a UDP socket. " alt="" coords="413,107,551,149"/>
+<area shape="rect" id="node1" title="Set up datagram socket and connect it immediately to the given host and port. [NOT FOR EXTERNAL USE]." alt="" coords="5,49,152,90"/>
+<area shape="rect" id="node2" href="$group__libinetsocket.html#ga6acc9e6975d1c0ed0608f3b49c709cb1" title="Look up which address families a host supports." alt="" coords="206,5,341,32"/>
+<area shape="rect" id="node3" href="$group__libinetsocket.html#ga309e2c8bc69f56905d97d6a578e6ab2b" title="Creates a new UDP/IP socket." alt="" coords="395,56,569,83"/>
+<area shape="rect" id="node5" href="$classlibsocket_1_1inet__dgram__client.html#ad44fb388d21aa6aa1d5a3935b82e4b0f" title="Connect datagram socket." alt="" coords="200,107,347,149"/>
+<area shape="rect" id="node4" href="$group__libinetsocket.html#gac85fdb9dc1530a93835e527ae0002652" title="Checks return value for error." alt="" coords="617,85,708,112"/>
+<area shape="rect" id="node6" href="$group__libinetsocket.html#ga10304769ea75add0f18d4c9caf8e2c30" title="Connect a UDP socket." alt="" coords="413,107,551,149"/>
 </map>

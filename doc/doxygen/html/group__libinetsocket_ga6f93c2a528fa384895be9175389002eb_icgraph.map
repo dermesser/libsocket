@@ -1,4 +1,0 @@
-<map id="sendto_inet_dgram_socket" name="sendto_inet_dgram_socket">
-<area shape="rect" id="node2" href="$classlibsocket_1_1inet__dgram.html#ac02e4c0a18a36644fb4b0c8f03505132" title="Send data to UDP peer. " alt="" coords="232,5,379,47"/>
-<area shape="rect" id="node3" href="$classlibsocket_1_1inet__dgram.html#a91cec633db75d5bdf3bf19b241d4546b" title="Send data to UDP peer; C++ string host and port. " alt="" coords="427,5,573,47"/>
-</map>

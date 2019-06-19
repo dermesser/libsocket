@@ -1,4 +1,5 @@
 <map id="libsocket::inet_dgram_server::inet_dgram_server" name="libsocket::inet_dgram_server::inet_dgram_server">
-<area shape="rect" id="node2" href="$classlibsocket_1_1inet__dgram__server.html#aa05de1796816a6d2e244bed835ac1529" title="Set up socket. NOT FOR EXTERNAL USE " alt="" coords="233,5,380,47"/>
-<area shape="rect" id="node3" href="$group__libinetsocket.html#gab5e00a5a7ba456d8a4b22012e3e2ce92" title="Create a TCP or UDP server socket. " alt="" coords="428,5,557,47"/>
+<area shape="rect" id="node1" title="Create datagram socket and bind it." alt="" coords="5,5,185,47"/>
+<area shape="rect" id="node2" href="$classlibsocket_1_1inet__dgram__server.html#aa05de1796816a6d2e244bed835ac1529" title="Set up socket. NOT FOR EXTERNAL USE" alt="" coords="233,5,380,47"/>
+<area shape="rect" id="node3" href="$group__libinetsocket.html#gab5e00a5a7ba456d8a4b22012e3e2ce92" title="Create a TCP or UDP server socket." alt="" coords="428,5,557,47"/>
 </map>

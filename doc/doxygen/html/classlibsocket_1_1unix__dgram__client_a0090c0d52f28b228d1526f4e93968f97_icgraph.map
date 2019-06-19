@@ -1,3 +1,4 @@
 <map id="libsocket::unix_dgram_client::setup" name="libsocket::unix_dgram_client::setup">
-<area shape="rect" id="node2" href="$classlibsocket_1_1unix__dgram__client.html#a7cce0e352d3e61ceedf391aa9c6e4baa" title="Constructor with only socket() flags. " alt="" coords="203,5,376,47"/>
+<area shape="rect" id="node1" title="Set a UNIX domain datagram socket up." alt="" coords="227,5,376,47"/>
+<area shape="rect" id="node2" href="$classlibsocket_1_1unix__dgram__client.html#a7cce0e352d3e61ceedf391aa9c6e4baa" title="Constructor with only socket() flags." alt="" coords="5,5,179,47"/>
 </map>

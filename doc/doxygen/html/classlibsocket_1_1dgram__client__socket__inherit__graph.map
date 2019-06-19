@@ -1,5 +1,6 @@
 <map id="libsocket::dgram_client_socket" name="libsocket::dgram_client_socket">
-<area shape="rect" id="node3" href="$classlibsocket_1_1inet__dgram__client.html" title="Using UDP/IP easy as never before. Class for connectable datagram sockets in the INET domain..." alt="" coords="5,169,152,211"/>
-<area shape="rect" id="node4" href="$classlibsocket_1_1unix__dgram__client.html" title="Class for UNIX datagram sockets. " alt="" coords="176,169,325,211"/>
-<area shape="rect" id="node2" href="$classlibsocket_1_1socket.html" title="socket is the base class of every other libsocket++ object. " alt="" coords="103,5,225,32"/>
+<area shape="rect" id="node1" title="Represents a generic &quot;client&quot; datagram socket, i.e. a datagram socket which can be connected." alt="" coords="86,80,242,121"/>
+<area shape="rect" id="node3" href="$classlibsocket_1_1inet__dgram__client.html" title="Using UDP/IP easy as never before. Class for connectable datagram sockets in the INET domain...." alt="" coords="5,169,152,211"/>
+<area shape="rect" id="node4" href="$classlibsocket_1_1unix__dgram__client.html" title="Class for UNIX datagram sockets." alt="" coords="176,169,325,211"/>
+<area shape="rect" id="node2" href="$classlibsocket_1_1socket.html" title="socket is the base class of every other libsocket++ object." alt="" coords="103,5,225,32"/>
 </map>

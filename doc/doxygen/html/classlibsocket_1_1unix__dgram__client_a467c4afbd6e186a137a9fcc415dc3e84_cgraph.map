@@ -1,5 +1,6 @@
 <map id="libsocket::unix_dgram_client::connect" name="libsocket::unix_dgram_client::connect">
-<area shape="rect" id="node2" href="$classlibsocket_1_1unix__dgram__client.html#ac302893ec3dad36b22774b0797789010" title="Connect a UNIX datagram socket. " alt="" coords="203,5,352,47"/>
-<area shape="rect" id="node3" href="$group__libunixsocket.html#gaa5966dbdc936a326ca3350c6dced1b49" title="Connect a datagram socket. " alt="" coords="400,5,543,47"/>
-<area shape="rect" id="node4" href="$group__libunixsocket.html#gac85fdb9dc1530a93835e527ae0002652" title="Checks return value for error. " alt="" coords="591,13,681,39"/>
+<area shape="rect" id="node1" title="Connect a UNIX datagram socket." alt="" coords="5,5,155,47"/>
+<area shape="rect" id="node2" href="$classlibsocket_1_1unix__dgram__client.html#ac302893ec3dad36b22774b0797789010" title="Connect a UNIX datagram socket." alt="" coords="203,5,352,47"/>
+<area shape="rect" id="node3" href="$group__libunixsocket.html#gaa5966dbdc936a326ca3350c6dced1b49" title="Connect a datagram socket." alt="" coords="400,5,543,47"/>
+<area shape="rect" id="node4" href="$group__libunixsocket.html#gac85fdb9dc1530a93835e527ae0002652" title="Checks return value for error." alt="" coords="591,13,681,39"/>
 </map>

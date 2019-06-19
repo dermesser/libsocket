@@ -1,3 +1,4 @@
 <map id="accept_unix_stream_socket" name="accept_unix_stream_socket">
-<area shape="rect" id="node2" href="$group__libunixsocket.html#gac85fdb9dc1530a93835e527ae0002652" title="Checks return value for error. " alt="" coords="192,13,283,39"/>
+<area shape="rect" id="node1" title="Accept connections on a passive UNIX socket." alt="" coords="5,5,144,47"/>
+<area shape="rect" id="node2" href="$group__libunixsocket.html#gac85fdb9dc1530a93835e527ae0002652" title="Checks return value for error." alt="" coords="192,13,283,39"/>
 </map>

@@ -1,4 +1,5 @@
 <map id="libsocket::inet_dgram::sndto" name="libsocket::inet_dgram::sndto">
-<area shape="rect" id="node2" href="$group__libinetsocket.html#ga6f93c2a528fa384895be9175389002eb" title="This function is the equivalent to sendto(2) " alt="" coords="200,13,379,39"/>
-<area shape="rect" id="node3" href="$group__libinetsocket.html#gac85fdb9dc1530a93835e527ae0002652" title="Checks return value for error. " alt="" coords="427,13,517,39"/>
+<area shape="rect" id="node1" title="Send data to UDP peer." alt="" coords="5,5,152,47"/>
+<area shape="rect" id="node2" href="$group__libinetsocket.html#ga6f93c2a528fa384895be9175389002eb" title="This function is the equivalent to sendto(2)" alt="" coords="200,13,379,39"/>
+<area shape="rect" id="node3" href="$group__libinetsocket.html#gac85fdb9dc1530a93835e527ae0002652" title="Checks return value for error." alt="" coords="427,13,517,39"/>
 </map>

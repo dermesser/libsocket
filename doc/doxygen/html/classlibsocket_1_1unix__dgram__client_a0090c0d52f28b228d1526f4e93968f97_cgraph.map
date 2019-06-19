@@ -1,4 +1,5 @@
 <map id="libsocket::unix_dgram_client::setup" name="libsocket::unix_dgram_client::setup">
-<area shape="rect" id="node2" href="$group__libunixsocket.html#ga7e8237c355edaecdd0f4960011d5d70d" title="Create a UNIX DGRAM socket. " alt="" coords="203,13,381,39"/>
-<area shape="rect" id="node3" href="$group__libunixsocket.html#gac85fdb9dc1530a93835e527ae0002652" title="Checks return value for error. " alt="" coords="429,13,520,39"/>
+<area shape="rect" id="node1" title="Set a UNIX domain datagram socket up." alt="" coords="5,5,155,47"/>
+<area shape="rect" id="node2" href="$group__libunixsocket.html#ga7e8237c355edaecdd0f4960011d5d70d" title="Create a UNIX DGRAM socket." alt="" coords="203,13,381,39"/>
+<area shape="rect" id="node3" href="$group__libunixsocket.html#gac85fdb9dc1530a93835e527ae0002652" title="Checks return value for error." alt="" coords="429,13,520,39"/>
 </map>

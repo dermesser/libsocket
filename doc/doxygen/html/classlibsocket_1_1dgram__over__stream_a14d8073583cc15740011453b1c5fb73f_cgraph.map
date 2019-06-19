@@ -1,0 +1,4 @@
+<map id="libsocket::dgram_over_stream::rcvmsg" name="libsocket::dgram_over_stream::rcvmsg">
+<area shape="rect" id="node1" title="Receive a message and store the first len bytes into buf." alt="" coords="5,5,156,47"/>
+<area shape="rect" id="node2" href="$classlibsocket_1_1dgram__over__stream.html#a308ff7010c04bad553bc44024dce332b" title="Receive and decode length header." alt="" coords="204,5,369,47"/>
+</map>

@@ -1,3 +1,4 @@
 <map id="libsocket::unix_stream_server::accept" name="libsocket::unix_stream_server::accept">
-<area shape="rect" id="node2" href="$classlibsocket_1_1unix__stream__server.html#a64f48f0ad4cc09fbf907006fbb21ddee" title="Accepts an incoming connection on a UNIX domain stream server socket and returns an owned pointer..." alt="" coords="207,5,360,47"/>
+<area shape="rect" id="node1" title="Accepts incoming connections on a UNIX domain stream server socket." alt="" coords="207,5,360,47"/>
+<area shape="rect" id="node2" href="$classlibsocket_1_1unix__stream__server.html#a64f48f0ad4cc09fbf907006fbb21ddee" title="Accepts an incoming connection on a UNIX domain stream server socket and returns an owned pointer." alt="" coords="5,5,159,47"/>
 </map>

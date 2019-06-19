@@ -1,3 +1,4 @@
 <map id="libsocket::inet_dgram_server::setup" name="libsocket::inet_dgram_server::setup">
-<area shape="rect" id="node2" href="$group__libinetsocket.html#gab5e00a5a7ba456d8a4b22012e3e2ce92" title="Create a TCP or UDP server socket. " alt="" coords="200,5,329,47"/>
+<area shape="rect" id="node1" title="Set up socket. NOT FOR EXTERNAL USE" alt="" coords="5,5,152,47"/>
+<area shape="rect" id="node2" href="$group__libinetsocket.html#gab5e00a5a7ba456d8a4b22012e3e2ce92" title="Create a TCP or UDP server socket." alt="" coords="200,5,329,47"/>
 </map>

@@ -1,5 +1,0 @@
-<map id="connect_unix_dgram_socket" name="connect_unix_dgram_socket">
-<area shape="rect" id="node2" href="$classlibsocket_1_1unix__dgram__client.html#ac302893ec3dad36b22774b0797789010" title="Connect a UNIX datagram socket. " alt="" coords="196,5,345,47"/>
-<area shape="rect" id="node4" href="$classlibsocket_1_1unix__dgram__client.html#a012d8e5ce4628be3b35e9da0c58149e9" title="Disconnect a UNIX datagram socket. " alt="" coords="196,71,345,112"/>
-<area shape="rect" id="node3" href="$classlibsocket_1_1unix__dgram__client.html#a467c4afbd6e186a137a9fcc415dc3e84" title="Connect a UNIX datagram socket. " alt="" coords="393,5,543,47"/>
-</map>

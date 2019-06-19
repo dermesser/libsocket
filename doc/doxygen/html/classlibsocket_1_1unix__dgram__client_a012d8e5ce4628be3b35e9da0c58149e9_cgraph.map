@@ -1,4 +1,5 @@
 <map id="libsocket::unix_dgram_client::deconnect" name="libsocket::unix_dgram_client::deconnect">
-<area shape="rect" id="node2" href="$group__libunixsocket.html#gaa5966dbdc936a326ca3350c6dced1b49" title="Connect a datagram socket. " alt="" coords="203,5,345,47"/>
-<area shape="rect" id="node3" href="$group__libunixsocket.html#gac85fdb9dc1530a93835e527ae0002652" title="Checks return value for error. " alt="" coords="393,13,484,39"/>
+<area shape="rect" id="node1" title="Disconnect a UNIX datagram socket." alt="" coords="5,5,155,47"/>
+<area shape="rect" id="node2" href="$group__libunixsocket.html#gaa5966dbdc936a326ca3350c6dced1b49" title="Connect a datagram socket." alt="" coords="203,5,345,47"/>
+<area shape="rect" id="node3" href="$group__libunixsocket.html#gac85fdb9dc1530a93835e527ae0002652" title="Checks return value for error." alt="" coords="393,13,484,39"/>
 </map>

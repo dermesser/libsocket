@@ -1,5 +1,6 @@
 <map id="libsocket::unix_stream_client::unix_stream_client" name="libsocket::unix_stream_client::unix_stream_client">
-<area shape="rect" id="node2" href="$classlibsocket_1_1unix__stream__client.html#a69a168b6156d05224df6e876b0ff9fd8" title="Connect socket. " alt="" coords="231,5,384,47"/>
-<area shape="rect" id="node3" href="$group__libunixsocket.html#ga0cdb7d935c3470576e8b284e8bce33af" title="Create and connect a new UNIX STREAM socket. " alt="" coords="432,5,568,47"/>
-<area shape="rect" id="node4" href="$group__libunixsocket.html#gac85fdb9dc1530a93835e527ae0002652" title="Checks return value for error. " alt="" coords="616,13,707,39"/>
+<area shape="rect" id="node1" title="Constructor, setting up a connection." alt="" coords="5,5,183,47"/>
+<area shape="rect" id="node2" href="$classlibsocket_1_1unix__stream__client.html#a69a168b6156d05224df6e876b0ff9fd8" title="Connect socket." alt="" coords="231,5,384,47"/>
+<area shape="rect" id="node3" href="$group__libunixsocket.html#ga0cdb7d935c3470576e8b284e8bce33af" title="Create and connect a new UNIX STREAM socket." alt="" coords="432,5,568,47"/>
+<area shape="rect" id="node4" href="$group__libunixsocket.html#gac85fdb9dc1530a93835e527ae0002652" title="Checks return value for error." alt="" coords="616,13,707,39"/>
 </map>

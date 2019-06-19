@@ -1,30 +1,12 @@
 <map id="check_error" name="check_error">
-<area shape="rect" id="node2" href="$group__libunixsocket.html#ga0cdb7d935c3470576e8b284e8bce33af" title="Create and connect a new UNIX STREAM socket. " alt="" coords="167,80,303,121"/>
-<area shape="rect" id="node6" href="$group__libunixsocket.html#ga7e8237c355edaecdd0f4960011d5d70d" title="Create a UNIX DGRAM socket. " alt="" coords="145,154,324,181"/>
-<area shape="rect" id="node9" href="$group__libunixsocket.html#gaa5966dbdc936a326ca3350c6dced1b49" title="Connect a datagram socket. " alt="" coords="163,215,306,256"/>
-<area shape="rect" id="node13" href="$group__libunixsocket.html#ga26d0f7e9b35e0031cb873c06c870f801" title="Close a socket. " alt="" coords="163,281,306,307"/>
-<area shape="rect" id="node14" href="$group__libunixsocket.html#ga2724aa1f6bbd5d2fb98e4532b8564eb9" title="Shut a socket down. " alt="" coords="157,332,313,373"/>
-<area shape="rect" id="node15" href="$group__libunixsocket.html#gafe85c76892f9c9478b59008363a382ab" title="Create a passive UNIX socket. " alt="" coords="169,397,301,439"/>
-<area shape="rect" id="node22" href="$group__libunixsocket.html#ga32e8343f2b6c02b406fea290da7f9645" title="Accept connections on a passive UNIX socket. " alt="" coords="165,463,304,504"/>
-<area shape="rect" id="node25" href="$group__libunixsocket.html#gac5df3bd88cc0ee3e34f94d859ab21085" title="Receive datagram from another UNIX socket. " alt="" coords="161,528,308,569"/>
-<area shape="rect" id="node27" href="$group__libunixsocket.html#gad715e9f6412d1fc2bdd9ee25612e2995" title="Send datagram to socket. " alt="" coords="144,597,325,623"/>
-<area shape="rect" id="node3" href="$classlibsocket_1_1unix__stream__client.html#a69a168b6156d05224df6e876b0ff9fd8" title="Connect socket. " alt="" coords="373,71,527,112"/>
-<area shape="rect" id="node4" href="$classlibsocket_1_1unix__stream__client.html#af41e0619dc5fbd34b031ffcef5e53d78" title="Constructor, setting up a connection. " alt="" coords="579,5,757,47"/>
-<area shape="rect" id="node5" href="$classlibsocket_1_1unix__stream__client.html#a10cbba2f58481f997c431d7f503d27ee" title="Connect socket. " alt="" coords="591,71,745,112"/>
-<area shape="rect" id="node7" href="$classlibsocket_1_1unix__dgram__client.html#a0090c0d52f28b228d1526f4e93968f97" title="Set a UNIX domain datagram socket up. " alt="" coords="375,136,525,177"/>
-<area shape="rect" id="node8" href="$classlibsocket_1_1unix__dgram__client.html#a7cce0e352d3e61ceedf391aa9c6e4baa" title="Constructor with only socket() flags. " alt="" coords="581,136,755,177"/>
-<area shape="rect" id="node10" href="$classlibsocket_1_1unix__dgram__client.html#ac302893ec3dad36b22774b0797789010" title="Connect a UNIX datagram socket. " alt="" coords="375,201,525,243"/>
-<area shape="rect" id="node12" href="$classlibsocket_1_1unix__dgram__client.html#a012d8e5ce4628be3b35e9da0c58149e9" title="Disconnect a UNIX datagram socket. " alt="" coords="375,267,525,308"/>
-<area shape="rect" id="node11" href="$classlibsocket_1_1unix__dgram__client.html#a467c4afbd6e186a137a9fcc415dc3e84" title="Connect a UNIX datagram socket. " alt="" coords="593,201,743,243"/>
-<area shape="rect" id="node16" href="$classlibsocket_1_1unix__dgram__server.html#ae7e823d0375e113361bc5ee9ae251f81" title="Binds a socket. " alt="" coords="375,332,525,373"/>
-<area shape="rect" id="node19" href="$classlibsocket_1_1unix__stream__server.html#a5c8241e3709e7f39884f36db19fdd4f5" title="Sets a server socket up. " alt="" coords="373,397,527,439"/>
-<area shape="rect" id="node17" href="$classlibsocket_1_1unix__dgram__server.html#a17442ffa9922b1fb92a33f63482ad019" title="Constructs and binds a socket. " alt="" coords="577,267,759,308"/>
-<area shape="rect" id="node18" href="$classlibsocket_1_1unix__dgram__server.html#a566f166487e3da4d465090e674b17439" title="Binds a socket. " alt="" coords="593,332,743,373"/>
-<area shape="rect" id="node20" href="$classlibsocket_1_1unix__stream__server.html#aaa1f7b33ce7afd9cd6627a636c2bb6b4" title="Constructs and binds server socket. " alt="" coords="575,397,761,439"/>
-<area shape="rect" id="node21" href="$classlibsocket_1_1unix__stream__server.html#a167cb691357c436debc58fce962e9e09" title="Sets a server socket up. " alt="" coords="591,463,745,504"/>
-<area shape="rect" id="node23" href="$classlibsocket_1_1unix__stream__server.html#a67b1a20eff49e57d36b15a938774115e" title="Accepts incoming connections on a UNIX domain stream server socket. " alt="" coords="373,463,527,504"/>
-<area shape="rect" id="node24" href="$classlibsocket_1_1unix__stream__server.html#a64f48f0ad4cc09fbf907006fbb21ddee" title="Accepts an incoming connection on a UNIX domain stream server socket and returns an owned pointer..." alt="" coords="591,528,745,569"/>
-<area shape="rect" id="node26" href="$classlibsocket_1_1unix__dgram.html#abf6eb9a877285331d062c26fc9955853" title="Receive data and store the sender&#39;s address. " alt="" coords="375,528,525,569"/>
-<area shape="rect" id="node28" href="$classlibsocket_1_1unix__dgram.html#a84c3e94edd3a3db9a156b59e38cb4643" title="Send data to datagram socket. " alt="" coords="375,593,525,635"/>
-<area shape="rect" id="node29" href="$classlibsocket_1_1unix__dgram.html#a4d5c00323ef7f6ea2aed0d4a7484f6e2" title="Send data to datagram socket. " alt="" coords="593,593,743,635"/>
+<area shape="rect" id="node1" title="Checks return value for error." alt="" coords="235,247,325,274"/>
+<area shape="rect" id="node2" href="$group__libunixsocket.html#ga0cdb7d935c3470576e8b284e8bce33af" title="Create and connect a new UNIX STREAM socket." alt="" coords="28,5,164,47"/>
+<area shape="rect" id="node3" href="$group__libunixsocket.html#ga7e8237c355edaecdd0f4960011d5d70d" title="Create a UNIX DGRAM socket." alt="" coords="7,71,185,98"/>
+<area shape="rect" id="node4" href="$group__libunixsocket.html#gaa5966dbdc936a326ca3350c6dced1b49" title="Connect a datagram socket." alt="" coords="25,123,167,164"/>
+<area shape="rect" id="node5" href="$group__libunixsocket.html#ga26d0f7e9b35e0031cb873c06c870f801" title="Close a socket." alt="" coords="25,189,167,215"/>
+<area shape="rect" id="node6" href="$group__libunixsocket.html#ga2724aa1f6bbd5d2fb98e4532b8564eb9" title="Shut a socket down." alt="" coords="19,240,173,281"/>
+<area shape="rect" id="node7" href="$group__libunixsocket.html#gafe85c76892f9c9478b59008363a382ab" title="Create a passive UNIX socket." alt="" coords="30,305,162,347"/>
+<area shape="rect" id="node8" href="$group__libunixsocket.html#ga32e8343f2b6c02b406fea290da7f9645" title="Accept connections on a passive UNIX socket." alt="" coords="27,371,165,412"/>
+<area shape="rect" id="node9" href="$group__libunixsocket.html#gac5df3bd88cc0ee3e34f94d859ab21085" title="Receive datagram from another UNIX socket." alt="" coords="23,436,169,477"/>
+<area shape="rect" id="node10" href="$group__libunixsocket.html#gad715e9f6412d1fc2bdd9ee25612e2995" title="Send datagram to socket." alt="" coords="5,502,187,529"/>
 </map>

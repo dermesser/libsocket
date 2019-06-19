@@ -1,5 +1,0 @@
-<map id="create_inet_dgram_socket" name="create_inet_dgram_socket">
-<area shape="rect" id="node2" href="$classlibsocket_1_1inet__dgram__client.html#a3ad41617932a8fe961faed2e68a877f3" title="Set up normal datagram socket (connectable). [NOT FOR EXTERNAL USE]. " alt="" coords="228,39,375,80"/>
-<area shape="rect" id="node3" href="$classlibsocket_1_1inet__dgram__client.html#a2097f8e5faee6db0aac1618b96e4b960" title="Create normal datagram socket (connectable). " alt="" coords="423,5,593,47"/>
-<area shape="rect" id="node4" href="$classlibsocket_1_1inet__dgram__client.html#a779433b82a3bab7dc6de5061e185dca6" title="Set up datagram socket and connect it immediately to the given host and port. [NOT FOR EXTERNAL USE]..." alt="" coords="435,71,581,112"/>
-</map>

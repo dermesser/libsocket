@@ -1,4 +1,0 @@
-<map id="accept_unix_stream_socket" name="accept_unix_stream_socket">
-<area shape="rect" id="node2" href="$classlibsocket_1_1unix__stream__server.html#a67b1a20eff49e57d36b15a938774115e" title="Accepts incoming connections on a UNIX domain stream server socket. " alt="" coords="192,5,345,47"/>
-<area shape="rect" id="node3" href="$classlibsocket_1_1unix__stream__server.html#a64f48f0ad4cc09fbf907006fbb21ddee" title="Accepts an incoming connection on a UNIX domain stream server socket and returns an owned pointer..." alt="" coords="393,5,547,47"/>
-</map>

@@ -1,3 +1,4 @@
 <map id="libsocket::socket::~socket" name="libsocket::socket::~socket">
-<area shape="rect" id="node2" href="$classlibsocket_1_1socket.html#ac952755b874a4c592d5fec1e4318ea98" title="Destroys a socket. " alt="" coords="183,5,312,47"/>
+<area shape="rect" id="node1" title="Destructor: closes socket." alt="" coords="5,5,135,47"/>
+<area shape="rect" id="node2" href="$classlibsocket_1_1socket.html#ac952755b874a4c592d5fec1e4318ea98" title="Destroys a socket." alt="" coords="183,5,312,47"/>
 </map>
