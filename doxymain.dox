@@ -25,6 +25,7 @@ libsocket++ consists of many C++ classes. Only the following are intended for us
 - inet_dgram_client, inet_dgram_server (UDP/IP client [unbound] and server [bound])
 - unix_stream_client, unix_stream_server (UNIX domain; STREAM client and server)
 - unix_dgram_client, unix_stream_client (UNIX domain; DGRAM unbound and bound sockets)
+- selectset, epollset
 
 If a function fails, it throws a `socket_exception` object containing the error. Look <a href="structlibsocket_1_1socket__exception.html">here</a>
 for detailed information. *Therefore it's important to put libsocket++ operations inside `try {...} catch () {...}` blocks*.
@@ -36,7 +37,6 @@ close the socket; to pass a socket to other functions use *call-by-reference*, *
 
 void f(xyzsocket&);
 void f(xyzsocket*);
-void f(xyzsocket&&);
 
 @endcode
 
@@ -107,6 +107,7 @@ The classes are contained in these header files:
     unix_stream_server	    unixserverstream.hpp
     
     selectset		    select.hpp
+    epollset                epoll.hpp
 
     [libinetsocket]	    libinetsocket.h
     [libunixsocket]	    libunixsocket.h
