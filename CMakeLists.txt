@@ -40,7 +40,6 @@ ADD_SUBDIRECTORY(C/)
 ADD_SUBDIRECTORY(headers/)
 
 IF( NOT IS_SUNOS )
-
     ADD_SUBDIRECTORY(C++/)
     ADD_DEPENDENCIES(socket++ socket)
 
