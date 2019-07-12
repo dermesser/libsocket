@@ -80,15 +80,16 @@ libsocket for C++</h1>
 <li>inet_dgram_client, inet_dgram_server (UDP/IP client [unbound] and server [bound])</li>
 <li>unix_stream_client, unix_stream_server (UNIX domain; STREAM client and server)</li>
 <li>unix_dgram_client, unix_stream_client (UNIX domain; DGRAM unbound and bound sockets)</li>
+<li>selectset, epollset</li>
 </ul>
 <p>If a function fails, it throws a <code>socket_exception</code> object containing the error. Look <a href="structlibsocket_1_1socket__exception.html">here</a> for detailed information. <em>Therefore it's important to put libsocket++ operations inside <code>try {...} catch () {...}</code> blocks</em>.</p>
 <p>Libsocket++ uses C++11 to delete the copy constructors of the socket classes. This enables the destructor to safely close the socket; to pass a socket to other functions use <em>call-by-reference</em>, <em>call-by-pointer</em> or <code>std::move</code> and an rvalue-accepting function type:</p>
-<div class="fragment"><div class="line"><span class="keywordtype">void</span> f(xyzsocket&amp;);</div><div class="line"><span class="keywordtype">void</span> f(xyzsocket*);</div><div class="line"><span class="keywordtype">void</span> f(xyzsocket&amp;&amp;);</div></div><!-- fragment --><p>Detailed documentation can be found in this doxygen documentation; easier documentation is available <a href="https://github.com/dermesser/libsocket/blob/master/doc/libsocket%2B%2B/DOCUMENTATION%2B%2B.mkd">here</a> </p>
+<div class="fragment"><div class="line"><span class="keywordtype">void</span> f(xyzsocket&amp;);</div><div class="line"><span class="keywordtype">void</span> f(xyzsocket*);</div></div><!-- fragment --><p>Detailed documentation can be found in this doxygen documentation; easier documentation is available <a href="https://github.com/dermesser/libsocket/blob/master/doc/libsocket%2B%2B/DOCUMENTATION%2B%2B.mkd">here</a> </p>
 </div></div><!-- PageDoc -->
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Wed Jun 19 2019 18:15:42 for libsocket by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Fri Jul 12 2019 21:08:38 for libsocket by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.15
 </small></address>
