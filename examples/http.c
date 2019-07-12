@@ -19,7 +19,7 @@ int main(void) {
 
     buf[31] = 0;
 
-    ret = sfd = create_inet_stream_socket("lbo.spheniscida.de", "80",
+    ret = sfd = create_inet_stream_socket("borgac.net", "80",
                                           LIBSOCKET_IPv4, 0);
 
     if (ret < 0) {
@@ -27,7 +27,7 @@ int main(void) {
         exit(1);
     }
 
-    sprintf(request, "GET / HTTP/1.1\nHost: lbo.spheniscida.de\n\n");
+    sprintf(request, "GET / HTTP/1.1\nHost: borgac.net\n\n");
 
     ret = write(sfd, request, strlen(request));
 
