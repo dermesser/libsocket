@@ -102,6 +102,7 @@ static inline signed int check_error(int return_value) {
 }
 
 static int set_unix_socket_path(struct sockaddr_un* saddr, const char* path_or_name) {
+    memset(&saddr->sun_path, 0, sizeof(saddr->sun_path));
     if (path_or_name[0] != 0) {
         strncpy(saddr->sun_path, path_or_name, sizeof(saddr->sun_path) - 1);
     } else {
