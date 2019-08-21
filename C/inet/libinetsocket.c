@@ -75,9 +75,7 @@
 
 /* Macro definitions */
 
-/*
-# define VERBOSE // Write errors on stderr?
-*/
+//# define VERBOSE // Write errors on stderr?
 
 #define LIBSOCKET_BACKLOG \
     128  ///< Linux accepts a backlog value at listen() up to 128
