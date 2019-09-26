@@ -122,6 +122,7 @@ unix_stream_client* unix_stream_server::accept(int flags) {
     cfd = accept_unix_stream_socket(sfd, flags);
 
     if (cfd < 0) {
+       delete client; //This is necessary to fix a memory leak.
         if (is_nonblocking && errno == EWOULDBLOCK)
             return nullptr;
         else
