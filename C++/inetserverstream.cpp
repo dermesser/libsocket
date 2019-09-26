@@ -175,6 +175,22 @@ void inet_stream_server::setup(const string& bindhost, const string& bindport,
  * @returns A pointer to a connected TCP/IP client socket object.
  */
 inet_stream* inet_stream_server::accept(int numeric, int accept_flags) {
+    return accept2(numeric, accept_flags).release();
+}
+
+/**
+ * @brief Accept a connection and return a socket connected to the client.
+ *
+ * The caller owns the client socket.
+ *
+ * @param numeric Specifies if the client's parameter (IP address, port) should
+ * be delivered numerically in the src_host/src_port parameters.
+ * @param accept_flags Flags specified in `accept(2)`
+ *
+ * @returns An owned pointer to a connected TCP/IP client socket object.
+ */
+unique_ptr<inet_stream> inet_stream_server::accept2(int numeric,
+                                                    int accept_flags) {
     if (sfd < 0)
         throw socket_exception(
             __FILE__, __LINE__,
@@ -189,7 +205,7 @@ inet_stream* inet_stream_server::accept(int numeric, int accept_flags) {
     memset(src_port.get(), 0, 32);
 
     int client_sfd;
-    inet_stream* client = new inet_stream;
+    unique_ptr<inet_stream> client(new inet_stream);
 
     if (-1 == (client_sfd = accept_inet_stream_socket(sfd, src_host.get(), 1023,
                                                       src_port.get(), 31,
@@ -214,22 +230,6 @@ inet_stream* inet_stream_server::accept(int numeric, int accept_flags) {
     client->proto = proto;
 
     return client;
-}
-
-/**
- * @brief Accept a connection and return a socket connected to the client.
- *
- * The caller owns the client socket.
- *
- * @param numeric Specifies if the client's parameter (IP address, port) should
- * be delivered numerically in the src_host/src_port parameters.
- * @param accept_flags Flags specified in `accept(2)`
- *
- * @returns An owned pointer to a connected TCP/IP client socket object.
- */
-unique_ptr<inet_stream> inet_stream_server::accept2(int numeric,
-                                                    int accept_flags) {
-    return unique_ptr<inet_stream>(accept(numeric, accept_flags));
 }
 
 const string& inet_stream_server::getbindhost(void) { return gethost(); }
