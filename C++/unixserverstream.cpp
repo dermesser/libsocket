@@ -110,30 +110,7 @@ void unix_stream_server::setup(const string& path, int flags) {
  * @param flags Flags for Linux' `accept4()`; useless on other implementations.
  */
 unix_stream_client* unix_stream_server::accept(int flags) {
-    int cfd;
-
-    if (sfd == -1)
-        throw socket_exception(
-            __FILE__, __LINE__,
-            "unix_stream_server::accept: Socket not set up yet!", false);
-
-    unix_stream_client* client = new unix_stream_client;
-
-    cfd = accept_unix_stream_socket(sfd, flags);
-
-    if (cfd < 0) {
-       delete client; //This is necessary to fix a memory leak.
-        if (is_nonblocking && errno == EWOULDBLOCK)
-            return nullptr;
-        else
-            throw socket_exception(__FILE__, __LINE__,
-                                   "unix_stream_server::accept: Error at "
-                                   "accepting new connection!");
-    }
-
-    client->sfd = cfd;
-
-    return client;
+    return accept2(flags).release();
 }
 
 /**
@@ -145,6 +122,28 @@ unix_stream_client* unix_stream_server::accept(int flags) {
  * @param flags Flags for `accept4()`; useless on other implementations.
  */
 unique_ptr<unix_stream_client> unix_stream_server::accept2(int flags) {
-    return unique_ptr<unix_stream_client>(accept(flags));
+    int cfd;
+
+    if (sfd == -1)
+        throw socket_exception(
+            __FILE__, __LINE__,
+            "unix_stream_server::accept2: Socket not has not yet been set up!", false);
+
+    unique_ptr<unix_stream_client> client(new unix_stream_client);
+
+    cfd = accept_unix_stream_socket(sfd, flags);
+
+    if (cfd < 0) {
+        if (is_nonblocking && errno == EWOULDBLOCK)
+            return unique_ptr<unix_stream_client>(nullptr);
+        else
+            throw socket_exception(__FILE__, __LINE__,
+                                   "unix_stream_server::accept2: Error while "
+                                   "accepting new connection!");
+    }
+
+    client->sfd = cfd;
+
+    return client;
 }
 }  // namespace libsocket
