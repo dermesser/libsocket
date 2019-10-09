@@ -124,6 +124,7 @@ epollset<SocketT>::epollset(epollset&& new_epollset) {
 
 template <typename SocketT>
 epollset<SocketT>::~epollset(void) {
+    close(epollfd);
     delete[] events;
 }
 
