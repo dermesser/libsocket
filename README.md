@@ -9,7 +9,9 @@ Status](https://api.travis-ci.org/dermesser/libsocket.png)](https://travis-ci.or
 
 If you want to install both libsocket and libsocket++, simply use this command:
 
-    $ cmake CMakeLists.txt $ make # make install
+    $ mkdir build && cd build
+    $ cmake ..
+    $ make # or make install
 
 This installs the SOs libsocket.so and libsocket++.so to /usr/lib/ and the header files to
 /usr/include/libsocket. You may change these paths in the CMakeLists.txt file in the project root.
