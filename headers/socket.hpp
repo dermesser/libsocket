@@ -90,6 +90,9 @@ class socket {
 
     int set_sock_opt(int level, int optname, const char* optval,
                      socklen_t optlen) const;
+    /// `close_on_destructor` is true by default. If set to false, do not call
+    /// `close(2)` on the underlying socket in the destructor.
+    void set_close_on_destructor(bool cod) { close_on_destructor = cod; }
 };
 /**
  * @}
