@@ -82,6 +82,9 @@ Functions</h2></td></tr>
 <tr class="memitem:gac85fdb9dc1530a93835e527ae0002652"><td class="memItemLeft" align="right" valign="top">static signed int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__libunixsocket.html#gac85fdb9dc1530a93835e527ae0002652">check_error</a> (int return_value)</td></tr>
 <tr class="memdesc:gac85fdb9dc1530a93835e527ae0002652"><td class="mdescLeft">&#160;</td><td class="mdescRight">Checks return value for error.  <a href="#gac85fdb9dc1530a93835e527ae0002652">More...</a><br /></td></tr>
 <tr class="separator:gac85fdb9dc1530a93835e527ae0002652"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga4d2c700dfdb37749693f743d6859a444"><td class="memItemLeft" align="right" valign="top"><a id="ga4d2c700dfdb37749693f743d6859a444"></a>
+static int&#160;</td><td class="memItemRight" valign="bottom"><b>set_unix_socket_path</b> (struct sockaddr_un *saddr, const char *path_or_name)</td></tr>
+<tr class="separator:ga4d2c700dfdb37749693f743d6859a444"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga0cdb7d935c3470576e8b284e8bce33af"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__libunixsocket.html#ga0cdb7d935c3470576e8b284e8bce33af">create_unix_stream_socket</a> (const char *path, int flags)</td></tr>
 <tr class="memdesc:ga0cdb7d935c3470576e8b284e8bce33af"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create and connect a new UNIX STREAM socket.  <a href="#ga0cdb7d935c3470576e8b284e8bce33af">More...</a><br /></td></tr>
 <tr class="separator:ga0cdb7d935c3470576e8b284e8bce33af"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -165,7 +168,7 @@ Here is the caller graph for this function:</div>
 <area shape="rect"  href="group__libunixsocket.html#ga7e8237c355edaecdd0f4960011d5d70d" title="Create a UNIX DGRAM socket." alt="" coords="7,71,185,98"/>
 <area shape="rect"  href="group__libunixsocket.html#gaa5966dbdc936a326ca3350c6dced1b49" title="Connect a datagram socket." alt="" coords="25,123,167,164"/>
 <area shape="rect"  href="group__libunixsocket.html#ga26d0f7e9b35e0031cb873c06c870f801" title="Close a socket." alt="" coords="25,189,167,215"/>
-<area shape="rect"  href="group__libunixsocket.html#ga2724aa1f6bbd5d2fb98e4532b8564eb9" title="Shut a socket down." alt="" coords="19,240,173,281"/>
+<area shape="rect"  href="group__libunixsocket.html#ga2724aa1f6bbd5d2fb98e4532b8564eb9" title="Shut a socket down." alt="" coords="18,240,174,281"/>
 <area shape="rect"  href="group__libunixsocket.html#gafe85c76892f9c9478b59008363a382ab" title="Create a passive UNIX socket." alt="" coords="30,305,162,347"/>
 <area shape="rect"  href="group__libunixsocket.html#ga32e8343f2b6c02b406fea290da7f9645" title="Accept connections on a passive UNIX socket." alt="" coords="27,371,165,412"/>
 <area shape="rect"  href="group__libunixsocket.html#gac5df3bd88cc0ee3e34f94d859ab21085" title="Receive datagram from another UNIX socket." alt="" coords="23,436,169,477"/>
@@ -203,6 +206,7 @@ Here is the caller graph for this function:</div>
 
 <p>Create and connect a new UNIX STREAM socket. </p>
 <p>Creates and connects a new STREAM socket with the socket given in <code>path</code>.</p>
+<p>If the first byte in path is a null byte, this function assumes that it is an abstract socket address (see <code>unix(7)</code>; this is a Linux-specific feature). Following that byte, there must be a normal 0-terminated string.</p>
 <dl class="retval"><dt>Return values</dt><dd>
   <table class="retval">
     <tr><td class="paramname">&gt;0</td><td>Success; return value is a socket file descriptor </td></tr>
@@ -211,7 +215,7 @@ Here is the caller graph for this function:</div>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="libunixsocket_8c_source.html#l00112">112</a> of file <a class="el" href="libunixsocket_8c_source.html">libunixsocket.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="libunixsocket_8c_source.html#l00143">143</a> of file <a class="el" href="libunixsocket_8c_source.html">libunixsocket.c</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -266,7 +270,7 @@ Here is the call graph for this function:</div>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="libunixsocket_8c_source.html#l00155">155</a> of file <a class="el" href="libunixsocket_8c_source.html">libunixsocket.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="libunixsocket_8c_source.html#l00191">191</a> of file <a class="el" href="libunixsocket_8c_source.html">libunixsocket.c</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -322,7 +326,7 @@ Here is the call graph for this function:</div>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="libunixsocket_8c_source.html#l00202">202</a> of file <a class="el" href="libunixsocket_8c_source.html">libunixsocket.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="libunixsocket_8c_source.html#l00243">243</a> of file <a class="el" href="libunixsocket_8c_source.html">libunixsocket.c</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -367,7 +371,7 @@ Here is the call graph for this function:</div>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="libunixsocket_8c_source.html#l00250">250</a> of file <a class="el" href="libunixsocket_8c_source.html">libunixsocket.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="libunixsocket_8c_source.html#l00297">297</a> of file <a class="el" href="libunixsocket_8c_source.html">libunixsocket.c</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -423,14 +427,14 @@ Here is the call graph for this function:</div>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="libunixsocket_8c_source.html#l00272">272</a> of file <a class="el" href="libunixsocket_8c_source.html">libunixsocket.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="libunixsocket_8c_source.html#l00319">319</a> of file <a class="el" href="libunixsocket_8c_source.html">libunixsocket.c</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
 <div class="center"><img src="group__libunixsocket_ga2724aa1f6bbd5d2fb98e4532b8564eb9_cgraph.png" border="0" usemap="#group__libunixsocket_ga2724aa1f6bbd5d2fb98e4532b8564eb9_cgraph" alt=""/></div>
 <map name="group__libunixsocket_ga2724aa1f6bbd5d2fb98e4532b8564eb9_cgraph" id="group__libunixsocket_ga2724aa1f6bbd5d2fb98e4532b8564eb9_cgraph">
-<area shape="rect"  title="Shut a socket down." alt="" coords="5,5,160,47"/>
-<area shape="rect"  href="group__libunixsocket.html#gac85fdb9dc1530a93835e527ae0002652" title="Checks return value for error." alt="" coords="208,13,299,39"/>
+<area shape="rect"  title="Shut a socket down." alt="" coords="5,5,161,47"/>
+<area shape="rect"  href="group__libunixsocket.html#gac85fdb9dc1530a93835e527ae0002652" title="Checks return value for error." alt="" coords="209,13,300,39"/>
 </map>
 </div>
 
@@ -486,7 +490,7 @@ Here is the call graph for this function:</div>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="libunixsocket_8c_source.html#l00306">306</a> of file <a class="el" href="libunixsocket_8c_source.html">libunixsocket.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="libunixsocket_8c_source.html#l00353">353</a> of file <a class="el" href="libunixsocket_8c_source.html">libunixsocket.c</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -541,7 +545,7 @@ Here is the call graph for this function:</div>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="libunixsocket_8c_source.html#l00367">367</a> of file <a class="el" href="libunixsocket_8c_source.html">libunixsocket.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="libunixsocket_8c_source.html#l00419">419</a> of file <a class="el" href="libunixsocket_8c_source.html">libunixsocket.c</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -624,7 +628,7 @@ Here is the call graph for this function:</div>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="libunixsocket_8c_source.html#l00392">392</a> of file <a class="el" href="libunixsocket_8c_source.html">libunixsocket.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="libunixsocket_8c_source.html#l00444">444</a> of file <a class="el" href="libunixsocket_8c_source.html">libunixsocket.c</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -700,7 +704,7 @@ Here is the call graph for this function:</div>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="libunixsocket_8c_source.html#l00423">423</a> of file <a class="el" href="libunixsocket_8c_source.html">libunixsocket.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="libunixsocket_8c_source.html#l00479">479</a> of file <a class="el" href="libunixsocket_8c_source.html">libunixsocket.c</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -716,7 +720,7 @@ Here is the call graph for this function:</div>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Fri Jul 12 2019 21:08:38 for libsocket by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Sun Mar 29 2020 23:58:37 for libsocket by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.15
 </small></address>

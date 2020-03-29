@@ -5,7 +5,7 @@
 <area shape="rect" id="node4" href="$group__libinetsocket.html#gad816061c898fe8b1f0d8edfee3f5786d" title="Receive data from a UDP/IP socket." alt="" coords="23,107,167,149"/>
 <area shape="rect" id="node5" href="$group__libinetsocket.html#ga10304769ea75add0f18d4c9caf8e2c30" title="Connect a UDP socket." alt="" coords="25,173,164,214"/>
 <area shape="rect" id="node6" href="$group__libinetsocket.html#ga9c4e366b938b60a8c669c2a82448a6cf" title="Close a socket." alt="" coords="25,239,164,265"/>
-<area shape="rect" id="node7" href="$group__libinetsocket.html#gac66a538a20eaea51b83d48b1922f2997" title="Perform a shutdown(2) call on a socket." alt="" coords="19,290,171,331"/>
+<area shape="rect" id="node7" href="$group__libinetsocket.html#gac66a538a20eaea51b83d48b1922f2997" title="Perform a shutdown(2) call on a socket." alt="" coords="18,290,171,331"/>
 <area shape="rect" id="node8" href="$group__libinetsocket.html#gabb6e135b0ac29de9e98cb53a87a67795" title="Accept a connection attempt on a server socket." alt="" coords="27,355,163,397"/>
 <area shape="rect" id="node9" href="$group__libinetsocket.html#ga8643c39daab90241ebf53b43b86c5d96" title="Create a datagram socket and join to the multicast group address." alt="" coords="13,421,177,448"/>
 </map>

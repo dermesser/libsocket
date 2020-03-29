@@ -4,7 +4,7 @@
 <area shape="rect" id="node3" href="$group__libunixsocket.html#ga7e8237c355edaecdd0f4960011d5d70d" title="Create a UNIX DGRAM socket." alt="" coords="7,71,185,98"/>
 <area shape="rect" id="node4" href="$group__libunixsocket.html#gaa5966dbdc936a326ca3350c6dced1b49" title="Connect a datagram socket." alt="" coords="25,123,167,164"/>
 <area shape="rect" id="node5" href="$group__libunixsocket.html#ga26d0f7e9b35e0031cb873c06c870f801" title="Close a socket." alt="" coords="25,189,167,215"/>
-<area shape="rect" id="node6" href="$group__libunixsocket.html#ga2724aa1f6bbd5d2fb98e4532b8564eb9" title="Shut a socket down." alt="" coords="19,240,173,281"/>
+<area shape="rect" id="node6" href="$group__libunixsocket.html#ga2724aa1f6bbd5d2fb98e4532b8564eb9" title="Shut a socket down." alt="" coords="18,240,174,281"/>
 <area shape="rect" id="node7" href="$group__libunixsocket.html#gafe85c76892f9c9478b59008363a382ab" title="Create a passive UNIX socket." alt="" coords="30,305,162,347"/>
 <area shape="rect" id="node8" href="$group__libunixsocket.html#ga32e8343f2b6c02b406fea290da7f9645" title="Accept connections on a passive UNIX socket." alt="" coords="27,371,165,412"/>
 <area shape="rect" id="node9" href="$group__libunixsocket.html#gac5df3bd88cc0ee3e34f94d859ab21085" title="Receive datagram from another UNIX socket." alt="" coords="23,436,169,477"/>

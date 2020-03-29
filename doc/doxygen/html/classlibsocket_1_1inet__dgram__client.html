@@ -143,6 +143,8 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>deconnect</b> (void)<
 <tr class="memitem:ac4a0c1e0262bbd44238474fc4e012812"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlibsocket_1_1socket.html#ac4a0c1e0262bbd44238474fc4e012812">set_sock_opt</a> (int level, int optname, const char *optval, socklen_t optlen) const</td></tr>
 <tr class="memdesc:ac4a0c1e0262bbd44238474fc4e012812"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set socket options on the underlying socket.  <a href="#ac4a0c1e0262bbd44238474fc4e012812">More...</a><br /></td></tr>
 <tr class="separator:ac4a0c1e0262bbd44238474fc4e012812"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae5f5bfc283ae2045f0ca3dacb9d1c078"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlibsocket_1_1socket.html#ae5f5bfc283ae2045f0ca3dacb9d1c078">set_close_on_destructor</a> (bool cod)</td></tr>
+<tr class="separator:ae5f5bfc283ae2045f0ca3dacb9d1c078"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a13e9f0f73f62613d51e96033e26851b0"><td class="memItemLeft" align="right" valign="top">ssize_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlibsocket_1_1dgram__client__socket.html#a13e9f0f73f62613d51e96033e26851b0">snd</a> (const void *buf, size_t len, int flags=0)</td></tr>
 <tr class="memdesc:a13e9f0f73f62613d51e96033e26851b0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Send data to connected socket.  <a href="#a13e9f0f73f62613d51e96033e26851b0">More...</a><br /></td></tr>
 <tr class="separator:a13e9f0f73f62613d51e96033e26851b0"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -1451,6 +1453,35 @@ Here is the caller graph for this function:</div>
 
 </div>
 </div>
+<a id="ae5f5bfc283ae2045f0ca3dacb9d1c078"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae5f5bfc283ae2045f0ca3dacb9d1c078">&#9670;&nbsp;</a></span>set_close_on_destructor()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void libsocket::socket::set_close_on_destructor </td>
+          <td>(</td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>cod</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">inherited</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p><code>close_on_destructor</code> is true by default. If set to false, do not call <code>close(2)</code> on the underlying socket in the destructor. </p>
+
+<p class="definition">Definition at line <a class="el" href="socket_8hpp_source.html#l00095">95</a> of file <a class="el" href="socket_8hpp_source.html">socket.hpp</a>.</p>
+
+</div>
+</div>
 <a id="a13e9f0f73f62613d51e96033e26851b0"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a13e9f0f73f62613d51e96033e26851b0">&#9670;&nbsp;</a></span>snd()</h2>
 
@@ -1796,7 +1827,7 @@ Here is the caller graph for this function:</div>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Fri Jul 12 2019 21:08:38 for libsocket by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Sun Mar 29 2020 23:58:37 for libsocket by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.15
 </small></address>

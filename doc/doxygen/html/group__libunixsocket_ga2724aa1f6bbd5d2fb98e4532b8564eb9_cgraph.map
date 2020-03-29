@@ -1,4 +1,4 @@
 <map id="shutdown_unix_stream_socket" name="shutdown_unix_stream_socket">
-<area shape="rect" id="node1" title="Shut a socket down." alt="" coords="5,5,160,47"/>
-<area shape="rect" id="node2" href="$group__libunixsocket.html#gac85fdb9dc1530a93835e527ae0002652" title="Checks return value for error." alt="" coords="208,13,299,39"/>
+<area shape="rect" id="node1" title="Shut a socket down." alt="" coords="5,5,161,47"/>
+<area shape="rect" id="node2" href="$group__libunixsocket.html#gac85fdb9dc1530a93835e527ae0002652" title="Checks return value for error." alt="" coords="209,13,300,39"/>
 </map>
