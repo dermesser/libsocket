@@ -37,10 +37,6 @@
 #include <unistd.h>
 #include <memory>
 #include <string>
-// Inclusion here prevents further inclusion from headers/socket.hpp
-namespace BERKELEY {
-#include <sys/socket.h>
-}  // namespace BERKELEY
 
 #include <conf.h>
 #include <libinetsocket.h>
@@ -86,7 +82,7 @@ ssize_t stream_client_socket::rcv(void* buf, size_t len, int flags) {
 
     memset(buf, 0, len);
 
-    if (-1 == (recvd = BERKELEY::recv(sfd, buf, len, flags))) {
+    if (-1 == (recvd = ::recv(sfd, buf, len, flags))) {
         if (is_nonblocking && errno == EWOULDBLOCK)
             return -1;
         else
@@ -257,7 +253,7 @@ ssize_t stream_client_socket::snd(const void* buf, size_t len, int flags) {
             __FILE__, __LINE__,
             "stream_client_socket::snd() - Buffer or length is null!", false);
 
-    if (-1 == (snd_bytes = BERKELEY::send(sfd, buf, len, flags))) {
+    if (-1 == (snd_bytes = ::send(sfd, buf, len, flags))) {
         if (is_nonblocking && errno == EWOULDBLOCK)
             return -1;
         else
@@ -286,12 +282,6 @@ void stream_client_socket::shutdown(int method) {
     if ((method & LIBSOCKET_READ) && (shut_rd == true)) return;
     if ((method & LIBSOCKET_WRITE) && (shut_wr == true)) return;
 
-#if LIBSOCKET_LINUX || BD_ANDROID
-    using BERKELEY::SHUT_RD;
-    using BERKELEY::SHUT_RDWR;
-    using BERKELEY::SHUT_WR;
-#endif
-
     if (method == (LIBSOCKET_READ | LIBSOCKET_WRITE))
         u_method = SHUT_RDWR;
     else if (method == LIBSOCKET_READ)
@@ -302,7 +292,7 @@ void stream_client_socket::shutdown(int method) {
         return;
 
     if (0 >
-        BERKELEY::shutdown(sfd, u_method))  // It's equal whether we use this or
+        ::shutdown(sfd, u_method))  // It's equal whether we use this or
                                             // its brother from libunixsocket
     {
         throw socket_exception(
