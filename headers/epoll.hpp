@@ -39,6 +39,7 @@
 #include <memory>
 #include <vector>
 
+#include <unistd.h>
 #include <sys/epoll.h>
 
 #include "exception.hpp"
