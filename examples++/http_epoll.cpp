@@ -31,15 +31,17 @@ int main(void) {
 
         epollset<inet_stream>::ready_socks ready = eset.wait(-1);
 
+        libsocket::inet_stream* ready_sock;
+
         if (ready.first.size() > 0)
-            sock = *(ready.first[0]);
+            ready_sock = ready.first[0];
         else
             throw "No socket has been returned!";
 
         answer.resize(2000);
 
         while (answer.size() > 0) {
-            sock >> answer;
+            *ready_sock >> answer;
 
             std::cout << answer;
         }
