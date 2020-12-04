@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <unistd.h>
-#include "../headers/libinetsocket.h"
+#include "../../headers/libinetsocket.h"
 
 /*
  * This example is part of libsocket/libinetsocket
@@ -30,8 +30,6 @@ int main(void) {
         perror(0);
         exit(1);
     }
-
-    // sleep(2);
 
     ret = recvfrom_inet_dgram_socket(sfd, buf, 5, 0, 0, 0, 0, 0,
                                      LIBSOCKET_NUMERIC);

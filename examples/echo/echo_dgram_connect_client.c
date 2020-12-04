@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <unistd.h>
-#include "../headers/libinetsocket.h"
+#include "../../headers/libinetsocket.h"
 
 /*
  * This example is part of libsocket/libinetsocket
@@ -38,9 +38,6 @@ int main(void) {
         exit(1);
     }
 
-    sleep(2);
-
-    // read(sfd,buf,5);
     // We may use the recvfrom/sendto routines also on connected sockets
     ret = recvfrom_inet_dgram_socket(sfd, buf, 16, 0, 0, 0, 0, 0, 0);
 
