@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <unistd.h>
-#include "../headers/libunixsocket.h"
+#include "../../headers/libunixsocket.h"
 
 /*
  * This example is part of libsocket/libunixsocket

@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
-#include "../headers/libunixsocket.h"
+#include "../../headers/libunixsocket.h"
 
 /*
  * This example is part of libsocket/libunixsocket
