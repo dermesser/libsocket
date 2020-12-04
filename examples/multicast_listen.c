@@ -13,7 +13,7 @@ int main(void) {
     // int sfd = create_multicast_socket("225.1.2.3","1230","eth0");
     int sfd =
         create_multicast_socket("239.255.255.250", "1900",
-                                "eth0");  // This group/port is used by UPnP
+                                "eno1");  // This group/port is used by UPnP
                                           // devices. Maybe you see something?
     // int sfd = create_multicast_socket("ff00::abcd","1900","eth0");
 
