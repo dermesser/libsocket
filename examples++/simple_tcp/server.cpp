@@ -4,17 +4,17 @@
 #include <memory>
 #include <string>
 #include <utility>
-#include "../headers/exception.hpp"
-#include "../headers/inetserverstream.hpp"
-#include "../headers/select.hpp"
-#include "../headers/socket.hpp"
+#include "../../headers/exception.hpp"
+#include "../../headers/inetserverstream.hpp"
+#include "../../headers/select.hpp"
+#include "../../headers/socket.hpp"
 
 /*
  * This server is a bit more complicated than
  * what you will need later. It uses the selectset class
  * to demonstrate how to use it.
- * When a client connects it first sends a message and
- * receives the client's answer afterwards.
+ * When a client connects we first send a message and
+ * receive the client's answer afterwards.
  */
 
 int main(void) {

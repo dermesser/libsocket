@@ -1,16 +1,14 @@
 #include <iostream>
 #include <string>
-#include "../headers/exception.hpp"
-#include "../headers/inetclientstream.hpp"
+#include "../../headers/exception.hpp"
+#include "../../headers/inetclientstream.hpp"
 
 #include <stdlib.h>
 #include <unistd.h>
 
 /*
- * This program connects to host:port (usually localhost),
- * closes the socket, reopens it with the same parameters
- * (to show what you may do with sockets... ;), receives
- * a message from the server and sends a message back.
+ * This program connects to the server.cpp binary, listens for a message,
+ * then sends "Hello back!" to the server, closing the socket afterwards.
  */
 
 int main(void) {
