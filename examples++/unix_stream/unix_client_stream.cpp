@@ -1,8 +1,8 @@
 #include <string.h>
 #include <iostream>
 #include <string>
-#include "../headers/exception.hpp"
-#include "../headers/unixclientstream.hpp"
+#include "../../headers/exception.hpp"
+#include "../../headers/unixclientstream.hpp"
 
 // Builds a connection to /tmp/unixsocket and sends/receives data using it.
 

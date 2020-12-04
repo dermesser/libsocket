@@ -1,7 +1,7 @@
 #include <iostream>
 #include <string>
-#include "../headers/exception.hpp"
-#include "../headers/unixserverdgram.hpp"
+#include "../../headers/exception.hpp"
+#include "../../headers/unixserverdgram.hpp"
 
 // Sends a little log message via DGRAM to the syslogd
 

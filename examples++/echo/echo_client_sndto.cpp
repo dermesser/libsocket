@@ -1,8 +1,8 @@
 #include <unistd.h>
 #include <cstring>
 #include <iostream>
-#include "../headers/exception.hpp"
-#include "../headers/inetclientdgram.hpp"
+#include "../../headers/exception.hpp"
+#include "../../headers/inetclientdgram.hpp"
 
 /*
  * Sends and receives messages using the sndto() and rcvfrom functions.

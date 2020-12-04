@@ -1,14 +1,16 @@
 #include <iostream>
 #include <string>
-#include "../headers/exception.hpp"
-#include "../headers/inetclientstream.hpp"
+#include "../../headers/epoll.hpp"
+#include "../../headers/exception.hpp"
+#include "../../headers/inetclientstream.hpp"
 
 // HTTP client demonstrating the use of stream operators
-// on STREAM sockets
+// on STREAM sockets, and additionally how to handle epollsets.
 
 int main(void) {
     using std::string;
 
+    using libsocket::epollset;
     using libsocket::inet_stream;
 
     try {
@@ -18,16 +20,28 @@ int main(void) {
         string request1("GET / HTTP/1.1\n");
         string request2("Host: spheniscida.de\n\n");
 
-        libsocket::inet_stream sock(host, port, LIBSOCKET_IPv4, 0);
+        epollset<inet_stream> eset;
+        inet_stream sock(host, port, LIBSOCKET_IPv4, 0);
 
         sock << request1 << request2;
 
         sock.shutdown(LIBSOCKET_WRITE);
 
+        eset.add_fd(sock, LIBSOCKET_READ);
+
+        epollset<inet_stream>::ready_socks ready = eset.wait(-1);
+
+        libsocket::inet_stream* ready_sock;
+
+        if (ready.first.size() > 0)
+            ready_sock = ready.first[0];
+        else
+            throw "No socket has been returned!";
+
         answer.resize(2000);
 
         while (answer.size() > 0) {
-            sock >> answer;
+            *ready_sock >> answer;
 
             std::cout << answer;
         }

@@ -1,10 +1,10 @@
 #include <unistd.h>
 #include <iostream>
-#include "../headers/exception.hpp"
-#include "../headers/inetclientdgram.hpp"
+#include "../../headers/exception.hpp"
+#include "../../headers/inetclientdgram.hpp"
 
 /*
- * Sends and receives messages via connected UDP sockets
+ * Sends and receives messages to/from the echo_server via connected UDP sockets
  */
 
 int main(void) {

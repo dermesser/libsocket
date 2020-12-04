@@ -2,9 +2,9 @@
 #include <iostream>
 #include <memory>
 #include <string>
-#include "../headers/exception.hpp"
-#include "../headers/unixclientstream.hpp"
-#include "../headers/unixserverstream.hpp"
+#include "../../headers/exception.hpp"
+#include "../../headers/unixclientstream.hpp"
+#include "../../headers/unixserverstream.hpp"
 
 using std::unique_ptr;
 

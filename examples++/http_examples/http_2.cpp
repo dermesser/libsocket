@@ -1,7 +1,7 @@
 #include <iostream>
 #include <string>
-#include "../headers/exception.hpp"
-#include "../headers/inetclientstream.hpp"
+#include "../../headers/exception.hpp"
+#include "../../headers/inetclientstream.hpp"
 
 // HTTP client demonstrating the use of snd and rcv on STREAM sockets
 

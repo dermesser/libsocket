@@ -1,10 +1,10 @@
 #include <cstring>
 #include <iostream>
-#include "../headers/exception.hpp"
-#include "../headers/inetserverdgram.hpp"
+#include "../../headers/exception.hpp"
+#include "../../headers/inetserverdgram.hpp"
 
 // Server for echo_client_*.cpp
-// simply receives a message and sends an answer.
+// Simply receives a datagram message and sends back an answer.
 
 int main(void) {
     using std::string;
@@ -20,7 +20,7 @@ int main(void) {
     buf.resize(32);
 
     try {
-        libsocket::inet_dgram_server srv(host, port, LIBSOCKET_BOTH);
+        libsocket::inet_dgram_server srv(host, port, LIBSOCKET_IPv4);
 
         for (;;) {
             srv.rcvfrom(buf, from, fromport);
@@ -31,7 +31,8 @@ int main(void) {
             srv.sndto(answer, from, fromport);
         }
 
-	// libsocket::inet_dgram_server also has a destructor doing this for us, so we are doing explicitly and can reuse the socket.
+        // libsocket::inet_dgram_server also has a destructor doing this for
+        // us, so we are doing explicitly and can reuse the socket.
         srv.destroy();
     } catch (const libsocket::socket_exception& exc) {
         std::cerr << exc.mesg;
