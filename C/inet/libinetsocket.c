@@ -9,8 +9,6 @@
 #else
 #define LIBSOCKET_LINUX 1
 #endif
-#define LIBSOCKET_FREEBSD 0
-#define LIBSOCKET_SUNOS 0
 
 #include <errno.h>
 #include <net/if.h>
@@ -467,6 +465,10 @@ ssize_t recvfrom_inet_dgram_socket(int sfd, void *buffer, size_t size,
             addrptr = &(((struct sockaddr_in6 *)&client)->sin6_addr);
             addrlen = sizeof(struct in6_addr);
             sport = ntohs(((struct sockaddr_in6 *)&client)->sin6_port);
+        } else {
+#ifdef VERBOSE
+            debug_write("recvfrom_inet_dgram_socket: Unknown address family");
+#endif
         }
 
         if (NULL ==
@@ -500,7 +502,6 @@ ssize_t recvfrom_inet_dgram_socket(int sfd, void *buffer, size_t size,
 int connect_inet_dgram_socket(int sfd, const char *host, const char *service) {
     struct addrinfo *result, *result_check, hint;
     struct sockaddr_storage oldsockaddr;
-    struct sockaddr deconnect;
     socklen_t oldsockaddrlen = sizeof(struct sockaddr_storage);
     int return_value;
 #ifdef VERBOSE
@@ -514,6 +515,7 @@ int connect_inet_dgram_socket(int sfd, const char *host, const char *service) {
         // socket although we don't do so. This is not very severe for the
         // application
 #ifndef __FreeBSD__
+        struct sockaddr deconnect;
         memset(&deconnect, 0, sizeof(struct sockaddr));
 
         deconnect.sa_family = AF_UNSPEC;
@@ -868,6 +870,11 @@ int accept_inet_stream_socket(int sfd, char *src_host, size_t src_host_len,
             addrptr = &(((struct sockaddr_in6 *)&client_info)->sin6_addr);
             in_addrlen = sizeof(struct in6_addr);
             sport = ntohs(((struct sockaddr_in6 *)&client_info)->sin6_port);
+        } else {
+#ifdef VERBOSE
+            debug_write("accept_inet_stream_socket: Unknown address family");
+#endif
+            return -1;
         }
 
         if (NULL ==
