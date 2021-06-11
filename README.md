@@ -142,10 +142,10 @@ It is possible to produce static libraries for linking by setting the cmake conf
 
 ```cmake
 
-SET(BUILD_SHARED_LIBS ON) add_subdirectory(libsocket)
+SET(BUILD_STATIC_LIBS ON) add_subdirectory(libsocket)
 
-target_link_libraries(MyProject libsocket_int) # C linking target_link_libraries(MyProject
-        libsocket++_int) # C++ linking
+target_link_libraries(MyProject libsocket_int) # C linking
+target_link_libraries(MyProject libsocket++_int) # C++ linking
 
 ```
 
