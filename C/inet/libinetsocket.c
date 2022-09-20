@@ -1001,6 +1001,7 @@ int create_multicast_socket(const char *group, const char *port,
         debug_write(errstring);
 #endif
         close(sfd);
+        freeaddrinfo(result);
         errno = errno_saved;
 
         return -1;
@@ -1021,6 +1022,7 @@ int create_multicast_socket(const char *group, const char *port,
             if (-1 == check_error(ioctl(sfd, SIOCGIFINDEX, &interface))) {
                 int errno_saved = errno;
                 close(sfd);
+                freeaddrinfo(result);
                 errno = errno_saved;
                 return -1;
             }
@@ -1032,6 +1034,7 @@ int create_multicast_socket(const char *group, const char *port,
                                          &mreq4, sizeof(struct ip_mreqn)))) {
             int errno_saved = errno;
             close(sfd);
+            freeaddrinfo(result);
             errno = errno_saved;
             return -1;
         }
@@ -1039,6 +1042,7 @@ int create_multicast_socket(const char *group, const char *port,
                                          &mreq4, sizeof(struct ip_mreqn)))) {
             int errno_saved = errno;
             close(sfd);
+            freeaddrinfo(result);
             errno = errno_saved;
             return -1;
         }
@@ -1059,6 +1063,7 @@ int create_multicast_socket(const char *group, const char *port,
             if (-1 == check_error(ioctl(sfd, SIOCGIFINDEX, &interface))) {
                 int errno_saved = errno;
                 close(sfd);
+                freeaddrinfo(result);
                 errno = errno_saved;
                 return -1;
             }
@@ -1070,6 +1075,7 @@ int create_multicast_socket(const char *group, const char *port,
                                          &mreq6, sizeof(struct ipv6_mreq)))) {
             int errno_saved = errno;
             close(sfd);
+            freeaddrinfo(result);
             errno = errno_saved;
             return -1;
         }
@@ -1078,11 +1084,13 @@ int create_multicast_socket(const char *group, const char *port,
                                          sizeof(mreq6.ipv6mr_interface)))) {
             int errno_saved = errno;
             close(sfd);
+            freeaddrinfo(result);
             errno = errno_saved;
             return -1;
         }
     }
 
+    freeaddrinfo(result);
     return sfd;
 }
 
