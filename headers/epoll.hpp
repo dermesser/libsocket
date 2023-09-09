@@ -195,9 +195,9 @@ typename epollset<SocketT>::ready_socks epollset<SocketT>::wait(int timeout) {
                                string("epoll_wait failed: ") + strerror(errno));
 
     for (int i = 0; i < nfds; i++) {
-        if (events[i].events == EPOLLIN)
+        if (events[i].events & EPOLLIN)
             ready.first.push_back(static_cast<SocketT*>(events[i].data.ptr));
-        if (events[i].events == EPOLLOUT)
+        if (events[i].events & EPOLLOUT)
             ready.second.push_back(static_cast<SocketT*>(events[i].data.ptr));
     }
 
