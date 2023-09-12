@@ -1,0 +1,33 @@
+name: libsocket
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+jobs:
+  build:
+    name: ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest]
+      fail-fast: false
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+        with: 
+          fetch-depth: 0
+
+      - name: Configure libsocket for ${{ matrix.os }}
+        run: |
+          mkdir build && cd build
+          cmake ..
+
+      - name: Build libsocket for Linux
+        if: success() && matrix.os == 'ubuntu-latest'
+        run: |
+          cd build
+          cmake --build . --target all --config Release
