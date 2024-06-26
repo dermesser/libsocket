@@ -939,6 +939,8 @@ int get_address_family(const char *hostname) {
         af = -1;
     }
 
+    freeaddrinfo(result);
+
     return af;
 }
 
