@@ -448,7 +448,6 @@ ssize_t recvfrom_unix_dgram_socket(int sfd, void* buf, size_t size, char* from,
     struct sockaddr_un saddr;
 
     memset(buf, 0, size);
-    memset(from, 0, from_size);
 
     if (-1 ==
         check_error(bytes = recvfrom(sfd, buf, size, recvfrom_flags,
@@ -456,6 +455,7 @@ ssize_t recvfrom_unix_dgram_socket(int sfd, void* buf, size_t size, char* from,
         return -1;
 
     if (from != NULL && from_size > 0) {
+        memset(from, 0, from_size);
         memcpy(from, saddr.sun_path,
                from_size < sizeof(saddr.sun_path) ? from_size
                                                   : sizeof(saddr.sun_path));
